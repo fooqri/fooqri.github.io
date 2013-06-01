@@ -309,6 +309,527 @@ application block.</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying Out Pixate - CSS for iOS App Development</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-23T22:09:00-08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I have been using RubyMotion for iOS development; I really  appreciate developing in Ruby, and prefer Emacs to Xcode. Compared to using interface builder, styling apps can be a challenge. It is possible to use RubyMotion with XIB files created in Xcode&rsquo;s Interface Builder, but I have been trying to avoid this. I am striving for a more web-app like design and development workflow.</p>
+
+<p>I have been using <a href="https://github.com/rubymotion/teacup">teacup</a>, which takes a declarative approach to styling and uses a CSS-like DSL. Although I liked teacup, I had been anxiously awaiting the arrival of <a href="http://www.pixate.com/">Pixate</a> because of its support for CSS-based styling. Pixate became generally available this month, and I purchased a license. The license is $199, and although expensive, a small price compared to time saved if it works. Since I already do a lot of CSS work on the web side it seems like a nice way to leverage my CSS skills and experience. The Pixate team along with the RubyMotion team created a <a href="https://github.com/Pixate/RubyMotion-Pixate">RubyMotion-Pixate gem</a> that makes it easy to get Pixate working with RubyMotion.</p>
+
+<p>After 2 days of coding I have my basic controllers in place as well as several TableViewControllers. I have used Pixate to style many of the elements. With Pixate you can style with four types of selectors:</p>
+
+<ul>
+<li>element type selector &ndash; Select a control by element name</li>
+<li>universal selector &ndash; Select any control</li>
+<li>class selector &ndash; Select a control by class name</li>
+<li>id selector &ndash; Select a control by ID</li>
+</ul>
+
+
+<p>It also supports attribute selectors and pseudo classes. See the <a href="http://cdn.pixate.com/docs/engine/ios/1.0/Pixate%20Engine%20for%20iOS%20Styling%20Reference.html">complete list</a> for more information on selectors and styling.</p>
+
+<p>One really nice feature is the ability to set up Pixate to dynamically change your app in the simulator when you update the CSS. This is an awesome feature. To set it up add these two  <em>PXStylesheet</em> lines to your app_delegate.rb file near the end of the <em>application</em> method:</p>
+
+<pre><code> def application(application, didFinishLaunchingWithOptions:launchOptions)
+    ...
+    PXStylesheet.styleSheetFromFilePath('path-to/default.css', withOrigin:0)
+    PXStylesheet.currentApplicationStylesheet.monitorChanges = true  
+    true
+ end
+</code></pre>
+
+<p>I was only able to get it to work by providing the absolute path to the css file, so add your absolute path in place of <em>path-to</em> in the above method call. I will post if I figure out how to do a relative path, I hate putting in absolute paths.</p>
+
+<p><strong>Warning</strong>: I found that Pixate 1.0.2 does not work properly on the device if these two statements are left in the app delegate when compiling for the device. If your styles are not being picked up on the device this may be the reason. To get around this during development I put in a test for simulator using the <em>Device.simulator?</em> method in <a href="https://github.com/rubymotion/BubbleWrap">Bubblewrap</a>,</p>
+
+<pre><code> def setup_pixate_monitor 
+   PXStylesheet.styleSheetFromFilePath('path-to/default.css', withOrigin:0)
+   PXStylesheet.currentApplicationStylesheet.monitorChanges = true
+ end
+</code></pre>
+
+<p>Then include this conditional call:</p>
+
+<pre><code> setup_pixate_monitor if Device.simulator?
+</code></pre>
+
+<p>So far Pixate has mostly worked as expected, but there was one odd issue. I had expected that I could create zero-sized frames and allow CSS to style them to the correct size. For example creating a new label object might look like this.</p>
+
+<pre><code> @name_label = UILabel.alloc.initWithFrame(CGRectZero)
+ @name_label.styleId = 'name_label'
+</code></pre>
+
+<p>CGRectZero, a CGRect constant, will set the frame to size [0,0][0,0]. Then the CSS style definition below should set the frame size correctly.</p>
+
+<pre><code> #name_label { 
+   position:fixed;
+   top              :20px;
+   left             :5px;
+   width            :300px;
+   height           :30px;  
+   font-size        :16px;
+   font-align       :center;  
+ } 
+</code></pre>
+
+<p>I would expect the frame to be set to [5,20][300, 30] when the application is run. Instead the frame remains set to [0,0][0,0], so the text in the label is not displayed in the interface. This [0,0][0,0] frame size is confirmed with REPL using the tree command that comes with the <a href="https://github.com/rubymotion/sugarcube">sugarcube gem</a>.</p>
+
+<p>When I set the frame to a non-zero size when creating the UI object, then the CSS style is picked up and the frame size is set correctly by Pixate. Very odd, I am assuming this to be a bug, but maybe there was a reason to leave zero-sized frames unaltered by CSS. Typically CGRectZero frames are used to hide UI elements until they are ready to be used, or until the dimensions are known based on content.  If a CSS selector matched zero-sized frames I suppose this could lead to some unexpected behavior for iOS developers accustom to zero-sized frames not being displayed until the specifically resize them in code.</p>
+
+<p>In the end I created a new global constant</p>
+
+<pre><code> CSSRect = [0, 0], [1, 0] 
+</code></pre>
+
+<p>and this allows the CSS to do its job. So</p>
+
+<pre><code> @name_label = UILabel.alloc.initWithFrame(CSSRect)
+ @name_label.styleId = 'name_label'
+</code></pre>
+
+<p>allows me to create frames that are then altered to the correct size via CSS. I also found that using CGRectInfinite works as well. Basically it sets a huge rectangle but the CSS resizes it as expected.</p>
+
+<p>The  <a href="https://github.com/Pixate/RubyMotion-Pixate">RubyMotion-Pixate gem</a> also adds REPL support for changing the style via REPL. This is handy, but I find the dynamic updating via the CSS file to be easier to use.</p>
+
+<p>The Pixate Engine consists of two core technologies: a 2D graphics engine and a CSS styling engine. So far my focus has been using the CSS styling engine.  By using a styling rendering engine, design execution can be pushed to run-time. One of the benefits of this approach is the ability to dynamically modify the look of an app, which can be useful in user testing, including A/B testing. For this, Pixate allows CSS to be loaded via a URL, much like a web browser. I am sure there will be performance implications of this dynamic rendering approach, so this will also have to be explored as a cost versus the benefit of dynamic styling.</p>
+
+<p>I really liked Colin Gray&rsquo;s ideas around teacup, and the rubyesque way it integrated with rubymotion.</p>
+
+<pre><code> @search = subview(UITextField, :search)
+</code></pre>
+
+<p>It would be interesting if this syntax could be used with Pixate versus the less elegant:</p>
+
+<pre><code> @search = UITextField.alloc.initWithFrame(CSSRect)
+ @search.styleId = 'search'
+</code></pre>
+
+<p>I have only just begun to use Pixate, there may be possibilities for making the calls a bit more elegant without writing too many helpers.</p>
+
+<p>I will add more posts as I learn more.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/21/the-three-cs/">The Three C&#8217;s</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T10:26:00-08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I really enjoyed <a href="http://www.networkworld.com/community/blog/tony-fadell-unique-nature-apples-design-process">this interview</a> with Tony Fadell on the unique nature of Apple&rsquo;s design process. The discussion about project abandonment percentages is incredibly important, and often overlooked in large companies. In many cases abandonment is a financial decision related to either real or opportunity costs associated with launching a product. People who have never worked for a large consumer products company likely have no idea how many products are cancelled just before launch because of the incredible cost in launching a product into the market.</p>
+
+<p>Tony makes an amazing point about the toll such high cancellation rates have on employees at a company, and on the quality of the products the company ships. The inverse is that high commitment to ship products that pass key milestones leads to better employee commitment.</p>
+
+<blockquote><p>&ldquo;When you’re in a culture that has a point of view, and drives to launch everything it does, you know you’re on the hook and you better bring your best game every time,&rdquo; Fadell explained.</p></blockquote>
+
+<p>Tony contrasts his experience at Apple with his experience at Philips:</p>
+
+<blockquote><p>Fadell explained that a key and yet often overlooked difference between Apple and other tech companies is that Apple ships 99% of the products that pass certain internal milestones. By way of contrast, during Fadell&rsquo;s tenure at Philips &ndash; where he was charged with overseeing the company&rsquo;s audio strategy &ndash; the iPod guru noted that Philips would axe 9 projects out of 10, even if a particular product was about to ship.</p></blockquote>
+
+<p>I don&rsquo;t think large companies have a metric for tracking the number and impact of cancelled projects. In my experience executive teams wanted to forget cancellations as quickly as possible and move on. They considered the cost to be in the past, and by having cancelled the project they had cut any ongoing cost.  But as Tony points out, there are ongoing costs, just not costs that have their own column on a balance sheet or scorecard. In my experience it was clear &hellip; the impact of cancellations were cumulative and devastating.</p>
+
+<p>The importance of commitment is actually one of the 3 c&rsquo;s I use when evaluating a project: <em>Clarity</em>, <em>Competency</em>, and <em>Commitment</em>. Over the years I have found these to be the key pieces of early stage information that will best predict the success of a project. Tony&rsquo;s pont about commitment is that it isn&rsquo;t only about commitment to a project, it is about the culture of commitment in an organization. I like this point, and I imagine there is a corollary for organizational clarity and competency. Below are a few notes related to project level evaluation of the 3 c&rsquo;s</p>
+
+<p><strong>Clarity</strong></p>
+
+<p>Clarity is an evaluation of how clear the goals are for the product, and how well understood the product is.</p>
+
+<p>For example:</p>
+
+<ul>
+<li>A project to enhance a successful existing product with incremental features likely has very high clarity.</li>
+<li>A project to move a successful product through a major transition will likely have medium clarity, but in some cases will have low clarity if the product manager and the team have different ideas about product direction.</li>
+<li>A project to improve an unsuccessful product is usually medium to low clarity. If you are lucky you understand what went wrong, but lack of clarity is often the reason it failed in the first place.</li>
+<li>A new product is usually low clarity, but if you have a great product manager it may be medium clarity to high clarity.</li>
+<li>A new product in a new market is often low clarity and may even be disguised as medium to high clarity because the teams reviewing the product have little experience in the market. By this I mean the product brief will use language that sounds high clarity, but market experts would easily identify the brief as too vague. This is where competency and clarity overlap early in a project.</li>
+</ul>
+
+
+<p>My first task was always to make sure there was a plan in place to address any clarity issues immediately. From my experience without such a plan and milestones for high clarity, teams often started to build the wrong product, or multiple wrong products. If the team cannot agree on what the product really is, it will certainly fail. New products could achieve medium to high clarity. The key step is to identify clarity as an issue and put a plan in place to provide good clarity early in the project. I have seen many product requirements documents that were very detailed, but no two team members would describe the same product when asked what the product was. Providing detail  is not the same as providing clarity.</p>
+
+<p><strong>Competency</strong></p>
+
+<p>One of the other key issues in the success of a project is competency. In a large company design, and engineering <em>resources</em> tend to be plugged in to a project primarily based on their availability. There is an idea of a performance band with some people regularly performing better than others, but rarely a deep understanding of the individual competencies of  team members. Having directed both engineering and design teams, and worked closely with product management for many years I have come to see that individual competencies play a key role in project success; a role that is rarely reflected in evaluations or performance rankings. Evaluations rarely measure competency. For an interesting take on the fallacy of skills in success see <a href="http://www.amazon.com/The-Success-Equation-Untangling-Investing/dp/1422184234">The Success Equation: Untangling Skill and Luck in Business, Sports, and Investing</a></p>
+
+<p>Here I look for a match in competency for the product needs, but also for how well the team works in the particular product context. How much experience does this team have defining and launching a new product? Has the lead engineer designed anything at this scale before? Many projects fail because a key competency is lacking on the product team.</p>
+
+<p><strong>Commitment</strong></p>
+
+<p>This is what Tony is referring to in his interview, how much commitment is there for this product? This refers to team commitment as well as executive commitment. In my experience, commitment issues fall into a few categories.</p>
+
+<p><em>Market Issues</em></p>
+
+<p>It is sometimes the case, especially in technology, where the market is moving so fast projects become obsolete before they are completed. This leads to high cancellation rates. These cases are about risk management, and understanding that the market evolution rate is a key issue. For example having a 24 month product cycle in a rapid innovation market may be taking on a lot of risk. If you can&rsquo;t move faster, maybe find a market that better matches your organizational delivery capabilities.</p>
+
+<p><em>Structural Commitment Issues</em></p>
+
+<p>In some cases a company is trying to do too many things, and commitment is a structural issue. I suspect Tony&rsquo;s characterization of Philips false into the structural definition. In these cases it is important to force prioritization and work with executives to understand that doing fewer things better will actually result in shipping not only better products, but more products. It can seem counter-intuitive, but I think Tony&rsquo;s description above shows how this has been proven at Apple. Less SKU&rsquo;s more volume.</p>
+
+<p><em>Project Commitment Issues</em></p>
+
+<p>I often found that when project comitment was low, it was low in very specific ways. Here are a few examples:</p>
+
+<ul>
+<li><p>Low hanging fruit &ndash; Many projects came across my desk as the so-called low-hanging fruit project. These are projects that are so low cost and high value that they seem obviously high-commitment on the surface; they often originate in an executive review meeting. The main issue here is that no one questions them, so their clarity is usually quite low, and their commitment falsely high. Usually as clarity rises even a small amount, commitment collapses because the actual project could never deliver on the low hanging fruit mirage that came out of a thirty minute executive discussion.</p></li>
+<li><p>The magic mirror &ndash; Another class of projects with commitment issues were the magic mirror projects. These are projects where whomever is looking at the projects sees what they want to see, and ignores everything else. These types of projects are the most dangerous because they are usually multi-headed beasts that are trying to simultaneously serve many masters.  Their commitment is based in company politics and thus commitment can shift or disintegrate very quickly.</p></li>
+</ul>
+
+
+<p>Given my team&rsquo;s success was based solely on shipping successful products my most important task was usually at the early phase of projects, and mostly making sure that projects scored high on their combined CCC levels.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/">Parsing a Simple Markdown Style List in Ragel</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-19T13:04:00-08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In an earlier post <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">Simple state machine example</a>, I provided an example of using the Ruby <em>state_machine</em> gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate &ldquo;list&rdquo; object.</p>
+
+<p>I found the <a href="http://www.complang.org/ragel/ragel-guide-6.7.pdf">Ragel documentation</a> to be excellent. The only issue is a lack of practical examples. Given the dearth of examples available, I though I would add my +1 example to help the cause. If you are serious about using Ragel I recommend reading the documentation start to finish quickly, then a second go through taking notes on key items like default machines, syntax, priorities, actions, etc before building a parser. Having a strong base will help tremendously when using examples.</p>
+
+<p>There are three files involved in this solution to the list problem:</p>
+
+<ul>
+<li>lists.txt: a data file that contains two lists for the parser to parse.</li>
+<li>mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.</li>
+<li>mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).</li>
+</ul>
+
+
+<p>I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).</p>
+
+<div><script src='https://gist.github.com/4573704.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
+
+<p>In this example I am using Ragel, which uses a set of state machine definitions to generate a state machine. In this case I am using Ragel to generate a parser to parse lists similar to the ones shown in lists.txt. In Ragel you specify a Ruby class that uses a series of preprocessors (%%) that are processed by the Ragel library.  Ragel will replace these blocks and preprocessor commands with ruby parser code and a parse table; resulting in a state machine for parsing the file.  The documentation will describe all of the required preprocessor commands for Ruby. Ragel supports many languages and the preprocessor commands differ slightly for different languages. Check the documentation for meaning.</p>
+
+<p>The bulk of the instructions for creating a parser are inside the <em>%%{ }%%</em> block. The block is made up of machine definitions and actions. Ragel state machines recognize byte sequences as regular expression machines do, but can also execute code at arbitrary points in the recognition of a regular language (actions).  Here regular expressions are used to define a regular grammar, see type-3 in the <a href="http://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a>.</p>
+
+<p>Thus when you see the statement:</p>
+
+<pre><code>task_title =  [^\n]+ [\n]
+</code></pre>
+
+<p>this is defining a machine (<em>[^\n]+ [\n]</em>) and assigning it a name <em>task_title</em>. The Ragel documentation refers to the right side of the expression as a <em>regular expression machine</em> or <em>machine</em>, this is roughy equivalent to production rules in tradition grammar design. Using named expressions this way allows grammar rules to be built up recursively, much like non-terminals are used in traditional grammar definitions.</p>
+
+<p>Thus an expression like:</p>
+
+<p>   task = (task_header &gt;MarkTaskStart) . task_item*;</p>
+
+<p>uses the rules <em>task_header</em><strong><strong> and <em>task_item</em></strong></strong> in the definition of the expression. Ragel expressions look unusual at first because they are both defining a grammar and embedding behavior (code). For example the above expression includes a reference to of a block of code <strong><em>MarkTaskStart</em></strong> that should be executed when the <strong><em>task_header</em></strong> machine is matched. These code blocks are called <em>actions</em> in Ragel. It can be useful to use a convention like all lowercase for rules, and CamelCase for actions to make the expressions easier to read.</p>
+
+<p>Ragel defines a syntax for specifying when an action is to be called relative to state transitions between machines. For example before a transition, after a transition, or at the end of file, etc. The documentation is very good, though it is terse.</p>
+
+<table border="1">
+<col style="padding-right: 30px;" />
+<col style="padding-right: 30px;" />
+<col />
+  <tr>
+    <th>Name</th>
+    <th>Syntax</th>
+  </tr>
+  <tr>
+    <td style="width: 200px;">entering action</td>
+    <td style="width: 200px;">expr &gt;action</td>
+  </tr>
+  <tr>
+    <td style="width: 200px;">finishing action</td>
+    <td style="width: 200px;">expr @ action </td>
+  </tr>
+    <tr>
+    <td style="width: 200px;">all transitions action</td>
+    <td style="width: 200px;">expr $ action</td>
+  </tr>
+  <tr>
+    <td style="width: 200px;">leaving actions</td>
+    <td style="width: 200px;">expr % action</td>
+  </tr>
+</table>
+
+
+<br />
+
+
+<p>Ragel also allows you to embed error handling behavior using a similar mechanism.</p>
+
+<p>Finally, one of the challenges of regular grammars is the requirement that they are <a href="http://en.wikipedia.org/wiki/Deterministic_finite_automaton">DFA&rsquo;s</a> and thus need to be deterministic. Ragel provides a mechanism for including priorities in the case where multiple next states are possible; you can define which state will be taken. For more see the Ragel documentation on priorities and guarded expressions. The reason I suggested reading through the documentation prior to reading example grammars is that Ragel expressions can begin to look very confusing if you are not versed in the difference between the syntax associated with machines, actions, priorities and guards, since they all appear intermingled in a Ragel expression.</p>
+
+<p>To create a parser for the <em>mdlist_parser.rl</em> file shown above use this command:</p>
+
+<pre><code> ragel -R mdlist_parser.rl
+</code></pre>
+
+<p>This will create a parser written in ruby called <em>mdlist_parser.rb</em> that can be included into your Ruby program.</p>
+
+<p>Now we need a simple Ruby program to use the parser, I am including this because I didn&rsquo;t see a lot of examples for how to do this so wanted to add one here.</p>
+
+<p>The simple ruby class defined in <em>mdlist.rb</em> will open the data file and read it in to a string, and pass the string to the parser. The parser will return a Ruby object that has a <em>lists</em> method that returns the list in a data structure. The above class will then output the list formatted to show the hierarchy. The list could easily be used to create a list object that includes the state machine from my earlier <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">state machine</a> post.</p>
+
+<p>I will assume you have Ragel, installed, if not get it <a href="http://www.complang.org/ragel/">here</a>. To see the parser in action you need all three files (mdlist_parser.rl, mdlist.rb, lists.txt) in the same directory and then take these steps:</p>
+
+<ol>
+<li><strong>run the ragel parser:</strong>   ragel -R mdlist_parser.rl</li>
+<li><p><strong>run irb</strong> and enter the following into irb:</p>
+
+<ul>
+<li>load &ldquo;mdlist.rb&rdquo;</li>
+<li>list = MDList.new(&ldquo;lists.txt&rdquo;)</li>
+</ul>
+</li>
+</ol>
+
+
+<p>You should see the output of the puts statements displaying the lists data structure with information about the hierarchy of the list. It would be easy to replace the puts with a call to a method like add_item() from my state_machine example referenced earlier.</p>
+
+<p>That&rsquo;s it. Defining grammars and using parser generators can seem challenging at first, but once you get through a few examples and build a simple grammer it will become very simple, since the rules are really very simple. The language of grammar definition can be challenging at first,  but just try to understand the concepts and don&rsquo;t get too bogged down in the terminology. Ragel is a very powerful tool for any developer to have in their tool belt, especially if you are interested in building high performance APIs, it combines a powerful parser generator with an expressive syntax for generating powerful state machines. To fully understand this and other examples check out the Ragel documentation and tutorials listed below.</p>
+
+<ul>
+<li><a href="http://www.complang.org/ragel/">Ragel Home</a></li>
+<li><a href="http://thingsaaronmade.com/blog/a-simple-intro-to-writing-a-lexer-with-ragel.html">A simple intro to writing a lexer with Ragel.</a></li>
+<li><a href="http://www.devchix.com/2008/01/13/a-hello-world-for-ruby-on-ragel-60/">A Hello World for Ruby on Ragel 6.0</a></li>
+<li><a href="http://www.zedshaw.com/essays/ragel_state_charts.html">Ragel State Charts</a></li>
+<li><a href="http://tech.blog.cueup.com/regular-expressions-will-stab-you-in-the-back">Regular Expressions Will Stab You in the Back</a></li>
+</ul>
+
+
+<p>Also see this great <a href="http://www.confreaks.com/videos/491-rubyconf2010-consuming-gherkin-one-byte-at-a-time"> Consuming Gherkin: One Byte at a Time video</a> intro of Mike Sassak &amp; Greg Hnatiuk discussing their experience using Ragel for the Cucumber parser.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/18/pattern-problems-vs-logic-problems/">Pattern Problems vs Logic Problems</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-18T11:48:00-08:00" pubdate data-updated="true">Jan 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence?</p></blockquote>
+
+<p>I ran across this interesting problem in <a href="http://www.amazon.com/The-Joy-Guided-Infinity-ebook/dp/B006R8PL7G/ref=tmm_kin_title_0">&ldquo;The Joy of x: A Guided Tour of Math, from One to Infinity,&rdquo;</a> a very accessible and interesting tour of mathematics.</p>
+
+<p>It turns out most people quickly answer “one hour.”  As Strogatz opines,</p>
+
+<blockquote><p>The words themselves nudge you that way. The drumbeat in the first sentence— three men, three fences, three hours— catches your attention by establishing a rhythm, so when the next sentence repeats the pattern with one man, one fence, ____ hours, it’s hard to resist filling in the blank with “one.” The parallel construction suggests an answer that’s linguistically right but mathematically wrong.</p></blockquote>
+
+<p>The correct answer is three hours. It is obvious if you imagine each person painting their own fence for three hours. Remove two people and two fences and you are left with one person, still painting their one fence for three hours, as before.</p>
+
+<p>What struck me about this problem is that it is an incredibly simple, concrete, and visual example of how our brains try to match patterns, but more importantly the side effect that occurs when a pattern is matched. Neuroscience studies suggest that dopamine (a neurotransmitter associated with pleasure) is released when we solve a problem, thus giving us a biological explanation for that wonderful feeling we get when we have solved a problem.</p>
+
+<p>This made me wonder, does our brain perhaps release dopamine when we solve the faux pattern matching problem and <em>tricks</em> us into thinking we solved the actual logic problem? Thus we quickly blurt out the wrong answer.  After all, we have spent a lifetime feeling the dopamine rush when we believe we have the answer to a problem. Strogatz&rsquo;s observation about this particular word problem having two solutions (a pattern solution, and a logic solution) is very interesting, and is likely very related to a number of <a href="http://en.wikipedia.org/wiki/List_of_biases_in_judgment_and_decision_making">Cognitive Biases</a>. It is perhaps valuable to think about this explicitly when considering information:</p>
+
+<ul>
+<li>What is the pattern problem being suggested?</li>
+<li>What is the logic problem being suggested?</li>
+</ul>
+
+
+<p>And make sure you have the answer the right question when you feel that first burst of dopamine show up.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/17/creativity-booster-get-a-dog/">Creativity Booster: Get a Dog.</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T12:47:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It probably sounds specious, but I have found having a dog around has made me both more productive and more creative. The evidence for this claim is the number of daily messages I post to our team message board that start with the phrase &ldquo;While I was out walking the dog I had this idea&hellip;.&rdquo;</p>
+
+<p>Before getting a dog I would get sucked into a problem and become obsessed with solving it, the kind of linear obsession that leaves no room for creative leaps. What is needed is to allow the problem to marinate in my subconscious, to facilitate the unexpected synaptic connections that occur when you finally let your mind relax. The problem is, obsession with solving the problem makes this type of relaxed mind difficult and leaps of creativity less frequent. I am sure with practice one could recognize the symptoms and use some type of mediation exercise, but for me the answer is walking the dog. The pattern repeats regularly &hellip; I hit a nasty bug or design conundrum, get stuck, and then take the dog out for 15-20 minutes, and the answer suddenly presents itself.</p>
+
+<p>For me, dog walking seems to engage the kind of subconscious pattern matching that provides the keys to unlock many problems. <a href="http://en.wikipedia.org/wiki/Graham_Wallas">Wallas</a> would have called this the <a href="http://en.wikipedia.org/wiki/Creativity#Incubation">incubation</a> phase of creativity. I think of it as a cousin to Mihály Csíkszentmihályi&rsquo;s concept of the <a href="http://en.wikipedia.org/wiki/Flow_(psychology">flow</a>) mental state. This seems to be validated by Nardi&rsquo;s <a href="http://www.youtube.com/watch?v=MGfhQTbcqmA">work</a> on the neuroscience of personality. Specifically, the brain imaging results where he describes the delta state in terms of Csíkszentmihályi&rsquo;s flow, but adds that &ldquo;also on occasion when we are copacetic, open to whatever comes next.&rdquo; This is a perfect description of my mental state on a walk with the dog. I feel close to that feeling of flow, but not quite the same &mdash; an approximation. But it seems to do the trick. As a side note, Nardi’s brain imaging results of people watching TV shows up as black; similar to a deep non-dreaming sleep. So TV is not so good for creativity &hellip; just saying.</p>
+
+<p>I don&rsquo;t find that walking alone or with another person works as well. I wonder if it is the non-conversational interactions with the dog, just enough interaction to get me to stop focussing on the issue, but not so much that my mind is focussed on keeping up a conversation with someone else. Whatever the reason, it works; almost always presenting a promising new direction, if not an outright answer.</p>
+
+<p>This is my muse, Archer, the retired racing greyhound.</p>
+
+<p><img src="http://media.tumblr.com/cfdcc46c180984c7ab7e3d43cb14a116/tumblr_inline_mgs53cHq981qz562v.jpg" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/17/rubymotion-ios-apps/">RubyMotion iOS Apps</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T11:28:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I wanted to make a quick note that I have been using <a href="http://www.rubymotion.com/">RubyMotion</a> the past few months. I don&rsquo;t mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI. Call me old fashioned, but I find I can work much faster when I can operate on the code directly, versus through an intermediary UI.</p>
+
+<p>The second reason for switching to RubyMotion is the libraries that are being created, they make iOS development feel so comfortable to a Ruby developer. Three key examples are <a href="https://github.com/rubymotion/BubbleWrap">BubbleWrap</a>, <a href="https://github.com/rubymotion/sugarcube">SugarcCube</a> and <a href="https://github.com/rubymotion/teacup">Teacup</a>.</p>
+
+<p>The third reason is testing and debugging, I like that RubyMotion comes with an RSpec clone, this means I have the same testing framework on both app and server. I also love the interactive console, there is nothing like tweaking your app live from a console (REPL). I find I can debug a lot of the code from the console, but RubyMotion also supports GDB for the more serious debugging needs. I hadn&rsquo;t used GDB in a few years but it came back to me pretty quickly once I started using it.</p>
+
+<p>I also like the DSL approach of Teacup in styling RubyMotion iOS apps. I like that I can create style files much like I do with CSS and have my app UI built with the style information, makes changing style feel more natural to me as a web developer.</p>
+
+<p>I have no doubt that there are many Objective-C developers who are extremely efficient in building apps, but it is always a challenge to become expert on multiple platforms. To become an expert iOS developer you need to become expert in the Cocoa libraries; the nice thing about RubyMotion is it allows you to learn the libraries within a familiar syntax if you are a ruby developer. It also allows you to create Ruby wrappers and generators that make developing for Cocoa feel more natural to a Ruby developer. Finally, since RubyMotion creates compiled native iOS apps, their is very little performance hit.</p>
+
+<p>I have a backlog of notes that I will post when I get a chance; including my experiences with development,  debugging, meta-programming, deploying via TestFlight, etc. I just wanted to give RubyMotion some praise from this Ruby developer, it has made developing iOS apps very similar to deploying ruby apps.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="archives">Blog Archives</a>
@@ -345,6 +866,10 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying out Pixate - CSS for iOS app Development</a>
       </li>
     
   </ul>

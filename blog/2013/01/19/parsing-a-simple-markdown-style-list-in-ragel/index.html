@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Parsing a simple markdown style list in Ragel - Coding and design notes</title>
+  <meta name="author" content="Patrick Goddi">
+
+  
+  <meta name="description" content="In an earlier post Simple state machine example, I provided an example of using the Ruby state_machine gem to create a state machine for handling a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fooqri.github.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Coding and design notes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fooqri.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Parsing a Simple Markdown Style List in Ragel</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-19T13:04:00-08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In an earlier post <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">Simple state machine example</a>, I provided an example of using the Ruby <em>state_machine</em> gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate &ldquo;list&rdquo; object.</p>
+
+<p>I found the <a href="http://www.complang.org/ragel/ragel-guide-6.7.pdf">Ragel documentation</a> to be excellent. The only issue is a lack of practical examples. Given the dearth of examples available, I though I would add my +1 example to help the cause. If you are serious about using Ragel I recommend reading the documentation start to finish quickly, then a second go through taking notes on key items like default machines, syntax, priorities, actions, etc before building a parser. Having a strong base will help tremendously when using examples.</p>
+
+<p>There are three files involved in this solution to the list problem:</p>
+
+<ul>
+<li>lists.txt: a data file that contains two lists for the parser to parse.</li>
+<li>mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.</li>
+<li>mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).</li>
+</ul>
+
+
+<p>I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).</p>
+
+<div><script src='https://gist.github.com/4573704.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
+
+<p>In this example I am using Ragel, which uses a set of state machine definitions to generate a state machine. In this case I am using Ragel to generate a parser to parse lists similar to the ones shown in lists.txt. In Ragel you specify a Ruby class that uses a series of preprocessors (%%) that are processed by the Ragel library.  Ragel will replace these blocks and preprocessor commands with ruby parser code and a parse table; resulting in a state machine for parsing the file.  The documentation will describe all of the required preprocessor commands for Ruby. Ragel supports many languages and the preprocessor commands differ slightly for different languages. Check the documentation for meaning.</p>
+
+<p>The bulk of the instructions for creating a parser are inside the <em>%%{ }%%</em> block. The block is made up of machine definitions and actions. Ragel state machines recognize byte sequences as regular expression machines do, but can also execute code at arbitrary points in the recognition of a regular language (actions).  Here regular expressions are used to define a regular grammar, see type-3 in the <a href="http://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a>.</p>
+
+<p>Thus when you see the statement:</p>
+
+<pre><code>task_title =  [^\n]+ [\n]
+</code></pre>
+
+<p>this is defining a machine (<em>[^\n]+ [\n]</em>) and assigning it a name <em>task_title</em>. The Ragel documentation refers to the right side of the expression as a <em>regular expression machine</em> or <em>machine</em>, this is roughy equivalent to production rules in tradition grammar design. Using named expressions this way allows grammar rules to be built up recursively, much like non-terminals are used in traditional grammar definitions.</p>
+
+<p>Thus an expression like:</p>
+
+<p>   task = (task_header &gt;MarkTaskStart) . task_item*;</p>
+
+<p>uses the rules <em>task_header</em><strong><strong> and <em>task_item</em></strong></strong> in the definition of the expression. Ragel expressions look unusual at first because they are both defining a grammar and embedding behavior (code). For example the above expression includes a reference to of a block of code <strong><em>MarkTaskStart</em></strong> that should be executed when the <strong><em>task_header</em></strong> machine is matched. These code blocks are called <em>actions</em> in Ragel. It can be useful to use a convention like all lowercase for rules, and CamelCase for actions to make the expressions easier to read.</p>
+
+<p>Ragel defines a syntax for specifying when an action is to be called relative to state transitions between machines. For example before a transition, after a transition, or at the end of file, etc. The documentation is very good, though it is terse.</p>
+
+<table border="1">
+<col style="padding-right: 30px;" />
+<col style="padding-right: 30px;" />
+<col />
+  <tr>
+    <th>Name</th>
+    <th>Syntax</th>
+  </tr>
+  <tr>
+    <td style="width: 200px;">entering action</td>
+    <td style="width: 200px;">expr &gt;action</td>
+  </tr>
+  <tr>
+    <td style="width: 200px;">finishing action</td>
+    <td style="width: 200px;">expr @ action </td>
+  </tr>
+    <tr>
+    <td style="width: 200px;">all transitions action</td>
+    <td style="width: 200px;">expr $ action</td>
+  </tr>
+  <tr>
+    <td style="width: 200px;">leaving actions</td>
+    <td style="width: 200px;">expr % action</td>
+  </tr>
+</table>
+
+
+<br />
+
+
+<p>Ragel also allows you to embed error handling behavior using a similar mechanism.</p>
+
+<p>Finally, one of the challenges of regular grammars is the requirement that they are <a href="http://en.wikipedia.org/wiki/Deterministic_finite_automaton">DFA&rsquo;s</a> and thus need to be deterministic. Ragel provides a mechanism for including priorities in the case where multiple next states are possible; you can define which state will be taken. For more see the Ragel documentation on priorities and guarded expressions. The reason I suggested reading through the documentation prior to reading example grammars is that Ragel expressions can begin to look very confusing if you are not versed in the difference between the syntax associated with machines, actions, priorities and guards, since they all appear intermingled in a Ragel expression.</p>
+
+<p>To create a parser for the <em>mdlist_parser.rl</em> file shown above use this command:</p>
+
+<pre><code> ragel -R mdlist_parser.rl
+</code></pre>
+
+<p>This will create a parser written in ruby called <em>mdlist_parser.rb</em> that can be included into your Ruby program.</p>
+
+<p>Now we need a simple Ruby program to use the parser, I am including this because I didn&rsquo;t see a lot of examples for how to do this so wanted to add one here.</p>
+
+<p>The simple ruby class defined in <em>mdlist.rb</em> will open the data file and read it in to a string, and pass the string to the parser. The parser will return a Ruby object that has a <em>lists</em> method that returns the list in a data structure. The above class will then output the list formatted to show the hierarchy. The list could easily be used to create a list object that includes the state machine from my earlier <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">state machine</a> post.</p>
+
+<p>I will assume you have Ragel, installed, if not get it <a href="http://www.complang.org/ragel/">here</a>. To see the parser in action you need all three files (mdlist_parser.rl, mdlist.rb, lists.txt) in the same directory and then take these steps:</p>
+
+<ol>
+<li><strong>run the ragel parser:</strong>   ragel -R mdlist_parser.rl</li>
+<li><p><strong>run irb</strong> and enter the following into irb:</p>
+
+<ul>
+<li>load &ldquo;mdlist.rb&rdquo;</li>
+<li>list = MDList.new(&ldquo;lists.txt&rdquo;)</li>
+</ul>
+</li>
+</ol>
+
+
+<p>You should see the output of the puts statements displaying the lists data structure with information about the hierarchy of the list. It would be easy to replace the puts with a call to a method like add_item() from my state_machine example referenced earlier.</p>
+
+<p>That&rsquo;s it. Defining grammars and using parser generators can seem challenging at first, but once you get through a few examples and build a simple grammer it will become very simple, since the rules are really very simple. The language of grammar definition can be challenging at first,  but just try to understand the concepts and don&rsquo;t get too bogged down in the terminology. Ragel is a very powerful tool for any developer to have in their tool belt, especially if you are interested in building high performance APIs, it combines a powerful parser generator with an expressive syntax for generating powerful state machines. To fully understand this and other examples check out the Ragel documentation and tutorials listed below.</p>
+
+<ul>
+<li><a href="http://www.complang.org/ragel/">Ragel Home</a></li>
+<li><a href="http://thingsaaronmade.com/blog/a-simple-intro-to-writing-a-lexer-with-ragel.html">A simple intro to writing a lexer with Ragel.</a></li>
+<li><a href="http://www.devchix.com/2008/01/13/a-hello-world-for-ruby-on-ragel-60/">A Hello World for Ruby on Ragel 6.0</a></li>
+<li><a href="http://www.zedshaw.com/essays/ragel_state_charts.html">Ragel State Charts</a></li>
+<li><a href="http://tech.blog.cueup.com/regular-expressions-will-stab-you-in-the-back">Regular Expressions Will Stab You in the Back</a></li>
+</ul>
+
+
+<p>Also see this great <a href="http://www.confreaks.com/videos/491-rubyconf2010-consuming-gherkin-one-byte-at-a-time"> Consuming Gherkin: One Byte at a Time video</a> intro of Mike Sassak &amp; Greg Hnatiuk discussing their experience using Ragel for the Cucumber parser.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-19T13:04:00-08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/18/pattern-problems-vs-logic-problems/" title="Previous Post: Pattern problems vs logic problems">&laquo; Pattern problems vs logic problems</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/21/the-three-cs/" title="Next Post: The three c's">The three c's &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://fooqri.github.io" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://fooqri.github.io/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      
+      <a href="http://fooqri.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying out Pixate - CSS for iOS app Development</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Patrick Goddi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

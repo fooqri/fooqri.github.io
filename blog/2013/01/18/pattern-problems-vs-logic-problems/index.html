@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Getting RKLogConfigureByName working in RubyMotion - Coding and design notes</title>
+  <title>Pattern problems vs logic problems - Coding and design notes</title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems &hellip;">
+  <meta name="description" content="Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence? I ran across this interesting problem in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ RestKit. It seems &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -68,7 +66,7 @@ RestKit. It seems &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Getting RKLogConfigureByName Working in RubyMotion</h1>
+      <h1 class="entry-title">Pattern Problems vs Logic Problems</h1>
     
     
       <p class="meta">
@@ -84,32 +82,34 @@ RestKit. It seems &hellip;">
   
 
 
-<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
+<time datetime="2013-01-18T11:48:00-08:00" pubdate data-updated="true">Jan 18<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems that the #define statements in the
-<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
-picked up. I am using the pod and loading with RubyMotion pod support,
-so Iåm not sure what the issue is. I will need to investigate further
-but this quick workaround works, just call the lower-level method
-mapped via the #define. For example instead of RKLogConfigureByName
-use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
-use instead of the RKLogLevel constants. I also included an example of
-how they are used, in this case I have put the setup in a method, and
-it gets called from the the standard didFinishLaunchingWithOption
-application block.</p>
+<div class="entry-content"><blockquote><p>Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence?</p></blockquote>
 
-<div><script src='https://gist.github.com/4733618.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
+<p>I ran across this interesting problem in <a href="http://www.amazon.com/The-Joy-Guided-Infinity-ebook/dp/B006R8PL7G/ref=tmm_kin_title_0">&ldquo;The Joy of x: A Guided Tour of Math, from One to Infinity,&rdquo;</a> a very accessible and interesting tour of mathematics.</p>
+
+<p>It turns out most people quickly answer “one hour.”  As Strogatz opines,</p>
+
+<blockquote><p>The words themselves nudge you that way. The drumbeat in the first sentence— three men, three fences, three hours— catches your attention by establishing a rhythm, so when the next sentence repeats the pattern with one man, one fence, ____ hours, it’s hard to resist filling in the blank with “one.” The parallel construction suggests an answer that’s linguistically right but mathematically wrong.</p></blockquote>
+
+<p>The correct answer is three hours. It is obvious if you imagine each person painting their own fence for three hours. Remove two people and two fences and you are left with one person, still painting their one fence for three hours, as before.</p>
+
+<p>What struck me about this problem is that it is an incredibly simple, concrete, and visual example of how our brains try to match patterns, but more importantly the side effect that occurs when a pattern is matched. Neuroscience studies suggest that dopamine (a neurotransmitter associated with pleasure) is released when we solve a problem, thus giving us a biological explanation for that wonderful feeling we get when we have solved a problem.</p>
+
+<p>This made me wonder, does our brain perhaps release dopamine when we solve the faux pattern matching problem and <em>tricks</em> us into thinking we solved the actual logic problem? Thus we quickly blurt out the wrong answer.  After all, we have spent a lifetime feeling the dopamine rush when we believe we have the answer to a problem. Strogatz&rsquo;s observation about this particular word problem having two solutions (a pattern solution, and a logic solution) is very interesting, and is likely very related to a number of <a href="http://en.wikipedia.org/wiki/List_of_biases_in_judgment_and_decision_making">Cognitive Biases</a>. It is perhaps valuable to think about this explicitly when considering information:</p>
+
+<ul>
+<li>What is the pattern problem being suggested?</li>
+<li>What is the logic problem being suggested?</li>
+</ul>
 
 
-
+<p>And make sure you have the answer the right question when you feel that first burst of dopamine show up.</p>
 </div>
 
 
@@ -132,21 +132,15 @@ application block.</p>
   
 
 
-<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
+<time datetime="2013-01-18T11:48:00-08:00" pubdate data-updated="true">Jan 18<span>th</span>, 2013</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/rubymotion/'>RubyMotion</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems/" >Tweet</a>
   
   
   
@@ -155,10 +149,10 @@ application block.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/03/04/nvalt-and-emacs/" title="Previous Post: nvALT and Emacs">&laquo; nvALT and Emacs</a>
+        <a class="basic-alignment left" href="/blog/2013/01/17/creativity-booster-get-a-dog/" title="Previous Post: Creativity Booster: Get a dog.">&laquo; Creativity Booster: Get a dog.</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/" title="Next Post: CoreData.SQLDebug for RubyMotion">CoreData.SQLDebug for RubyMotion &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/" title="Next Post: Parsing a simple markdown style list in Ragel">Parsing a simple markdown style list in Ragel &raquo;</a>
       
     </p>
   </footer>
