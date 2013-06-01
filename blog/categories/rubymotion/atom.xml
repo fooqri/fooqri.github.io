@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: RubyMotion | Coding and design notes]]></title>
+  <link href="http://fooqri.github.io/blog/categories/rubymotion/atom.xml" rel="self"/>
+  <link href="http://fooqri.github.io/"/>
+  <updated>2013-06-01T11:01:13-07:00</updated>
+  <id>http://fooqri.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick Goddi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Getting RKLogConfigureByName working in RubyMotion]]></title>
+    <link href="http://fooqri.github.io/blog/2013/06/01/getting-rklogconfigurebyname-working-in-rubymotion/"/>
+    <updated>2013-06-01T10:21:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2013/06/01/getting-rklogconfigurebyname-working-in-rubymotion</id>
+    <content type="html"><![CDATA[<p>Just a quick note, I was getting an undefined constant error for
+RKLogConfigureByName, the standard way of setting up logging in
+RestKit. It seems that the #define statements in the
+<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
+picked up. I am using the pod and loading with RubyMotion pod support,
+so Iåm not sure what the issue is. I will need to investigate further
+but this quick workaround works, just call the lower-level method
+mapped via the #define. For example instead of RKLogConfigureByName
+use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
+use instead of the RKLogLevel constants. I also included an example of
+how they are used, in this case I have put the setup in a method, and
+it gets called from the the standard didFinishLaunchingWithOption
+application block.</p>
+
+<p><div><script src='https://gist.github.com/4733618.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+</feed>
