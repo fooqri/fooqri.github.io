@@ -4,7 +4,7 @@
   <title><![CDATA[Coding and design notes]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-01T16:57:49-07:00</updated>
+  <updated>2013-06-01T16:59:02-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -34,23 +34,6 @@ sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -
 </code></pre>
 
 <p>This will open the simulator in CoreData.SQLDebug mode, and log debug information to the terminal.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Refactoring: making master programmers]]></title>
-    <link href="http://fooqri.github.io/blog/2013/05/14/refactoring-making-master-programmers/"/>
-    <updated>2013-05-14T16:34:00-07:00</updated>
-    <id>http://fooqri.github.io/blog/2013/05/14/refactoring-making-master-programmers</id>
-    <content type="html"><![CDATA[<p>There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code refactoring.  One could even explain this in terms of top line vs bottom line descriptions. Features mean sales, codebase is an asset, and poor code quality is a liability that affects cost and thus profit. Sloppy, risky, or fragile code is even called &ldquo;technical debt&rdquo; in many circles. This tension between features and code quality has always been a tightrope walk for any successful software or Internet company. Starve features and you kill sales, ignore expanding bloat and you will never win a sprint, let alone the marathon of staying relevant.</p>
-
-<p>But there is a lot more to refactoring than code quality. In this post I wanted to mention one that is often overlooked: <em>&ldquo;refactoring makes good coders into master coders.&rdquo;</em>  The best lessons come from revisiting your mistakes and improving them, but without refactoring the revisiting is limited to quick fixes to limit the impact of a bad architecture, design, or implementation. Yes we can learn from our mistakes by trying different approaches on future projects, but the problems are ever changing, and thus the learnings are not as clear. I have always found I learned so much more as a designer and a developer by revisiting a problem with a new level of experience to draw from.</p>
-
-<p>Design has been more fortunate regarding the opportunity for refactoring; good design organizations understand how much can be learned by refactoring a design and thus fight hard to allow for it. Development has often not been as successful in making the case. I wonder if the cost analysis could be changed if executives understood that refactoring actually significantly improved two of the most important assets at a software company: the code base and the engineering talent. Then it becomes a more interesting decision versus a simple weighing of new features vs improved quality.</p>
-
-<p><img src="http://media.tumblr.com/7095223771e3c38939367f18458726e1/tumblr_inline_mgmwbwyolq1qz562v.jpg" alt="image" />Bull</p>
-
-<p>I got to thinking about this looking at Picasso&rsquo;s Bull series.  This is an excellent example of a master working through a problem to develop the most elegantly simplified expression of the subject. To become a master, one must work through a problem incrementally and always looking for elegant ways to improve, to simplify the end expression of the solution. Even for a competent coder, it is not always apparent what is elegant without seeing the real life consequences of chosen approaches. Whether the approach makes the code fragile, bloated, or unfriendly, it is only through the experience of trying to grow a code base that these issues can be truly understood. Under the right conditions refactoring provides a sort of express lane  to becoming a master developer. This is very difficult if you are never allowed to truly revisit a subject after completing the first expression of the solution. I like the &ldquo;Bull&rdquo; example because it is how I think of elegant design and development, just enough to represent the solution and no more, anything else is bloat that will be nothing but cost later. Through refactoring, a developer can develop insights, skills, and techniques more quickly by addressing a well understood problem from a more experienced perspective.  Practice make perfect. If not the code, maybe the coder.</p>
 ]]></content>
   </entry>
   
@@ -643,6 +626,23 @@ application block.</p>
 <h3>Wrapup</h3>
 
 <p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes.  If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring: making master programmers]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/14/refactoring-making-master-programmers/"/>
+    <updated>2013-01-14T16:34:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/14/refactoring-making-master-programmers</id>
+    <content type="html"><![CDATA[<p>There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code refactoring.  One could even explain this in terms of top line vs bottom line descriptions. Features mean sales, codebase is an asset, and poor code quality is a liability that affects cost and thus profit. Sloppy, risky, or fragile code is even called &ldquo;technical debt&rdquo; in many circles. This tension between features and code quality has always been a tightrope walk for any successful software or Internet company. Starve features and you kill sales, ignore expanding bloat and you will never win a sprint, let alone the marathon of staying relevant.</p>
+
+<p>But there is a lot more to refactoring than code quality. In this post I wanted to mention one that is often overlooked: <em>&ldquo;refactoring makes good coders into master coders.&rdquo;</em>  The best lessons come from revisiting your mistakes and improving them, but without refactoring the revisiting is limited to quick fixes to limit the impact of a bad architecture, design, or implementation. Yes we can learn from our mistakes by trying different approaches on future projects, but the problems are ever changing, and thus the learnings are not as clear. I have always found I learned so much more as a designer and a developer by revisiting a problem with a new level of experience to draw from.</p>
+
+<p>Design has been more fortunate regarding the opportunity for refactoring; good design organizations understand how much can be learned by refactoring a design and thus fight hard to allow for it. Development has often not been as successful in making the case. I wonder if the cost analysis could be changed if executives understood that refactoring actually significantly improved two of the most important assets at a software company: the code base and the engineering talent. Then it becomes a more interesting decision versus a simple weighing of new features vs improved quality.</p>
+
+<p><img src="http://media.tumblr.com/7095223771e3c38939367f18458726e1/tumblr_inline_mgmwbwyolq1qz562v.jpg" alt="image" />Bull</p>
+
+<p>I got to thinking about this looking at Picasso&rsquo;s Bull series.  This is an excellent example of a master working through a problem to develop the most elegantly simplified expression of the subject. To become a master, one must work through a problem incrementally and always looking for elegant ways to improve, to simplify the end expression of the solution. Even for a competent coder, it is not always apparent what is elegant without seeing the real life consequences of chosen approaches. Whether the approach makes the code fragile, bloated, or unfriendly, it is only through the experience of trying to grow a code base that these issues can be truly understood. Under the right conditions refactoring provides a sort of express lane  to becoming a master developer. This is very difficult if you are never allowed to truly revisit a subject after completing the first expression of the solution. I like the &ldquo;Bull&rdquo; example because it is how I think of elegant design and development, just enough to represent the solution and no more, anything else is bloat that will be nothing but cost later. Through refactoring, a developer can develop insights, skills, and techniques more quickly by addressing a well understood problem from a more experienced perspective.  Practice make perfect. If not the code, maybe the coder.</p>
 ]]></content>
   </entry>
   

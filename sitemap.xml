@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://fooqri.github.io/blog/2013/01/14/refactoring-making-master-programmers/</loc>
+        <lastmod>2013-06-01T16:59:01-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://fooqri.github.io/blog/2013/01/16/simple-state-machine-example/</loc>
         <lastmod>2013-06-01T16:54:41-07:00</lastmod>
     </url>
@@ -51,24 +55,20 @@
         <lastmod>2013-06-01T11:29:34-07:00</lastmod>
     </url>
     <url>
-        <loc>http://fooqri.github.io/blog/2013/05/14/refactoring-making-master-programmers/</loc>
-        <lastmod>2013-06-01T16:57:48-07:00</lastmod>
-    </url>
-    <url>
         <loc>http://fooqri.github.io/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/</loc>
         <lastmod>2013-06-01T12:35:46-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/archives/</loc>
-        <lastmod>2013-06-01T16:57:48-07:00</lastmod>
+        <lastmod>2013-06-01T16:59:01-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/blog/archives/</loc>
-        <lastmod>2013-06-01T16:57:48-07:00</lastmod>
+        <lastmod>2013-06-01T16:59:01-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/</loc>
-        <lastmod>2013-06-01T16:57:48-07:00</lastmod>
+        <lastmod>2013-06-01T16:59:01-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/robots.txt</loc>
