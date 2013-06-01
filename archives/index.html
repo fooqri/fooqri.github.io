@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Coding and design notes</title>
+  <title>Blog Archive - Coding and design notes</title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems &hellip;">
+  <meta name="description" content="Blog Archive 2013 Getting RKLogConfigureByName working in RubyMotion
+Mar 07 2013 posted in RubyMotion Recent Posts Getting RKLogConfigureByName &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ RestKit. It seems &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/">
+  <link rel="canonical" href="http://fooqri.github.io/archives/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -63,69 +62,40 @@ RestKit. It seems &hellip;">
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article role="article">
   
-  
-  
-    <article>
-      
   <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName Working in RubyMotion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
-        
-      </p>
+    <h1 class="entry-title">Blog Archive</h1>
     
   </header>
+  
+  <div id="blog-archives">
 
 
-  <div class="entry-content"><p>Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems that the #define statements in the
-<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
-picked up. I am using the pod and loading with RubyMotion pod support,
-so Iåm not sure what the issue is. I will need to investigate further
-but this quick workaround works, just call the lower-level method
-mapped via the #define. For example instead of RKLogConfigureByName
-use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
-use instead of the RKLogLevel constants. I also included an example of
-how they are used, in this case I have put the setup in a method, and
-it gets called from the the standard didFinishLaunchingWithOption
-application block.</p>
 
-<div><script src='https://gist.github.com/4733618.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
+  
+  <h2>2013</h2>
+
+<article>
+  
+<h1><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a></h1>
+<time datetime="2013-03-07T15:21:00-08:00" pubdate><span class='month'>Mar</span> <span class='day'>07</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/rubymotion/'>RubyMotion</a></span>
+</footer>
 
 
+</article>
 
 </div>
-  
-  
 
-
-    </article>
   
-  <div class="pagination">
-    
-    <a href="archives">Blog Archives</a>
-    
-  </div>
+</article>
+
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -145,6 +115,7 @@ application block.</p>
 
   
 </aside>
+
 
     </div>
   </div>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: RubyMotion | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/rubymotion/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-01T11:01:13-07:00</updated>
+  <updated>2013-06-01T11:29:44-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Getting RKLogConfigureByName working in RubyMotion]]></title>
-    <link href="http://fooqri.github.io/blog/2013/06/01/getting-rklogconfigurebyname-working-in-rubymotion/"/>
-    <updated>2013-06-01T10:21:00-07:00</updated>
-    <id>http://fooqri.github.io/blog/2013/06/01/getting-rklogconfigurebyname-working-in-rubymotion</id>
+    <link href="http://fooqri.github.io/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/"/>
+    <updated>2013-03-07T15:21:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion</id>
     <content type="html"><![CDATA[<p>Just a quick note, I was getting an undefined constant error for
 RKLogConfigureByName, the standard way of setting up logging in
 RestKit. It seems that the #define statements in the
