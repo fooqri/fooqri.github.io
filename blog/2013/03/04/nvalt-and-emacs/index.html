@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Coding and design notes</title>
+  <title>nvALT and Emacs - Coding and design notes</title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems &hellip;">
+  <meta name="description" content="In a previous post wiki-searchable-notes I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ RestKit. It seems &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -63,69 +61,12 @@ RestKit. It seems &hellip;">
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName Working in RubyMotion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems that the #define statements in the
-<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
-picked up. I am using the pod and loading with RubyMotion pod support,
-so Iåm not sure what the issue is. I will need to investigate further
-but this quick workaround works, just call the lower-level method
-mapped via the #define. For example instead of RKLogConfigureByName
-use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
-use instead of the RKLogLevel constants. I also included an example of
-how they are used, in this case I have put the setup in a method, and
-it gets called from the the standard didFinishLaunchingWithOption
-application block.</p>
-
-<div><script src='https://gist.github.com/4733618.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a></h1>
+      <h1 class="entry-title">nvALT and Emacs</h1>
     
     
       <p class="meta">
@@ -148,7 +89,7 @@ application block.</p>
   </header>
 
 
-  <div class="entry-content"><p>In a previous post <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.</p>
+<div class="entry-content"><p>In a previous post <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.</p>
 
 <p>I am an Emacs user and often found myself dropping out of emacs to find a note I needed in nvALT. I went looking for the best way to index and access my nvALT notes inside Emacs, and found the very cool emacs script called <a href="http://jblevins.org/projects/deft/">Deft</a> that works with <a href="http://jblevins.org/projects/markdown-mode/">EMacs Markdown Mode</a> to create the equivalent of nvALT inside of emacs. It can be configured to work with the nvALT repository so they work well together.</p>
 
@@ -189,22 +130,16 @@ application block.</p>
 
 <p>When you eval init.el or restart emacs you should be set. Fire up Deft and the UI will operate just like nvALT, only it works in an Emacs buffer!!</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
 
 
 
@@ -216,56 +151,34 @@ application block.</p>
   
 
 
-<time datetime="2013-01-30T10:19:00-08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
-        
-      </p>
+<time datetime="2013-03-04T11:19:00-08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time>
+      
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs/" >Tweet</a>
+  
+  
+  
+</div>
 
-
-  <div class="entry-content"><p>In a previous post <a href="http://www.pragmaux.com/post/39243391147/remapping-my-caps-lock-key">Remapping My Caps Lock Key</a> I mentioned that I remapped my caps-lock key to escape, but also created a &ldquo;hyper-key&rdquo; (ctrl-shift-cmd-opt) when the caps-lock key is held down. This opens up a keyboard worth of new shortcuts for emacs. Here are a few I have been playing with for the past few days. An alternative key mapping would be to map the hyper key to holding down the tab key, if you already have the caps lock key mapped to control, and thus muscle memory might preclude this mapping from working for you.</p>
-
-<p>H is the remapped caps-lock HyperKey from my earlier post, which translates as C-M-S-s in the emacs init.el key-mappings. I include an init.el excerpt at the end of the post for all of these mappings.</p>
-
-<ul>
-<li>(H-l) This will mark the entire current line, from any position on the line. Using the arrow keys will extent the selection one line at a time either up or down.</li>
-<li>(H-f) This invokes text expansion for code completion, I do this a lot so I wanted it to be very comfortable.</li>
-<li>(H-3) This invokes the comment/uncomment function on a region, ruby comment is the # so I thought I would try this binding.</li>
-<li>(H-Right Arrow) This opens a new window to the right of the current window, I do this often enough I wanted it to be quick</li>
-<li>(H-Left Arrow) This closes the current window, sort of the opposite of Right arrow.</li>
-<li>(H-Down Arrow) This opens a new window below the current window</li>
-<li>(H-p) In the current window switch to the previous buffer</li>
-<li>(H-n) In the current window switch to the next buffer</li>
-<li>(H-delete) Kill this buffer</li>
-<li>(H-w) Quick copy line, pressing multiple times adds more lines to the copy</li>
-<li>(H-k) Quick cut line, pressing multiple times adds more lines to the cut</li>
-<li>(H-c) Copy region into register (prompts for register number)</li>
-<li>(H-v) Paste from register (prompts for register number)</li>
-<li>(H-spacebar) Open a popup shell in directory of current buffer.</li>
-<li>(H-e) Eval buffer, mostly used to eval init.el after tweaks</li>
-</ul>
-
-
-<p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
-
-<div><script src='https://gist.github.com/5691402.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/" title="Previous Post: Emacs Experimental Hyper-Key Mappings">&laquo; Emacs Experimental Hyper-Key Mappings</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/" title="Next Post: Getting RKLogConfigureByName working in RubyMotion">Getting RKLogConfigureByName working in RubyMotion &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -303,6 +216,7 @@ application block.</p>
 
   
 </aside>
+
 
     </div>
   </div>

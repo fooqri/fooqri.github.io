@@ -4,7 +4,7 @@
   <title><![CDATA[Coding and design notes]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-01T11:34:47-07:00</updated>
+  <updated>2013-06-01T12:14:19-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -33,6 +33,92 @@ it gets called from the the standard didFinishLaunchingWithOption
 application block.</p>
 
 <div><script src='https://gist.github.com/4733618.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[nvALT and Emacs]]></title>
+    <link href="http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs/"/>
+    <updated>2013-03-04T11:19:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs</id>
+    <content type="html"><![CDATA[<p>In a previous post <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.</p>
+
+<p>I am an Emacs user and often found myself dropping out of emacs to find a note I needed in nvALT. I went looking for the best way to index and access my nvALT notes inside Emacs, and found the very cool emacs script called <a href="http://jblevins.org/projects/deft/">Deft</a> that works with <a href="http://jblevins.org/projects/markdown-mode/">EMacs Markdown Mode</a> to create the equivalent of nvALT inside of emacs. It can be configured to work with the nvALT repository so they work well together.</p>
+
+<p>A few pointers&hellip;</p>
+
+<ul>
+<li>If you use markdown in nvALT as I do, follow the instructions to install <a href="http://jblevins.org/projects/markdown-mode/">markdown-mode</a> via git clone.</li>
+<li>Follow the instructions to install  <a href="http://jblevins.org/projects/deft/">Deft</a> via git clone. It is an active repository, so clone makes keeping up-to-date easy. Also update init.el to require the deft.el script.</li>
+<li>For markdown and nvALT using the flat file config (see  <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> for flat file config) you need to add a few additional expressions in init.el. Add these four lines as discussed on the deft documentation.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(setq deft-extension "md")
+</span><span class='line'>(setq deft-directory "~/Development/wikis/Notes.wiki/")
+</span><span class='line'>(setq deft-text-mode 'markdown-mode)
+</span><span class='line'>(setq deft-use-filename-as-title t)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Follow the instructions to map a keyboard shortcut to open deft. I use H-d (see my <a href="http://www.pragmaux.com/post/41867238595/emacs-experimental-hyper-key-mappings">emacs hyper-key post</a> ) but a simple function key mapping would be.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key [f8] 'deft)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>    <br/>
+* Create a symlink from ~/.deft to your nvALT notes directory, this is shown in the nvALT preferences under the notes tab. See example below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s ~/Documents/notes/ .deft</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When you eval init.el or restart emacs you should be set. Fire up Deft and the UI will operate just like nvALT, only it works in an Emacs buffer!!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Emacs Experimental Hyper-Key Mappings]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/30/emacs-experimental-hyper-key-mappings/"/>
+    <updated>2013-01-30T10:19:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/30/emacs-experimental-hyper-key-mappings</id>
+    <content type="html"><![CDATA[<p>In a previous post <a href="http://www.pragmaux.com/post/39243391147/remapping-my-caps-lock-key">Remapping My Caps Lock Key</a> I mentioned that I remapped my caps-lock key to escape, but also created a &ldquo;hyper-key&rdquo; (ctrl-shift-cmd-opt) when the caps-lock key is held down. This opens up a keyboard worth of new shortcuts for emacs. Here are a few I have been playing with for the past few days. An alternative key mapping would be to map the hyper key to holding down the tab key, if you already have the caps lock key mapped to control, and thus muscle memory might preclude this mapping from working for you.</p>
+
+<p>H is the remapped caps-lock HyperKey from my earlier post, which translates as C-M-S-s in the emacs init.el key-mappings. I include an init.el excerpt at the end of the post for all of these mappings.</p>
+
+<ul>
+<li>(H-l) This will mark the entire current line, from any position on the line. Using the arrow keys will extent the selection one line at a time either up or down.</li>
+<li>(H-f) This invokes text expansion for code completion, I do this a lot so I wanted it to be very comfortable.</li>
+<li>(H-3) This invokes the comment/uncomment function on a region, ruby comment is the # so I thought I would try this binding.</li>
+<li>(H-Right Arrow) This opens a new window to the right of the current window, I do this often enough I wanted it to be quick</li>
+<li>(H-Left Arrow) This closes the current window, sort of the opposite of Right arrow.</li>
+<li>(H-Down Arrow) This opens a new window below the current window</li>
+<li>(H-p) In the current window switch to the previous buffer</li>
+<li>(H-n) In the current window switch to the next buffer</li>
+<li>(H-delete) Kill this buffer</li>
+<li>(H-w) Quick copy line, pressing multiple times adds more lines to the copy</li>
+<li>(H-k) Quick cut line, pressing multiple times adds more lines to the cut</li>
+<li>(H-c) Copy region into register (prompts for register number)</li>
+<li>(H-v) Paste from register (prompts for register number)</li>
+<li>(H-spacebar) Open a popup shell in directory of current buffer.</li>
+<li>(H-e) Eval buffer, mostly used to eval init.el after tweaks</li>
+</ul>
+
+
+<p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
+
+<div><script src='https://gist.github.com/5691402.js'></script>
 <noscript><pre><code></code></pre></noscript></div>
 
 

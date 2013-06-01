@@ -1,6 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://fooqri.github.io/blog/2013/01/30/emacs-experimental-hyper-key-mappings/</loc>
+        <lastmod>2013-06-01T12:12:07-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs/</loc>
+        <lastmod>2013-06-01T12:14:13-07:00</lastmod>
+    </url>
+    <url>
         <loc>
             http://fooqri.github.io/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/
         </loc>
@@ -8,15 +16,15 @@
     </url>
     <url>
         <loc>http://fooqri.github.io/archives/</loc>
-        <lastmod>2013-06-01T11:29:34-07:00</lastmod>
+        <lastmod>2013-06-01T12:14:13-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/blog/archives/</loc>
-        <lastmod>2013-06-01T11:29:34-07:00</lastmod>
+        <lastmod>2013-06-01T12:14:13-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/</loc>
-        <lastmod>2013-06-01T11:29:34-07:00</lastmod>
+        <lastmod>2013-06-01T12:14:13-07:00</lastmod>
     </url>
     <url>
         <loc>http://fooqri.github.io/robots.txt</loc>
