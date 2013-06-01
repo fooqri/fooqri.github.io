@@ -9,9 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems &hellip;">
+  <meta name="description" content="It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +63,57 @@ RestKit. It seems &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-01T12:23:00-07:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in finding the hard to find little bugs that pop-up between restkit ad core data, it can also help find performance issue with the database.  Unfortunately there isn&rsquo;t any documentation for how to do this in RubyMotion, but I found one solution that works to a degree. It required installing an the ios_sim app and forcing the simulator into CoreData.SQLDebug mode after the rubymotion build.</p>
+
+<p>You will need to install ios_sim</p>
+
+<pre><code>$ brew install ios-sim
+</code></pre>
+
+<p>Then add the following two line as the last lines in your RubyMotion rakefile</p>
+
+<pre><code># Be sure to substitute your app name and make sure you are using
+# the correct path to the app based on simulator version.
+ios_sim = `which ios-sim`.strip
+sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -com.apple.CoreData.SQLDebug 1"
+</code></pre>
+
+<p>This will open the simulator in CoreData.SQLDebug mode, and log debug information to the terminal.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -281,6 +330,10 @@ application block.</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>

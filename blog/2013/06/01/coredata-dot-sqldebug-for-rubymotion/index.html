@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: RubyMotion - Coding and design notes</title>
+  <title>CoreData.SQLDebug for RubyMotion - Coding and design notes</title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Category: RubyMotion">
+  <meta name="description" content="It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.ioblog/categories/rubymotion/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -62,35 +62,93 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: RubyMotion</h1>
+    
+      <h1 class="entry-title">CoreData.SQLDebug for RubyMotion</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-01T12:23:00-07:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in finding the hard to find little bugs that pop-up between restkit ad core data, it can also help find performance issue with the database.  Unfortunately there isn&rsquo;t any documentation for how to do this in RubyMotion, but I found one solution that works to a degree. It required installing an the ios_sim app and forcing the simulator into CoreData.SQLDebug mode after the rubymotion build.</p>
 
-  
-  <h2>2013</h2>
+<p>You will need to install ios_sim</p>
 
-<article>
-  
-<h1><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a></h1>
-<time datetime="2013-03-07T15:21:00-08:00" pubdate><span class='month'>Mar</span> <span class='day'>07</span> <span class='year'>2013</span></time>
+<pre><code>$ brew install ios-sim
+</code></pre>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/rubymotion/'>RubyMotion</a></span>
-</footer>
+<p>Then add the following two line as the last lines in your RubyMotion rakefile</p>
 
+<pre><code># Be sure to substitute your app name and make sure you are using
+# the correct path to the app based on simulator version.
+ios_sim = `which ios-sim`.strip
+sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -com.apple.CoreData.SQLDebug 1"
+</code></pre>
 
-</article>
-
+<p>This will open the simulator in CoreData.SQLDebug mode, and log debug information to the terminal.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-01T12:23:00-07:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/" title="Previous Post: Getting RKLogConfigureByName working in RubyMotion">&laquo; Getting RKLogConfigureByName working in RubyMotion</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
