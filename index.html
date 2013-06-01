@@ -120,6 +120,50 @@ sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/05/14/refactoring-making-master-programmers/">Refactoring: Making Master Programmers</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-14T16:34:00-07:00" pubdate data-updated="true">May 14<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code refactoring.  One could even explain this in terms of top line vs bottom line descriptions. Features mean sales, codebase is an asset, and poor code quality is a liability that affects cost and thus profit. Sloppy, risky, or fragile code is even called &ldquo;technical debt&rdquo; in many circles. This tension between features and code quality has always been a tightrope walk for any successful software or Internet company. Starve features and you kill sales, ignore expanding bloat and you will never win a sprint, let alone the marathon of staying relevant.</p>
+
+<p>But there is a lot more to refactoring than code quality. In this post I wanted to mention one that is often overlooked: <em>&ldquo;refactoring makes good coders into master coders.&rdquo;</em>  The best lessons come from revisiting your mistakes and improving them, but without refactoring the revisiting is limited to quick fixes to limit the impact of a bad architecture, design, or implementation. Yes we can learn from our mistakes by trying different approaches on future projects, but the problems are ever changing, and thus the learnings are not as clear. I have always found I learned so much more as a designer and a developer by revisiting a problem with a new level of experience to draw from.</p>
+
+<p>Design has been more fortunate regarding the opportunity for refactoring; good design organizations understand how much can be learned by refactoring a design and thus fight hard to allow for it. Development has often not been as successful in making the case. I wonder if the cost analysis could be changed if executives understood that refactoring actually significantly improved two of the most important assets at a software company: the code base and the engineering talent. Then it becomes a more interesting decision versus a simple weighing of new features vs improved quality.</p>
+
+<p><img src="http://media.tumblr.com/7095223771e3c38939367f18458726e1/tumblr_inline_mgmwbwyolq1qz562v.jpg" alt="image" />Bull</p>
+
+<p>I got to thinking about this looking at Picasso&rsquo;s Bull series.  This is an excellent example of a master working through a problem to develop the most elegantly simplified expression of the subject. To become a master, one must work through a problem incrementally and always looking for elegant ways to improve, to simplify the end expression of the solution. Even for a competent coder, it is not always apparent what is elegant without seeing the real life consequences of chosen approaches. Whether the approach makes the code fragile, bloated, or unfriendly, it is only through the experience of trying to grow a code base that these issues can be truly understood. Under the right conditions refactoring provides a sort of express lane  to becoming a master developer. This is very difficult if you are never allowed to truly revisit a subject after completing the first expression of the solution. I like the &ldquo;Bull&rdquo; example because it is how I think of elegant design and development, just enough to represent the solution and no more, anything else is bloat that will be nothing but cost later. Through refactoring, a developer can develop insights, skills, and techniques more quickly by addressing a well understood problem from a more experienced perspective.  Practice make perfect. If not the code, maybe the coder.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName Working in RubyMotion</a></h1>
     
     
@@ -784,52 +828,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/17/rubymotion-ios-apps/">RubyMotion iOS Apps</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-17T11:28:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I wanted to make a quick note that I have been using <a href="http://www.rubymotion.com/">RubyMotion</a> the past few months. I don&rsquo;t mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI. Call me old fashioned, but I find I can work much faster when I can operate on the code directly, versus through an intermediary UI.</p>
-
-<p>The second reason for switching to RubyMotion is the libraries that are being created, they make iOS development feel so comfortable to a Ruby developer. Three key examples are <a href="https://github.com/rubymotion/BubbleWrap">BubbleWrap</a>, <a href="https://github.com/rubymotion/sugarcube">SugarcCube</a> and <a href="https://github.com/rubymotion/teacup">Teacup</a>.</p>
-
-<p>The third reason is testing and debugging, I like that RubyMotion comes with an RSpec clone, this means I have the same testing framework on both app and server. I also love the interactive console, there is nothing like tweaking your app live from a console (REPL). I find I can debug a lot of the code from the console, but RubyMotion also supports GDB for the more serious debugging needs. I hadn&rsquo;t used GDB in a few years but it came back to me pretty quickly once I started using it.</p>
-
-<p>I also like the DSL approach of Teacup in styling RubyMotion iOS apps. I like that I can create style files much like I do with CSS and have my app UI built with the style information, makes changing style feel more natural to me as a web developer.</p>
-
-<p>I have no doubt that there are many Objective-C developers who are extremely efficient in building apps, but it is always a challenge to become expert on multiple platforms. To become an expert iOS developer you need to become expert in the Cocoa libraries; the nice thing about RubyMotion is it allows you to learn the libraries within a familiar syntax if you are a ruby developer. It also allows you to create Ruby wrappers and generators that make developing for Cocoa feel more natural to a Ruby developer. Finally, since RubyMotion creates compiled native iOS apps, their is very little performance hit.</p>
-
-<p>I have a backlog of notes that I will post when I get a chance; including my experiences with development,  debugging, meta-programming, deploying via TestFlight, etc. I just wanted to give RubyMotion some praise from this Ruby developer, it has made developing iOS apps very similar to deploying ruby apps.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -859,6 +857,10 @@ application block.</p>
       </li>
     
       <li class="post">
+        <a href="/blog/2013/05/14/refactoring-making-master-programmers/">Refactoring: making master programmers</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
       </li>
     
@@ -868,10 +870,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying out Pixate - CSS for iOS app Development</a>
       </li>
     
   </ul>

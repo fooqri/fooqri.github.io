@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-01T16:52:55-07:00</updated>
+  <updated>2013-06-01T16:57:49-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Simple state machine example]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example/"/>
-    <updated>2013-01-15T12:24:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example</id>
+    <link href="http://fooqri.github.io/blog/2013/01/16/simple-state-machine-example/"/>
+    <updated>2013-01-16T12:24:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/16/simple-state-machine-example</id>
     <content type="html"><![CDATA[<p>I have been investigating using the ruby <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem for a project. State machines can be very handy in simplifying code where objects move through various states. The <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example.  The todo list will include a main list that contains items and sublists.  This allows a way to organize items easily into sublists.</p>
 
 <p>A simple way to do this is to declare two classes <em>List</em> and <em>Item</em> and allow an object of class <em>List</em> to contain a list of <em>Lists</em> and a list of <em>Items</em>. This approach allows a flat list with many items, or a hierarchical list with top-level items, but also sub-lists that contain their own items.</p>
