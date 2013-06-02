@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Wiki + searchable notes. - Coding and design notes</title>
+  <meta name="author" content="Patrick Goddi">
+
+  
+  <meta name="description" content="For our startup I have been using github wiki to keep the product specs, design docs, user stories, etc organized and up-to-date. The nice thing &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fooqri.github.io/blog/2012/12/17/wiki-plus-searchable-notes/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Coding and design notes" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fooqri.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Wiki + Searchable Notes.</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-17T13:25:00-08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>For our startup I have been using github wiki to keep the product specs, design docs, user stories, etc organized and up-to-date. The nice thing about github is you can clone the wiki and work on it locally and push changes up to the server. See this <a href="https://github.com/wicketstuff/core/wiki/Editing-Wiki-Locally" title="writeup" target="_blank">writeup</a> for more info. This is handy because you can then work on the wiki using markdown syntax in a regular text editor versus a web page editor.</p>
+
+<p>The ease of this made me wonder if there was a way to do my normal note taking, code journalling, etc in markdown vs Evernote. I did some looking around and found <a href="http://brettterpstra.com/project/nvalt/" title="nvAlt" target="_blank">nvALT</a>, which is a markdown based notebook that can save notes as flat .md files.</p>
+
+<p>So as an experiment I cloned my personal notes wiki from github.  After configuring nvALT to use the cloned wiki directory as its directory I could immediately see and search all of my wiki files as nvALT note files. Also I could add new files and they would now become linkable as wiki files. So basically nvALT acts as a note taking system, but notes can be also linked together via a mmd link notation that is supported by the github wiki. You can install the <a href="https://github.com/github/gollum" title="Gollum">gollum</a> gem and interact with the wiki locally to test the wiki pages.</p>
+
+<p>So I can now create, edit, search notes in markdown, but also link them, as well as view them as a wiki.</p>
+
+<p>I will post again after a few weeks trying out the solution with more info on how it is working.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-17T13:25:00-08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2012/12/17/wiki-plus-searchable-notes/" data-via="" data-counturl="http://fooqri.github.io/blog/2012/12/17/wiki-plus-searchable-notes/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/17/fast-photosync-from-iphone/" title="Previous Post: Fast PhotoSync from iPhone">&laquo; Fast PhotoSync from iPhone</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/26/foldingtext-and-productivity/" title="Next Post: FoldingText and productivity">FoldingText and productivity &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://fooqri.github.io" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://fooqri.github.io/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      
+      <a href="http://fooqri.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying out Pixate - CSS for iOS app Development</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Patrick Goddi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

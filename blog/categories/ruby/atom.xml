@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-01T17:02:08-07:00</updated>
+  <updated>2013-06-01T17:45:24-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -35,8 +35,7 @@
 
 <p>Here is a quick example of the code to meet these requirements:</p>
 
-<div class="gist">https://gist.github.com/4549146</div>
-
+<p>{% gist 4549146 %}</p>
 
 <p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
 
