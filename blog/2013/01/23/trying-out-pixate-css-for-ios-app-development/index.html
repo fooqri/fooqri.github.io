@@ -115,6 +115,9 @@
 </ul>
 
 
+<!--more-->
+
+
 <p>It also supports attribute selectors and pseudo classes. See the <a href="http://cdn.pixate.com/docs/engine/ios/1.0/Pixate%20Engine%20for%20iOS%20Styling%20Reference.html">complete list</a> for more information on selectors and styling.</p>
 
 <p>One really nice feature is the ability to set up Pixate to dynamically change your app in the simulator when you update the CSS. This is an awesome feature. To set it up add these two  <em>PXStylesheet</em> lines to your app_delegate.rb file near the end of the <em>application</em> method:</p>
@@ -316,6 +319,23 @@
     
   </ul>
 </section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("fooqri", , );
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <p>Follow <a href="http://twitter.com/fooqri">@fooqri</a></p>
+  
+</section>
+
 
 
 

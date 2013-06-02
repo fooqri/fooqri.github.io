@@ -4,7 +4,7 @@
   <title><![CDATA[Coding and design notes]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T06:42:54-07:00</updated>
+  <updated>2013-06-02T07:34:47-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -167,6 +167,9 @@ application block.</p>
 <li>class selector &ndash; Select a control by class name</li>
 <li>id selector &ndash; Select a control by ID</li>
 </ul>
+
+
+<!--more-->
 
 
 <p>It also supports attribute selectors and pseudo classes. See the <a href="http://cdn.pixate.com/docs/engine/ios/1.0/Pixate%20Engine%20for%20iOS%20Styling%20Reference.html">complete list</a> for more information on selectors and styling.</p>
