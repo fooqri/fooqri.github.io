@@ -4,7 +4,7 @@
   <title><![CDATA[Coding and design notes]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-01T17:41:29-07:00</updated>
+  <updated>2013-06-01T17:45:24-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -522,7 +522,8 @@ application block.</p>
 
 <p>The DSL is really simple and I was able to wrap some ruby objects in a day and deploy it on Heroku. Here is an snippet of what the DSL looks like.</p>
 
-<div class="gist">https://gist.github.com/4555788</div>
+<div><script src='https://gist.github.com/4555788.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
 
 
 <p>As you can see the Grape framework supports API versioning, and the DSL provides a simple way to define API endpoints by defining resources and then specifying the HTTP requests (get, post, put, delete) for that resource. Any Rails developer should feel comfortable with the paths, params, and routes syntax in Grape.</p>
