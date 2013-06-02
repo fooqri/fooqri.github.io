@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emacs | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/emacs/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T12:50:21-07:00</updated>
+  <updated>2013-06-02T13:32:22-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -78,9 +78,7 @@ When you eval init.el or restart emacs you should be set. Fire up Deft and the U
 
 <p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
 
-<p><div><script src='https://gist.github.com/5691402.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 5691402 %}</p>
 ]]></content>
   </entry>
   

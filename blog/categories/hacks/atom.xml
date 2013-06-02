@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hacks | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/hacks/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T12:50:21-07:00</updated>
+  <updated>2013-06-02T13:32:22-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -43,9 +43,7 @@
 
 <p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
 
-<p><div><script src='https://gist.github.com/5691402.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 5691402 %}</p>
 ]]></content>
   </entry>
   
@@ -86,9 +84,7 @@
 
 <p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
 
-<p><div><script src='https://gist.github.com/4431708.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 4431708 %}</p>
 
 <p>This above very simple example creates the diagram below.</p>
 

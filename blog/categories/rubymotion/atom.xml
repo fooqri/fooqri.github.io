@@ -4,7 +4,7 @@
   <title><![CDATA[Category: RubyMotion | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/rubymotion/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T12:50:21-07:00</updated>
+  <updated>2013-06-02T13:32:22-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -56,9 +56,7 @@ how they are used, in this case I have put the setup in a method, and
 it gets called from the the standard didFinishLaunchingWithOption
 application block.</p>
 
-<p><div><script src='https://gist.github.com/4733618.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 4733618 %}</p>
 ]]></content>
   </entry>
   

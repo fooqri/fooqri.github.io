@@ -4,7 +4,7 @@
   <title><![CDATA[Category: parsers | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/parsers/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T12:50:21-07:00</updated>
+  <updated>2013-06-02T13:32:22-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -36,9 +36,7 @@
 <!--more-->
 
 
-<p><div><script src='https://gist.github.com/4573704.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 4573704 %}</p>
 
 <p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
 
