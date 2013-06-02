@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: hacks | Coding and design notes]]></title>
+  <link href="http://fooqri.github.io/blog/categories/hacks/atom.xml" rel="self"/>
+  <link href="http://fooqri.github.io/"/>
+  <updated>2013-06-02T12:50:21-07:00</updated>
+  <id>http://fooqri.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick Goddi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Emacs Experimental Hyper-Key Mappings]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/30/emacs-experimental-hyper-key-mappings/"/>
+    <updated>2013-01-30T10:19:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/30/emacs-experimental-hyper-key-mappings</id>
+    <content type="html"><![CDATA[<p>In a previous post <a href="http://www.pragmaux.com/post/39243391147/remapping-my-caps-lock-key">Remapping My Caps Lock Key</a> I mentioned that I remapped my caps-lock key to escape, but also created a &ldquo;hyper-key&rdquo; (ctrl-shift-cmd-opt) when the caps-lock key is held down. This opens up a keyboard worth of new shortcuts for emacs. Here are a few I have been playing with for the past few days. An alternative key mapping would be to map the hyper key to holding down the tab key, if you already have the caps lock key mapped to control, and thus muscle memory might preclude this mapping from working for you.</p>
+
+<p>H is the remapped caps-lock HyperKey from my earlier post, which translates as C-M-S-s in the emacs init.el key-mappings. I include an init.el excerpt at the end of the post for all of these mappings.</p>
+
+<ul>
+<li>(H-l) This will mark the entire current line, from any position on the line. Using the arrow keys will extent the selection one line at a time either up or down.</li>
+<li>(H-f) This invokes text expansion for code completion, I do this a lot so I wanted it to be very comfortable.</li>
+<li>(H-3) This invokes the comment/uncomment function on a region, ruby comment is the # so I thought I would try this binding.</li>
+<li>(H-Right Arrow) This opens a new window to the right of the current window, I do this often enough I wanted it to be quick</li>
+<li>(H-Left Arrow) This closes the current window, sort of the opposite of Right arrow.</li>
+<li>(H-Down Arrow) This opens a new window below the current window</li>
+<li>(H-p) In the current window switch to the previous buffer</li>
+<li>(H-n) In the current window switch to the next buffer</li>
+<li>(H-delete) Kill this buffer</li>
+<li>(H-w) Quick copy line, pressing multiple times adds more lines to the copy</li>
+<li>(H-k) Quick cut line, pressing multiple times adds more lines to the cut</li>
+<li>(H-c) Copy region into register (prompts for register number)</li>
+<li>(H-v) Paste from register (prompts for register number)</li>
+<li>(H-spacebar) Open a popup shell in directory of current buffer.</li>
+<li>(H-e) Eval buffer, mostly used to eval init.el after tweaks</li>
+</ul>
+
+
+<p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
+
+<p><div><script src='https://gist.github.com/5691402.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Alfred + Pinboard + Chrome]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/"/>
+    <updated>2013-01-13T12:29:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome</id>
+    <content type="html"><![CDATA[<p>If you happen to use <a href="http://www.alfredapp.com/">Alfred</a>, <a href="http://pinboard.in">Pinboard</a>, and Chrome, here is a nice extension to save the current browser page to Pinboard using Alfred. Much faster than any chrome extension, and fingers never leave the keyboard.</p>
+
+<p><a href="http://www.timbueno.com/2012/06/27/pinboard-plus-alfred">Tim Bueno&rsquo;s Pinboard Extension</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Toggle Bluetooth]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/08/toggle-bluetooth/"/>
+    <updated>2013-01-08T12:10:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/08/toggle-bluetooth</id>
+    <content type="html"><![CDATA[<p>In my home office I have a Bluetooth keyboard and trackpad. When I use my MacBook Air elsewhere in the house I constantly see connect and disconnect messages for these devices. Frequently toggling BT on/off can be a pain; the menu bar method for toggling BT requires scanning the menu bar for the BT glyph, clicking on it, finding the correct menu item and clicking on it. All that scanning, tracking, and clicking can be disruptive to a good mental flow; I wanted a quick keyboard shortcut to toggle bluetoooth on/off. I use <a href="http://www.alfredapp.com/">Alfred</a> and after a quick search I found <a href="http://seapy.com/1779">this</a> extension that does just that. I use “bt” as the shortcut code. I have found this to be very handy, I now toggle out of habit, so no thinking required;</p>
+
+<ul>
+<li><a href="http://www.alfredapp.com/">Alfred App</a></li>
+<li><a href="http://seapy.com/1779">Alfred Toggle Bluetooth Extension</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[User Stories and Activity Diagrams]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams/"/>
+    <updated>2013-01-01T10:10:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams</id>
+    <content type="html"><![CDATA[<p>I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these diagrams makes transitions clear that might otherwise be missed until later when they lead to costly re-architecting of the screens and flows.</p>
+
+<p>I use Omnigraffle for UI wireframes, so it seemed natural to use it for activity diagrams, which is what I have been doing.  The issue is keeping the diagrams up to date.  Today, while playing with the <a href="http://www.complang.org/ragel/">Ragel</a> state machine compiler I discovered Ragel&rsquo;s awesome states/transitions diagramming feature. I learned the feature uses <a href="http://www.graphviz.org/">Graphviz</a> to create the diagrams from the parser grammar.  This led me to <a href="https://github.com/glejeune/Ruby-Graphviz/">Ruby Graphviz</a>, a Ruby library for interacting with Graphviz. It got me thinking that maybe there was a simple DSL that could be used to describe UI activities and screens and then automatically generate diagrams from the description. This would make keeping descriptions and diagrams in sync very easy.</p>
+
+<p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
+
+<p><div><script src='https://gist.github.com/4431708.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
+
+<p>This above very simple example creates the diagram below.</p>
+
+<p><img src="http://media.tumblr.com/61f780009a654f9724bcd4a9c703d9b4/tumblr_inline_mfz8syDgFP1qz562v.png" alt="" /></p>
+
+<p>This needs some cleanup of the aesthetics but the possibility is interesting. The next steps will be to come up with a very simple dsl, as simple as possible, maybe something that is markdown compliant so it fits inside our wiki pages cleanly. It would need to cover start and end states as well as intermediate state nodes. It would need to also handle decision points (diamonds) as well as transitions (edges) and notes. The simplest form would be to allow listing all nodes and all decisions, and then listing the connections between them. Labels would also be needed on all of these. IDs would probably help for wiring up the connections.</p>
+
+<p>Then it is a matter of running a parser on the wiki pages, looking for the syntax associated with the activity descriptions and generating a diagram using some ruby code. This might be a nice experiment to familiarize myself with Ragel to better understand its strengths and capabilities.</p>
+
+<p>I hope to get to spend some free time on this over the coming weeks, as it seems like a fun side project.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Remapping My Caps Lock Key]]></title>
+    <link href="http://fooqri.github.io/blog/2012/12/30/remapping-my-caps-lock-key/"/>
+    <updated>2012-12-30T16:24:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2012/12/30/remapping-my-caps-lock-key</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve had my caps lock key mapped to the control key for the last few months as I have migrated back to Emacs from TextMate. It was a slight improvement over the placement of the control key but not a huge improvement. I came across this article: <a href="http://brettterpstra.com/a-useful-caps-lock-key/">A Useful CAPS-Lock Key</a> from Brett Terpstra and decided to give his mapping a try. This mapping requires free third party software, but I was particularly intrigued not by the escape key mapping, which is very handy, but by the &ldquo;Hyper-key&rdquo; (ctrl-shift-cmd-opt) being mapped to holding down the shift key. This opens a lot of potential system wide shortcut key-bindings that are a lot easier than using the uncomfortable ctrl-shift-cmd-opt.</p>
+
+<p>So far it is very useful, I like the hyper-t for opening iTerm2 in visor mode, very handy. I will check back in in a month on this topic and share any other key bindings I come up with.</p>
+]]></content>
+  </entry>
+  
+</feed>

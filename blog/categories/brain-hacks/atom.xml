@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: brain-hacks | Coding and design notes]]></title>
+  <link href="http://fooqri.github.io/blog/categories/brain-hacks/atom.xml" rel="self"/>
+  <link href="http://fooqri.github.io/"/>
+  <updated>2013-06-02T12:50:21-07:00</updated>
+  <id>http://fooqri.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick Goddi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pattern problems vs logic problems]]></title>
+    <link href="http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems/"/>
+    <updated>2013-01-18T11:48:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems</id>
+    <content type="html"><![CDATA[<blockquote><p>Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence?</p></blockquote>
+
+<p>I ran across this interesting problem in <a href="http://www.amazon.com/The-Joy-Guided-Infinity-ebook/dp/B006R8PL7G/ref=tmm_kin_title_0">&ldquo;The Joy of x: A Guided Tour of Math, from One to Infinity,&rdquo;</a> a very accessible and interesting tour of mathematics.</p>
+
+<p>It turns out most people quickly answer “one hour.”  As Strogatz opines,</p>
+
+<blockquote><p>The words themselves nudge you that way. The drumbeat in the first sentence— three men, three fences, three hours— catches your attention by establishing a rhythm, so when the next sentence repeats the pattern with one man, one fence, ____ hours, it’s hard to resist filling in the blank with “one.” The parallel construction suggests an answer that’s linguistically right but mathematically wrong.</p></blockquote>
+
+<p>The correct answer is three hours. It is obvious if you imagine each person painting their own fence for three hours. Remove two people and two fences and you are left with one person, still painting their one fence for three hours, as before.</p>
+
+<p>What struck me about this problem is that it is an incredibly simple, concrete, and visual example of how our brains try to match patterns, but more importantly the side effect that occurs when a pattern is matched. Neuroscience studies suggest that dopamine (a neurotransmitter associated with pleasure) is released when we solve a problem, thus giving us a biological explanation for that wonderful feeling we get when we have solved a problem.</p>
+
+<p>This made me wonder, does our brain perhaps release dopamine when we solve the faux pattern matching problem and <em>tricks</em> us into thinking we solved the actual logic problem? Thus we quickly blurt out the wrong answer.  After all, we have spent a lifetime feeling the dopamine rush when we believe we have the answer to a problem. Strogatz&rsquo;s observation about this particular word problem having two solutions (a pattern solution, and a logic solution) is very interesting, and is likely very related to a number of <a href="http://en.wikipedia.org/wiki/List_of_biases_in_judgment_and_decision_making">Cognitive Biases</a>. It is perhaps valuable to think about this explicitly when considering information:</p>
+
+<ul>
+<li>What is the pattern problem being suggested?</li>
+<li>What is the logic problem being suggested?</li>
+</ul>
+
+
+<p>And make sure you have the answer the right question when you feel that first burst of dopamine show up.</p>
+]]></content>
+  </entry>
+  
+</feed>

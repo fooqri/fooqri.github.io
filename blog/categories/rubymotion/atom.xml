@@ -4,7 +4,7 @@
   <title><![CDATA[Category: RubyMotion | Coding and design notes]]></title>
   <link href="http://fooqri.github.io/blog/categories/rubymotion/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T09:35:34-07:00</updated>
+  <updated>2013-06-02T12:50:21-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CoreData.SQLDebug for RubyMotion]]></title>
+    <link href="http://fooqri.github.io/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/"/>
+    <updated>2013-06-01T12:23:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion</id>
+    <content type="html"><![CDATA[<p>It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in finding the hard to find little bugs that pop-up between restkit and core data. It can also help find performance issues with the database.  Unfortunately there isn&rsquo;t any documentation for how to do this in RubyMotion. I found one solution that works to a degree. It requires installing the ios_sim app and forcing the simulator into CoreData.SQLDebug mode after the rubymotion build.</p>
+
+<p>You will need to install ios_sim</p>
+
+<pre><code>$ brew install ios-sim
+</code></pre>
+
+<p>Then add the following two line as the last lines in your RubyMotion rakefile</p>
+
+<pre><code># Be sure to substitute your app name and make sure you are using
+# the correct path to the app based on simulator version.
+ios_sim = `which ios-sim`.strip
+sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -com.apple.CoreData.SQLDebug 1"
+</code></pre>
+
+<p>This will open the simulator in CoreData.SQLDebug mode, and log debug information to the terminal.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Getting RKLogConfigureByName working in RubyMotion]]></title>
@@ -32,7 +56,9 @@ how they are used, in this case I have put the setup in a method, and
 it gets called from the the standard didFinishLaunchingWithOption
 application block.</p>
 
-<p>{% gist 4733618 %}</p>
+<p><div><script src='https://gist.github.com/4733618.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 ]]></content>
   </entry>
   
