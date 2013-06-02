@@ -78,7 +78,9 @@ When you eval init.el or restart emacs you should be set. Fire up Deft and the U
 
 <p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
 
-<p>{% gist 5691402 %}</p>
+<p><div><script src='https://gist.github.com/5691402.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 ]]></content>
   </entry>
   

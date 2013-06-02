@@ -56,7 +56,9 @@ how they are used, in this case I have put the setup in a method, and
 it gets called from the the standard didFinishLaunchingWithOption
 application block.</p>
 
-<p>{% gist 4733618 %}</p>
+<p><div><script src='https://gist.github.com/4733618.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 ]]></content>
   </entry>
   

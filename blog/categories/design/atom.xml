@@ -24,7 +24,9 @@
 
 <p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
 
-<p>{% gist 4431708 %}</p>
+<p><div><script src='https://gist.github.com/4431708.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 
 <p>This above very simple example creates the diagram below.</p>
 

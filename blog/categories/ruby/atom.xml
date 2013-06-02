@@ -36,7 +36,9 @@
 <!--more-->
 
 
-<p>{% gist 4573704 %}</p>
+<p><div><script src='https://gist.github.com/4573704.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 
 <p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
 
@@ -148,7 +150,9 @@
 
 <p>The DSL is really simple and I was able to wrap some ruby objects in a day and deploy it on Heroku. Here is an snippet of what the DSL looks like.</p>
 
-<p>{% gist 4555788 %}</p>
+<p><div><script src='https://gist.github.com/4555788.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 
 <p>As you can see the Grape framework supports API versioning, and the DSL provides a simple way to define API endpoints by defining resources and then specifying the HTTP requests (get, post, put, delete) for that resource. Any Rails developer should feel comfortable with the paths, params, and routes syntax in Grape.</p>
 
@@ -199,7 +203,9 @@
 
 <p>Here is a quick example of the code to meet these requirements:</p>
 
-<p>{% gist 4549146 %}</p>
+<p><div><script src='https://gist.github.com/4549146.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 
 <p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
 

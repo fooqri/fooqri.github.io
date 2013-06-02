@@ -35,7 +35,9 @@
 
 <p>Here is a quick example of the code to meet these requirements:</p>
 
-<p>{% gist 4549146 %}</p>
+<p><div><script src='https://gist.github.com/4549146.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 
 <p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
 
