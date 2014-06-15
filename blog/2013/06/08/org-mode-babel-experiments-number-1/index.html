@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>User Stories and Activity Diagrams - Coding and design notes</title>
+  <title>org-mode babel experiments #1 - Coding and design notes</title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these &hellip;">
+  <meta name="description" content="As I mentioned in my post on nvALT and Emacs I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -66,7 +66,7 @@
   
   <header>
     
-      <h1 class="entry-title">User Stories and Activity Diagrams</h1>
+      <h1 class="entry-title">Org-mode Babel Experiments #1</h1>
     
     
       <p class="meta">
@@ -82,32 +82,24 @@
   
 
 
-<time datetime="2013-01-01T10:10:00-08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2013</time>
+<time datetime="2013-06-08T06:54:00-07:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these diagrams makes transitions clear that might otherwise be missed until later when they lead to costly re-architecting of the screens and flows.</p>
+<div class="entry-content"><p>As I mentioned in my post on <a href="http://godd.io/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a> I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. Org-mode is a very powerful tool for not only note taking but hen combined with <a href="http://orgmode.org/worg/org-contrib/babel/index.html">org-babel</a> is a powerful tool for <a href="http://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a>.</p>
 
-<p>I use Omnigraffle for UI wireframes, so it seemed natural to use it for activity diagrams, which is what I have been doing.  The issue is keeping the diagrams up to date.  Today, while playing with the <a href="http://www.complang.org/ragel/">Ragel</a> state machine compiler I discovered Ragel&rsquo;s awesome states/transitions diagramming feature. I learned the feature uses <a href="http://www.graphviz.org/">Graphviz</a> to create the diagrams from the parser grammar.  This led me to <a href="https://github.com/glejeune/Ruby-Graphviz/">Ruby Graphviz</a>, a Ruby library for interacting with Graphviz. It got me thinking that maybe there was a simple DSL that could be used to describe UI activities and screens and then automatically generate diagrams from the description. This would make keeping descriptions and diagrams in sync very easy.</p>
+<p>With the startup I am coding both server and client, but also managing the server and db enviornmnts. I try to be as efficient as possible by writig scripts to do common tasks. One issue is that amount of time that passes between some tasks, and how easy it is to lose the location of scripts, or the order they should be performed.</p>
 
-<p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
+<p>Checklists can be very handy for remembering, but not always for executing code. So I decided to experiment with literate programming in org-mode to combine checklists with code execution.</p>
 
-<div><script src='https://gist.github.com/4431708.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>This above very simple example creates the diagram below.</p>
-
-<p><img src="http://media.tumblr.com/61f780009a654f9724bcd4a9c703d9b4/tumblr_inline_mfz8syDgFP1qz562v.png" alt="" /></p>
-
-<p>This needs some cleanup of the aesthetics but the possibility is interesting. The next steps will be to come up with a very simple dsl, as simple as possible, maybe something that is markdown compliant so it fits inside our wiki pages cleanly. It would need to cover start and end states as well as intermediate state nodes. It would need to also handle decision points (diamonds) as well as transitions (edges) and notes. The simplest form would be to allow listing all nodes and all decisions, and then listing the connections between them. Labels would also be needed on all of these. IDs would probably help for wiring up the connections.</p>
-
-<p>Then it is a matter of running a parser on the wiki pages, looking for the syntax associated with the activity descriptions and generating a diagram using some ruby code. This might be a nice experiment to familiarize myself with Ragel to better understand its strengths and capabilities.</p>
-
-<p>I hope to get to spend some free time on this over the coming weeks, as it seems like a fun side project.</p>
+<p>TODO:
+&ndash; Show DB client lib
+&ndash; Show static items like drop and load DB
+&ndash; Show dynamic items like running queries.
+&ndash; Show an example of creating a report section of the file</p>
 </div>
 
 
@@ -130,12 +122,12 @@
   
 
 
-<time datetime="2013-01-01T10:10:00-08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2013</time>
+<time datetime="2013-06-08T06:54:00-07:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/design/'>design</a>, <a class='category' href='/blog/categories/hacks/'>hacks</a>
+    <a class='category' href='/blog/categories/babel/'>babel</a>, <a class='category' href='/blog/categories/emacs/'>emacs,</a>, <a class='category' href='/blog/categories/orb-mode/'>orb-mode,</a>
   
 </span>
 
@@ -144,7 +136,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1/" >Tweet</a>
   
   
   
@@ -153,10 +145,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/12/30/remapping-my-caps-lock-key/" title="Previous Post: Remapping My Caps Lock Key">&laquo; Remapping My Caps Lock Key</a>
+        <a class="basic-alignment left" href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/" title="Previous Post: CoreData.SQLDebug for RubyMotion">&laquo; CoreData.SQLDebug for RubyMotion</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/01/01/how-to-measure-anything/" title="Next Post: How to measure anything">How to measure anything &raquo;</a>
       
     </p>
   </footer>

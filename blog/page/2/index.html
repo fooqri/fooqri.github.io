@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="We have recently been working on an iOS app that requires a backend service. In this case I was looking for something leaner, simpler, and faster &hellip;">
+  <meta name="description" content="I wanted to make a quick note that I have been using RubyMotion the past few months. I don&rsquo;t mind building natively in Objective-C but since I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,18 +33,6 @@
 
 
   
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-41376488-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
 
 </head>
 
@@ -75,6 +63,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/17/rubymotion-ios-apps/">RubyMotion iOS Apps</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T11:28:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I wanted to make a quick note that I have been using <a href="http://www.rubymotion.com/">RubyMotion</a> the past few months. I don&rsquo;t mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI. Call me old fashioned, but I find I can work much faster when I can operate on the code directly, versus through an intermediary UI.</p>
+
+<p>The second reason for switching to RubyMotion is the libraries that are being created, they make iOS development feel so comfortable to a Ruby developer. Three key examples are <a href="https://github.com/rubymotion/BubbleWrap">BubbleWrap</a>, <a href="https://github.com/rubymotion/sugarcube">SugarcCube</a> and <a href="https://github.com/rubymotion/teacup">Teacup</a>.</p>
+
+<p>The third reason is testing and debugging, I like that RubyMotion comes with an RSpec clone, this means I have the same testing framework on both app and server. I also love the interactive console, there is nothing like tweaking your app live from a console (REPL). I find I can debug a lot of the code from the console, but RubyMotion also supports GDB for the more serious debugging needs. I hadn&rsquo;t used GDB in a few years but it came back to me pretty quickly once I started using it.</p>
+
+<p>I also like the DSL approach of Teacup in styling RubyMotion iOS apps. I like that I can create style files much like I do with CSS and have my app UI built with the style information, makes changing style feel more natural to me as a web developer.</p>
+
+<p>I have no doubt that there are many Objective-C developers who are extremely efficient in building apps, but it is always a challenge to become expert on multiple platforms. To become an expert iOS developer you need to become expert in the Cocoa libraries; the nice thing about RubyMotion is it allows you to learn the libraries within a familiar syntax if you are a ruby developer. It also allows you to create Ruby wrappers and generators that make developing for Cocoa feel more natural to a Ruby developer. Finally, since RubyMotion creates compiled native iOS apps, their is very little performance hit.</p>
+
+<p>I have a backlog of notes that I will post when I get a chance; including my experiences with development,  debugging, meta-programming, deploying via TestFlight, etc. I just wanted to give RubyMotion some praise from this Ruby developer, it has made developing iOS apps very similar to deploying ruby apps.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -607,44 +641,6 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/30/remapping-my-caps-lock-key/">Remapping My Caps Lock Key</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-30T16:24:00-08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve had my caps lock key mapped to the control key for the last few months as I have migrated back to Emacs from TextMate. It was a slight improvement over the placement of the control key but not a huge improvement. I came across this article: <a href="http://brettterpstra.com/a-useful-caps-lock-key/">A Useful CAPS-Lock Key</a> from Brett Terpstra and decided to give his mapping a try. This mapping requires free third party software, but I was particularly intrigued not by the escape key mapping, which is very handy, but by the &ldquo;Hyper-key&rdquo; (ctrl-shift-cmd-opt) being mapped to holding down the shift key. This opens a lot of potential system wide shortcut key-bindings that are a lot easier than using the uncomfortable ctrl-shift-cmd-opt.</p>
-
-<p>So far it is very useful, I like the hyper-t for opening iTerm2 in visor mode, very handy. I will check back in in a month on this topic and share any other key bindings I come up with.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -668,34 +664,12 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
   </ul>
 </section>
 <section>
-  <h1>Popular Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness&#8230;</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/17/fast-photosync-from-iphone/">Fast PhotoSync from iPhone</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/26/foldingtext-and-productivity/">FoldingText and productivity</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
-      </li>
-    
-  </ul>
-</section>
-<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/08/org-mode-babel-experiments-number-1/">org-mode babel experiments #1</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
@@ -713,13 +687,8 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
         <a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying out Pixate - CSS for iOS app Development</a>
-      </li>
-    
   </ul>
 </section>
-
 
 
 
@@ -737,19 +706,6 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
 
 </footer>
   
-
-<script type="text/javascript">
-      var disqus_shortname = 'goddio';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
 
 
 

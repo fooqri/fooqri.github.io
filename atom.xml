@@ -4,7 +4,7 @@
   <title><![CDATA[Coding and design notes]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2013-06-02T13:36:57-07:00</updated>
+  <updated>2013-06-08T07:21:29-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[org-mode babel experiments #1]]></title>
+    <link href="http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1/"/>
+    <updated>2013-06-08T06:54:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1</id>
+    <content type="html"><![CDATA[<p>As I mentioned in my post on <a href="http://godd.io/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a> I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. Org-mode is a very powerful tool for not only note taking but hen combined with <a href="http://orgmode.org/worg/org-contrib/babel/index.html">org-babel</a> is a powerful tool for <a href="http://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a>.</p>
+
+<p>With the startup I am coding both server and client, but also managing the server and db enviornmnts. I try to be as efficient as possible by writig scripts to do common tasks. One issue is that amount of time that passes between some tasks, and how easy it is to lose the location of scripts, or the order they should be performed.</p>
+
+<p>Checklists can be very handy for remembering, but not always for executing code. So I decided to experiment with literate programming in org-mode to combine checklists with code execution.</p>
+
+<p>TODO:
+&ndash; Show DB client lib
+&ndash; Show static items like drop and load DB
+&ndash; Show dynamic items like running queries.
+&ndash; Show an example of creating a report section of the file</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CoreData.SQLDebug for RubyMotion]]></title>
@@ -805,17 +824,6 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
 <p>Then it is a matter of running a parser on the wiki pages, looking for the syntax associated with the activity descriptions and generating a diagram using some ruby code. This might be a nice experiment to familiarize myself with Ragel to better understand its strengths and capabilities.</p>
 
 <p>I hope to get to spend some free time on this over the coming weeks, as it seems like a fun side project.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Remapping My Caps Lock Key]]></title>
-    <link href="http://fooqri.github.io/blog/2012/12/30/remapping-my-caps-lock-key/"/>
-    <updated>2012-12-30T16:24:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2012/12/30/remapping-my-caps-lock-key</id>
-    <content type="html"><![CDATA[<p>I&rsquo;ve had my caps lock key mapped to the control key for the last few months as I have migrated back to Emacs from TextMate. It was a slight improvement over the placement of the control key but not a huge improvement. I came across this article: <a href="http://brettterpstra.com/a-useful-caps-lock-key/">A Useful CAPS-Lock Key</a> from Brett Terpstra and decided to give his mapping a try. This mapping requires free third party software, but I was particularly intrigued not by the escape key mapping, which is very handy, but by the &ldquo;Hyper-key&rdquo; (ctrl-shift-cmd-opt) being mapped to holding down the shift key. This opens a lot of potential system wide shortcut key-bindings that are a lot easier than using the uncomfortable ctrl-shift-cmd-opt.</p>
-
-<p>So far it is very useful, I like the hyper-t for opening iTerm2 in visor mode, very handy. I will check back in in a month on this topic and share any other key bindings I come up with.</p>
 ]]></content>
   </entry>
   

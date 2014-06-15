@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in &hellip;">
+  <meta name="description" content="As I mentioned in my post on nvALT and Emacs I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,18 +33,6 @@
 
 
   
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-41376488-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
 
 </head>
 
@@ -75,6 +63,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/08/org-mode-babel-experiments-number-1/">Org-mode Babel Experiments #1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T06:54:00-07:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As I mentioned in my post on <a href="http://godd.io/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a> I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. Org-mode is a very powerful tool for not only note taking but hen combined with <a href="http://orgmode.org/worg/org-contrib/babel/index.html">org-babel</a> is a powerful tool for <a href="http://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a>.</p>
+
+<p>With the startup I am coding both server and client, but also managing the server and db enviornmnts. I try to be as efficient as possible by writig scripts to do common tasks. One issue is that amount of time that passes between some tasks, and how easy it is to lose the location of scripts, or the order they should be performed.</p>
+
+<p>Checklists can be very handy for remembering, but not always for executing code. So I decided to experiment with literate programming in org-mode to combine checklists with code execution.</p>
+
+<p>TODO:
+&ndash; Show DB client lib
+&ndash; Show static items like drop and load DB
+&ndash; Show dynamic items like running queries.
+&ndash; Show an example of creating a report section of the file</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -583,52 +617,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/17/rubymotion-ios-apps/">RubyMotion iOS Apps</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-17T11:28:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I wanted to make a quick note that I have been using <a href="http://www.rubymotion.com/">RubyMotion</a> the past few months. I don&rsquo;t mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI. Call me old fashioned, but I find I can work much faster when I can operate on the code directly, versus through an intermediary UI.</p>
-
-<p>The second reason for switching to RubyMotion is the libraries that are being created, they make iOS development feel so comfortable to a Ruby developer. Three key examples are <a href="https://github.com/rubymotion/BubbleWrap">BubbleWrap</a>, <a href="https://github.com/rubymotion/sugarcube">SugarcCube</a> and <a href="https://github.com/rubymotion/teacup">Teacup</a>.</p>
-
-<p>The third reason is testing and debugging, I like that RubyMotion comes with an RSpec clone, this means I have the same testing framework on both app and server. I also love the interactive console, there is nothing like tweaking your app live from a console (REPL). I find I can debug a lot of the code from the console, but RubyMotion also supports GDB for the more serious debugging needs. I hadn&rsquo;t used GDB in a few years but it came back to me pretty quickly once I started using it.</p>
-
-<p>I also like the DSL approach of Teacup in styling RubyMotion iOS apps. I like that I can create style files much like I do with CSS and have my app UI built with the style information, makes changing style feel more natural to me as a web developer.</p>
-
-<p>I have no doubt that there are many Objective-C developers who are extremely efficient in building apps, but it is always a challenge to become expert on multiple platforms. To become an expert iOS developer you need to become expert in the Cocoa libraries; the nice thing about RubyMotion is it allows you to learn the libraries within a familiar syntax if you are a ruby developer. It also allows you to create Ruby wrappers and generators that make developing for Cocoa feel more natural to a Ruby developer. Finally, since RubyMotion creates compiled native iOS apps, their is very little performance hit.</p>
-
-<p>I have a backlog of notes that I will post when I get a chance; including my experiences with development,  debugging, meta-programming, deploying via TestFlight, etc. I just wanted to give RubyMotion some praise from this Ruby developer, it has made developing iOS apps very similar to deploying ruby apps.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -650,34 +638,12 @@ application block.</p>
   </ul>
 </section>
 <section>
-  <h1>Popular Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness&#8230;</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/17/fast-photosync-from-iphone/">Fast PhotoSync from iPhone</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/26/foldingtext-and-productivity/">FoldingText and productivity</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
-      </li>
-    
-  </ul>
-</section>
-<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/08/org-mode-babel-experiments-number-1/">org-mode babel experiments #1</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
@@ -695,13 +661,8 @@ application block.</p>
         <a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying out Pixate - CSS for iOS app Development</a>
-      </li>
-    
   </ul>
 </section>
-
 
 
 
@@ -719,19 +680,6 @@ application block.</p>
 
 </footer>
   
-
-<script type="text/javascript">
-      var disqus_shortname = 'goddio';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
 
 
 
