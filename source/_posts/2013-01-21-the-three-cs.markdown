@@ -4,7 +4,7 @@ title: "The three c's"
 date: 2013-01-21 10:26
 author: Patrick Goddi
 comments: true
-categories: 
+categories: [opinion, project-management]
 ---
 I really enjoyed [this interview](http://www.networkworld.com/community/blog/tony-fadell-unique-nature-apples-design-process) with Tony Fadell on the unique nature of Apple's design process. The discussion about project abandonment percentages is incredibly important, and often overlooked in large companies. In many cases abandonment is a financial decision related to either real or opportunity costs associated with launching a product. People who have never worked for a large consumer products company likely have no idea how many products are cancelled just before launch because of the incredible cost in launching a product into the market. 
 
@@ -20,6 +20,8 @@ Tony contrasts his experience at Apple with his experience at Philips:
 I don't think large companies have a metric for tracking the number and impact of cancelled projects. In my experience executive teams wanted to forget cancellations as quickly as possible and move on. They considered the cost to be in the past, and by having cancelled the project they had cut any ongoing cost.  But as Tony points out, there are ongoing costs, just not costs that have their own column on a balance sheet or scorecard. In my experience it was clear ... the impact of cancellations were cumulative and devastating. 
 
 The importance of commitment is actually one of the 3 c's I use when evaluating a project: _Clarity_, _Competency_, and _Commitment_. Over the years I have found these to be the key pieces of early stage information that will best predict the success of a project. Tony's pont about commitment is that it isn't only about commitment to a project, it is about the culture of commitment in an organization. I like this point, and I imagine there is a corollary for organizational clarity and competency. Below are a few notes related to project level evaluation of the 3 c's
+
+<!--more-->
 
 **Clarity**
 

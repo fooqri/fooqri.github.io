@@ -4,7 +4,7 @@ title: "Screen capture goodness..."
 date: 2012-01-17 14:17
 comments: true
 author: "Patrick Goddi"
-categories: 
+categories: [hacks, productivity]
 ---
 ###tl;wr
 Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.

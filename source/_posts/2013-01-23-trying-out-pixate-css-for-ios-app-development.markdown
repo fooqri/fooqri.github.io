@@ -4,7 +4,7 @@ title: "Trying out Pixate - CSS for iOS app Development"
 date: 2013-01-23 22:09
 comments: true
 author: "Patrick Goddi"
-categories: 
+categories: [rubymotion, pixate, iOS, development]
 ---
 Recently I have been using RubyMotion for iOS development; I really  appreciate developing in Ruby, and prefer Emacs to Xcode. Compared to using interface builder, styling apps can be a challenge. It is possible to use RubyMotion with XIB files created in Xcode's Interface Builder, but I have been trying to avoid this. I am striving for a more web-app like design and development workflow. 
 
@@ -16,6 +16,8 @@ After 2 days of coding I have my basic controllers in place as well as several T
 * universal selector - Select any control
 * class selector - Select a control by class name
 * id selector - Select a control by ID
+
+<!--more-->
 
 It also supports attribute selectors and pseudo classes. See the [complete list](http://cdn.pixate.com/docs/engine/ios/1.0/Pixate%20Engine%20for%20iOS%20Styling%20Reference.html) for more information on selectors and styling.
 

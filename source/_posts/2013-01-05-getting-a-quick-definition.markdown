@@ -4,7 +4,7 @@ title: "Getting a quick definition"
 date: 2013-01-05 11:10
 comments: true
 author: "Patrick Goddi"
-categories: 
+categories: [tips]
 ---
 I am a logophile, and regularly looking up the meanings of words I encounter on the web or in pdf documents. More recent OS X versions include a great feature that allows you to get a quick definition in almost any app (browser, editor, etc). Highlight a word and press *ctrl-command-d* to get the definition of the word. It is easy to configure to include Wikipedia definitions so you can also look up people and concepts.
 

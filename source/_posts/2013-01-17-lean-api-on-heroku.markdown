@@ -3,7 +3,7 @@ layout: post
 title: "Lean API on Heroku"
 date: 2013-01-17 08:46
 comments: true
-categories: 
+categories: [ruby, servers, development]
 ---
 We have recently been working on an iOS app that requires a backend service. In this case I was looking for something leaner, simpler, and faster than Rails since it was only an API for a mobile app, no web front-end. I wanted it to be very lean and scalable so we could make it through early user testing without spending a lot on servers. Ok, ideally without spending anything on servers; basically how much could I squeeze out of one Heroku worker.
 

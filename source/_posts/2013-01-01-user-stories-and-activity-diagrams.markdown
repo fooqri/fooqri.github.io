@@ -4,7 +4,7 @@ title: "User Stories and Activity Diagrams"
 date: 2013-01-01 10:10
 comments: true
 author: "Patrick Goddi"
-categories: 
+categories: [hacks, design]
 ---
 I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these diagrams makes transitions clear that might otherwise be missed until later when they lead to costly re-architecting of the screens and flows.
 

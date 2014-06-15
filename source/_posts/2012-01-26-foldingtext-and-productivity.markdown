@@ -4,8 +4,8 @@ title: "FoldingText and productivity"
 date: 2012-12-26 19:19
 comments: true
 author: "Patrick Goddi"
-categories: 
----
+categories: [productivity]
+---         
 I have been using the [FoldingText](http://www.foldingtext.com/) app for  a couple of weeks. It is a very interesting app targeting writers, something I am not, but I was intrigued by the  interactivity of this minimalist app. Specifically the ability to add interactive todo lists and timers and have them execute in a text document. Please take a look at the [FoldingText Video](http://www.foldingtext.com/#watchmovie) to get a feel for it, I don't want to describe ideas that a video shows so clearly.
 
 I have been using it for my daily plan the past 2 weeks. I usually start each day with a mix of items I want to accomplish. These items usually include a mix of coding items for a sprint, some user stories for the backlog, and some wireframes for a future sprint, etc.  The mix keeps the day feeling balanced. I add a mix of these to the day's plan, and then organize them into [pomodoro](http://en.wikipedia.org/wiki/Pomodoro_Technique) time slices. 

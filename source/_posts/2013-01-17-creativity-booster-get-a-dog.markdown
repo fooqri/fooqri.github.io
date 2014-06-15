@@ -3,7 +3,7 @@ layout: post
 title: "Creativity Booster: Get a dog."
 date: 2013-01-17 12:47
 comments: true
-categories: 
+categories: [opinion, creativity]
 ---
 It probably sounds specious, but I have found having a dog around has made me both more productive and more creative. The evidence for this claim is the number of daily messages I post to our team message board that start with the phrase "While I was out walking the dog I had this idea...." 
 

@@ -4,7 +4,7 @@ title: "Parsing a simple markdown style list in Ragel"
 date: 2013-01-19 13:04
 author: "Patrick Goddi"
 comments: true
-categories: 
+categories: [ruby, parsers]
 ---
 In an earlier post [Simple state machine example](http://www.pragmaux.com/post/40689737812/simple-state-machine-example), I provided an example of using the Ruby _state_machine_ gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate "list" object. 
 
@@ -16,7 +16,9 @@ There are three files involved in this solution to the list problem:
 * mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.
 * mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).
 
-I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab). 
+I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).
+
+<!--more-->
 
 {% gist 4573704 %}
 

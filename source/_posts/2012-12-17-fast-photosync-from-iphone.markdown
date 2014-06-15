@@ -4,7 +4,7 @@ title: "Fast PhotoSync from iPhone"
 date: 2012-12-17 05:14
 comments: true
 author: "Patrick Goddi"
-categories: 
+categories: [productivity]
 ---
 Doing iOS design and development I find myself capturing images on the iPhone all the time to make notes on. These usually end up being added to my notes or to our project wiki (see <a href="http://fooqri.tumblr.com/post/38160399193/screen-capture-goodness" title="Screen Capture Goodness">Screen capture goodness</a> and  <a href="http://fooqri.tumblr.com/post/38158334752/wiki-searchable-notes" title="Wiki + Searchable Notes">Wiki + Searchable Notes</a> for more on that).
 

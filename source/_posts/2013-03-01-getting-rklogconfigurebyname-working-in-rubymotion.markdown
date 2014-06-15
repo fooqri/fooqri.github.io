@@ -3,7 +3,7 @@ layout: post
 title: "Getting RKLogConfigureByName working in RubyMotion"
 date: 2013-03-07 15:21
 comments: true
-categories: [RubyMotion]
+categories: [RubyMotion, RestKit]
 author: "Patrick Goddi"
 publish: true
 ---
