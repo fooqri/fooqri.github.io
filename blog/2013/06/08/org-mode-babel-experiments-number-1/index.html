@@ -33,6 +33,18 @@
 
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41376488-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -89,9 +101,9 @@
   </header>
 
 
-<div class="entry-content"><p>As I mentioned in my post on <a href="http://godd.io/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a> I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. Org-mode is a very powerful tool for not only note taking but hen combined with <a href="http://orgmode.org/worg/org-contrib/babel/index.html">org-babel</a> is a powerful tool for <a href="http://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a>.</p>
+<div class="entry-content"><p>As I mentioned in my post on <a href="http://godd.io/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a> I have been using Deft for notes. One change I have made is to switch from using markdown to org-mode. Org-mode is a very powerful tool for not only note taking but when combined with <a href="http://orgmode.org/worg/org-contrib/babel/index.html">org-babel</a> is a powerful tool for <a href="http://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a>.</p>
 
-<p>With the startup I am coding both server and client, but also managing the server and db enviornmnts. I try to be as efficient as possible by writig scripts to do common tasks. One issue is that amount of time that passes between some tasks, and how easy it is to lose the location of scripts, or the order they should be performed.</p>
+<p>With the startup I am coding both server and client, but also managing the server and db environments. I try to be as efficient as possible by writing scripts to do common tasks. One issue is that amount of time that passes between some tasks, and how easy it is to lose the location of scripts, or the order they should be performed.</p>
 
 <p>Checklists can be very handy for remembering, but not always for executing code. So I decided to experiment with literate programming in org-mode to combine checklists with code execution.</p>
 
@@ -152,6 +164,12 @@
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -164,6 +182,32 @@
       
       <a href="http://fooqri.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
       </li>
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/fast-photosync-from-iphone/">Fast PhotoSync from iPhone</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/26/foldingtext-and-productivity/">FoldingText and productivity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
   </ul>
 </section>
 <section>
@@ -197,6 +241,7 @@
 
 
 
+
   
 </aside>
 
@@ -204,12 +249,28 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Patrick Goddi -
+  Copyright &copy; 2014 - Patrick Goddi -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'goddio';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1/';
+        var disqus_url = 'http://fooqri.github.io/blog/2013/06/08/org-mode-babel-experiments-number-1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
