@@ -10,7 +10,7 @@ As I mentioned in my post on [nvALT and Emacs](http://godd.io/blog/2013/03/04/nv
 With the startup I am coding both server and client, but also managing the server and db environments. I try to be as efficient as possible by writing scripts to do common tasks. One issue is that amount of time that passes between some tasks, and how easy it is to lose the location of scripts, or the order they should be performed.
 
 Checklists can be very handy for remembering, but not always for executing code. So I decided to experiment with literate programming in org-mode to combine checklists with code execution.
-
+ 
 TODO:
 - Show DB client lib
 - Show static items like drop and load DB 
