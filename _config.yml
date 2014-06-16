@@ -3,8 +3,8 @@
 # ----------------------- #
 
 url: http://fooqri.github.io
-title: Coding and design notes
-subtitle: with a few tricks and hacks thrown in.
+title:
+subtitle: Design, development, and productivity; notes and explorations.
 author: Patrick Goddi
 simple_search: http://google.com/search
 logo: profile.jpg 
@@ -39,7 +39,7 @@ rdiscount:
   extensions:
     - autolink
     - footnotes
-    - smart
+    - smart 
 pygments: false # default python pygments have been replaced by pygments.rb
 
 paginate: 10          # Posts per page on the blog index
