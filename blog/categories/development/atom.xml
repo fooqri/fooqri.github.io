@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: development | Coding and design notes]]></title>
+  <title><![CDATA[Category: development | ]]></title>
   <link href="http://fooqri.github.io/blog/categories/development/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-06-15T17:39:32-07:00</updated>
+  <updated>2014-06-16T08:06:22-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
