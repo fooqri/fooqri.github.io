@@ -4,7 +4,7 @@
   <title><![CDATA[Category: google-docs | ]]></title>
   <link href="http://fooqri.github.io/blog/categories/google-docs/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-10-15T15:49:20-07:00</updated>
+  <updated>2014-10-15T15:54:17-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -30,7 +30,7 @@
 
 <p><strong>Note</strong>: I enabled url fragment parameters so you can easily point the app at your own copy of the spreadsheet for testing. See the <a href="//fooqri.poggr.com/pgyUYTfcMUe:dxJgUYaGcGUl">readme document</a> for the how-to instructions. Feel free to copy the spreadsheet and try out the app with your own list of cities and <em>hot spots</em>.</p>
 
-<p> Separating code and data is always beneficial, but there is something cool about connecting an app to a Google spreadsheet. There are many spreadsheet users who would like to have an app to visualize their data, but may not be up to the coding challenge yet. I think many small useful apps could be built this way;  I will pick a few to build in the next few weeks and discuss them here. I am using the <em>poggr.com</em> service for the example, which is a service I built just for these types of small quick apps that can rely on an external data service. It is basically working to merge interactive content creation and blogging into a single service.</p>
+<p> Separating code and data is always beneficial, but there is something cool about connecting an app to a Google spreadsheet. There are many spreadsheet users who would like to have an app to visualize their data, but may not be up to the coding challenge yet. I think many small useful apps could be built this way;  I will pick a few to build in the next few weeks and discuss them here. I am using the <em><a href="//www.poggr.com/home">poggr.com</a></em> service for the example, which is a service I built just for these types of small quick apps that can rely on an external data service. It is basically working to merge interactive content creation and blogging into a single service.</p>
 
 <p> Leave me a comment if you have an small spreadsheet driven app you would like me to build. If it seems reasonable I may add it to the list.</p>
 ]]></content>
