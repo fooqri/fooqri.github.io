@@ -8,7 +8,7 @@ categories: poggr google-docs polymer
 
 <a href="//fooqri.poggr.com/pgyUYTfcMUe:dgyFhkQ9M8e"><img src="//s3.amazonaws.com/goddip-poggs/pgyUYTfcMUe/example_screen.png"></a>
 
-Google spreadsheets is a great way for a team to collaborate on a data set but it leaves a bit to be desired on presentation of the data. To that end I will be creating a series of fun examples showing how to build small interactive apps that utilize _Google Docs_ and _Polymer_ web components to quickly bring data to life. In this series I will be using a Google spreadsheet as the data source, but other data sources are possible, and I will get to those as well in future posts.
+Using Google spreadsheets is a great way for a team to collaborate on a data set but it leaves a bit to be desired on presentation of the data. To that end I will be creating a series of fun examples showing how to build small interactive apps that utilize _Google Docs_ and _Polymer_ web components to quickly bring data to life. In this series I will be using a Google spreadsheet as the data source, but other data sources are possible, and I will get to those as well in future posts.
 
 The first example is  ___[Hipster List](http://fooqri.poggr.com/pgyUYTfcMUe:dgyFhkQ9M8e)___, an app that shows cool places to visit in various cities. Check out the ___[README](//fooqri.poggr.com/pgyUYTfcMUe:dxJgUYaGcGUl)___ document for details on how this app is put together.
 
