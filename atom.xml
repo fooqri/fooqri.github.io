@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-10-15T15:54:17-07:00</updated>
+  <updated>2014-10-15T17:43:17-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Fun with Literate Coffeescript]]></title>
+    <link href="http://fooqri.github.io/blog/2014/10/15/fun-with-literate-coffeescript/"/>
+    <updated>2014-10-15T16:53:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2014/10/15/fun-with-literate-coffeescript</id>
+    <content type="html"><![CDATA[<p>As an emacs/org-mode user I have always been enamored with the possibility of combining inline code in my notes. I actually have a number of org-mode files that interactively execute code for procedures where I may go long periods of time between use. This includes certain maintenance activities, or destructive operations I don&rsquo;t want to get wrong. It is nice to see the example code inline in my notes, and be able to execute it directly in my notes.</p>
+
+<p>That is why I find the idea of <em>Literate Coffeescript</em> facinating. It is not just the idea of documenting code or the idea of describing code in a blog post. It is actually writing a blog post where the code is extracted and compiled and available as a javascript document seperate from the document it was created in.</p>
+
+<p>Since <em><a href="http://fooqri.github.io//www.poggr.com">poggr.com</a></em> supports compiling coffeescript into javascript  I decided to turn on litcoffeescript and give it a go to see if this is a legitimate way to combine code and blogging in a single pogg document.</p>
+
+<h3>Poggr Coffeescript Compilation</h3>
+
+<p>The way poggr works is that when you save a coffeescript document poggr keeps both source code and compiled javascript code. Just like when you save a markdown document poggr saves both the source markdown and the compiled html. When a document is requested in an http request poggr will deliver the compiled code unless a query parameter is used to request source. This works out quite well in most cases, since the compiled version is what browsers are expecting (html, css, javcript). This model allows other markup like scss, yaml, etc to work similarly.</p>
+
+<p><em>Litcoffeescript</em> is unique in that the compiled output is both html and javascript, and in some cases you may want the javascript without the html. I felt compelled enough to experiment that I added a test case where adding a <strong>.js</strong> extention will return the javascript, otherwise it will return the compiled html version of the document.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>...
+</span><span class='line'>&lt;script src="http://fooqri.github.io//www.poggr.com/peJo73gk0Nx:dxkfEl2RANx.js"&gt;
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I wanted to pick something fun to experiment with so I chose a game originally created by <em><a href="https://gist.github.com/macournoyer">Marc-André Cournoyer</a></em>.
+in his <em><a href="https://gist.github.com/macournoyer/7357908">game.litcoffee</a></em> gist.</p>
+
+<p>You can see my version of the  litcoffeescript post in action <a href="http://goddip.poggr.com/peJo73gk0Nx:dxkfEl2RANx">here</a>. What you will notice it the game is running as part of the post, and all the code is also embedded in the post. This may look like a normal code example post, but if you look at the <a href="http://fooqri.github.io//source.poggr.com/peJo73gk0Nx:dxkfEl2RANx">source code</a> you will see at the end of the source document that the post actually loads the js version of itself. So by saving a litcoffeescript document you automatically get a blog post and all of the fenced  coffeescript code is compiled into a javascript document.  <strong>Mind Blown right!</strong></p>
+
+<p>So basically any change to the inline code automatically re-compiles the js document with each save. I can&rsquo;t see it replacing emacs/org/babel for me but it certainly opens some possibilities for single page interactive blog posts where displaying the code is important.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Spreadsheet Driven Web Apps]]></title>
@@ -801,33 +835,6 @@ application block.</p>
 
 <p>There was a recent question on Quora: <a href="http://www.quora.com/Engineering-Management/Why-are-software-development-task-estimations-regularly-off-by-a-factor-of-2-3">Why are software development task estimations regularly off by a factor of 2-3?</a> That I believe is true because of teams not doing proper analysis, but also it is a multiplier effect of bad estimation across a team. Because of interdependencies of teams these estimation errors can cause huge estimation errors when rolled together.
 Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-ebook/dp/B003GWX8YO/">How to Measure Anything: Finding the Value of Intangibles in Business</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[User Stories and Activity Diagrams]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams/"/>
-    <updated>2013-01-01T10:10:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/01/user-stories-and-activity-diagrams</id>
-    <content type="html"><![CDATA[<p>I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these diagrams makes transitions clear that might otherwise be missed until later when they lead to costly re-architecting of the screens and flows.</p>
-
-<p>I use Omnigraffle for UI wireframes, so it seemed natural to use it for activity diagrams, which is what I have been doing.  The issue is keeping the diagrams up to date.  Today, while playing with the <a href="http://www.complang.org/ragel/">Ragel</a> state machine compiler I discovered Ragel&rsquo;s awesome states/transitions diagramming feature. I learned the feature uses <a href="http://www.graphviz.org/">Graphviz</a> to create the diagrams from the parser grammar.  This led me to <a href="https://github.com/glejeune/Ruby-Graphviz/">Ruby Graphviz</a>, a Ruby library for interacting with Graphviz. It got me thinking that maybe there was a simple DSL that could be used to describe UI activities and screens and then automatically generate diagrams from the description. This would make keeping descriptions and diagrams in sync very easy.</p>
-
-<p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
-
-<div><script src='https://gist.github.com/4431708.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>This above very simple example creates the diagram below.</p>
-
-<p><img src="http://media.tumblr.com/61f780009a654f9724bcd4a9c703d9b4/tumblr_inline_mfz8syDgFP1qz562v.png" alt="" /></p>
-
-<p>This needs some cleanup of the aesthetics but the possibility is interesting. The next steps will be to come up with a very simple dsl, as simple as possible, maybe something that is markdown compliant so it fits inside our wiki pages cleanly. It would need to cover start and end states as well as intermediate state nodes. It would need to also handle decision points (diamonds) as well as transitions (edges) and notes. The simplest form would be to allow listing all nodes and all decisions, and then listing the connections between them. Labels would also be needed on all of these. IDs would probably help for wiring up the connections.</p>
-
-<p>Then it is a matter of running a parser on the wiki pages, looking for the syntax associated with the activity descriptions and generating a diagram using some ruby code. This might be a nice experiment to familiarize myself with Ragel to better understand its strengths and capabilities.</p>
-
-<p>I hope to get to spend some free time on this over the coming weeks, as it seems like a fun side project.</p>
 ]]></content>
   </entry>
   
