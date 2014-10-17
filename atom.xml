@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-10-17T09:06:20-07:00</updated>
+  <updated>2014-10-17T09:07:59-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -18,7 +18,7 @@
     <link href="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/"/>
     <updated>2014-10-17T06:39:00-07:00</updated>
     <id>http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component</id>
-    <content type="html"><![CDATA[<p>In my continued experiments with Polymer, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> &ndash; a reusable chart library for  <a href="http://d3js.org/" target="_blank">d3.js</a>.
+    <content type="html"><![CDATA[<p>In my continued experiments with <a href="https://www.polymer-project.org/" target="_blank">Polymer</a>, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> &ndash; a reusable chart library for  <a href="http://d3js.org/" target="_blank">d3.js</a>.
 As part of the activity I ported all of the  <a href="http://nvd3.org/examples/index.html" target="_blank">NVD3 example charts</a> to a web component I am calling <em>&lt;goddip-charts></em>. The component is contained in a <a href="http://www.poggr.com/pekqyTpXDEe:deJoY70GdVx" target="_blank">pogg</a> on <a href="http://www.poggr.com/home/" target="_blank">poggr.com</a>, as this is where I do my experimenting and it allows me to code and serve the project documents in the one place.</p>
 
 <iframe width="620px" height="320px" src="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49"></iframe>
