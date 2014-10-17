@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-In my continued experiments with Polymer, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> - a reusable chart library for d3.js.
+In my continued experiments with Polymer, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> - a reusable chart library for  <a href="http://d3js.org/" target="_blank">d3.js</a>.
 As part of the activity I ported all of the  <a href="http://nvd3.org/examples/index.html" target="_blank">NVD3 example charts</a> to a web component I am calling _<goddip-charts>_. The component is contained in a <a href="http://www.poggr.com/pekqyTpXDEe:deJoY70GdVx" target="_blank">pogg</a> on <a href="http://www.poggr.com/home/" target="_blank">poggr.com</a>, as this is where I do my experimenting and it allows me to code and serve the project documents in the one place. 
 
 <iframe width="620px" height="320px" src="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49"></iframe>
