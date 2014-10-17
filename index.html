@@ -9,7 +9,8 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="As an emacs/org-mode/babel user I have always been fascinated with the potential of literate programming and combining inline code in my notes. I &hellip;">
+  <meta name="description" content="In my continued experiments with Polymer, I created a web component that wraps NVD3 &ndash; a reusable chart library for d3.js.
+As part of the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">D3 Charts - Wrapping &#8216;NVD3 Charts&#8217; in a Web Component</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-17T06:39:00-07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my continued experiments with Polymer, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> &ndash; a reusable chart library for d3.js.
+As part of the activity I ported all of the  <a href="http://nvd3.org/examples/index.html" target="_blank">NVD3 example charts</a> to a web component I am calling <em>&lt;goddip-charts></em>. The component is contained in a <a href="http://www.poggr.com/pekqyTpXDEe:deJoY70GdVx" target="_blank">pogg</a> on <a href="http://www.poggr.com/home/" target="_blank">poggr.com</a>, as this is where I do my experimenting and it allows me to code and serve the project documents in the one place.</p>
+
+<iframe width="620px" height="320px" src="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49"></iframe>
+
+
+<p>The above chart is an iframe to <a href="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">this document</a> The actual element tag used is as follows:</p>
+
+<pre><code> &lt;goddip-charts  
+   class="small-chart-styles"
+   chartType="bar"
+   context="/pg1GXbi9MBx:deyDCclAEUg::49" 
+   css="/pg1GXbi9MBx:dxkNM7ZicfBe::49" &gt;
+ &lt;/goddip-charts &gt;
+</code></pre>
+
+<p>To view the uncompiled and unminimized source see (<a href="http://source.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">html document source</a>, <a href="http://source.poggr.com/pg1GXbi9MBx:deyDCclAEUg::49" target="_blank">data document source</a>, and <a href="http://source.poggr.com/pg1GXbi9MBx:dxkNM7ZicfBe::49" target="_blank">style document source</a>).</p>
+
+<p>The best way to learn about the <em>&lt;goddip-charts></em> component is to take a look at its <a href="http://www.poggr.com/pg1GXbi9MBx:dgJXG7boqzSe" target="_blank">README document</a>. This describes how to use each of the charts, reference data, adding styling, etc. You can always view the component <a href="http://source.poggr.com/pg1GXbi9MBx:dlJkI7k9tBe" target="_blank">source</a>. If you have a <em>poggr.com</em> account you can view, clone, and edit <em>goddip-charts</em> using the <a href="http://project.poggr.com/pg1GXbi9MBx" target="_blank">poggr project UI</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -600,62 +655,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/18/pattern-problems-vs-logic-problems/">Pattern Problems vs Logic Problems</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-18T11:48:00-08:00" pubdate data-updated="true">Jan 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence?</p></blockquote>
-
-<p>I ran across this interesting problem in <a href="http://www.amazon.com/The-Joy-Guided-Infinity-ebook/dp/B006R8PL7G/ref=tmm_kin_title_0">&ldquo;The Joy of x: A Guided Tour of Math, from One to Infinity,&rdquo;</a> a very accessible and interesting tour of mathematics.</p>
-
-<p>It turns out most people quickly answer “one hour.”  As Strogatz opines,</p>
-
-<blockquote><p>The words themselves nudge you that way. The drumbeat in the first sentence— three men, three fences, three hours— catches your attention by establishing a rhythm, so when the next sentence repeats the pattern with one man, one fence, ____ hours, it’s hard to resist filling in the blank with “one.” The parallel construction suggests an answer that’s linguistically right but mathematically wrong.</p></blockquote>
-
-<p>The correct answer is three hours. It is obvious if you imagine each person painting their own fence for three hours. Remove two people and two fences and you are left with one person, still painting their one fence for three hours, as before.</p>
-
-<p>What struck me about this problem is that it is an incredibly simple, concrete, and visual example of how our brains try to match patterns, but more importantly the side effect that occurs when a pattern is matched. Neuroscience studies suggest that dopamine (a neurotransmitter associated with pleasure) is released when we solve a problem, thus giving us a biological explanation for that wonderful feeling we get when we have solved a problem.</p>
-
-<p>This made me wonder, does our brain perhaps release dopamine when we solve the faux pattern matching problem and <em>tricks</em> us into thinking we solved the actual logic problem? Thus we quickly blurt out the wrong answer.  After all, we have spent a lifetime feeling the dopamine rush when we believe we have the answer to a problem. Strogatz&rsquo;s observation about this particular word problem having two solutions (a pattern solution, and a logic solution) is very interesting, and is likely very related to a number of <a href="http://en.wikipedia.org/wiki/List_of_biases_in_judgment_and_decision_making">Cognitive Biases</a>. It is perhaps valuable to think about this explicitly when considering information:</p>
-
-<ul>
-<li>What is the pattern problem being suggested?</li>
-<li>What is the logic problem being suggested?</li>
-</ul>
-
-
-<p>And make sure you have the answer the right question when you feel that first burst of dopamine show up.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -703,6 +702,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">d3 charts - wrapping &#8216;NVD3 Charts&#8217; in a web component</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
       </li>
     
@@ -716,10 +719,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
       </li>
     
   </ul>

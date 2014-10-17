@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: servers - </title>
+  <title>d3 charts - wrapping 'NVD3 Charts' in a web component - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Category: servers">
+  <meta name="description" content="In my continued experiments with Polymer, I created a web component that wraps NVD3 &ndash; a reusable chart library for d3.js.
+As part of the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.ioblog/categories/servers/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -80,36 +81,103 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Servers</h1>
+    
+      <h1 class="entry-title">D3 Charts - Wrapping 'NVD3 Charts' in a Web Component</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-17T06:39:00-07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>In my continued experiments with Polymer, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> &ndash; a reusable chart library for d3.js.
+As part of the activity I ported all of the  <a href="http://nvd3.org/examples/index.html" target="_blank">NVD3 example charts</a> to a web component I am calling <em>&lt;goddip-charts></em>. The component is contained in a <a href="http://www.poggr.com/pekqyTpXDEe:deJoY70GdVx" target="_blank">pogg</a> on <a href="http://www.poggr.com/home/" target="_blank">poggr.com</a>, as this is where I do my experimenting and it allows me to code and serve the project documents in the one place.</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/01/17/lean-api-on-heroku/">Lean API on Heroku</a></h1>
-<time datetime="2013-01-17T08:46:00-08:00" pubdate><span class='month'>Jan</span> <span class='day'>17</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/servers/'>servers</a></span>
-</footer>
+<iframe width="620px" height="320px" src="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49"></iframe>
 
 
-</article>
+<p>The above chart is an iframe to <a href="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">this document</a> The actual element tag used is as follows:</p>
 
+<pre><code> &lt;goddip-charts  
+   class="small-chart-styles"
+   chartType="bar"
+   context="/pg1GXbi9MBx:deyDCclAEUg::49" 
+   css="/pg1GXbi9MBx:dxkNM7ZicfBe::49" &gt;
+ &lt;/goddip-charts &gt;
+</code></pre>
+
+<p>To view the uncompiled and unminimized source see (<a href="http://source.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">html document source</a>, <a href="http://source.poggr.com/pg1GXbi9MBx:deyDCclAEUg::49" target="_blank">data document source</a>, and <a href="http://source.poggr.com/pg1GXbi9MBx:dxkNM7ZicfBe::49" target="_blank">style document source</a>).</p>
+
+<p>The best way to learn about the <em>&lt;goddip-charts></em> component is to take a look at its <a href="http://www.poggr.com/pg1GXbi9MBx:dgJXG7boqzSe" target="_blank">README document</a>. This describes how to use each of the charts, reference data, adding styling, etc. You can always view the component <a href="http://source.poggr.com/pg1GXbi9MBx:dlJkI7k9tBe" target="_blank">source</a>. If you have a <em>poggr.com</em> account you can view, clone, and edit <em>goddip-charts</em> using the <a href="http://project.poggr.com/pg1GXbi9MBx" target="_blank">poggr project UI</a>.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-17T06:39:00-07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/" data-via="" data-counturl="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/10/15/fun-with-literate-coffeescript/" title="Previous Post: Fun with Literate CoffeeScript">&laquo; Fun with Literate CoffeeScript</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -223,7 +291,10 @@
       var disqus_shortname = 'goddio';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/';
+        var disqus_url = 'http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
