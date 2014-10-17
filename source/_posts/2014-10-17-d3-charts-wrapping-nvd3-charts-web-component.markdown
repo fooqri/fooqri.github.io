@@ -20,7 +20,7 @@ The above chart is an iframe to <a href="http://www.poggr.com/pg1GXbi9MBx:dlym9b
        css="/pg1GXbi9MBx:dxkNM7ZicfBe::49" >
      </goddip-charts >
 
-To view the uncompiled and unminimized source see (<a href="http://source.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">html document source</a>, <a href="http://source.poggr.com/pg1GXbi9MBx:deyDCclAEUg::49" target="_blank">data document source</a>, and <a href="http://source.poggr.com/pg1GXbi9MBx:dxkNM7ZicfBe::49" target="_blank">style document source</a>).
+To view the uncompiled and unminified source see (<a href="http://source.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">html document source</a>, <a href="http://source.poggr.com/pg1GXbi9MBx:deyDCclAEUg::49" target="_blank">data document source</a>, and <a href="http://source.poggr.com/pg1GXbi9MBx:dxkNM7ZicfBe::49" target="_blank">style document source</a>).
      
 The best way to learn about the _<goddip-charts>_ component is to take a look at its <a href="http://www.poggr.com/pg1GXbi9MBx:dgJXG7boqzSe" target="_blank">README document</a>. This describes how to use each of the charts, reference data, add styling, etc. You can always view the component <a href="http://source.poggr.com/pg1GXbi9MBx:dlJkI7k9tBe" target="_blank">source</a>. If you have a _poggr.com_ account you can view, clone, and edit _goddip-charts_ using the <a href="http://project.poggr.com/pg1GXbi9MBx" target="_blank">poggr project UI</a>.
 
