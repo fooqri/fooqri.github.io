@@ -10,18 +10,9 @@ I promised a few examples of spreadsheet driven apps. You may remember the [Hips
 
 The next example of a spreadsheet driven app (_below_) is the ___Mobile Buyer's Agent___ app. This may take a little time to load because it is an experiment, and thus not using a vulcanized Polymer library, so it is importing lots of individual library documents. Be patient and once cached in your browser it will be fast.
 
-<div id="over">
-  <script type="text/javascript">  
-    function hideLoading() { 
-      document.getElementById('divLoading').style.display = "none"; 
-      document.getElementById('divFrameHolder').style.display = "block"; 
-    } 
-  </script>
-  <div id="divLoading"> 
-  <img src="/images/loading-gif-animation.gif" alt="" /> 
-  </div>
-  <div id="divFrameHolder" style="display:none"> 
-    <iframe  src="https://fooqri.poggr.com/pe16vKTbVLg::16" onload="hideLoading()"  seamless="seamless"></iframe>
+<div class="over">
+  <div class="divFrameHolder"> 
+    <iframe  src="https://fooqri.poggr.com/pe16vKTbVLg::16"  seamless="seamless"></iframe>
   </div>
 </div>
 
