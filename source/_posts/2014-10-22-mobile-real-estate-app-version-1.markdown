@@ -9,7 +9,7 @@ I promised a few examples of spreadsheet driven apps. You may remember the [Hips
 
 The next example of a spreadsheet driven app is the ___Mobile Buyer's Agent___ app.
 
-<a href="/https://fooqri.poggr.com/pe16vKTbVLg"><img class="example-screen" src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"></a>
+<a href="https://fooqri.poggr.com/pe16vKTbVLg"><img class="example-screen" src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"></a>
 
 The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer's agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their customer experience.
 
