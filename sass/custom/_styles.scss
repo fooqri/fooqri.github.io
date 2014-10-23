@@ -232,13 +232,7 @@ body > footer {
     position: absolute;
     top: 100px;
     left: 35px;
-
-    @media only screen 
-    and (min-device-width : 320px) 
-    and (max-device-width : 568px) {
-        height: 560px;
-        overflow: scroll;
-    }
+    overflow: scroll;
 }
 
 iframe::-webkit-scrollbar { width: 0 !important }
