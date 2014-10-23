@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-10-20T07:37:38-07:00</updated>
+  <updated>2014-10-22T20:45:40-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mobile Real Estate App Version 1]]></title>
+    <link href="http://fooqri.github.io/blog/2014/10/22/mobile-real-estate-app-version-1/"/>
+    <updated>2014-10-22T19:46:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2014/10/22/mobile-real-estate-app-version-1</id>
+    <content type="html"><![CDATA[<p>I promised a few examples of spreadsheet driven apps. You may remember the <a href="http://rwx.io/blog/2014/10/15/spreadsheet-driven-web-apps/">Hipster List</a> was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone.</p>
+
+<p>The next example of a spreadsheet driven app is the <strong><em>Mobile Buyer&rsquo;s Agent</em></strong> app.</p>
+
+<p><a href="http://fooqri.github.io/https://fooqri.poggr.com/pe16vKTbVLg"><img class="example-screen" src="http://fooqri.github.io//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"></a></p>
+
+<p>The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer&rsquo;s agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their customer experience.</p>
+
+<p>Take a look at the spreadsheet to see how information is organized.
+<a href="http://fooqri.github.io//docs.google.com/spreadsheet/ccc?key=0Ahy9ODkMXc1GdEhuM1gxY1g0ckwwWl9RSzNGTGQwemc&usp=sharing#gid=4"><img class="spreadsheet-screen" src="http://fooqri.github.io//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/spreadsheet.png"></a></p>
+
+<p>The <a href="fooqri.poggr.com/pe16vKTbVLg:dgkE6vtp-4Ll">README</a> document provides  more details on how the app was built. Or <a href="https://fooqri.poggr.com/pe16vKTbVLg">try the app here</a>. I will likely provide a few updates to this app in the near future to make it a bit more interesting, but I though the first version showed a few nice features, and how to build them.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[d3 charts - wrapping 'NVD3 Charts' in a web component]]></title>
@@ -779,30 +799,6 @@ application block.</p>
     <updated>2013-01-08T11:15:00-08:00</updated>
     <id>http://fooqri.github.io/blog/2013/01/08/syntax-highlighting-in-os-x-quick-look</id>
     <content type="html"><![CDATA[<p>Quick Look is a handy OS X feature where you can get a quick look at a file by selecting it and pressing the space bar. This is handy when looking through snippet files on disk.  <a href="http://goo.gl/KLW5t">This plugin</a> adds syntax highlighting in Quick Look supporting many common programming languages, and even supports R code.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Getting a quick definition]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/05/getting-a-quick-definition/"/>
-    <updated>2013-01-05T11:10:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/05/getting-a-quick-definition</id>
-    <content type="html"><![CDATA[<p>I am a logophile, and regularly looking up the meanings of words I encounter on the web or in pdf documents. More recent OS X versions include a great feature that allows you to get a quick definition in almost any app (browser, editor, etc). Highlight a word and press <em>ctrl-command-d</em> to get the definition of the word. It is easy to configure to include Wikipedia definitions so you can also look up people and concepts.</p>
-
-<p>To customize which dictionaries are used (including wikipedia entries) open spotlight (command-space), type dictionary and press return to open the dictionary app. Open the preferences menu and tick the checkbox for the sources you wish to use. Once you make pressing <em>ctrl-command-d</em> a habit you will find using it is very natural, and requires little thought to remember it.</p>
-
-<p>Make sure you have wikipedia configured and then try it on these:</p>
-
-<ul>
-<li>crepuscule</li>
-<li>quiescent</li>
-<li>Malta</li>
-<li>Thomas Bayes</li>
-<li>Markov chain</li>
-</ul>
-
-
-<p>The pop-up definition is interactive so click on a definition to see the full definition entry then use the back arrow to get back to the list of definitions. You can also click on the source title to open the dictionary app with that entry.</p>
 ]]></content>
   </entry>
   

@@ -9,8 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="In my continued experiments with Polymer, I created a web component that wraps NVD3 &ndash; a reusable chart library for d3.js.
-As part of the &hellip;">
+  <meta name="description" content="I promised a few examples of spreadsheet driven apps. You may remember the Hipster List was the first example. These are simple web apps that are &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +81,53 @@ As part of the &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App Version 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-22T19:46:00-07:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I promised a few examples of spreadsheet driven apps. You may remember the <a href="http://rwx.io/blog/2014/10/15/spreadsheet-driven-web-apps/">Hipster List</a> was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone.</p>
+
+<p>The next example of a spreadsheet driven app is the <strong><em>Mobile Buyer&rsquo;s Agent</em></strong> app.</p>
+
+<p><a href="/https://fooqri.poggr.com/pe16vKTbVLg"><img class="example-screen" src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"></a></p>
+
+<p>The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer&rsquo;s agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their customer experience.</p>
+
+<p>Take a look at the spreadsheet to see how information is organized.
+<a href="//docs.google.com/spreadsheet/ccc?key=0Ahy9ODkMXc1GdEhuM1gxY1g0ckwwWl9RSzNGTGQwemc&usp=sharing#gid=4"><img class="spreadsheet-screen" src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/spreadsheet.png"></a></p>
+
+<p>The <a href="fooqri.poggr.com/pe16vKTbVLg:dgkE6vtp-4Ll">README</a> document provides  more details on how the app was built. Or <a href="https://fooqri.poggr.com/pe16vKTbVLg">try the app here</a>. I will likely provide a few updates to this app in the near future to make it a bit more interesting, but I though the first version showed a few nice features, and how to build them.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -603,60 +649,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/">Parsing a Simple Markdown Style List in Ragel</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-19T13:04:00-08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In an earlier post <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">Simple state machine example</a>, I provided an example of using the Ruby <em>state_machine</em> gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate &ldquo;list&rdquo; object.</p>
-
-<p>I found the <a href="http://www.complang.org/ragel/ragel-guide-6.7.pdf">Ragel documentation</a> to be excellent. The only issue is a lack of practical examples. Given the dearth of examples available, I though I would add my +1 example to help the cause. If you are serious about using Ragel I recommend reading the documentation start to finish quickly, then a second go through taking notes on key items like default machines, syntax, priorities, actions, etc before building a parser. Having a strong base will help tremendously when using examples.</p>
-
-<p>There are three files involved in this solution to the list problem:</p>
-
-<ul>
-<li>lists.txt: a data file that contains two lists for the parser to parse.</li>
-<li>mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.</li>
-<li>mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).</li>
-</ul>
-
-
-<p>I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -704,6 +696,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App Version 1</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">d3 charts - wrapping &#8216;NVD3 Charts&#8217; in a web component</a>
       </li>
     
@@ -717,10 +713,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
       </li>
     
   </ul>
