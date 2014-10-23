@@ -16,4 +16,4 @@ The idea is to create a mobile web app that can be used by buyers as they shop f
 Take a look at the spreadsheet to see how information is organized.
 <a href="//docs.google.com/spreadsheet/ccc?key=0Ahy9ODkMXc1GdEhuM1gxY1g0ckwwWl9RSzNGTGQwemc&usp=sharing#gid=4"><img class="spreadsheet-screen" src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/spreadsheet.png"></a>
 
-The [README](fooqri.poggr.com/pe16vKTbVLg:dgkE6vtp-4Ll) document provides  more details on how the app was built. Or [try the app here](https://fooqri.poggr.com/pe16vKTbVLg). I will likely provide a few updates to this app in the near future to make it a bit more interesting, but I though the first version showed a few nice features, and how to build them.
+The [README](https://fooqri.poggr.com/pe16vKTbVLg:dgkE6vtp-4Ll) document provides  more details on how the app was built. Or [try the app here](https://fooqri.poggr.com/pe16vKTbVLg). I will likely provide a few updates to this app in the near future to make it a bit more interesting, but I though the first version showed a few nice features, and how to build them.
