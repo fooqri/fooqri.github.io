@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-10-23T15:00:38-07:00</updated>
+  <updated>2014-10-23T15:24:30-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -22,19 +22,8 @@
 
 <p>See a live example below. Please keep it clean as I have allowed any Facebook user to participate in the demo.  I don&rsquo;t want to be forced to shut down upload for the demo app because of inappropriate photos. I think it is handy that visitors can try it out.</p>
 
-<div id="over">
-  <script type="text/javascript">  
-    function hideLoading() { 
-      document.getElementById('divLoading').style.display = "none"; 
-      document.getElementById('divFrameHolder').style.display = "block"; 
-    } 
-  </script>
-  <div id="divLoading"> 
-  <img src="http://fooqri.github.io/images/loading-gif-animation.gif" alt="" /> 
-  </div>
-  <div id="divFrameHolder" style="display:none"> 
-    <iframe  src="http://fooqri.poggr.com/peJE7qM0YUl::1" onload="hideLoading()"  seamless="seamless"></iframe>
-  </div>
+<div class="over">
+    <iframe  src="http://fooqri.poggr.com/peJE7qM0YUl::1"  seamless="seamless"></iframe>
 </div>
 
 
@@ -102,18 +91,9 @@
 
 <p>The next example of a spreadsheet driven app (<em>below</em>) is the <strong><em>Mobile Buyer&rsquo;s Agent</em></strong> app. This may take a little time to load because it is an experiment, and thus not using a vulcanized Polymer library, so it is importing lots of individual library documents. Be patient and once cached in your browser it will be fast.</p>
 
-<div id="over">
-  <script type="text/javascript">  
-    function hideLoading() { 
-      document.getElementById('divLoading').style.display = "none"; 
-      document.getElementById('divFrameHolder').style.display = "block"; 
-    } 
-  </script>
-  <div id="divLoading"> 
-  <img src="http://fooqri.github.io/images/loading-gif-animation.gif" alt="" /> 
-  </div>
-  <div id="divFrameHolder" style="display:none"> 
-    <iframe  src="https://fooqri.poggr.com/pe16vKTbVLg::16" onload="hideLoading()"  seamless="seamless"></iframe>
+<div class="over">
+  <div class="divFrameHolder"> 
+    <iframe  src="https://fooqri.poggr.com/pe16vKTbVLg::16"  seamless="seamless"></iframe>
   </div>
 </div>
 
