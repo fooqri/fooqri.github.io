@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I promised a few examples of spreadsheet driven apps. You may remember the Hipster List was the first example. These are simple web apps that are &hellip;">
+  <meta name="description" content="One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,113 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - Using Facebook Login, S3, and DynamoDb in Browser App</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T13:18:00-07:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a <em>photo caption</em> and then invites friends to add photo responses that <em>most creatively</em> match the caption. The second feature is to allow people to vote on their favorite photo responses.</p>
+
+<p>See a live example below. Please keep it clean as I have allowed any Facebook user to participate in the demo.  I don&rsquo;t want to be forced to shut down upload for the demo app because of inappropriate photos. I think it is handy that visitors can try it out.</p>
+
+<div id="over">
+  <script type="text/javascript">  
+    function hideLoading() { 
+      document.getElementById('divLoading').style.display = "none"; 
+      document.getElementById('divFrameHolder').style.display = "block"; 
+    } 
+  </script>
+  <div id="divLoading"> 
+  <img src="/images/loading-gif-animation.gif" alt="" /> 
+  </div>
+  <div id="divFrameHolder" style="display:none"> 
+    <iframe  src="http://fooqri.poggr.com/peJE7qM0YUl::1" onload="hideLoading()"  seamless="seamless"></iframe>
+  </div>
+</div>
+
+
+<p>Such a game would typically require a server to support a few key behaviors:</p>
+
+<ul>
+<li><strong>player login</strong>: is needed to connect players with their uploaded photos, and also to limit their votes so as to keep voting fair.</li>
+<li><strong>photo storage</strong>: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded.</li>
+<li><strong>global state</strong>: is generally provided by a database that stores information such as: which players have uploaded photos, and where the corresponding photos are located.</li>
+</ul>
+
+
+<p>There are many challenges to running a server back-end to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. In the <strong>Photo Caption Challenge</strong> app example I explore using the following services instead of running an app server.</p>
+
+<ul>
+<li><strong>player login</strong>: I will use Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
+<li><strong>photo storage</strong>: I will use Amazon S3 for storing photos uploaded buy players.</li>
+<li><strong>global state</strong>: I will use Amazon DynamoDB to provide a simple table that stores information about photo entries and votes.</li>
+</ul>
+
+
+<p>I will also use the Amazon IAM service to glue everything together from a privileges standpoint. Finally, don&rsquo;t worry about the details yet, I will point to the <a href="http://www.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a> file for the app that explains more in details, and also the <a href="http://www.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configuration tool</a> that provides help for how to set up these services. <strong>Note:</strong> These instructions are poggr specific but any changes for a non-pogg app should be minor.</p>
+
+<h2>Facebook Login</h2>
+
+<p>This is fairly straight forward, you visit the <a href="https://developers.facebook.com/">Facebook Developers Page</a> and create a Facebook Web App. With the signup you get a small bit of JavaScript that can be used to integrate Facebook Login with your page. The main goal is to get a unique ID for each user that can be used in the DynamoDB database.</p>
+
+<h2>Amazon S3 Photo Storage</h2>
+
+<p>One of the key issues is allowing photos to be uploaded from the browser directly to S3 but only for JavaScript run in your domain, and only by users who have logged in via Facebook. It turns out that Amazon IAM works very well for creating such restrictions. You can configure a IAM policy that integrates with Facebook Login and controls access to S3 permissions like file upload, delete, etc.</p>
+
+<h2>Amazon DynamoDB</h2>
+
+<p>Another key issue is storing data about who has uploaded each photo, and which photos each user has up-voted. The last requirement is a design constraint as I wanted to balance each persons voting power. In essence a user can vote for several photos, but each vote is simply dividing the users vote across the up-voted photos. This decision allows a user to change their votes at any time as the game winds down, hopefully converging towards a winner.</p>
+
+<p>Again Amazon IAM helps here, as it can be used to secure individual rows in a DynamoDB table so that they are secured by the user associated with that row. Thus a different user can&rsquo;t open up the JavaScript console and cancel another players vote, the table cells are protected by player login at Amazon, not in the browser. For more information see <a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html">Fine-Grained Access Control for DynamoDB</a>.</p>
+
+<p>So essentially the player of the <em>Photo Caption Challenge</em> is given limited permission based on their id provided by their Facebook login. They are allowed to create rows in the games DynamoDB table. These rows can be of two types <strong>vote</strong> or <strong>upload</strong> and each row contains:</p>
+
+<ul>
+<li><strong>userId</strong>: the user&rsquo;s id returned as part of the Facebook login</li>
+<li><strong>submissionId</strong>: a unique transaction id for the upload or vote</li>
+<li><strong>creationDate</strong>: a timestamp for the transaction</li>
+<li><strong>gameId</strong>: It is possible to run multiple games simultaneously with different captions, so a gameId is needed for each game.</li>
+<li><strong>submissionType</strong>: signifies the type of record (vote or upload)</li>
+<li><strong>filename</strong>: the name of the file in the games  Amazon S3 bucket. Technically every user gets a unique folder that holds their uploaded photos in the bucket. This allows an IAM policy to secure each folder using Facebook login info.</li>
+<li><strong>voteId</strong>: in the case of a vote there is also a voteId to uniquely identify each vote.</li>
+</ul>
+
+
+<p>In addition to the table structure, there is a separate index for the table that allows queries by gameId and  submissionType. This allows for quick lookup of all photos or all votes for a particular game.</p>
+
+<p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, and query transactions,a database like DynamoDB is a great solution.</p>
+
+<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  If you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a>, check out its <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a>, and use the <a href="http://fooqri.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configurator tool</a> to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -611,59 +718,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/21/the-three-cs/">The Three C&#8217;s</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-21T10:26:00-08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I really enjoyed <a href="http://www.networkworld.com/community/blog/tony-fadell-unique-nature-apples-design-process">this interview</a> with Tony Fadell on the unique nature of Apple&rsquo;s design process. The discussion about project abandonment percentages is incredibly important, and often overlooked in large companies. In many cases abandonment is a financial decision related to either real or opportunity costs associated with launching a product. People who have never worked for a large consumer products company likely have no idea how many products are cancelled just before launch because of the incredible cost in launching a product into the market.</p>
-
-<p>Tony makes an amazing point about the toll such high cancellation rates have on employees at a company, and on the quality of the products the company ships. The inverse is that high commitment to ship products that pass key milestones leads to better employee commitment.</p>
-
-<blockquote><p>&ldquo;When you’re in a culture that has a point of view, and drives to launch everything it does, you know you’re on the hook and you better bring your best game every time,&rdquo; Fadell explained.</p></blockquote>
-
-<p>Tony contrasts his experience at Apple with his experience at Philips:</p>
-
-<blockquote><p>Fadell explained that a key and yet often overlooked difference between Apple and other tech companies is that Apple ships 99% of the products that pass certain internal milestones. By way of contrast, during Fadell&rsquo;s tenure at Philips &ndash; where he was charged with overseeing the company&rsquo;s audio strategy &ndash; the iPod guru noted that Philips would axe 9 projects out of 10, even if a particular product was about to ship.</p></blockquote>
-
-<p>I don&rsquo;t think large companies have a metric for tracking the number and impact of cancelled projects. In my experience executive teams wanted to forget cancellations as quickly as possible and move on. They considered the cost to be in the past, and by having cancelled the project they had cut any ongoing cost.  But as Tony points out, there are ongoing costs, just not costs that have their own column on a balance sheet or scorecard. In my experience it was clear &hellip; the impact of cancellations were cumulative and devastating.</p>
-
-<p>The importance of commitment is actually one of the 3 c&rsquo;s I use when evaluating a project: <em>Clarity</em>, <em>Competency</em>, and <em>Commitment</em>. Over the years I have found these to be the key pieces of early stage information that will best predict the success of a project. Tony&rsquo;s pont about commitment is that it isn&rsquo;t only about commitment to a project, it is about the culture of commitment in an organization. I like this point, and I imagine there is a corollary for organizational clarity and competency. Below are a few notes related to project level evaluation of the 3 c&rsquo;s</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/21/the-three-cs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -711,6 +765,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App - Version 1</a>
       </li>
     
@@ -724,10 +782,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
       </li>
     
   </ul>

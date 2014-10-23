@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app - </title>
+  <meta name="author" content="Patrick Goddi">
+
+  
+  <meta name="description" content="One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fooqri.github.io/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41376488-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fooqri.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Photo Caption Challenge - Using Facebook Login, S3, and DynamoDb in Browser App</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T13:18:00-07:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a <em>photo caption</em> and then invites friends to add photo responses that <em>most creatively</em> match the caption. The second feature is to allow people to vote on their favorite photo responses.</p>
+
+<p>See a live example below. Please keep it clean as I have allowed any Facebook user to participate in the demo.  I don&rsquo;t want to be forced to shut down upload for the demo app because of inappropriate photos. I think it is handy that visitors can try it out.</p>
+
+<div id="over">
+  <script type="text/javascript">  
+    function hideLoading() { 
+      document.getElementById('divLoading').style.display = "none"; 
+      document.getElementById('divFrameHolder').style.display = "block"; 
+    } 
+  </script>
+  <div id="divLoading"> 
+  <img src="/images/loading-gif-animation.gif" alt="" /> 
+  </div>
+  <div id="divFrameHolder" style="display:none"> 
+    <iframe  src="http://fooqri.poggr.com/peJE7qM0YUl::1" onload="hideLoading()"  seamless="seamless"></iframe>
+  </div>
+</div>
+
+
+<p>Such a game would typically require a server to support a few key behaviors:</p>
+
+<ul>
+<li><strong>player login</strong>: is needed to connect players with their uploaded photos, and also to limit their votes so as to keep voting fair.</li>
+<li><strong>photo storage</strong>: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded.</li>
+<li><strong>global state</strong>: is generally provided by a database that stores information such as: which players have uploaded photos, and where the corresponding photos are located.</li>
+</ul>
+
+
+<p>There are many challenges to running a server back-end to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. In the <strong>Photo Caption Challenge</strong> app example I explore using the following services instead of running an app server.</p>
+
+<ul>
+<li><strong>player login</strong>: I will use Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
+<li><strong>photo storage</strong>: I will use Amazon S3 for storing photos uploaded buy players.</li>
+<li><strong>global state</strong>: I will use Amazon DynamoDB to provide a simple table that stores information about photo entries and votes.</li>
+</ul>
+
+
+<p>I will also use the Amazon IAM service to glue everything together from a privileges standpoint. Finally, don&rsquo;t worry about the details yet, I will point to the <a href="http://www.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a> file for the app that explains more in details, and also the <a href="http://www.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configuration tool</a> that provides help for how to set up these services. <strong>Note:</strong> These instructions are poggr specific but any changes for a non-pogg app should be minor.</p>
+
+<h2>Facebook Login</h2>
+
+<p>This is fairly straight forward, you visit the <a href="https://developers.facebook.com/">Facebook Developers Page</a> and create a Facebook Web App. With the signup you get a small bit of JavaScript that can be used to integrate Facebook Login with your page. The main goal is to get a unique ID for each user that can be used in the DynamoDB database.</p>
+
+<h2>Amazon S3 Photo Storage</h2>
+
+<p>One of the key issues is allowing photos to be uploaded from the browser directly to S3 but only for JavaScript run in your domain, and only by users who have logged in via Facebook. It turns out that Amazon IAM works very well for creating such restrictions. You can configure a IAM policy that integrates with Facebook Login and controls access to S3 permissions like file upload, delete, etc.</p>
+
+<h2>Amazon DynamoDB</h2>
+
+<p>Another key issue is storing data about who has uploaded each photo, and which photos each user has up-voted. The last requirement is a design constraint as I wanted to balance each persons voting power. In essence a user can vote for several photos, but each vote is simply dividing the users vote across the up-voted photos. This decision allows a user to change their votes at any time as the game winds down, hopefully converging towards a winner.</p>
+
+<p>Again Amazon IAM helps here, as it can be used to secure individual rows in a DynamoDB table so that they are secured by the user associated with that row. Thus a different user can&rsquo;t open up the JavaScript console and cancel another players vote, the table cells are protected by player login at Amazon, not in the browser. For more information see <a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html">Fine-Grained Access Control for DynamoDB</a>.</p>
+
+<p>So essentially the player of the <em>Photo Caption Challenge</em> is given limited permission based on their id provided by their Facebook login. They are allowed to create rows in the games DynamoDB table. These rows can be of two types <strong>vote</strong> or <strong>upload</strong> and each row contains:</p>
+
+<ul>
+<li><strong>userId</strong>: the user&rsquo;s id returned as part of the Facebook login</li>
+<li><strong>submissionId</strong>: a unique transaction id for the upload or vote</li>
+<li><strong>creationDate</strong>: a timestamp for the transaction</li>
+<li><strong>gameId</strong>: It is possible to run multiple games simultaneously with different captions, so a gameId is needed for each game.</li>
+<li><strong>submissionType</strong>: signifies the type of record (vote or upload)</li>
+<li><strong>filename</strong>: the name of the file in the games  Amazon S3 bucket. Technically every user gets a unique folder that holds their uploaded photos in the bucket. This allows an IAM policy to secure each folder using Facebook login info.</li>
+<li><strong>voteId</strong>: in the case of a vote there is also a voteId to uniquely identify each vote.</li>
+</ul>
+
+
+<p>In addition to the table structure, there is a separate index for the table that allows queries by gameId and  submissionType. This allows for quick lookup of all photos or all votes for a particular game.</p>
+
+<p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, and query transactions,a database like DynamoDB is a great solution.</p>
+
+<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  If you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a>, check out its <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a>, and use the <a href="http://fooqri.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configurator tool</a> to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T13:18:00-07:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/" data-via="" data-counturl="http://fooqri.github.io/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/10/22/mobile-real-estate-app-version-1/" title="Previous Post: Mobile Real Estate App - Version 1">&laquo; Mobile Real Estate App - Version 1</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://fooqri.github.io" title=""><img id="logo" src="http://fooqri.github.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://fooqri.github.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://fooqri.github.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://fooqri.github.io/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://fooqri.github.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://fooqri.github.io/atom.xml"> Feed </a></li> 
+    <li><i class="fa fa-twitter fa-lg"></i><a href="https://twitter.com/fooqri"> twitter </a></li>
+    <li><i class="fa fa-linkedin fa-lg"></i><a href="http://www.linkedin.com/in/goddi/"> LinkedIn </a></li> </ul>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App - Version 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">d3 charts - wrapping 'NVD3 Charts' in a web component</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/fast-photosync-from-iphone/">Fast PhotoSync from iPhone</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/26/foldingtext-and-productivity/">FoldingText and productivity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Patrick Goddi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'goddio';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fooqri.github.io/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/';
+        var disqus_url = 'http://fooqri.github.io/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
