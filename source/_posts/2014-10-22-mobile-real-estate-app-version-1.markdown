@@ -10,11 +10,7 @@ I promised a few examples of spreadsheet driven apps. You may remember the [Hips
 
 The next example of a spreadsheet driven app (_below_) is the ___Mobile Buyer's Agent___ app. This may take a little time to load because it is an experiment, and thus not using a vulcanized Polymer library, so it is importing lots of individual library documents. Be patient and once cached in your browser it will be fast.
 
-<div class="over">
-  <div class="divFrameHolder"> 
-    <iframe  src="https://fooqri.poggr.com/pe16vKTbVLg::16"  seamless="seamless"></iframe>
-  </div>
-</div>
+<a href="//fooqri.poggr.com/pe16vKTbVLg::16" target="_blank"><img src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"  style="height: 400px; display: block; margin: auto;"></a>
 
 The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer's agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their client experience.
 

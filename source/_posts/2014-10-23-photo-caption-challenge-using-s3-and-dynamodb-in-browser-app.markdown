@@ -6,56 +6,26 @@ comments: true
 categories: 
 ---
 
-One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a _photo caption_ and then invites friends to add photo responses that _most creatively_ match the caption. The second feature is to allow people to vote on their favorite photo responses.
+One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a _photo caption_ and then invites friends to add photo responses that _most creatively_ match the caption. The second feature is to allow people to vote on their favorite photo responses.
 
-See a live example below. Please keep it clean as I have allowed any Facebook user to participate in the demo.  I don't want to be forced to shut down upload for the demo app because of inappropriate photos. I think it is handy that visitors can try it out.
 
-<div class="over">
-    <iframe  src="http://fooqri.poggr.com/peJE7qM0YUl::1"  seamless="seamless"></iframe>
-</div>
+<a href="//fooqri.poggr.com/peJE7qM0YUl" target="_blank"><img src="//s3.amazonaws.com/fooqri-poggs/peJE7qM0YUl/static/images/peJE7qM0YUl_screen.png"  style="height: 400px; display: block; margin: auto;"></a>
 
 Such a game would typically require a server to support a few key behaviors:
 
 * __player login__: is needed to connect players with their uploaded photos, and also to limit their votes so as to keep voting fair.
-* __photo storage__: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded.
+* __photo storage__: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded. In addition a back-end service is typically used to re-size uploaded images before storing them to reduce storage costs.
 * __global state__: is generally provided by a database that stores information such as: which players have uploaded photos, and where the corresponding photos are located.
 
-There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the __Photo Caption Challenge__ app I explore using the following services instead of running an app server.
+There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the __Photo Caption Challenge__ app I explored using the following services instead of running an app server.
 
-* __player login__: I will use Facebook for player login as a way to differentiate players, and connect ids to votes and photos.
-* __photo storage__: I will use Amazon S3 for storing photos uploaded buy players.
-* __global state__: I will use Amazon DynamoDB to provide a simple table that stores information about photo entries and votes.
+* __player login__: I  used Facebook for player login as a way to differentiate players, and connect ids to votes and photos.
+* __photo storage__: I used Amazon S3 for storing photos uploaded by players, and  used _canvas_ and _canvas.toBlob()_ (using [JavaScript Canvas to Blob](https://github.com/blueimp/javascript-canvas-to-blob) polyfill) to re-size images and store them in a blob for upload to S3. Thus all image re-sizing is done in the client.
+* __global state__: I used Amazon DynamoDB to provide state via a table that stores information about photo entries and votes.
 
-I will also use the Amazon IAM service to glue everything together from a privileges standpoint. Don't worry about the details yet, This is a simple overview. I will point to the _[README](http://www.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg)_ document for the app that explains more in details, and also the [configuration tool](http://www.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e) that provides help for how to set up these services. __Note:__ These instructions are poggr specific but any changes for a non-pogg app should be minor.
+I  also used the Amazon IAM is the way to limit privileges from the client app to the data services (S3 and DynamoDB). For example you want the user to have write/delete access to only their information in the data services, but client API calls to the server can be manipulated, thus authentication information is critical to limiting privileges in accessing the data services.
 
-## Facebook Login
-
-This is fairly straight forward, you visit the [Facebook Developers Page](https://developers.facebook.com/) and create a Facebook Web App. With the signup you get a small bit of JavaScript that can be used to integrate Facebook Login with your page. The main goal is to get a unique ID for each user that can be used in the DynamoDB database.
-
-## Amazon S3 Photo Storage
-One of the key issues is allowing photos to be uploaded from the browser directly to S3 but only for JavaScript run in your domain, and only by users who have logged in via Facebook. It turns out that Amazon IAM works very well for creating such restrictions. You can configure a IAM policy that integrates with Facebook Login and controls access to S3 permissions like photo upload, delete, etc.
-
-## Amazon DynamoDB
-Another key issue is storing data about who has uploaded each photo, and which photos each user has up-voted. The last requirement is a design constraint as I wanted to balance each persons voting power. In essence a user can vote for several photos, but each vote is simply dividing the users vote across the up-voted photos. This decision allows a user to change their votes at any time as the game winds down, hopefully converging towards a winner.
-
-Again Amazon IAM helps here, as it can be used to secure individual rows in a DynamoDB table so that they are secured by the user associated with that row. Thus a different user can't open up the JavaScript console and cancel another players vote _(more info on this below)_.
-
-So essentially the player of the _Photo Caption Challenge_ is given limited permission based on their id provided by their Facebook login. They are allowed to create rows in the games DynamoDB table. These rows can be of two types __vote__ or __upload__ and each row contains:
-
-* __userId__: the user's id returned as part of the Facebook login
-* __submissionId__: a unique transaction id for the upload or vote
-* __creationDate__: a timestamp for the transaction
-* __gameId__: It is possible to run multiple games simultaneously with different captions, so a gameId is needed for each game.
-* __submissionType__: signifies the type of record (vote or upload)
-* __filename__: the name of the file in the games  Amazon S3 bucket. Technically every user gets a unique folder that holds their uploaded photos in the bucket. This allows an IAM policy to secure each folder using Facebook login info.
-* __voteId__: in the case of a vote there is also a voteId to uniquely identify each vote.
-
-In addition to the table structure, there is a separate index for the table that allows queries by gameId and  submissionType. This allows for quick lookup of all photos or all votes for a particular game.
-
-## Amazon IAM
-Amazon IAM is the way to limit privileges from the client app to the data services. For example you want the user to have write/delete access to only their information in the data services, but client API calls to the server can be manipulated, thus authentication information is critical to limiting privileges in accessing the data services.
-
-AWS works with _identity providers_ like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures a S3 bucket privileges so that folder privileges are connected to user identity. In the case of "Photo Challenge" the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in the folder, but only upload, modify, or delete items that are in a folder that matches their identity provider's assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identity provider's assigned userid. 
+IAM policies can specify an _identity provider_ like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures S3 bucket privileges so that sub-folder privileges are connected to user identity. In the case of "Photo Challenge" the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in any sub-folder, but only upload, modify, or delete items that are in a folder that matches their identity provider's assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identity provider's assigned userid. 
 
 The Amazon IAM policy for DynamoDB works similarly. Any logged in Facebook user running the Photo Challenges app will be able to query the DB index for the current list of photo entries, but can only add/delete records that have a userId value that matches their identity provider's assigned userid. Thus a user can't spoof who added the record, it is connected to their userId or it is rejected by the IAM policy assigned to the DynamoDB table. For more information see [Fine-Grained Access Control for DynamoDB](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html).
 
