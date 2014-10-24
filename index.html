@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of &hellip;">
+  <meta name="description" content="One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,69 +110,31 @@
   </header>
 
 
-  <div class="entry-content"><p>One of the challenges of building social web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a <em>photo caption</em> and then invites friends to add photo responses that <em>most creatively</em> match the caption. The second feature is to allow people to vote on their favorite photo responses.</p>
+  <div class="entry-content"><p>One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a <em>photo caption</em> and then invites friends to add photo responses that <em>most creatively</em> match the caption. The second feature is to allow people to vote on their favorite photo responses.</p>
 
-<p>See a live example below. Please keep it clean as I have allowed any Facebook user to participate in the demo.  I don&rsquo;t want to be forced to shut down upload for the demo app because of inappropriate photos. I think it is handy that visitors can try it out.</p>
-
-<div class="over">
-    <iframe  src="http://fooqri.poggr.com/peJE7qM0YUl::1"  seamless="seamless"></iframe>
-</div>
-
+<p><a href="//fooqri.poggr.com/peJE7qM0YUl" target="_blank"><img src="//s3.amazonaws.com/fooqri-poggs/peJE7qM0YUl/static/images/peJE7qM0YUl_screen.png"  style="height: 400px; display: block; margin: auto;"></a></p>
 
 <p>Such a game would typically require a server to support a few key behaviors:</p>
 
 <ul>
 <li><strong>player login</strong>: is needed to connect players with their uploaded photos, and also to limit their votes so as to keep voting fair.</li>
-<li><strong>photo storage</strong>: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded.</li>
+<li><strong>photo storage</strong>: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded. In addition a back-end service is typically used to re-size uploaded images before storing them to reduce storage costs.</li>
 <li><strong>global state</strong>: is generally provided by a database that stores information such as: which players have uploaded photos, and where the corresponding photos are located.</li>
 </ul>
 
 
-<p>There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the <strong>Photo Caption Challenge</strong> app I explore using the following services instead of running an app server.</p>
+<p>There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the <strong>Photo Caption Challenge</strong> app I explored using the following services instead of running an app server.</p>
 
 <ul>
-<li><strong>player login</strong>: I will use Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
-<li><strong>photo storage</strong>: I will use Amazon S3 for storing photos uploaded buy players.</li>
-<li><strong>global state</strong>: I will use Amazon DynamoDB to provide a simple table that stores information about photo entries and votes.</li>
+<li><strong>player login</strong>: I  used Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
+<li><strong>photo storage</strong>: I used Amazon S3 for storing photos uploaded by players, and  used <em>canvas</em> and <em>canvas.toBlob()</em> (using <a href="https://github.com/blueimp/javascript-canvas-to-blob">JavaScript Canvas to Blob</a> polyfill) to re-size images and store them in a blob for upload to S3. Thus all image re-sizing is done in the client.</li>
+<li><strong>global state</strong>: I used Amazon DynamoDB to provide state via a table that stores information about photo entries and votes.</li>
 </ul>
 
 
-<p>I will also use the Amazon IAM service to glue everything together from a privileges standpoint. Don&rsquo;t worry about the details yet, This is a simple overview. I will point to the <em><a href="http://www.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a></em> document for the app that explains more in details, and also the <a href="http://www.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configuration tool</a> that provides help for how to set up these services. <strong>Note:</strong> These instructions are poggr specific but any changes for a non-pogg app should be minor.</p>
+<p>I  also used the Amazon IAM is the way to limit privileges from the client app to the data services (S3 and DynamoDB). For example you want the user to have write/delete access to only their information in the data services, but client API calls to the server can be manipulated, thus authentication information is critical to limiting privileges in accessing the data services.</p>
 
-<h2>Facebook Login</h2>
-
-<p>This is fairly straight forward, you visit the <a href="https://developers.facebook.com/">Facebook Developers Page</a> and create a Facebook Web App. With the signup you get a small bit of JavaScript that can be used to integrate Facebook Login with your page. The main goal is to get a unique ID for each user that can be used in the DynamoDB database.</p>
-
-<h2>Amazon S3 Photo Storage</h2>
-
-<p>One of the key issues is allowing photos to be uploaded from the browser directly to S3 but only for JavaScript run in your domain, and only by users who have logged in via Facebook. It turns out that Amazon IAM works very well for creating such restrictions. You can configure a IAM policy that integrates with Facebook Login and controls access to S3 permissions like photo upload, delete, etc.</p>
-
-<h2>Amazon DynamoDB</h2>
-
-<p>Another key issue is storing data about who has uploaded each photo, and which photos each user has up-voted. The last requirement is a design constraint as I wanted to balance each persons voting power. In essence a user can vote for several photos, but each vote is simply dividing the users vote across the up-voted photos. This decision allows a user to change their votes at any time as the game winds down, hopefully converging towards a winner.</p>
-
-<p>Again Amazon IAM helps here, as it can be used to secure individual rows in a DynamoDB table so that they are secured by the user associated with that row. Thus a different user can&rsquo;t open up the JavaScript console and cancel another players vote <em>(more info on this below)</em>.</p>
-
-<p>So essentially the player of the <em>Photo Caption Challenge</em> is given limited permission based on their id provided by their Facebook login. They are allowed to create rows in the games DynamoDB table. These rows can be of two types <strong>vote</strong> or <strong>upload</strong> and each row contains:</p>
-
-<ul>
-<li><strong>userId</strong>: the user&rsquo;s id returned as part of the Facebook login</li>
-<li><strong>submissionId</strong>: a unique transaction id for the upload or vote</li>
-<li><strong>creationDate</strong>: a timestamp for the transaction</li>
-<li><strong>gameId</strong>: It is possible to run multiple games simultaneously with different captions, so a gameId is needed for each game.</li>
-<li><strong>submissionType</strong>: signifies the type of record (vote or upload)</li>
-<li><strong>filename</strong>: the name of the file in the games  Amazon S3 bucket. Technically every user gets a unique folder that holds their uploaded photos in the bucket. This allows an IAM policy to secure each folder using Facebook login info.</li>
-<li><strong>voteId</strong>: in the case of a vote there is also a voteId to uniquely identify each vote.</li>
-</ul>
-
-
-<p>In addition to the table structure, there is a separate index for the table that allows queries by gameId and  submissionType. This allows for quick lookup of all photos or all votes for a particular game.</p>
-
-<h2>Amazon IAM</h2>
-
-<p>Amazon IAM is the way to limit privileges from the client app to the data services. For example you want the user to have write/delete access to only their information in the data services, but client API calls to the server can be manipulated, thus authentication information is critical to limiting privileges in accessing the data services.</p>
-
-<p>AWS works with <em>identity providers</em> like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures a S3 bucket privileges so that folder privileges are connected to user identity. In the case of &ldquo;Photo Challenge&rdquo; the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in the folder, but only upload, modify, or delete items that are in a folder that matches their identity provider&rsquo;s assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identity provider&rsquo;s assigned userid.</p>
+<p>IAM policies can specify an <em>identity provider</em> like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures S3 bucket privileges so that sub-folder privileges are connected to user identity. In the case of &ldquo;Photo Challenge&rdquo; the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in any sub-folder, but only upload, modify, or delete items that are in a folder that matches their identity provider&rsquo;s assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identity provider&rsquo;s assigned userid.</p>
 
 <p>The Amazon IAM policy for DynamoDB works similarly. Any logged in Facebook user running the Photo Challenges app will be able to query the DB index for the current list of photo entries, but can only add/delete records that have a userId value that matches their identity provider&rsquo;s assigned userid. Thus a user can&rsquo;t spoof who added the record, it is connected to their userId or it is rejected by the IAM policy assigned to the DynamoDB table. For more information see <a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html">Fine-Grained Access Control for DynamoDB</a>.</p>
 
@@ -220,12 +182,7 @@
 
 <p>The next example of a spreadsheet driven app (<em>below</em>) is the <strong><em>Mobile Buyer&rsquo;s Agent</em></strong> app. This may take a little time to load because it is an experiment, and thus not using a vulcanized Polymer library, so it is importing lots of individual library documents. Be patient and once cached in your browser it will be fast.</p>
 
-<div class="over">
-  <div class="divFrameHolder"> 
-    <iframe  src="https://fooqri.poggr.com/pe16vKTbVLg::16"  seamless="seamless"></iframe>
-  </div>
-</div>
-
+<p><a href="//fooqri.poggr.com/pe16vKTbVLg::16" target="_blank"><img src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"  style="height: 400px; display: block; margin: auto;"></a></p>
 
 <p>The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer&rsquo;s agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their client experience.</p>
 
