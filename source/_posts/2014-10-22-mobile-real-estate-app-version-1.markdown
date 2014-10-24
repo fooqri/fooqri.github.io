@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Mobile Real Estate App - Version 1"
-date: 2014-10-22 19:46
+date: 2014-10-22 19:46 
 comments: true
 categories: 
 ---
