@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2014-10-24T12:02:31-07:00</updated>
+  <updated>2014-10-24T12:06:55-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -88,7 +88,7 @@
 
 <p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, write, and query transactions, a database like DynamoDB is a great solution.</p>
 
-<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  Use this app at<a href="http://fooqri.poggr.com/peJE7qM0YUl:dxJ4NmcMAK8x">fooqri.po.gg/peJE7qM0YUl</a> If you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a>, check out its <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a>, and use the customized service <a href="http://fooqri.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configurator tool</a> to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes.</p>
+<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  Use this app at <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxJ4NmcMAK8x">fooqri.po.gg/peJE7qM0YUl</a> or if you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a> and use its configuration tool to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes. If you don&rsquo;t have an account you can still check out the pogg&rsquo;s <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a> to learn more about how it was build and view the source documents.</p>
 ]]></content>
   </entry>
   
