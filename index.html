@@ -128,7 +128,7 @@
 </ul>
 
 
-<p>There are many challenges to running a server back-end to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. In the <strong>Photo Caption Challenge</strong> app example I explore using the following services instead of running an app server.</p>
+<p>There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the <strong>Photo Caption Challenge</strong> app I explore using the following services instead of running an app server.</p>
 
 <ul>
 <li><strong>player login</strong>: I will use Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
@@ -137,7 +137,7 @@
 </ul>
 
 
-<p>I will also use the Amazon IAM service to glue everything together from a privileges standpoint. Finally, don&rsquo;t worry about the details yet, I will point to the <a href="http://www.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a> file for the app that explains more in details, and also the <a href="http://www.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configuration tool</a> that provides help for how to set up these services. <strong>Note:</strong> These instructions are poggr specific but any changes for a non-pogg app should be minor.</p>
+<p>I will also use the Amazon IAM service to glue everything together from a privileges standpoint. Don&rsquo;t worry about the details yet, This is a simple overview. I will point to the <em><a href="http://www.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a></em> document for the app that explains more in details, and also the <a href="http://www.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configuration tool</a> that provides help for how to set up these services. <strong>Note:</strong> These instructions are poggr specific but any changes for a non-pogg app should be minor.</p>
 
 <h2>Facebook Login</h2>
 
@@ -145,7 +145,7 @@
 
 <h2>Amazon S3 Photo Storage</h2>
 
-<p>One of the key issues is allowing photos to be uploaded from the browser directly to S3 but only for JavaScript run in your domain, and only by users who have logged in via Facebook. It turns out that Amazon IAM works very well for creating such restrictions. You can configure a IAM policy that integrates with Facebook Login and controls access to S3 permissions like file upload, delete, etc.</p>
+<p>One of the key issues is allowing photos to be uploaded from the browser directly to S3 but only for JavaScript run in your domain, and only by users who have logged in via Facebook. It turns out that Amazon IAM works very well for creating such restrictions. You can configure a IAM policy that integrates with Facebook Login and controls access to S3 permissions like photo upload, delete, etc.</p>
 
 <h2>Amazon DynamoDB</h2>
 
@@ -168,9 +168,9 @@
 
 <p>In addition to the table structure, there is a separate index for the table that allows queries by gameId and  submissionType. This allows for quick lookup of all photos or all votes for a particular game.</p>
 
-<p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, and query transactions,a database like DynamoDB is a great solution.</p>
+<p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, and query transactions, a database like DynamoDB is a great solution.</p>
 
-<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  If you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a>, check out its <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a>, and use the <a href="http://fooqri.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configurator tool</a> to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes.</p>
+<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  If you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a>, check out its <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a>, and use the customized service <a href="http://fooqri.poggr.com/peJE7qM0YUl:dl1SEX9f0K8e">configurator tool</a> to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes.</p>
 </div>
   
   
@@ -206,7 +206,7 @@
   </header>
 
 
-  <div class="entry-content"><p>I promised a few examples of spreadsheet driven apps. You may remember the <a href="http://rwx.io/blog/2014/10/15/spreadsheet-driven-web-apps/">Hipster List</a> was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone.</p>
+  <div class="entry-content"><p>I promised a few examples of spreadsheet driven apps. You may remember the <a href="http://rwx.io/blog/2014/10/15/spreadsheet-driven-web-apps/">Hipster List</a> was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone. There is even a way for users to point the app at their own Google Spreadsheet if the app developer wants to turn feature that on.</p>
 
 <p>The next example of a spreadsheet driven app (<em>below</em>) is the <strong><em>Mobile Buyer&rsquo;s Agent</em></strong> app. This may take a little time to load because it is an experiment, and thus not using a vulcanized Polymer library, so it is importing lots of individual library documents. Be patient and once cached in your browser it will be fast.</p>
 
@@ -217,7 +217,7 @@
 </div>
 
 
-<p>The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer&rsquo;s agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their customer experience.</p>
+<p>The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer&rsquo;s agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their client experience.</p>
 
 <p>Take a look at the <a href="https://docs.google.com/spreadsheet/ccc?key=0Ahy9ODkMXc1GdEhuM1gxY1g0ckwwWl9RSzNGTGQwemc&amp;usp=sharing#gid=4">spreadsheet</a> to see how information is organized. It allows the agent to add personalized title and notes to each house.</p>
 
