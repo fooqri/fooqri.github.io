@@ -38,7 +38,7 @@ One of the key issues is allowing photos to be uploaded from the browser directl
 ## Amazon DynamoDB
 Another key issue is storing data about who has uploaded each photo, and which photos each user has up-voted. The last requirement is a design constraint as I wanted to balance each persons voting power. In essence a user can vote for several photos, but each vote is simply dividing the users vote across the up-voted photos. This decision allows a user to change their votes at any time as the game winds down, hopefully converging towards a winner.
 
-Again Amazon IAM helps here, as it can be used to secure individual rows in a DynamoDB table so that they are secured by the user associated with that row. Thus a different user can't open up the JavaScript console and cancel another players vote, the table cells are protected by player login at Amazon, not in the browser. For more information see [Fine-Grained Access Control for DynamoDB](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html).
+Again Amazon IAM helps here, as it can be used to secure individual rows in a DynamoDB table so that they are secured by the user associated with that row. Thus a different user can't open up the JavaScript console and cancel another players vote _(more info on this below)_.
 
 So essentially the player of the _Photo Caption Challenge_ is given limited permission based on their id provided by their Facebook login. They are allowed to create rows in the games DynamoDB table. These rows can be of two types __vote__ or __upload__ and each row contains:
 
@@ -51,6 +51,11 @@ So essentially the player of the _Photo Caption Challenge_ is given limited perm
 * __voteId__: in the case of a vote there is also a voteId to uniquely identify each vote.
 
 In addition to the table structure, there is a separate index for the table that allows queries by gameId and  submissionType. This allows for quick lookup of all photos or all votes for a particular game.
+
+## Amazon IAM
+Amazon IAM is the way to limit privilages from the pogg to the data services. For example you want the user to have access to only their information in the data services, but in a client API calls to the server can be manipulated, thus authentication information is critical to limiting services. AWS works with _identity providers_ like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures a S3 bucket privilages so that flder privilages are connected to user identity. In the case of "Photo Challenge" the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in the folder, but only upload, modify, or delete items that are in a folder that matches their identy provider's assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identy provider's assigned userid. 
+
+The Amazon IAM policy for DynamoDB works similarly. Any logged in Facebook user running the Photo Challenges app will be able to query the DB index for the current list of photo entries, but can only add/delete records that have a userId value that matches their identy provider's assigned userid. Thus a user can't spoof who added the record, it is connected to their userId or it is rejected by the IAM policy assigned to the DynamoDB table. For more information see [Fine-Grained Access Control for DynamoDB](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html).
 
 In [Mobile Real Estate App](http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/) and [Spreadsheet Driven Web Apps](http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/) I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, and query transactions, a database like DynamoDB is a great solution.
 
