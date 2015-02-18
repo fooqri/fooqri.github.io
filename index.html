@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my &hellip;">
+  <meta name="description" content="The Edison is a tiny and amazing computer, and ideal prototyping tool for wearable and IoT experiments. Here are the steps I am currently following &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,140 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/18/seting-up-an-edison/">Setting Up a New Intel Edison</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-18T12:42:00-08:00" pubdate data-updated="true">Feb 18<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="//s3.amazonaws.com/rwx-blog/IMG_4161.JPG"  style="height: 400px; display: block; margin: auto;"></p>
+
+<p>The Edison is a tiny and amazing computer, and ideal prototyping tool for wearable and IoT experiments. Here are the steps I am currently following to set up the Edison.</p>
+
+<h2>Flashing the Edison</h2>
+
+<p>Like many developers I have Mac, Windows, and Linux laptops but I find that Linux is the best environment for flashing the Edison, even though I do most development on my Mac. I came to this conclusion after trying to recover an Edison with a lost password, the only platform that worked was Linux.</p>
+
+<p>The first step is flashing the Edison. Follow <a href="https://communities.intel.com/docs/DOC-23200">Flashing Edison Linux</a>. You can also try <a href="https://communities.intel.com/docs/DOC-23193">Flashing Edison Mac</a>.</p>
+
+<p>The only change I would recommend is to create a folder that contains the Edison images, and then unzip the downloaded folder into a sub directory named after the build number. Over time you may find yourself flashing to older or newer images based on the project needs.</p>
+
+<h2>Setting up WiFi</h2>
+
+<p>Sparkfun offers a great guide for <a href="https://learn.sparkfun.com/tutorials/edison-getting-started-guide#connecting-to-WiFi">Setting up WiFi</a> on the Edison. This takes only a few minutes and even if you don&rsquo;t plan to use WiFi in your projects it makes working with the Edison easier because you can use SCP and SSH to connect with the Edison over the network.</p>
+
+<h2>Connect to Edison</h2>
+
+<p>For OSX or Linux the best way to connect to the Edison is via SSH. On OSX you can use the name you gave the Edison in the step above. For example <em>ssh root@edison2.local</em> where <em>edison2</em> is the name you gave your Edison. On Linux you will use the Edison&rsquo;s IP address, for example <em>ssh root@10.0.1.12</em>.</p>
+
+<h2>Using Emacs</h2>
+
+<p>If you are an Emacs user then once WiFi is setup you can use <a href="http://www.emacswiki.org/emacs/TrampMode">Emacs Tramp</a> to work with files on the Edison. Just use <em>C-x C-f</em> as usual, but instead of a directory use <em>root@edison2.local</em> or use the ip address for Linux.</p>
+
+<p>Emacs will present a directory of files on the Edison that you can open, or just keep typing the name for auto suggest feature. For example <em>root@edison2.local/home/root/notes.md</em>.</p>
+
+<h2>Setup Bluetooth</h2>
+
+<p>Bluetooth is available in the Edison, but in the default configuration is not enabled at boot. If you are using Bluetooth you will likely want to enable it on every reboot or power cycle.</p>
+
+<h3>Enable Bluetooth at Boot</h3>
+
+<p>Use the <strong>systemctl</strong> command to cause Bluetooth to start automatically</p>
+
+<pre><code> systemctl enable bluetooth
+</code></pre>
+
+<h3>Create a BT startup script</h3>
+
+<p>Create a script file with the following five lines (<em>/home/root/btup.sh</em>).</p>
+
+<pre><code> #!/bin/sh
+ /usr/sbin/rfkill unblock bluetooth
+ /usr/bin/hciconfig hci0 up
+ /usr/bin/hciconfig hci0 piscan
+ /usr/bin/hciconfig hic0 sspmode 0
+</code></pre>
+
+<h3>Make the script executable</h3>
+
+<pre><code> chmod +x /home/root/btup.sh
+</code></pre>
+
+<h3>Create a new service file (<em>/lib/systemd/system/btup.service</em>).</h3>
+
+<pre><code> [Unit]
+ Description=BTUP
+ After=bluetooth.target
+ Before=systemd-user-sessions.service
+ [Service]
+ Type=simple
+ RemainAfterExit=true
+ ExecStart=/home/root/btup.sh
+ Environment="HOME=/home/root"
+ WorkingDirectory=/home/root/
+ [Install]
+ WantedBy=multi-user.target
+</code></pre>
+
+<h3>Make the script executable</h3>
+
+<pre><code> chmod +x /lib/systemd/system/btup.service
+</code></pre>
+
+<h3>Enable the service</h3>
+
+<pre><code> systemctl enable /lib/systemd/system/btup.service
+</code></pre>
+
+<h3>Reboot the Edison</h3>
+
+<pre><code> reboot
+</code></pre>
+
+<h2>Create a Backup</h2>
+
+<p>Now is a good time to create a backup of the Edison that can be recovered if you need to return to a clean install. For example you may want to update nodejs, or install node modules, or even other drivers that may cause an issue you want to start over from.</p>
+
+<p>Place a MicroSD card with at least 4GB of available space into the MicroSD slot on the dev kit board where the Edison is installed. Backup the Edison to an image file on the MicroSD. In the example below it is named <em>edison2_backup.img</em>. Make sure the file name has a <em>.img</em> extension. If you have a large MicroSD card you can store multiple backup images from multiple Edisons, making it quick and easy to recover each of them. It is wise to consider a consistent naming system.</p>
+
+<pre><code> dd if=/dev/mmcblk0 of=/media/sdcard/edison2_bk.img
+</code></pre>
+
+<h2>Restoring an Edison from Backup</h2>
+
+<p> If you need to restore the Edison from backup just reverse the process</p>
+
+<pre><code> dd if=/media/sdcard/edison2_bk.img of=/dev/mmcblk0
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -612,59 +746,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Trying Out Pixate - CSS for iOS App Development</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-23T22:09:00-08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I have been using RubyMotion for iOS development; I really  appreciate developing in Ruby, and prefer Emacs to Xcode. Compared to using interface builder, styling apps can be a challenge. It is possible to use RubyMotion with XIB files created in Xcode&rsquo;s Interface Builder, but I have been trying to avoid this. I am striving for a more web-app like design and development workflow.</p>
-
-<p>I have been using <a href="https://github.com/rubymotion/teacup">teacup</a>, which takes a declarative approach to styling and uses a CSS-like DSL. Although I liked teacup, I had been anxiously awaiting the arrival of <a href="http://www.pixate.com/">Pixate</a> because of its support for CSS-based styling. Pixate became generally available this month, and I purchased a license. The license is $199, and although expensive, a small price compared to time saved if it works. Since I already do a lot of CSS work on the web side it seems like a nice way to leverage my CSS skills and experience. The Pixate team along with the RubyMotion team created a <a href="https://github.com/Pixate/RubyMotion-Pixate">RubyMotion-Pixate gem</a> that makes it easy to get Pixate working with RubyMotion.</p>
-
-<p>After 2 days of coding I have my basic controllers in place as well as several TableViewControllers. I have used Pixate to style many of the elements. With Pixate you can style with four types of selectors:</p>
-
-<ul>
-<li>element type selector &ndash; Select a control by element name</li>
-<li>universal selector &ndash; Select any control</li>
-<li>class selector &ndash; Select a control by class name</li>
-<li>id selector &ndash; Select a control by ID</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -712,6 +793,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/18/seting-up-an-edison/">Setting Up a New Intel Edison</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app</a>
       </li>
     
@@ -725,10 +810,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
       </li>
     
   </ul>
@@ -771,7 +852,7 @@ application block.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Patrick Goddi -
+  Copyright &copy; 2015 - Patrick Goddi -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Quick Look is a handy OS X feature where you can get a quick look at a file by selecting it and pressing the space bar. This is handy when looking &hellip;">
+  <meta name="description" content="In my home office I have a Bluetooth keyboard and trackpad. When I use my MacBook Air elsewhere in the house I constantly see connect and disconnect &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,48 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/08/toggle-bluetooth/">Toggle Bluetooth</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-08T12:10:00-08:00" pubdate data-updated="true">Jan 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my home office I have a Bluetooth keyboard and trackpad. When I use my MacBook Air elsewhere in the house I constantly see connect and disconnect messages for these devices. Frequently toggling BT on/off can be a pain; the menu bar method for toggling BT requires scanning the menu bar for the BT glyph, clicking on it, finding the correct menu item and clicking on it. All that scanning, tracking, and clicking can be disruptive to a good mental flow; I wanted a quick keyboard shortcut to toggle bluetoooth on/off. I use <a href="http://www.alfredapp.com/">Alfred</a> and after a quick search I found <a href="http://seapy.com/1779">this</a> extension that does just that. I use “bt” as the shortcut code. I have found this to be very handy, I now toggle out of habit, so no thinking required;</p>
+
+<ul>
+<li><a href="http://www.alfredapp.com/">Alfred App</a></li>
+<li><a href="http://seapy.com/1779">Alfred Toggle Bluetooth Extension</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -519,79 +561,9 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen Capture Goodness&#8230;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-01-17T14:17:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>tl;wr</h3>
-
-<p>Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.</p>
-
-<h3>verbose</h3>
-
-<p>When making notes on wireframes, screen designs, activity diagrams, etc, I have a particular workflow where I do a screen capture and want to link the result in my markdown notes or from our project wiki. The power of markdown text files is their portability, the challenge can be losing the rich cut and paste of apps like Evernote.</p>
-
-<p>In a previous post <a href="http://fooqri.tumblr.com/post/38158334752/wiki-searchable-notes" title="Wiki + Searchable Notes">Wiki + searchable notes</a>. I mentioned that I was now using the github clone feature for the wiki, allowing me to work on the wiki locally and then push changes to the server with git push. Another benefit of this approach, it makes it very easy to add images to the wiki. </p>
-
-<p>The problem was it took too many steps to go from capturing the screen, saving it, and finally linking to it in the wiki/notes file. So I created a TextExpander snippet to do all of this in 2 steps (OSX only)</p>
-
-<ol>
-<li>screen capture (ctrl-cmd-shift-4)</li>
-<li>type &ldquo;wpng&rdquo; into the editor where I want the image to be placed.</li>
-</ol>
-
-
-<p>First you need <a href="http://smilesoftware.com/TextExpander/index.html" title="TextExpander">TextExpander</a> and also you need to install <a href="https://github.com/jcsalterego/pngpaste" title="pngpaste">pngpaste</a> a small bit of code that handles saving a clipboard image to a png file.</p>
-
-<p>Then you just need this snippet (I used &ldquo;wpng&rdquo; as the snippet abbreviation):</p>
-
-<div><script src='https://gist.github.com/4321473.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>I chose to just use a UUID for the file name to keep it simple and unique for each file.</p>
-
-<p>I added this as a snippet in TextExpander and now instead of 10+ steps across 3 apps my workflow for getting a screen capture into a wiki page is this:</p>
-
-<ol>
-<li>screen capture (ctrl-cmd-shift-4)</li>
-<li>type &ldquo;wpng&rdquo; into the editor where I want the image to be placed.</li>
-</ol>
-
-
-<p>The result: typing &ldquo;wpng&rdquo; causes the last clipboard item to be saved as a png in the wiki images directory and the &ldquo;wpng&rdquo; text I just typed is replaced with the markup for the image that was just saved. Quick and simple.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/4/">&larr; Older</a>
     
     <a href="/blog/archives/"> Archives </a>
     
@@ -638,6 +610,10 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/18/seting-up-an-edison/">Setting Up a New Intel Edison</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app</a>
       </li>
     
@@ -651,10 +627,6 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
     
       <li class="post">
         <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
       </li>
     
   </ul>
@@ -697,7 +669,7 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Patrick Goddi -
+  Copyright &copy; 2015 - Patrick Goddi -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
