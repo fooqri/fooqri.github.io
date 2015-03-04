@@ -63,7 +63,6 @@ Create a script file with the following five lines (*/home/root/btup.sh*).
      [Install]
      WantedBy=multi-user.target
      
-
 ### Enable the service
 
      systemctl enable /lib/systemd/system/btup.service
