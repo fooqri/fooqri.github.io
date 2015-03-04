@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iot | ]]></title>
   <link href="http://fooqri.github.io/blog/categories/iot/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-02-18T15:06:55-08:00</updated>
+  <updated>2015-03-04T15:59:10-08:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -85,11 +85,6 @@
  WorkingDirectory=/home/root/
  [Install]
  WantedBy=multi-user.target
-</code></pre>
-
-<h3>Make the script executable</h3>
-
-<pre><code> chmod +x /lib/systemd/system/btup.service
 </code></pre>
 
 <h3>Enable the service</h3>
