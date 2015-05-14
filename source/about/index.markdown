@@ -4,18 +4,75 @@ title: "About Me"
 comments: true
 sharing: true
 footer: true
----
+--- 
 # Welcome
 
 Thanks for stopping by, I hope you find something useful here. This is a place where I share design and development explorations, ideas, and techniques. I also sprinkle in productivity and organizational techniques I find useful.
 
-# About me 
+My name is Patrick Goddi and I am a designer/developer living in Silicon Valley. I love designing and building products and platforms, but also find leadership roles extremely rewarding; having learned so much from amazing design, research, and engineering teams I have directed at various times. [twitter:@fooqri](http://twitter.com/fooqri), [in:goddip](http://www.linkedin.com/in/goddi/)
 
-My name is Patrick Goddi and I am a designer _and_ developer living in Silicon Valley. [twitter:@fooqri](http://twitter.com/fooqri), [in:goddip](http://www.linkedin.com/in/goddi/)
-
-What does it mean to be both a designer and developer? One simple answer is, _“That is what I do. I have studied and practiced  both the design and development of products; and directed research, design, and development teams.”_ Although design and development seem very different in practice and process, they are both about problem solving. They simply approach problems from slightly different directions with a different set of tools.  For describing design, I am fond of the following definition:
-
-_Design is a methodology for applying critical thinking to understand, visualize, and describe complex ill-structured problems and develop approaches to solve them._
+# Recent Products and Explorations
+I am always looking for interesting projects to work on with interesting people. Here are a few of my current and past obsessions.
 
 
-That is from the _US Army Field Manual_, but I think it fits superbly for defining design for technology products as well. Further, it describes where designers and developers stand on common ground. _Designers and developers both bringing their knowledge, practice, and experience to bear on solving a problem._ They just have different tools and methodologies, but with the right approach, they work in harmony to solve really hard problems. 
+##poggr.com
+<a href='http://www.poggr.com/home/#' target='_blank'>poggr.com</a> is a web service I built as a tool to create, share, and test ideas and experiments. It is the scaffolding I use regularly for rapid prototyping, sharing, and testing web app ideas.
+
+<a href='http://www.poggr.com/home/#' target='_blank'><img src="/images/poggr_screens.png" style="margin: 0 10px 3em 0;float: left;/* align-content: center; *//* text-align: inherit; */"></a>
+
+
+##local202
+<img src="/images/local202.png" style="margin: 0 10px 3em 0;float: left;">
+
+Local202 is a mobile app with back-end service used by volunteers to organize and participate in field volunteer oriented challenges. 
+The goal is to reduce the friction between having an idea, and organizing your social network to help you make the idea a reality.
+
+After noticing a lot of inefficiencies in field activities for various volunteer groups, I started this project with a friend who organizes volunteers in London and works with NGOs around the world. Local202 supports  the creation, communication, and execution of real world challenges for volunteer coordinators. This could involve any field activities including cleanup activities, handing out care packages, monitoring environmental changes, etc.
+
+The idea is to make it easy and fun to take an idea and turn it into a challenge that you and your social network can tackle together. A second goal is support busy people who might not have time for long-term organizational commitments, but are happy to spend a few hours on discrete challenges. 
+
+
+## Internet of Things Experiments
+<img src="/images/edison.png" style="width: 100%;margin: 0 3em 3em 0;">
+I am currently working with a friend on a few IoT experiments using the Intel Edison and a Nodejs web service. At HP Labs I worked on a research project for a web-based IoT platform and I am still very enthusiastic about the value of web connected sensors and devices.
+
+
+# Past projects (My HP Days)
+
+## HP Consumer Devices
+<img src="/images/HP_Airlife100.jpg" style="margin: 0 10px 5px 0;">
+
+While in HP's Emerging Platforms organization I directed design and front-end engineering teams developing a number of consumer products. These included HP's first Android and Chrome OS based devices. My teams were also responsible for UI design on HP's Windows-based tablet devices and HP's TouchSmart PC's. 
+
+## Smart Places
+<img src="/images/beacon.jpg" style="margin: 0 10px 5px 0;float: left;/* align-content: center; *//* text-align: inherit; */">
+I led a team of researchers, designers, and engineers working on an project that predated modern IoT deployments. The term Internet of Things was not yet coined, so we used the phrase *web presence for people, places, and things*.  Our research focused on how to connect Internet enabled people, places, and things and provide context-aware services. Discovery was provided using a device we called a *beacon* which initially utilized IR and later  a Bluetooth radio. The HP Labs beacon predated the Apple *iBeacon* by over a decade, and was open sourced to encourage research on the topic. Our research focus was a *presence platform* for interconnecting agents/services associated with people, places, and things discovered in a *smart place*. It was a zero-config discovery and service provisioning platform for the *Internet of people, places and things*.
+
+##  Mobile Research
+<img src="/images/mscape.jpg" style="width: 300px;margin: 0 10px 5px 0;float: left;/* align-content: center; *//* text-align: inherit; */">
+
+I have always been fascinated by mobile experiences that connect with the physical world around us. At HP Labs I worked on a content authoring and game development platform for mobile location-based games and experiences called <a href='http://en.wikipedia.org/wiki/Mscape' target='_blank'>mscape</a>. The platform was field tested in many places around the world with various partners. See <a href='https://www.youtube.com/watch?v=jhmicnEzfNY' target='_blank'>Ere be Dragons</a> a mobile game using GPS and heart monitor.
+
+The exciting part of this research was the truly cross-functional nature of this research team. Designers, developer, and mobile researchers worked very closely in a continuous deploy, test, refine development process where we were constantly field testing the work around the world with many partners in universities, government, and industry.
+
+## Web Platforms
+
+I worked for several years at HP.com as the core platform architect, managing product sites, content delivery, and commerce platforms.
+
+## Operating Systems
+
+I started my career as an operating systems engineer working on various OS projects in HP's enterprise business including kernel, I/O, and online patch.
+
+
+## Links
+- <a href="https://goo.gl/9D3dvk" rel="nofollow" target="_blank" title="Patents">Patents</a>
+- Paper: <a href="http://www.computer.org/portal/web/csdl/doi/10.1109/MMUL.2007.52" rel="nofollow" target="_blank"> Mediascapes: Context-Aware Multimedia Experiences</a> IEEE Multimedia, Stuart P. Stenton, Richard Hull, Patrick M. Goddi, Josephine E. Reid, Ben J.C. Clayton, Tom J. Melamed, Susie Wee
+- Paper: <a class="OLa url Xvc" href="http://portal.acm.org/citation.cfm?id=1160164" rel="nofollow" target="_blank">Integrating the physical world with the web to enable context-enhanced mobile services</a> ACM Journal Mobile Networks and Applications, Philippe Debaty, Patrick Goddi, Alex Vorbau
+- Paper: <a class="OLa url Xvc" href="http://www.springerlink.com/content/q38w4322u271722q/" rel="nofollow" target="_blank">Building Connections among Loosely Coupled Groups: Hebb’s Rule at Work</a> Journal of Computer Supported Cooperative Work, S. Carter, J. Mankoff, P. Goddi
+- Paper: <a class="OLa url Xvc" href="http://www.computer.org/portal/web/csdl/abs/mags/ex/1992/04/x4083abs.htm" rel="nofollow" target="_blank">Medley Lisp Development Environment</a> IEEE Expert, Patrick Goddi, Anne Keuneke 
+- Paper: <a class="OLa url Xvc" href="http://www.hpl.hp.com/techreports/2003/HPL-2003-38.pdf" rel="nofollow" target="_blank">Creating and Experiencing Ubimedia</a>HPL Technical Report, John Barton, Patrick Goddi, Mirjana Spasojevic
+- Paper: <a class="OLa url Xvc" href="http://www.hpl.hp.com/techreports/2004/HPL-2004-180.pdf" rel="nofollow" target="_blank">Enabling Informal Communication of Digital Stories</a> HPL Technical Report, Philippe Debaty, Patrick Goddi, Rich Gossweiler, Rakhi Rajani, Alex Vorbau, Josh Tyler
+- Session: <a class="OLa url Xvc" href="http://whereconf.com/where2008/public/schedule/detail/1605" rel="nofollow" target="_blank" title="Where 2.0 Session">Beg, Borrow and Steal: Make a Simple GPS Game</a> Where Conference, Patrick Goddi, Kurt MacDonald, Ben Clayton
+- Demo <a class="OLa url Xvc" href="http://photos.allthingsd.com/D3/Tech-Demo-HP/578906_yBLKE#24456523_jdNpL" rel="nofollow" target="_blank">Misto Demo at D3</a>
+- Video <a class="OLa url Xvc" href="http://www.youtube.com/watch?v=Q2Ee7FYA_p8" rel="nofollow" target="_blank" title="Mediascape Video">Mediascape Video</a>
+
