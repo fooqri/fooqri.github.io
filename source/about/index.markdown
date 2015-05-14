@@ -34,7 +34,7 @@ The idea is to make it easy and fun to take an idea and turn it into a challenge
 
 ## Internet of Things Experiments
 <img src="/images/edison.png" style="width: 100%;margin: 0 3em 3em 0;">
-I am currently working with a friend on a few IoT experiments using the Intel Edison and a Nodejs web service. At HP Labs I worked on a research project for a web-based IoT platform and I am still very enthusiastic about the value of web connected sensors and devices.
+I am currently working with a friend on a few IoT experiments using the Intel Edison and a Node.js web service. At HP Labs I worked on a research project for a web-based IoT platform and I am still very enthusiastic about the value of web connected sensors and devices.
 
 
 # Past projects (My HP Days)
