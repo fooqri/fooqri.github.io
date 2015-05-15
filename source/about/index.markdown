@@ -37,7 +37,7 @@ The idea is to make it easy and fun to take an idea and turn it into a challenge
 I am currently working with a friend on a few IoT experiments using the Intel Edison and a Node.js web service. At HP Labs I worked on a research project for a web-based IoT platform and I am still very enthusiastic about the value of web connected sensors and devices.
 
 
-# Past projects (My HP Days)
+# Past projects
 
 ## HP Consumer Devices
 <img src="/images/HP_Airlife100.jpg" style="margin: 0 10px 5px 0;">
