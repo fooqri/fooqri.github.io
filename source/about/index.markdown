@@ -46,7 +46,7 @@ I directed design and front-end engineering teams in HP's Emerging Platforms org
 
 ## Smart Places
 <img src="/images/beacon.jpg" style="margin: 0 10px 5px 0;float: left;/* align-content: center; *//* text-align: inherit; */">
-I led a team of researchers, designers, and engineers working on an *Internet of people, places, and things* project. Our research focused on using Internet protocols and radio beacons to connect the physical world to context-aware web services. The HP Labs beacons predated the Apple *iBeacon* by over a decade, and was open-sourced to encourage research on the topic. Our research focus was a *presence platform* for interconnecting agents/services associated with people, places, and things discovered in a *smart place*. It was a zero-config discovery and service provisioning platform for the *Internet of people, places and things*.
+I led a team of researchers, designers, and engineers working on an *Internet of people, places, and things* project. Our research focused on using Internet protocols and radio beacons to connect the physical world to context-aware web services. The HP Labs beacons predated the Apple *iBeacon* by over a decade, and was open-sourced to encourage research on the topic. Our research resulted in a zero-config discovery and service provisioning platform for delivering context-aware services to the *Internet of people, places and things*.
 
 ##  Mobile Research
 <img src="/images/mscape.jpg" style="width: 300px;margin: 0 10px 5px 0;float: left;/* align-content: center; *//* text-align: inherit; */">
