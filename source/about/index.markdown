@@ -42,7 +42,7 @@ I am currently working with a friend on a few IoT experiments using the Intel Ed
 ## HP Consumer Devices
 <img src="/images/HP_Airlife100.jpg" style="margin: 0 10px 5px 0;">
 
-While in HP's Emerging Platforms organization I directed design and front-end engineering teams developing a number of consumer products. These included HP's first Android and Chrome OS based devices. My teams were also responsible for UI design on HP's Windows-based tablet devices and HP's TouchSmart PC's. 
+I directed design and front-end engineering teams in HP's Emerging Platforms organization, where we developed many consumer products. Products included HP's first Android and Chrome OS based devices, HP's Windows-based tablet devices, and HP's TouchSmart PC's. 
 
 ## Smart Places
 <img src="/images/beacon.jpg" style="margin: 0 10px 5px 0;float: left;/* align-content: center; *//* text-align: inherit; */">
