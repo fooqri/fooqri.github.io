@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Simple state machine example - </title>
+  <title>Revisiting Buyer's Agent app using React.js - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I have been investigating using the ruby state_machine gem for a project. State machines can be very handy in simplifying code where objects move &hellip;">
+  <meta name="description" content="In a past post I showed a Mobile Real Estate App that was built with Polymer, this time around I will revisit the app but instead use react.js The &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -84,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Simple State Machine Example</h1>
+      <h1 class="entry-title">Revisiting Buyer's Agent App Using React.js</h1>
     
     
       <p class="meta">
@@ -100,83 +100,44 @@
   
 
 
-<time datetime="2013-01-15T12:24:00-08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
+<time datetime="2015-06-09T11:45:00-07:00" pubdate data-updated="true">Jun 9<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I have been investigating using the ruby <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem for a project. State machines can be very handy in simplifying code where objects move through various states. The <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example.  The todo list will include a main list that contains items and sublists.  This allows a way to organize items easily into sublists.</p>
+<div class="entry-content"><p>In a past post I showed a <a href="http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> that was built with Polymer, this time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a> The <strong>Mobile Buyer&rsquo;s Agent</strong> is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer&rsquo;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.</p>
 
-<p>A simple way to do this is to declare two classes <em>List</em> and <em>Item</em> and allow an object of class <em>List</em> to contain a list of <em>Lists</em> and a list of <em>Items</em>. This approach allows a flat list with many items, or a hierarchical list with top-level items, but also sub-lists that contain their own items.</p>
+<p><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank"><img src="https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png"></a></p>
 
-<p>In addition to lists and items, I want is to track whether I have completed all of the items in a list. In the case of a hierarchical list this means all items of sub-lists as well. Thus in addition to lists and items, we need to track whether items and lists are in progress or completed.</p>
+<p>This is a demonstration of using a shared <em>Google Spreadsheet</em>  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the <strong><em><a href="/p-kz3NoHhgl:dZkIM34sBnlx::@">Mobile Buyer&rsquo;s Agent</a></em></strong>.</p>
 
-<p>The next step is deciding on the states of the two object types. For my example, I decided:
-* a list will have an initial state of <em>available</em>, and will transition to state <em>started</em> when the first item on the list is completed. When all items and sublists are <em>completed</em> the list will move to the state <em>completed</em>.
-* an item will have an initial state of <em>available</em> and will transition to <em>completed</em> when the item is finished.</p>
+<p>The <em>Real Estate Shopper List</em> Google spreadsheet contains properties the agent wishes to present in the app. The neighborhood column is associated with the dropdown box, and allows a simple grouping/categorization of properties. The agent also provides other features and details associated with the properties.</p>
 
-<p>Finally I want to inform the user when:
-* an item is completed
-* a list is completed
-* the project is completed (all items and sublists are completed)</p>
+<p><a href="//docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml" target="_blank"><img class="spreadsheet-screen" src="//s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent2.png" ></a></p>
 
-<p>Here is a quick example of the code to meet these requirements:</p>
+<p><strong>Note:</strong> if you duplicate the example spreadsheet you must remember to publish it so it can be accessed by the <em>Mobile Buyer&rsquo;s Agent</em> app. If you get an error it is likely you forgotto publish the spreadsheet. To publish a spreadsheet while viewing it, use the file menu on Google Docs and choose <em>&ldquo;publish to the web&rdquo;</em>, and follow the instructions.</p>
 
-<div><script src='https://gist.github.com/4549146.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
+<h3>Trying your own spreadsheet</h3>
+
+<p>If you publish your own copy of the spreadsheet you can easily substitute it in the app with a simple url parameter called <strong>sheetid</strong>.</p>
+
+<p>For example if the link your are given when you plublish your spreadsheet is</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml</span></code></pre></td></tr></table></div></figure>
 
 
-<p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
+<p>Then your sheetid is <strong>1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</strong>, and you can use it in this app by using a url with sheetid parameter as shown below:</p>
 
-<p>Now if you load this example in IRB you can play with the lists and items like so:</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>po.gg/p-kz3NoHhgl:dZkIM34sBnlx::@?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</span></code></pre></td></tr></table></div></figure>
 
-<pre><code> load "list_example.rb"
- list = List.new("Groceries", "Get some groceries")
- wf = list.add_list("Whole Foods", "Get some groceries from Whole Foods")
- milk = list.add_item("Milk", "2% Milk")
- strawberries = wf.add_item("Strawberries", "Ripe organic Strawberries"))
- oranges = wf.add_item("Oranges", "Ripe mandarine oranges")
 
- strawberries.finish 
- =&amp;gt; finished item Strawberries
+<p>This will substitue your spreadsheet for the default spreadsheet used in the app.</p>
 
- oranges.finish  
- =&amp;gt; finished item Oranges
- =&amp;gt; congrats on completing list Whole Foods
-
- milk.finish
- =&amp;gt; finished item Milk
- =&amp;gt; congrats on completing project Groceries
-</code></pre>
-
-<p>This was a really simple example, but shows how easy it is to create classes that embed state machines. For more check out the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem.</p>
-
-<h3>State Diagrams</h3>
-
-<p>The library also allows you to generate graphs of the states and transitions in each class. For example:</p>
-
-<p>create a Rakefile.rb</p>
-
-<pre><code> require 'tasks/state_machine'
- require './list_example.rb
-</code></pre>
-
-<p>Then in terminal execute:</p>
-
-<pre><code> rake state_machine:draw CLASS=List 
-</code></pre>
-
-<p>For the <em>List</em> class shown above this will generate a png file named <em>List_list_state.png</em> that looks like the image below.</p>
-
-<p><img src="http://media.tumblr.com/d78e332b4656b62dec36c2a2d2408a82/tumblr_inline_mgqav0Q8uW1qz562v.png" alt="" /></p>
-
-<p>The <em>List</em> class is very simple so the diagram is also simple. In the case of my project there are many states and more complicated transitions between states so the diagram can be very handy to visualize what is happening when  debugging a strange transition,</p>
-
-<h3>Wrapup</h3>
-
-<p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes.  If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
+<p>For info on the code take a look at the <a href="http://www.poggr.com/p-kz3NoHhgl:dbJMG3EjSneg" target="_blank">README</a> document.</p>
 </div>
 
 
@@ -199,21 +160,15 @@
   
 
 
-<time datetime="2013-01-15T12:24:00-08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
+<time datetime="2015-06-09T11:45:00-07:00" pubdate data-updated="true">Jun 9<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/state-machines/'>state-machines</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/" data-via="" data-counturl="http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/" >Tweet</a>
   
   
   
@@ -222,10 +177,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/01/14/refactoring-making-master-programmers/" title="Previous Post: Refactoring: making master programmers">&laquo; Refactoring: making master programmers</a>
+        <a class="basic-alignment left" href="/blog/2015/02/18/seting-up-an-edison/" title="Previous Post: Setting Up a New Intel Edison">&laquo; Setting Up a New Intel Edison</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/01/17/lean-api-on-heroku/" title="Next Post: Lean API on Heroku">Lean API on Heroku &raquo;</a>
       
     </p>
   </footer>
@@ -350,8 +303,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example/';
-        var disqus_url = 'http://fooqri.github.io/blog/2013/01/15/simple-state-machine-example/';
+        var disqus_identifier = 'http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/';
+        var disqus_url = 'http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/';
         var disqus_script = 'embed.js';
       
     (function () {

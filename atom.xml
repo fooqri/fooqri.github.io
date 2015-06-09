@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-05-14T17:31:49-07:00</updated>
+  <updated>2015-06-09T12:12:51-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Revisiting Buyer's Agent app using React.js]]></title>
+    <link href="http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/"/>
+    <updated>2015-06-09T11:45:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js</id>
+    <content type="html"><![CDATA[<p>In a past post I showed a <a href="http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> that was built with Polymer, this time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a> The <strong>Mobile Buyer&rsquo;s Agent</strong> is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer&rsquo;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.</p>
+
+<p><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank"><img src="https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png"></a></p>
+
+<p>This is a demonstration of using a shared <em>Google Spreadsheet</em>  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the <strong><em><a href="http://fooqri.github.io/p-kz3NoHhgl:dZkIM34sBnlx::@">Mobile Buyer&rsquo;s Agent</a></em></strong>.</p>
+
+<p>The <em>Real Estate Shopper List</em> Google spreadsheet contains properties the agent wishes to present in the app. The neighborhood column is associated with the dropdown box, and allows a simple grouping/categorization of properties. The agent also provides other features and details associated with the properties.</p>
+
+<p><a href="http://fooqri.github.io//docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml" target="_blank"><img class="spreadsheet-screen" src="http://fooqri.github.io//s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent2.png" ></a></p>
+
+<p><strong>Note:</strong> if you duplicate the example spreadsheet you must remember to publish it so it can be accessed by the <em>Mobile Buyer&rsquo;s Agent</em> app. If you get an error it is likely you forgotto publish the spreadsheet. To publish a spreadsheet while viewing it, use the file menu on Google Docs and choose <em>&ldquo;publish to the web&rdquo;</em>, and follow the instructions.</p>
+
+<h3>Trying your own spreadsheet</h3>
+
+<p>If you publish your own copy of the spreadsheet you can easily substitute it in the app with a simple url parameter called <strong>sheetid</strong>.</p>
+
+<p>For example if the link your are given when you plublish your spreadsheet is</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then your sheetid is <strong>1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</strong>, and you can use it in this app by using a url with sheetid parameter as shown below:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>po.gg/p-kz3NoHhgl:dZkIM34sBnlx::@?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will substitue your spreadsheet for the default spreadsheet used in the app.</p>
+
+<p>For info on the code take a look at the <a href="http://www.poggr.com/p-kz3NoHhgl:dbJMG3EjSneg" target="_blank">README</a> document.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Setting Up a New Intel Edison]]></title>
@@ -908,17 +947,6 @@ application block.</p>
 <p><img src="http://media.tumblr.com/7095223771e3c38939367f18458726e1/tumblr_inline_mgmwbwyolq1qz562v.jpg" alt="image" />Bull</p>
 
 <p>I got to thinking about this looking at Picasso&rsquo;s Bull series.  This is an excellent example of a master working through a problem to develop the most elegantly simplified expression of the subject. To become a master, one must work through a problem incrementally and always looking for elegant ways to improve, to simplify the end expression of the solution. Even for a competent coder, it is not always apparent what is elegant without seeing the real life consequences of chosen approaches. Whether the approach makes the code fragile, bloated, or unfriendly, it is only through the experience of trying to grow a code base that these issues can be truly understood. Under the right conditions refactoring provides a sort of express lane  to becoming a master developer. This is very difficult if you are never allowed to truly revisit a subject after completing the first expression of the solution. I like the &ldquo;Bull&rdquo; example because it is how I think of elegant design and development, just enough to represent the solution and no more, anything else is bloat that will be nothing but cost later. Through refactoring, a developer can develop insights, skills, and techniques more quickly by addressing a well understood problem from a more experienced perspective.  Practice make perfect. If not the code, maybe the coder.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Alfred + Pinboard + Chrome]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/"/>
-    <updated>2013-01-13T12:29:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome</id>
-    <content type="html"><![CDATA[<p>If you happen to use <a href="http://www.alfredapp.com/">Alfred</a>, <a href="http://pinboard.in">Pinboard</a>, and Chrome, here is a nice extension to save the current browser page to Pinboard using Alfred. Much faster than any chrome extension, and fingers never leave the keyboard.</p>
-
-<p><a href="http://www.timbueno.com/2012/06/27/pinboard-plus-alfred">Tim Bueno&rsquo;s Pinboard Extension</a></p>
 ]]></content>
   </entry>
   
