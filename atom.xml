@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-06-09T12:12:51-07:00</updated>
+  <updated>2015-06-09T12:21:21-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -18,11 +18,11 @@
     <link href="http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/"/>
     <updated>2015-06-09T11:45:00-07:00</updated>
     <id>http://fooqri.github.io/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js</id>
-    <content type="html"><![CDATA[<p>In a past post I showed a <a href="http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> that was built with Polymer, this time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a> The <strong>Mobile Buyer&rsquo;s Agent</strong> is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer&rsquo;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.</p>
+    <content type="html"><![CDATA[<p>In a past post I showed a <a href="http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> that was built with Polymer. This time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a>. The <strong>Mobile Buyer&rsquo;s Agent</strong> is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer&rsquo;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.</p>
 
 <p><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank"><img src="https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png"></a></p>
 
-<p>This is a demonstration of using a shared <em>Google Spreadsheet</em>  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the <strong><em><a href="http://fooqri.github.io/p-kz3NoHhgl:dZkIM34sBnlx::@">Mobile Buyer&rsquo;s Agent</a></em></strong>.</p>
+<p>This is a demonstration of using a shared <em>Google Spreadsheet</em>  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the <strong><em><a href="" target="_blank">Mobile Buyer&rsquo;s Agent</a></em></strong>.</p>
 
 <p>The <em>Real Estate Shopper List</em> Google spreadsheet contains properties the agent wishes to present in the app. The neighborhood column is associated with the dropdown box, and allows a simple grouping/categorization of properties. The agent also provides other features and details associated with the properties.</p>
 
