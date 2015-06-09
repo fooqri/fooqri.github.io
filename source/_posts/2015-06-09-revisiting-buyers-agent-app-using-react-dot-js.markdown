@@ -6,11 +6,11 @@ comments: true
 categories: 
 ---
 
-In a past post I showed a [Mobile Real Estate App](http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/) that was built with Polymer, this time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a> The __Mobile Buyer's Agent__ is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer's agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.
+In a past post I showed a [Mobile Real Estate App](http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/) that was built with Polymer. This time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a>. The __Mobile Buyer's Agent__ is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer's agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.
 
 <a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank"><img src="https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png"></a>
 
-This is a demonstration of using a shared _Google Spreadsheet_  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the ___[Mobile Buyer's Agent](/p-kz3NoHhgl:dZkIM34sBnlx::@)___. 
+This is a demonstration of using a shared _Google Spreadsheet_  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the ___<a href="" target="_blank">Mobile Buyer's Agent</a>___. 
 
 The _Real Estate Shopper List_ Google spreadsheet contains properties the agent wishes to present in the app. The neighborhood column is associated with the dropdown box, and allows a simple grouping/categorization of properties. The agent also provides other features and details associated with the properties.
 
