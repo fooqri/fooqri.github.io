@@ -30,9 +30,9 @@ https://docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb
 
 Then your sheetid is __1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8__, and you can use it in this app by using a url with sheetid parameter as shown below:
 
-```
-po.gg/p-kz3NoHhgl:dZkIM34sBnlx::@?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8
-```
+
+<code style="white-space: nowrap;">po.gg/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</code>
+
 
 This will substitue your spreadsheet for the default spreadsheet used in the app.
 
