@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-06-09T12:25:51-07:00</updated>
+  <updated>2015-06-09T12:33:13-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -42,9 +42,7 @@
 
 <p>Then your sheetid is <strong>1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</strong>, and you can use it in this app by using a url with sheetid parameter as shown below:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>po.gg/p-kz3NoHhgl:dZkIM34sBnlx::@?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</span></code></pre></td></tr></table></div></figure>
-
+<p><code style="white-space: nowrap;">po.gg/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</code></p>
 
 <p>This will substitue your spreadsheet for the default spreadsheet used in the app.</p>
 
