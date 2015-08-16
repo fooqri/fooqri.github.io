@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Edison Wi-Fi Config"
+title: "Edison Wi-Fi Configuration"
 date: 2015-08-16 13:55
 comments: true
 categories: 
