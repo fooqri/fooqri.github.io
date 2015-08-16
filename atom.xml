@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-16T16:27:58-07:00</updated>
+  <updated>2015-08-16T16:29:57-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -32,7 +32,7 @@
 
 <p>The device runs a node.js app that handles configuration and also posting data to a web service running in the cloud. Each user has an account and can have 1 or more devices. I won&rsquo;t get into the purpose of the device here (or a few more components it has) but the device is working for its intended early prototyping purpose.</p>
 
-<p>I have a drawer full of SparkFun Edison blocks, and often use them with an Edison for the first prototype of a device because it is such a powerful prototyping platform if you know Linux well. They Sparkfun boards are rather expensive, but so quick to use for rapid prototyping that I tend to always start with them. They also integrate well with various node libs including <a href="https://www.npmjs.com/package/cylon" target="_blank">cylon</a>and <a href="https://github.com/node-red/node-red" target="_blank">nodered</a>.</p>
+<p>I have a drawer full of SparkFun Edison blocks, and often use them with an Edison for the first prototype of a device because it is such a powerful prototyping platform if you know Linux well. They Sparkfun boards are rather expensive, but so quick to use for rapid prototyping that I tend to always start with them. They also integrate well with various node libs including <a href="https://www.npmjs.com/package/cylon" target="_blank">cylon</a> and <a href="https://github.com/node-red/node-red" target="_blank">nodered</a>.</p>
 
 <p>But when it is time to build more than a few prototype units, cost does start to matter.  Replacing the Sparkfun boards with a PCB approach is the next obvious step to lowering cost and customizing the device, but in this latest device the Edison platform itself is too expensive to create the devices at the price point I am targeting. It is the perfect physical size, but the price is too high.</p>
 
