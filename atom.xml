@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-16T16:01:15-07:00</updated>
+  <updated>2015-08-16T16:02:44-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -25,7 +25,7 @@
 <ul>
 <li><a href="https://www.sparkfun.com/products/13024">Intel Edison</a></li>
 <li><a href="https://www.sparkfun.com/products/13037">Sparkfun Battery Block</a></li>
-<li><a href="https://www.sparkfun.com/products/13034">Sparkfun I2C Block</></li>
+<li><a href="https://www.sparkfun.com/products/13034">Sparkfun I2C Block</a></li>
 <li><a href="http://www.amazon.com/gp/product/B00H1OYE4Q">MPU-6050</a></li>
 </ul>
 
