@@ -70,14 +70,15 @@ network={
 If the network you are connecting to is hidden then you add the you set _scan_ssid=1_ in the configuration description. _scan_ssid=0_ is the default and signifies an advertised ssid,
 
 ```
+network={
   scan_ssid=1
-  ssid="MyPhone"
+  ssid="MyHiddenSSID"
   key_mgmt=WPA-PSK
   pairwise=CCMP TKIP
   group=CCMP TKIP WEP104 WEP40
   eap=TTLS PEAP TLS
-  psk="hotspot_pw"
-  id_str="iphone_hotspot"
+  psk="hidden_hotspot_pw"
+  id_str="hidden_hotspot"
   priority=2
 }
 ```
