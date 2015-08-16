@@ -12,7 +12,7 @@ I have been building a few prototype devices with the following parts:
 
 * <a href="https://www.sparkfun.com/products/13024">Intel Edison</a>
 * <a href="https://www.sparkfun.com/products/13037">Sparkfun Battery Block</a>
-* <a href="https://www.sparkfun.com/products/13034">Sparkfun I2C Block</>
+* <a href="https://www.sparkfun.com/products/13034">Sparkfun I2C Block</a>
 * <a href="http://www.amazon.com/gp/product/B00H1OYE4Q">MPU-6050</a>
 
 The device runs a node.js app that handles configuration and also posting data to a web service running in the cloud. Each user has an account and can have 1 or more devices. I won't get into the purpose of the device here (or a few more components it has) but the device is working for its intended early prototyping purpose. One issue is the Edison platform is too expensive to create devices at the price point I am looking for.
