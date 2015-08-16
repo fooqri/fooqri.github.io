@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-06-09T12:33:13-07:00</updated>
+  <updated>2015-08-16T15:16:36-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Edison Wi-Fi Config]]></title>
+    <link href="http://fooqri.github.io/blog/2015/08/16/edison-wifi-config/"/>
+    <updated>2015-08-16T13:55:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2015/08/16/edison-wifi-config</id>
+    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/IMG_4161.JPG"  style="height: 400px; display: block; margin: auto;"></p>
+
+<p>I built a handful of prototype devices using Intel Edison boards to hand out to testers, but one challenge is each tester will bring the devices to their own Wi-Fi environment (home, work, etc). The default method for configuring an Edison is to use a console and the command line configuration tool to add a Wi-Fi access point.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>configure_edison --wifi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <em>configure_edison</em> app will scan for Wi-Fi networks and provide a list of networks for the user to pick from, and then prompt the user for the access point password. Since my headless IoT device has no traditional interface, let alone terminal interface this posed a problem. I needed a way for users to configure the device for new Wi-Fi networks as they were encountered, and make it accessible using a web page presented by the Edison. I will post the code once I have it completed and tested with users but for a quick hint the trick is to allow the running node.js app to switch the device between access point mode and client mode so if no network is available the device becomes an access point allowing the user to use any Wi-Fi enabled device to connect with it. Once connected the user can use a standard web browser to update the configuration to include the new Wi-Fi network they are intending to use.</p>
+
+<h3>wpa_supplicant</h3>
+
+<p>The edison uses the wpa_supplicant service to manage the client-mode Wi-Fi. The wpa_supplicant configuration file is located at: <strong>/etc/wpa_supplicant/wpa_supplicant.conf</strong></p>
+
+<p>Wi-Fi networks are added and removed by updating this configuration file. Se an example configuration below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ctrl_interface=/var/run/wpa_supplicant
+</span><span class='line'>ctrl_interface_group=0
+</span><span class='line'>config_methods=virtual_push_button virtual_display push_button keypad
+</span><span class='line'>update_config=1
+</span><span class='line'>fast_reauth=1
+</span><span class='line'>device_name=Edison
+</span><span class='line'>manufacturer=Intel
+</span><span class='line'>model_name=Edison
+</span><span class='line'>
+</span><span class='line'>network={
+</span><span class='line'>  ssid="guest"
+</span><span class='line'>  key_mgmt=WPA-PSK
+</span><span class='line'>  pairwise=CCMP TKIP
+</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
+</span><span class='line'>  eap=TTLS PEAP TLS
+</span><span class='line'>  psk="guest_pw"
+</span><span class='line'>  id_str="guest"
+</span><span class='line'>  priority=4
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>network={
+</span><span class='line'>  ssid="MyPhone"
+</span><span class='line'>  key_mgmt=WPA-PSK
+</span><span class='line'>  pairwise=CCMP TKIP
+</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
+</span><span class='line'>  eap=TTLS PEAP TLS
+</span><span class='line'>  psk="hotspot_pw"
+</span><span class='line'>  id_str="iphone_hotspot"
+</span><span class='line'>  priority=2
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see I have added two networks to the configuration, and given the network associated with my phone (in personal hotspot mode) a lower priority so it will be a fallback only. <em>Note: you can change the name of your iPhone (and thus its personal hotspot) using itunes, and you can find the hotspot password in the hotspot settings on the iphone.</em></p>
+
+<p>You can also add support for connecting to any open network (at your own risk) with an empty network statement</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>network={
+</span><span class='line'>  id_str="open"
+</span><span class='line'>  priority=0
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the network you are connecting to is hidden then you add the you set <em>scan_ssid=1</em> in the configuration description. <em>scan_ssid=0</em> is the default and signifies an advertised ssid,</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  scan_ssid=1
+</span><span class='line'>  ssid="MyPhone"
+</span><span class='line'>  key_mgmt=WPA-PSK
+</span><span class='line'>  pairwise=CCMP TKIP
+</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
+</span><span class='line'>  eap=TTLS PEAP TLS
+</span><span class='line'>  psk="hotspot_pw"
+</span><span class='line'>  id_str="iphone_hotspot"
+</span><span class='line'>  priority=2
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Switching to AP mode and back</h3>
+
+<p>The edison comes pre-configured for AP mode but if you are curious about changing the settings the configuration file can be found at <em>/etc/hostapd/hostapd.conf</em>.  The other key networking file that should require no changes for this configuration is <em>/etc/network/interfaces</em>.</p>
+
+<p>In the case when no configured network is available it is possible to connect a gesture (my device has an mpu-6050) to force the device into AP mode so it can get information from the user about how to connect to a new local network. The gesture observer thread can inform the node app when the preconditions of an AP mode switch should occur, the node app can then switch the Wi-Fi network temporarily to AP mode.</p>
+
+<p>This is accomplished by stoping the wpa_supplicant service and starting the APN services using these two system commands that can be executed in  exec() or spawn() calls.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl stop wpa_supplicant
+</span><span class='line'>systemctl start hostapd</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Adding a network</h3>
+
+<p>Now the device is in AP mode and the user can connect to the device by selecting it from the list of available networks, and go to the device confguration page for information about available networks and choose one to connect to. I won&rsquo;t get into the scanning now but you can look [here|<a href="https://goo.gl/xDxM5R">https://goo.gl/xDxM5R</a>] for more info on using _wpa_cli scan<strong> and </strong>wpa scan_results__ for getting info on available networks.</p>
+
+<p>Once the user chooses a network and provides a password you can configure the device to use the network. My preference is to add the network and a config entry in the wpa_supplicant.conf file so the network can be used again in the future, but you can also use the wpa_cli to configure the network directly. Just use the format shown above to append your entry to the file.</p>
+
+<h3>Switch back to Wi-Fi client mode to connect to the newly added network.</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wpa_cli reconfigure
+</span><span class='line'>systemctl stop hostapd
+</span><span class='line'>systemctl start wpa_supplicant</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I will add my code for the entire process to a public gist when I have fully tested it out, and update this post.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Revisiting Buyer's Agent app using React.js]]></title>
@@ -928,23 +1083,6 @@ application block.</p>
 <h3>Wrapup</h3>
 
 <p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes.  If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Refactoring: making master programmers]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/14/refactoring-making-master-programmers/"/>
-    <updated>2013-01-14T16:34:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/14/refactoring-making-master-programmers</id>
-    <content type="html"><![CDATA[<p>There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code refactoring.  One could even explain this in terms of top line vs bottom line descriptions. Features mean sales, codebase is an asset, and poor code quality is a liability that affects cost and thus profit. Sloppy, risky, or fragile code is even called &ldquo;technical debt&rdquo; in many circles. This tension between features and code quality has always been a tightrope walk for any successful software or Internet company. Starve features and you kill sales, ignore expanding bloat and you will never win a sprint, let alone the marathon of staying relevant.</p>
-
-<p>But there is a lot more to refactoring than code quality. In this post I wanted to mention one that is often overlooked: <em>&ldquo;refactoring makes good coders into master coders.&rdquo;</em>  The best lessons come from revisiting your mistakes and improving them, but without refactoring the revisiting is limited to quick fixes to limit the impact of a bad architecture, design, or implementation. Yes we can learn from our mistakes by trying different approaches on future projects, but the problems are ever changing, and thus the learnings are not as clear. I have always found I learned so much more as a designer and a developer by revisiting a problem with a new level of experience to draw from.</p>
-
-<p>Design has been more fortunate regarding the opportunity for refactoring; good design organizations understand how much can be learned by refactoring a design and thus fight hard to allow for it. Development has often not been as successful in making the case. I wonder if the cost analysis could be changed if executives understood that refactoring actually significantly improved two of the most important assets at a software company: the code base and the engineering talent. Then it becomes a more interesting decision versus a simple weighing of new features vs improved quality.</p>
-
-<p><img src="http://media.tumblr.com/7095223771e3c38939367f18458726e1/tumblr_inline_mgmwbwyolq1qz562v.jpg" alt="image" />Bull</p>
-
-<p>I got to thinking about this looking at Picasso&rsquo;s Bull series.  This is an excellent example of a master working through a problem to develop the most elegantly simplified expression of the subject. To become a master, one must work through a problem incrementally and always looking for elegant ways to improve, to simplify the end expression of the solution. Even for a competent coder, it is not always apparent what is elegant without seeing the real life consequences of chosen approaches. Whether the approach makes the code fragile, bloated, or unfriendly, it is only through the experience of trying to grow a code base that these issues can be truly understood. Under the right conditions refactoring provides a sort of express lane  to becoming a master developer. This is very difficult if you are never allowed to truly revisit a subject after completing the first expression of the solution. I like the &ldquo;Bull&rdquo; example because it is how I think of elegant design and development, just enough to represent the solution and no more, anything else is bloat that will be nothing but cost later. Through refactoring, a developer can develop insights, skills, and techniques more quickly by addressing a well understood problem from a more experienced perspective.  Practice make perfect. If not the code, maybe the coder.</p>
 ]]></content>
   </entry>
   
