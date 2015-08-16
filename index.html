@@ -9,7 +9,10 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I built a handful of prototype devices using Intel Edison boards to hand out to testers, but one challenge is each tester will bring the devices to &hellip;">
+  <meta name="description" content="I have been building a few prototype devices with the following parts:
+&ndash; Intel Edison
+&ndash; Sparkfun Battery Block
+&ndash; Sparkfun I2C &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +84,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/16/esp8266/">ESP8266</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-16T15:41:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="//cdn.shopify.com/s/files/1/0243/7593/products/ESP8266-3.530x397_large.jpg?v=1431993936"  style="height: 400px; display: block; margin: auto;"></p>
+
+<p>I have been building a few prototype devices with the following parts:
+&ndash; <a href="https://www.sparkfun.com/products/13024">Intel Edison</a>
+&ndash; <a href="https://www.sparkfun.com/products/13037">Sparkfun Battery Block</a>
+&ndash; <a href="https://www.sparkfun.com/products/13034">Sparkfun I2C Block</>
+&ndash; <a href="http://www.amazon.com/gp/product/B00H1OYE4Q">MPU-6050</a></p>
+
+<p>The device runs a node.js app that handles configuration and also posting data to a web service running in the cloud. Each user has an account and can have 1 or more devices. I won&rsquo;t get into the purpose of the device here (or a few more components it has) but the device is working for its intended early prototyping purpose. One issue is the Edison platform is too expensive to create devices at the price point I am looking for. After some analysis I decided to try an reproduce the behavior of the current device using an ESP8266 instead of the Edison. I ordered some very inexpensive ESP8266 that are coming via the slow boat, but in the mean time my <a href="https://goo.gl/yCnruP">Sparkfun ESP8266 Thing</a> arrived. It is a breakout board featuring the ESP8266.</p>
+
+<p>I hope to get time over the next week to dive into coding the ESP8266, but if anyone has previously hooked up an MPU-6050 to an 8266 I would love to hear about your experiences and any issues, etc.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -795,60 +844,6 @@ sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName Working in RubyMotion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems that the #define statements in the
-<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
-picked up. I am using the pod and loading with RubyMotion pod support,
-so Iåm not sure what the issue is. I will need to investigate further
-but this quick workaround works, just call the lower-level method
-mapped via the #define. For example instead of RKLogConfigureByName
-use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
-use instead of the RKLogLevel constants. I also included an example of
-how they are used, in this case I have put the setup in a method, and
-it gets called from the the standard didFinishLaunchingWithOption
-application block.</p>
-
-<div><script src='https://gist.github.com/4733618.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -896,6 +891,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/16/esp8266/">ESP8266</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/16/edison-wifi-config/">Edison Wi-Fi Config</a>
       </li>
     
@@ -909,10 +908,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App - Version 1</a>
       </li>
     
   </ul>

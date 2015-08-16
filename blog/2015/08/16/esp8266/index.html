@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Alfred + Pinboard + Chrome - </title>
+  <title>ESP8266 - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="If you happen to use Alfred, Pinboard, and Chrome, here is a nice extension to save the current browser page to Pinboard using Alfred. Much faster &hellip;">
+  <meta name="description" content="I have been building a few prototype devices with the following parts:
+&ndash; Intel Edison
+&ndash; Sparkfun Battery Block
+&ndash; Sparkfun I2C &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2015/08/16/esp8266/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -84,7 +87,7 @@
   
   <header>
     
-      <h1 class="entry-title">Alfred + Pinboard + Chrome</h1>
+      <h1 class="entry-title">ESP8266</h1>
     
     
       <p class="meta">
@@ -100,16 +103,24 @@
   
 
 
-<time datetime="2013-01-13T12:29:00-08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2013</time>
+<time datetime="2015-08-16T15:41:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>If you happen to use <a href="http://www.alfredapp.com/">Alfred</a>, <a href="http://pinboard.in">Pinboard</a>, and Chrome, here is a nice extension to save the current browser page to Pinboard using Alfred. Much faster than any chrome extension, and fingers never leave the keyboard.</p>
+<div class="entry-content"><p><img src="//cdn.shopify.com/s/files/1/0243/7593/products/ESP8266-3.530x397_large.jpg?v=1431993936"  style="height: 400px; display: block; margin: auto;"></p>
 
-<p><a href="http://www.timbueno.com/2012/06/27/pinboard-plus-alfred">Tim Bueno&rsquo;s Pinboard Extension</a></p>
+<p>I have been building a few prototype devices with the following parts:
+&ndash; <a href="https://www.sparkfun.com/products/13024">Intel Edison</a>
+&ndash; <a href="https://www.sparkfun.com/products/13037">Sparkfun Battery Block</a>
+&ndash; <a href="https://www.sparkfun.com/products/13034">Sparkfun I2C Block</>
+&ndash; <a href="http://www.amazon.com/gp/product/B00H1OYE4Q">MPU-6050</a></p>
+
+<p>The device runs a node.js app that handles configuration and also posting data to a web service running in the cloud. Each user has an account and can have 1 or more devices. I won&rsquo;t get into the purpose of the device here (or a few more components it has) but the device is working for its intended early prototyping purpose. One issue is the Edison platform is too expensive to create devices at the price point I am looking for. After some analysis I decided to try an reproduce the behavior of the current device using an ESP8266 instead of the Edison. I ordered some very inexpensive ESP8266 that are coming via the slow boat, but in the mean time my <a href="https://goo.gl/yCnruP">Sparkfun ESP8266 Thing</a> arrived. It is a breakout board featuring the ESP8266.</p>
+
+<p>I hope to get time over the next week to dive into coding the ESP8266, but if anyone has previously hooked up an MPU-6050 to an 8266 I would love to hear about your experiences and any issues, etc.</p>
 </div>
 
 
@@ -132,21 +143,15 @@
   
 
 
-<time datetime="2013-01-13T12:29:00-08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2013</time>
+<time datetime="2015-08-16T15:41:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/hacks/'>hacks</a>, <a class='category' href='/blog/categories/tips/'>tips</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/" data-via="" data-counturl="http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2015/08/16/esp8266/" data-via="" data-counturl="http://fooqri.github.io/blog/2015/08/16/esp8266/" >Tweet</a>
   
   
   
@@ -155,10 +160,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/01/08/toggle-bluetooth/" title="Previous Post: Toggle Bluetooth">&laquo; Toggle Bluetooth</a>
+        <a class="basic-alignment left" href="/blog/2015/08/16/edison-wifi-config/" title="Previous Post: Edison Wi-Fi Config">&laquo; Edison Wi-Fi Config</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/01/14/refactoring-making-master-programmers/" title="Next Post: Refactoring: making master programmers">Refactoring: making master programmers &raquo;</a>
       
     </p>
   </footer>
@@ -283,8 +286,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/';
-        var disqus_url = 'http://fooqri.github.io/blog/2013/01/13/alfred-plus-pinboard-plus-chrome/';
+        var disqus_identifier = 'http://fooqri.github.io/blog/2015/08/16/esp8266/';
+        var disqus_url = 'http://fooqri.github.io/blog/2015/08/16/esp8266/';
         var disqus_script = 'embed.js';
       
     (function () {
