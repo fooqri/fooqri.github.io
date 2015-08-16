@@ -19,7 +19,7 @@ The _configure_edison_ app will scan for Wi-Fi networks and provide a list of ne
 
 ### wpa_supplicant
 
-The edison uses the wpa_supplicant service to manage the client-mode Wi-Fi. The wpa_supplicant configuration file is located at: __/etc/wpa_supplicant/wpa_supplicant.conf__
+The Edison uses the wpa_supplicant service to manage the client-mode Wi-Fi. The wpa_supplicant configuration file is located at: __/etc/wpa_supplicant/wpa_supplicant.conf__
 
 Wi-Fi networks are added and removed by updating this configuration file. Se an example configuration below.
 
@@ -85,7 +85,7 @@ network={
 
 ### Switching to AP mode and back
 
-The edison comes pre-configured for AP mode but if you are curious about changing the settings the configuration file can be found at _/etc/hostapd/hostapd.conf_.  The other key networking file that should require no changes for this configuration is _/etc/network/interfaces_.
+The Edison comes pre-configured for AP mode but if you are curious about changing the settings the configuration file can be found at _/etc/hostapd/hostapd.conf_.  The other key networking file that should require no changes for this configuration is _/etc/network/interfaces_.
 
 In the case when no configured network is available it is possible to connect a gesture (my device has an mpu-6050) to force the device into AP mode so it can get information from the user about how to connect to a new local network. The gesture observer thread can inform the node app when the preconditions of an AP mode switch should occur, the node app can then switch the Wi-Fi network temporarily to AP mode.
 
