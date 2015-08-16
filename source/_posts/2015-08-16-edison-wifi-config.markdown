@@ -97,7 +97,7 @@ systemctl start hostapd
 ```
 
 ### Adding a network
-Now the device is in AP mode and the user can connect to the device by selecting it from the list of available networks, and go to the device confguration page for information about available networks and choose one to connect to. I won't get into the scanning now but you can look [here|https://goo.gl/xDxM5R] for more info on using _wpa_cli scan__ and __wpa scan_results__ for getting info on available networks.
+Now the device is in AP mode and the user can connect to the device by selecting it from the list of available networks, and go to the device confguration page for information about available networks and choose one to connect to. I won't get into the scanning now but you can look <a href="https://goo.gl/xDxM5R">here</a> for more info on using _wpa_cli scan__ and __wpa scan_results__ for getting info on available networks.
 
 
 Once the user chooses a network and provides a password you can configure the device to use the network. My preference is to add the network and a config entry in the wpa_supplicant.conf file so the network can be used again in the future, but you can also use the wpa_cli to configure the network directly. Just use the format shown above to append your entry to the file.
