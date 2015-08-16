@@ -67,7 +67,7 @@ network={
 }
 ```
 
-If the network you are connecting to is hidden then you add the you set _scan_ssid=1_ in the configuration description. _scan_ssid=0_ is the default and signifies an advertised ssid,
+If the network you are connecting to has a hidden ssid then you need to add _scan_ssid=1_ to the configuration description. Because _scan_ssid=0_ is the default setting and is used for a broadcast ssid it can be omitted from the configuration of networks using a broadcast ssid. 
 
 ```
 network={
