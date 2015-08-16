@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-16T16:16:49-07:00</updated>
+  <updated>2015-08-16T16:22:23-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -32,7 +32,9 @@
 
 <p>The device runs a node.js app that handles configuration and also posting data to a web service running in the cloud. Each user has an account and can have 1 or more devices. I won&rsquo;t get into the purpose of the device here (or a few more components it has) but the device is working for its intended early prototyping purpose.</p>
 
-<p>I have a drawer full of SparkFun Edison blocks, and often use them with an edison for the first prototype of a device because it is such a powerful prototyping platform if you know Linux well. They Sparkfun boards are rather expensive but so quick to use for rapid prototyping simple devices, and integrate well with various node libs including <a href="https://www.npmjs.com/package/cylon" target="_blank">cylon</a>and <a href="https://github.com/node-red/node-red" target="_blank">nodered</a>. But when it is time to build more than a few prototypes, cost does start to matter.  Replacing the sparkfun boards with a PCB approach is the next obvious step, but in this latest device the Edison platform itself is too expensive to create the devices at the price point I am targetting. It is the perfect physical size though.</p>
+<p>I have a drawer full of SparkFun Edison blocks, and often use them with an Edison for the first prototype of a device because it is such a powerful prototyping platform if you know Linux well. They Sparkfun boards are rather expensive, but so quick to use for rapid prototyping that I tend to always start with them. They also integrate well with various node libs including <a href="https://www.npmjs.com/package/cylon" target="_blank">cylon</a>and <a href="https://github.com/node-red/node-red" target="_blank">nodered</a>.</p>
+
+<p>But when it is time to build more than a few prototype units, cost does start to matter.  Replacing the Sparkfun boards with a PCB approach is the next obvious step to lowering cost and customizing the device, but in this latest device the Edison platform itself is too expensive to create the devices at the price point I am targeting. It is the perfect physical size, but the price is too high.</p>
 
 <p>After some analysis I have decided to try an reproduce the behavior of the current device using an ESP8266 instead of the Edison. I ordered some very inexpensive ESP8266 that are coming via the slow boat, but in the mean time my <a href="https://goo.gl/yCnruP">Sparkfun ESP8266 Thing</a> arrived. It is a breakout board featuring the ESP8266.</p>
 
