@@ -193,7 +193,7 @@
 </span><span class='line'>70: -- -- -- -- -- -- -- --</span></code></pre></td></tr></table></div></figure>
 
 
-<p>You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address is 69, you will need to change the address to 0x68 using the technique recommended for your board (AD0 jumper). You may see other numbers in the results if you have other I2C components included in your assembled device, but if you are using an MPU-6050 and it is connected correctly either a 68 or a 69 should appear in the i2cdetect results.</p>
+<p>You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address displayed is 69, you will need to change the address to 68 using the technique recommended for your board (AD0 jumper). You may see other numbers in the results if you have other I2C components included in your assembled device, but if you are using an MPU-6050 and it is connected correctly either a 68 or a 69 should appear in the i2cdetect results.</p>
 
 <p>I won&rsquo;t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.</p>
 </div>
