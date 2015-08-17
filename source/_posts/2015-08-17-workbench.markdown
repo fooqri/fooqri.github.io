@@ -8,7 +8,7 @@ categories:
 
 <a href="//s3.amazonaws.com/rwx-blog/workbench.JPG" target="_blank"><img src="//s3.amazonaws.com/rwx-blog/workbench.JPG"  style="height: 400px; display: block; margin: auto;"></a>
 
-I changed my desk out for a workbench last January and am very pleased with the results. I made the switch for a two reasons:
+I changed my desk out for a workbench last January and am very pleased with the results. I made the switch for two reasons:
 
 1. I spend a lot of time at my desk and wanted to mix in sitting and standing throughout the day.
 2. I started to work more frequently on small hardware projects and found that being able to stand and move about the bench was more comfortable.
