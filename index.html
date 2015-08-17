@@ -227,7 +227,7 @@
 
 <h2>Checking I2C Address</h2>
 
-<p>Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn&rsquo;t working with Cylon, the first thing to check will be whether the address is #68. The error message from Cylon will be a <em>&ldquo;RangeError: Trying to access beyond buffer length&rdquo;</em> for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.</p>
+<p>Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn&rsquo;t working with Cylon, the first thing to check will be whether the address is 0x68. The error message from Cylon will be a <em>&ldquo;RangeError: Trying to access beyond buffer length&rdquo;</em> for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>i2cdetect -y -r 1</span></code></pre></td></tr></table></div></figure>
@@ -255,7 +255,7 @@
 </span><span class='line'>70: -- -- -- -- -- -- -- --</span></code></pre></td></tr></table></div></figure>
 
 
-<p>You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address is 69, you will need to change the address to #68 using the technique recommended for your board (AD0 jumper). You may see other numbers is the results if you have other I2C components included in your assembled device, these are unrelated to the board.</p>
+<p>You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address is 69, you will need to change the address to 0x68 using the technique recommended for your board (AD0 jumper). You may see other numbers is the results if you have other I2C components included in your assembled device, these are unrelated to the board.</p>
 
 <p>I won&rsquo;t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.</p>
 </div>
