@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-16T16:47:53-07:00</updated>
+  <updated>2015-08-17T07:09:29-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -14,11 +14,108 @@
 
   
   <entry>
+    <title type="html"><![CDATA[I2C MPU-6050]]></title>
+    <link href="http://fooqri.github.io/blog/2015/08/17/i2c-mpu-6050/"/>
+    <updated>2015-08-17T05:50:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2015/08/17/i2c-mpu-6050</id>
+    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/mpu6050"  style="height: 400px; display: block; margin: auto;"></p>
+
+<p>I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.</p>
+
+<p>To capture data I am using a  few node modules. In particular the <a href="https://github.com/hybridgroup/cylon" target="_blank">cylon.js</a> module, along with the <a href="https://github.com/hybridgroup/cylon-i2c" target="_blank">cylon-i2c</a> module.  This allows accelerometer data to be easily used by the following code block</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Cylon                                                                          
+</span><span class='line'>  .robot()                                                                    
+</span><span class='line'>  .connection("edison", { adaptor: "intel-iot", i2cPort: 1})                  
+</span><span class='line'>  .device("accel", { driver: "mpu6050" })                                     
+</span><span class='line'>  .on("ready", function(bot) {                                      
+</span><span class='line'>    setInterval(function() {                                        
+</span><span class='line'>      bot.accel.getAcceleration(function(err, data) {
+</span><span class='line'>        //use data
+</span><span class='line'>      });
+</span><span class='line'>    });
+</span><span class='line'>  });</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The MPUs</h2>
+
+<p>The first prototype of this device is using a SparkFun Edison stack with the SparkFun I2C block connected to an MPU-6050, rather than the SparkFun Accelerometer block. At the time of this writing the cylon-i2c implementation of the lsm9ds0 driver is not working correctly with the SparkFun Accelerometer block, so I went the I2C route. The second an perhaps more important reason I went the I2C route is that MPU-6050 boards can be had for as low as $4, which is appealing for a low cost prototype.</p>
+
+<p>I have a handful of MPUs I have tried and here is some info on them.</p>
+
+<h3><a href="https://www.sparkfun.com/products/11028" target="_blank">SparkFun MPU-6050 Breakout</a></h3>
+
+<p>This is great accelerometer breakout that works well with the Edison and Cylon module, but much less expensive options exist.</p>
+
+<h3><a href="http://www.amazon.com/gp/product/B00H1OYE4Q" target="_blank">RioRand Triple Axis MPU-6050 Breakout</a></h3>
+
+<p>This is currently my go to accelerometer. It is relatively low priced at $11 and arrives in 2 days via Amazon Prime. These work well with both the Edison 3.3V boards, and the cylon i2c module. Unfortunately the default I2C address for this board is 0x69, instead of the more common  0x68 (used by the cylon mpu6050 driver) so you will need to solder the AD0 jumper plate on the top of the board.</p>
+
+<h3><a href="http://www.amazon.com/Kootek-MPU-6050-MPU6050-sensors-Accelerometer/dp/B008BOPN40/" target="_blank">Kootek GY-521 MPU-6050 MPU6050 Module</a></h3>
+
+<p>At $4 with free shipping these look like a great option. They are reported to work well with 3.3V VCC. The down side is very slow delivery via the slow boat. I have a handful on order, I will provide an update when they arrive.</p>
+
+<h3><a href="http://www.amazon.com/gp/product/B009M19L4Y" target="_blank">GY-521 6DOF MPU6050 Module</a></h3>
+
+<p>At a little over $5 with free shipping this seems like a great option, unfortunately the onboard voltage regulator in the GY-521 is designed for the Arduino 5V VCC and when used with a 3.3V VCC of the Edison blocks results in too low power on the I2C SDA/SCL pins to register as proper high and low voltage values. It is possible to give the board a separate 5V VCC supply, but that just seems overly complicated for the prototype device. Another feature of this board is the breakout of AD0 into a pin, allowing easy switching between I2C 0x68 and 0x69 addresses using either a ground or VCC connection.</p>
+
+<h2>Connecting the MPU</h2>
+
+<p>For the first prototype I am using  SparkFun Edison blocks, as I have a a few sets of these interchangeable blocks that are quick to assemble into a prototype. In this case I am using the <a href="https://www.sparkfun.com/products/13034" target="_blank">SparkFun I2C</a> block with an Edison. This block allows the Edison to be snapped onto the block, and the MPU-6050 board to be connected with 4 jumpers (VCC, GND, SDA, SCL).</p>
+
+<h2>Checking I2C Address</h2>
+
+<p>Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn&rsquo;t working with Cylon, the first thing to check will be whether the address is #68. The error message from Cylon will be a <em>&ldquo;RangeError: Trying to access beyond buffer length&rdquo;</em> for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>i2cdetect -y -r 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The result will look something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+</span><span class='line'>00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class='line'>10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class='line'>20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class='line'>30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class='line'>40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class='line'>50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+</span><span class='line'>60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- -- 
+</span><span class='line'>70: -- -- -- -- -- -- -- --</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address is 69, you will need to change the address to #68 using the technique recommended for your board (AD0 jumper). You may see other numbers is the results if you have other I2C components included in your assembled device, these are unrelated to the board.</p>
+
+<p>I won&rsquo;t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[ESP8266]]></title>
     <link href="http://fooqri.github.io/blog/2015/08/16/esp8266/"/>
     <updated>2015-08-16T15:41:00-07:00</updated>
     <id>http://fooqri.github.io/blog/2015/08/16/esp8266</id>
-    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//cdn.shopify.com/s/files/1/0243/7593/products/ESP8266-3.530x397_large.jpg?v=1431993936"  style="height: 400px; display: block; margin: auto;"></p>
+    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/ESP8266.jpg"  style="height: 400px; display: block; margin: auto;"></p>
 
 <p>I have been building a few prototype devices with the following parts:</p>
 
@@ -992,50 +1089,6 @@ application block.</p>
 <p>I have no doubt that there are many Objective-C developers who are extremely efficient in building apps, but it is always a challenge to become expert on multiple platforms. To become an expert iOS developer you need to become expert in the Cocoa libraries; the nice thing about RubyMotion is it allows you to learn the libraries within a familiar syntax if you are a ruby developer. It also allows you to create Ruby wrappers and generators that make developing for Cocoa feel more natural to a Ruby developer. Finally, since RubyMotion creates compiled native iOS apps, their is very little performance hit.</p>
 
 <p>I have a backlog of notes that I will post when I get a chance; including my experiences with development,  debugging, meta-programming, deploying via TestFlight, etc. I just wanted to give RubyMotion some praise from this Ruby developer, it has made developing iOS apps very similar to deploying ruby apps.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lean API on Heroku]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/17/lean-api-on-heroku/"/>
-    <updated>2013-01-17T08:46:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/17/lean-api-on-heroku</id>
-    <content type="html"><![CDATA[<p>We have recently been working on an iOS app that requires a backend service. In this case I was looking for something leaner, simpler, and faster than Rails since it was only an API for a mobile app, no web front-end. I wanted it to be very lean and scalable so we could make it through early user testing without spending a lot on servers. Ok, ideally without spending anything on servers; basically how much could I squeeze out of one Heroku worker.</p>
-
-<p>After some investigation of the typical light weight ruby frameworks (Sinatra, Merb, etc) I stumbled upon <a href="https://github.com/intridea/grape">Grape</a>, a ruby API micro-framework. Grape uses a very simple DSL for defining APIs for your Ruby objects. Grape runs on <a href="https://github.com/postrank-labs/goliath">Goliath</a>, which is a non-blocking Ruby web server framework that uses Ruby fibers to simplify the handling of asynchronous requests. Goliath runs on the popular <a href="https://github.com/eventmachine/eventmachine">EventMachine</a> reactor. EventMachine is an event-driven Ruby library that works much like Node.js.</p>
-
-<p>The <a href="https://github.com/intridea/grape">Grape</a> github page provides a great deal of information on getting started, and David Jones has a great <a href="https://github.com/djones/grape-goliath-example">example</a> project on GitHub demonstrating how to deploy a grape API on Heroku.</p>
-
-<p>The DSL is really simple and I was able to wrap some ruby objects in a day and deploy it on Heroku. Here is an snippet of what the DSL looks like.</p>
-
-<div><script src='https://gist.github.com/4555788.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>As you can see the Grape framework supports API versioning, and the DSL provides a simple way to define API endpoints by defining resources and then specifying the HTTP requests (get, post, put, delete) for that resource. Any Rails developer should feel comfortable with the paths, params, and routes syntax in Grape.</p>
-
-<p>In this code snippet I show part of the API definition for two resources (missions &amp; players). This will mean the path for accessing these are <em>/missions</em> and <em>/players</em>. Because I specified <em>prefix &lsquo;api&rsquo;</em> at the top of the file, the actual path becomes <em>/api/missions</em> and <em>/api/players</em>. So for example the <em>get &ldquo;/:id&rdquo;</em> would correspond to a get request of /api/players/7E781305-777F-4044-9770-C7995585F540 where the UUID is a player id and would be available in the params[:id] variable.</p>
-
-<p>I should also note that even though these are simple <em>get</em> requests Grape will expect a header to be set for the secret key(secretk), and also require an Accept header with the version, vendor info, and content type (json). The easiest way to test your API will be to use an app like <a href="http://goo.gl/daZ5Q">Postman</a> that makes it easy to formulating requests, setting headers, from your Chrome browser. Postman also allows you to save requests, and re-run them.</p>
-
-<p>I happen to be using Mongo for this, but Grape supports most major DBs. I am only showing two get methods, my full definition supports CRUD for these objects, as well as a few common queries of the db. The error checking of the request is fairly straightforward. I am checking for an API key, but this would be replaced with an API key lookup function to validate the requestor. It is easy to respond with specific errors as you can see.</p>
-
-<p>The terse <em>error!, unless</em> syntax makes the error handling code very readable. The request handling for these two examples are simple: I query a mongo collection for an id, then map that response onto objects, and then convert the objects to json. This looks funny since it is basically json-&gt;object-&gt;json since mongo returns json, but there is more that happens in the object mapping; the json from the db and the json from the object are not the same.</p>
-
-<p>By requiring <em>mission.rb</em> and <em>player.rb</em> at the top of the file, I pull in my Mission and Player classes so they can be used in the map operation.   Try to ignore the lame <em>.first</em> operation, this was a bit of laziness in dealing with what is an array of one item resulting from the map operation. As with all Ruby, the output of the last operation is what is returned in the body of the response.</p>
-
-<p>The DSL is very clean and makes API maintenance relatively easy.</p>
-
-<p>A few other handy links:</p>
-
-<ul>
-<li><a href="https://github.com/postrank-labs/goliath">Grape Project</a></li>
-<li><a href="https://groups.google.com/forum/?fromgroups#!forum/ruby-grape">Grape Forum</a></li>
-<li><a href="https://github.com/flyerhzm/newrelic-grape">NewRelic-Grape Gem Info</a> &ndash; NewRelic instrumentation for the Grape API DSL.</li>
-<li><a href="https://github.com/djones/grape-goliath-example">Heroku example</a></li>
-<li><a href="http://www.confreaks.com/videos/475-rubyconf2010-the-grapes-of-rapid">Grape Intro Video</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

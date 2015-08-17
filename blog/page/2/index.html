@@ -9,9 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems &hellip;">
+  <meta name="description" content="It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +81,57 @@ RestKit. It seems &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-01T12:23:00-07:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in finding the hard to find little bugs that pop-up between restkit and core data. It can also help find performance issues with the database.  Unfortunately there isn&rsquo;t any documentation for how to do this in RubyMotion. I found one solution that works to a degree. It requires installing the ios_sim app and forcing the simulator into CoreData.SQLDebug mode after the rubymotion build.</p>
+
+<p>You will need to install ios_sim</p>
+
+<pre><code>$ brew install ios-sim
+</code></pre>
+
+<p>Then add the following two line as the last lines in your RubyMotion rakefile</p>
+
+<pre><code># Be sure to substitute your app name and make sure you are using
+# the correct path to the app based on simulator version.
+ios_sim = `which ios-sim`.strip
+sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -com.apple.CoreData.SQLDebug 1"
+</code></pre>
+
+<p>This will open the simulator in CoreData.SQLDebug mode, and log debug information to the terminal.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -586,77 +635,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/17/lean-api-on-heroku/">Lean API on Heroku</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-17T08:46:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We have recently been working on an iOS app that requires a backend service. In this case I was looking for something leaner, simpler, and faster than Rails since it was only an API for a mobile app, no web front-end. I wanted it to be very lean and scalable so we could make it through early user testing without spending a lot on servers. Ok, ideally without spending anything on servers; basically how much could I squeeze out of one Heroku worker.</p>
-
-<p>After some investigation of the typical light weight ruby frameworks (Sinatra, Merb, etc) I stumbled upon <a href="https://github.com/intridea/grape">Grape</a>, a ruby API micro-framework. Grape uses a very simple DSL for defining APIs for your Ruby objects. Grape runs on <a href="https://github.com/postrank-labs/goliath">Goliath</a>, which is a non-blocking Ruby web server framework that uses Ruby fibers to simplify the handling of asynchronous requests. Goliath runs on the popular <a href="https://github.com/eventmachine/eventmachine">EventMachine</a> reactor. EventMachine is an event-driven Ruby library that works much like Node.js.</p>
-
-<p>The <a href="https://github.com/intridea/grape">Grape</a> github page provides a great deal of information on getting started, and David Jones has a great <a href="https://github.com/djones/grape-goliath-example">example</a> project on GitHub demonstrating how to deploy a grape API on Heroku.</p>
-
-<p>The DSL is really simple and I was able to wrap some ruby objects in a day and deploy it on Heroku. Here is an snippet of what the DSL looks like.</p>
-
-<div><script src='https://gist.github.com/4555788.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>As you can see the Grape framework supports API versioning, and the DSL provides a simple way to define API endpoints by defining resources and then specifying the HTTP requests (get, post, put, delete) for that resource. Any Rails developer should feel comfortable with the paths, params, and routes syntax in Grape.</p>
-
-<p>In this code snippet I show part of the API definition for two resources (missions &amp; players). This will mean the path for accessing these are <em>/missions</em> and <em>/players</em>. Because I specified <em>prefix &lsquo;api&rsquo;</em> at the top of the file, the actual path becomes <em>/api/missions</em> and <em>/api/players</em>. So for example the <em>get &ldquo;/:id&rdquo;</em> would correspond to a get request of /api/players/7E781305-777F-4044-9770-C7995585F540 where the UUID is a player id and would be available in the params[:id] variable.</p>
-
-<p>I should also note that even though these are simple <em>get</em> requests Grape will expect a header to be set for the secret key(secretk), and also require an Accept header with the version, vendor info, and content type (json). The easiest way to test your API will be to use an app like <a href="http://goo.gl/daZ5Q">Postman</a> that makes it easy to formulating requests, setting headers, from your Chrome browser. Postman also allows you to save requests, and re-run them.</p>
-
-<p>I happen to be using Mongo for this, but Grape supports most major DBs. I am only showing two get methods, my full definition supports CRUD for these objects, as well as a few common queries of the db. The error checking of the request is fairly straightforward. I am checking for an API key, but this would be replaced with an API key lookup function to validate the requestor. It is easy to respond with specific errors as you can see.</p>
-
-<p>The terse <em>error!, unless</em> syntax makes the error handling code very readable. The request handling for these two examples are simple: I query a mongo collection for an id, then map that response onto objects, and then convert the objects to json. This looks funny since it is basically json-&gt;object-&gt;json since mongo returns json, but there is more that happens in the object mapping; the json from the db and the json from the object are not the same.</p>
-
-<p>By requiring <em>mission.rb</em> and <em>player.rb</em> at the top of the file, I pull in my Mission and Player classes so they can be used in the map operation.   Try to ignore the lame <em>.first</em> operation, this was a bit of laziness in dealing with what is an array of one item resulting from the map operation. As with all Ruby, the output of the last operation is what is returned in the body of the response.</p>
-
-<p>The DSL is very clean and makes API maintenance relatively easy.</p>
-
-<p>A few other handy links:</p>
-
-<ul>
-<li><a href="https://github.com/postrank-labs/goliath">Grape Project</a></li>
-<li><a href="https://groups.google.com/forum/?fromgroups#!forum/ruby-grape">Grape Forum</a></li>
-<li><a href="https://github.com/flyerhzm/newrelic-grape">NewRelic-Grape Gem Info</a> &ndash; NewRelic instrumentation for the Grape API DSL.</li>
-<li><a href="https://github.com/djones/grape-goliath-example">Heroku example</a></li>
-<li><a href="http://www.confreaks.com/videos/475-rubyconf2010-the-grapes-of-rapid">Grape Intro Video</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -706,6 +684,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/16/esp8266/">ESP8266</a>
       </li>
     
@@ -719,10 +701,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2015/02/18/seting-up-an-edison/">Setting Up a New Intel Edison</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app</a>
       </li>
     
   </ul>
