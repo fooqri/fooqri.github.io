@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-17T07:09:29-07:00</updated>
+  <updated>2015-08-17T08:59:03-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -14,11 +14,43 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Workbench]]></title>
+    <link href="http://fooqri.github.io/blog/2015/08/17/workbench/"/>
+    <updated>2015-08-17T08:15:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2015/08/17/workbench</id>
+    <content type="html"><![CDATA[<p><a href="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/workbench.JPG" target="_blank"><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/workbench.JPG"  style="height: 400px; display: block; margin: auto;"></a></p>
+
+<p>I changed my desk out for a workbench last January and am very pleased with the results. I made the switch for a two reasons:</p>
+
+<ol>
+<li>I spend a lot of time at my desk and wanted to mix in sitting and standing throughout the day.</li>
+<li>I started to work more frequently on small hardware projects and found that being able to stand and move about the bench was more comfortable.</li>
+</ol>
+
+
+<p>A few additional changes I made:</p>
+
+<ul>
+<li>I found that I needed more tools at hand when I was working on hardware projects, so I brought in a small tool cabinet from the garage.</li>
+<li>I wanted to have access to a large number of &ldquo;Maker&rdquo; materials in my office vs. the garage, so I also added an <a href="http://www.ikea.com/us/en/catalog/products/40196241/" target="_blank">IKEA Alex</a> cabinet. These can often be found in their discount section for around $60 if you don&rsquo;t mind a few minor marks. This cabinet holds larger hardware components (like Arduino boards) as well as design/art supplies like paper, ink, paint, cutting/carving tools, etc.</li>
+<li>I wanted to have some smaller supplies at hand on top of the desk so I added a few <a href="http://www.amazon.com/gp/product/B000AIDBGC" target="_blank">Art Supply Drawers</a> for the top of the bench. The one to the left of the monitor holds small electronic components, the one to the right holds drawing pencils, pens, markers, etc that I use frequently.</li>
+<li>I added a <a href="http://fooqri.github.io//www.amazon.com/gp/product/B00ANZRT4M" target="_blank">digital soldering station</a> and added an <a href="http://www.amazon.com/Weller-WSA350-Bench-Smoke-Absorber/dp/B000EM74SK" target="_blank">exhaust fan</a>. I still have a soldering station in the garage, but having one at hand is very convenient.</li>
+<li>Another handy addition is the <a href="http://www.amazon.com/gp/product/B00XNYXQHE" target="_blank">USB Microscope</a> as some solder joints just require very careful inspection, especially with small components and SMD components.</li>
+<li>I also had to add a <a href="http://www.amazon.com/gp/product/B001PMJXD2" target="_blank">bench height chair</a>.</li>
+<li>The workbench is a <a href="http://www.amazon.com/Gladiator-GAWB08HWEG-Adjustable-Hardwood-Workbench/dp/B00ZTH82CW" target="_blank">Gladiator 8 ft. Maple Workbench</a> I had in the garage for a long time. The new ones allow height adjustment, and there are also less expensive bamboo top options.</li>
+</ul>
+
+
+<p>So far I have been very pleased with the setup. One nice feature is the workbench depth is less than a traditional desk, so I gained some space back in the office. The main benefit is just better productivity, I find certain tasks are just easier to accomplish when standing. The final benefit is, with two greyhounds in the house having a tall desk means less expensive pens and markers go missing.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[I2C MPU-6050]]></title>
     <link href="http://fooqri.github.io/blog/2015/08/17/i2c-mpu-6050/"/>
     <updated>2015-08-17T05:50:00-07:00</updated>
     <id>http://fooqri.github.io/blog/2015/08/17/i2c-mpu-6050</id>
-    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/mpu6050"  style="height: 400px; display: block; margin: auto;"></p>
+    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/mpu6050.jpg"  style="height: 400px; display: block; margin: auto;"></p>
 
 <p>I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.</p>
 
@@ -1070,25 +1102,6 @@ application block.</p>
 <p>This is my muse, Archer, the retired racing greyhound.</p>
 
 <p><img src="http://media.tumblr.com/cfdcc46c180984c7ab7e3d43cb14a116/tumblr_inline_mgs53cHq981qz562v.jpg" alt="" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RubyMotion iOS Apps]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/17/rubymotion-ios-apps/"/>
-    <updated>2013-01-17T11:28:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/17/rubymotion-ios-apps</id>
-    <content type="html"><![CDATA[<p>I wanted to make a quick note that I have been using <a href="http://www.rubymotion.com/">RubyMotion</a> the past few months. I don&rsquo;t mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI. Call me old fashioned, but I find I can work much faster when I can operate on the code directly, versus through an intermediary UI.</p>
-
-<p>The second reason for switching to RubyMotion is the libraries that are being created, they make iOS development feel so comfortable to a Ruby developer. Three key examples are <a href="https://github.com/rubymotion/BubbleWrap">BubbleWrap</a>, <a href="https://github.com/rubymotion/sugarcube">SugarcCube</a> and <a href="https://github.com/rubymotion/teacup">Teacup</a>.</p>
-
-<p>The third reason is testing and debugging, I like that RubyMotion comes with an RSpec clone, this means I have the same testing framework on both app and server. I also love the interactive console, there is nothing like tweaking your app live from a console (REPL). I find I can debug a lot of the code from the console, but RubyMotion also supports GDB for the more serious debugging needs. I hadn&rsquo;t used GDB in a few years but it came back to me pretty quickly once I started using it.</p>
-
-<p>I also like the DSL approach of Teacup in styling RubyMotion iOS apps. I like that I can create style files much like I do with CSS and have my app UI built with the style information, makes changing style feel more natural to me as a web developer.</p>
-
-<p>I have no doubt that there are many Objective-C developers who are extremely efficient in building apps, but it is always a challenge to become expert on multiple platforms. To become an expert iOS developer you need to become expert in the Cocoa libraries; the nice thing about RubyMotion is it allows you to learn the libraries within a familiar syntax if you are a ruby developer. It also allows you to create Ruby wrappers and generators that make developing for Cocoa feel more natural to a Ruby developer. Finally, since RubyMotion creates compiled native iOS apps, their is very little performance hit.</p>
-
-<p>I have a backlog of notes that I will post when I get a chance; including my experiences with development,  debugging, meta-programming, deploying via TestFlight, etc. I just wanted to give RubyMotion some praise from this Ruby developer, it has made developing iOS apps very similar to deploying ruby apps.</p>
 ]]></content>
   </entry>
   
