@@ -1,0 +1,72 @@
+---
+layout: post
+title: "I2C MPU-6050"
+date: 2015-08-17 05:50
+comments: true
+categories: 
+---
+
+<img src="//s3.amazonaws.com/rwx-blog/mpu6050"  style="height: 400px; display: block; margin: auto;">
+
+I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.
+
+To capture data I am using a  few node modules. In particular the <a href="https://github.com/hybridgroup/cylon" target="_blank">cylon.js</a> module, along with the <a href="https://github.com/hybridgroup/cylon-i2c" target="_blank">cylon-i2c</a> module.  This allows accelerometer data to be easily used by the following code block
+
+```
+Cylon                                                                          
+  .robot()                                                                    
+  .connection("edison", { adaptor: "intel-iot", i2cPort: 1})                  
+  .device("accel", { driver: "mpu6050" })                                     
+  .on("ready", function(bot) {                                      
+    setInterval(function() {                                        
+      bot.accel.getAcceleration(function(err, data) {
+        //use data
+      });
+    });
+  });
+```
+
+## The MPUs
+The first prototype of this device is using a SparkFun Edison stack with the SparkFun I2C block connected to an MPU-6050, rather than the SparkFun Accelerometer block. At the time of this writing the cylon-i2c implementation of the lsm9ds0 driver is not working correctly with the SparkFun Accelerometer block, so I went the I2C route. The second an perhaps more important reason I went the I2C route is that MPU-6050 boards can be had for as low as $4, which is appealing for a low cost prototype.
+
+I have a handful of MPUs I have tried and here is some info on them.
+
+### <a href="https://www.sparkfun.com/products/11028" target="_blank">SparkFun MPU-6050 Breakout</a>
+This is great accelerometer breakout that works well with the Edison and Cylon module, but much less expensive options exist.
+
+### <a href="http://www.amazon.com/gp/product/B00H1OYE4Q" target="_blank">RioRand Triple Axis MPU-6050 Breakout</a>
+This is currently my go to accelerometer. It is relatively low priced at $11 and arrives in 2 days via Amazon Prime. These work well with both the Edison 3.3V boards, and the cylon i2c module. Unfortunately the default I2C address for this board is 0x69, instead of the more common  0x68 (used by the cylon mpu6050 driver) so you will need to solder the AD0 jumper plate on the top of the board.
+
+### <a href="http://www.amazon.com/Kootek-MPU-6050-MPU6050-sensors-Accelerometer/dp/B008BOPN40/" target="_blank">Kootek GY-521 MPU-6050 MPU6050 Module</a>
+At $4 with free shipping these look like a great option. They are reported to work well with 3.3V VCC. The down side is very slow delivery via the slow boat. I have a handful on order, I will provide an update when they arrive.
+
+### <a href="http://www.amazon.com/gp/product/B009M19L4Y" target="_blank">GY-521 6DOF MPU6050 Module</a>
+At a little over $5 with free shipping this seems like a great option, unfortunately the onboard voltage regulator in the GY-521 is designed for the Arduino 5V VCC and when used with a 3.3V VCC of the Edison blocks results in too low power on the I2C SDA/SCL pins to register as proper high and low voltage values. It is possible to give the board a separate 5V VCC supply, but that just seems overly complicated for the prototype device. Another feature of this board is the breakout of AD0 into a pin, allowing easy switching between I2C 0x68 and 0x69 addresses using either a ground or VCC connection.
+
+## Connecting the MPU
+For the first prototype I am using  SparkFun Edison blocks, as I have a a few sets of these interchangeable blocks that are quick to assemble into a prototype. In this case I am using the <a href="https://www.sparkfun.com/products/13034" target="_blank">SparkFun I2C</a> block with an Edison. This block allows the Edison to be snapped onto the block, and the MPU-6050 board to be connected with 4 jumpers (VCC, GND, SDA, SCL).
+
+## Checking I2C Address
+Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn't working with Cylon, the first thing to check will be whether the address is #68. The error message from Cylon will be a _"RangeError: Trying to access beyond buffer length"_ for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.
+
+```
+i2cdetect -y -r 1
+```
+
+The result will look something like:
+
+```
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --
+```
+
+You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address is 69, you will need to change the address to #68 using the technique recommended for your board (AD0 jumper). You may see other numbers is the results if you have other I2C components included in your assembled device, these are unrelated to the board.
+
+I won't get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.

@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-<img src="//cdn.shopify.com/s/files/1/0243/7593/products/ESP8266-3.530x397_large.jpg?v=1431993936"  style="height: 400px; display: block; margin: auto;">
+<img src="//s3.amazonaws.com/rwx-blog/ESP8266.jpg"  style="height: 400px; display: block; margin: auto;">
 
 I have been building a few prototype devices with the following parts:
 
