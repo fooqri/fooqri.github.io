@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I&rsquo;ve had my caps lock key mapped to the control key for the last few months as I have migrated back to Emacs from TextMate. It was a slight &hellip;">
+  <meta name="description" content="I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-01T10:10:00-08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these diagrams makes transitions clear that might otherwise be missed until later when they lead to costly re-architecting of the screens and flows.</p>
+
+<p>I use Omnigraffle for UI wireframes, so it seemed natural to use it for activity diagrams, which is what I have been doing.  The issue is keeping the diagrams up to date.  Today, while playing with the <a href="http://www.complang.org/ragel/">Ragel</a> state machine compiler I discovered Ragel&rsquo;s awesome states/transitions diagramming feature. I learned the feature uses <a href="http://www.graphviz.org/">Graphviz</a> to create the diagrams from the parser grammar.  This led me to <a href="https://github.com/glejeune/Ruby-Graphviz/">Ruby Graphviz</a>, a Ruby library for interacting with Graphviz. It got me thinking that maybe there was a simple DSL that could be used to describe UI activities and screens and then automatically generate diagrams from the description. This would make keeping descriptions and diagrams in sync very easy.</p>
+
+<p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
+
+<div><script src='https://gist.github.com/4431708.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>This above very simple example creates the diagram below.</p>
+
+<p><img src="http://media.tumblr.com/61f780009a654f9724bcd4a9c703d9b4/tumblr_inline_mfz8syDgFP1qz562v.png" alt="" /></p>
+
+<p>This needs some cleanup of the aesthetics but the possibility is interesting. The next steps will be to come up with a very simple dsl, as simple as possible, maybe something that is markdown compliant so it fits inside our wiki pages cleanly. It would need to cover start and end states as well as intermediate state nodes. It would need to also handle decision points (diamonds) as well as transitions (edges) and notes. The simplest form would be to allow listing all nodes and all decisions, and then listing the connections between them. Labels would also be needed on all of these. IDs would probably help for wiring up the connections.</p>
+
+<p>Then it is a matter of running a parser on the wiki pages, looking for the syntax associated with the activity descriptions and generating a diagram using some ruby code. This might be a nice experiment to familiarize myself with Ragel to better understand its strengths and capabilities.</p>
+
+<p>I hope to get to spend some free time on this over the coming weeks, as it seems like a fun side project.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -423,7 +477,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/">Revisiting Buyer&#8217;s Agent app using React.js</a>
+        <a href="/blog/2015/08/16/the-post-title/">Popup Work Bench</a>
       </li>
     
   </ul>
