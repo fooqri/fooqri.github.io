@@ -5,7 +5,7 @@ date: 2015-08-17 08:15
 comments: true
 categories: 
 ---
-
+ 
 <a href="//s3.amazonaws.com/rwx-blog/workbench.JPG" target="_blank"><img src="//s3.amazonaws.com/rwx-blog/workbench.JPG"  style="height: 400px; display: block; margin: auto;"></a>
 
 I changed my desk out for a workbench and am very pleased with the results. I made the switch for two reasons:
