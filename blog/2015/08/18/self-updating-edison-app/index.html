@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Self Updating Edison Apps - </title>
+  <meta name="author" content="Patrick Goddi">
+
+  
+  <meta name="description" content="One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like resin.io do a nice job of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41376488-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fooqri.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Self Updating Edison Apps</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-18T10:49:00-07:00" pubdate data-updated="true">Aug 18<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like <a href-"www.resin.io" target="_blank">resin.io</a> do a nice job of deploying <a href="http://bundler.io/" target="_blank">bundler images</a> onto devices like the Edison. The primary issue I had was the overhead of pushing bundler images around when the only thing that was changing was the node app. It seemed easier to just use git and npm to handle the updates. I may go the resin.io route later, but this early in dev and testing the git route seems simpler.</p>
+
+<h2>Overview of What I Did</h2>
+
+<p>The product I am prototyping has two parts, an Edison device (with additional sensors and actuators) running a node app, and a node web service for managing device configuration and data running in the cloud.</p>
+
+<ol>
+<li>The device&rsquo;s node app is published in a private github repository.</li>
+<li>I installed and configured git on each of the Edison devices.</li>
+<li>I cloned the github repository onto each of the Edison devices.</li>
+<li>I installed the forever module on each of the devices to keep the app up and allow easy restarting of the app.</li>
+<li>I created a startup script that starts the app using forever.</li>
+<li>I created and enabled a linux service that runs the startup script on boot.</li>
+<li>I added code to the app to periodically ask the web service what the latest version of the app should be.</li>
+<li>If a new version is available the app will do a pull and use forever to do a restart using the new version.</li>
+</ol>
+
+
+<h2>The Details</h2>
+
+<h3>Initial Cleanup</h3>
+
+<ul>
+<li>Remove any app from the default Edison node_app_slot directory so you don&rsquo;t accidentally start the app using the default Edison process.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mv /node_app_slot /node_app_slotbk
+</span><span class='line'>mv  ~/.node_app_slot/ ~/.node_app_slotbk</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Install Git</h3>
+
+<h4>Update /etc/opkg/base-feeds.conf with these 3 lines</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>src all     http://iotdk.intel.com/repos/1.1/iotdk/all
+</span><span class='line'>src x86 http://iotdk.intel.com/repos/1.1/iotdk/x86
+</span><span class='line'>src i586    http://iotdk.intel.com/repos/1.1/iotdk/i586</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Update opkg and install git</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>opkg update
+</span><span class='line'>opkg install git</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Option 1: Modify Edison&rsquo;s default port</h3>
+
+<p>I wanted to use port 80 for the node app so I moved the default Edison config service to port 8080</p>
+
+<h4>Change default port in edison-cofig-server</h4>
+
+<p>Edit <em>/usr/lib/edison_config_tools/edison-config-server.js</em>
+and change the last line to use a port other than 80.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http.createServer(requestHandler).listen(8080);</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Option 2: Disable the Edison config web service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl disable edison_config
+</span><span class='line'>systemctl stop    edison_config</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Setup to use github</h3>
+
+<h4>Generate a key for use with github</h4>
+
+<ul>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x6d;&#x65;&#64;&#109;&#x79;&#x2e;&#101;&#x6d;&#x61;&#x69;&#108;">&#x6d;&#x65;&#64;&#109;&#x79;&#46;&#x65;&#x6d;&#97;&#x69;&#x6c;</a>&rdquo;</li>
+</ul>
+
+
+<p>Follow the directions, easiest is just to hit return at the prompts. I chose to not do a passphrase for my small pilot.</p>
+
+<h4>Generate a deployment key for the github repository</h4>
+
+<ul>
+<li>Go to your app&rsquo;s github repository, choose <em>settings</em>, choose <em>deployment keys</em></li>
+<li>Click the <em>Add Deployment Key</em> button</li>
+<li>Give it a title (the host name for the device works)</li>
+<li>Back on the Edison run cat /home/root/.ssh/id_rsa.pub to get the text for the public key</li>
+<li>copy the text for the public key to the <em>Key</em> input box back on github.</li>
+</ul>
+
+
+<h3>Clone your repo</h3>
+
+<p>Back on the Edison</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /
+</span><span class='line'>git clone &lt;your repo&gt; AppDirName
+</span><span class='line'>cd /AppDirName</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Pull Latest code</h3>
+
+<p>Now any time you update code on master a simple <em>git pull</em> will update the latest code.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git pull</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Install forever module using npm</h3>
+
+<p>Forever will automatically restart a node app if it crashes. It also has some handy restart features.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g forever</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Create a startup script &amp; service</h3>
+
+<p>Creating a startup service will allow your app to start automatically using forever.</p>
+
+<h4>Create startup.sh to start node app (server.js in this case)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>cd /AppDirName 
+</span><span class='line'>forever start server.js</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Make startup.sh executable</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chmod -x startup.sh</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Create a startup service file at /lib/systemd/system/startup.service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[Unit]
+</span><span class='line'> Description=STARTUP
+</span><span class='line'> [Service]                           
+</span><span class='line'> Type=idle                           
+</span><span class='line'> RemainAfterExit=true
+</span><span class='line'> ExecStart=/AppDirName/startup.sh
+</span><span class='line'> Environment="HOME=/home/root"    
+</span><span class='line'> WorkingDirectory=/AppDirName/   
+</span><span class='line'> [Install]                     
+</span><span class='line'> WantedBy=multi-user.target </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Enable startup service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl enable /lib/systemd/system/startup.service</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Enable your node app to update itself</h3>
+
+<p>By using a simple update function you can get your app to update itself and restart.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var checkVersion = function(){
+</span><span class='line'>  var currentVersion = pjson.version;
+</span><span class='line'>  var options = {  hostname: 'www.myhost.com',
+</span><span class='line'>                             port: 80,
+</span><span class='line'>                   path: 'http://www.myhost.com/device_version/',
+</span><span class='line'>                   method: 'GET',
+</span><span class='line'>                   headers: {'Content-Type': 'application/json'}
+</span><span class='line'>                };
+</span><span class='line'>  var callback = function(response) {
+</span><span class='line'>    var str = '';
+</span><span class='line'>    response.on('data', function (chunk) {
+</span><span class='line'>      str += chunk;
+</span><span class='line'>    });
+</span><span class='line'>
+</span><span class='line'>    response.on('end', function () {
+</span><span class='line'>      var versionInfo = JSON.parse(str);
+</span><span class='line'>      console.log("current version: ", currentVersion);
+</span><span class='line'>      console.log("latest version: ", versionInfo.client_version);
+</span><span class='line'>
+</span><span class='line'>      if (versionInfo.client_version !== 0 && currentVersion != versionInfo.client_version){
+</span><span class='line'>        console.log("pulling newer versions");
+</span><span class='line'>        spawn('git pull', function(error, stdout, stderr) {
+</span><span class='line'>          if (error){
+</span><span class='line'>            console.log("ERROR: ", error);
+</span><span class='line'>          }
+</span><span class='line'>          else{
+</span><span class='line'>            console.log("restarting");
+</span><span class='line'>            console.log("restarting node");
+</span><span class='line'>            spawn('forever restartall', function(error, stdout, stderr){
+</span><span class='line'>              //nothing to do
+</span><span class='line'>            });
+</span><span class='line'>          }
+</span><span class='line'>        }); 
+</span><span class='line'>      }
+</span><span class='line'>    });
+</span><span class='line'>  };
+</span><span class='line'>
+</span><span class='line'>//check for updates at app startup
+</span><span class='line'>checkVersion();
+</span><span class='line'>
+</span><span class='line'>//then check for updates every hour;
+</span><span class='line'>setInterval(function() {
+</span><span class='line'>    checkVersion();                                                       
+</span><span class='line'>  }, 3600000);
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>On the server</h3>
+
+<p>You will need to add a route on your server to provide the version info. In this example the route was a GET request to the  <em>/device_version</em> route. For simplicity I just use an env_var on the service. I simply update the env_var when a new version is available. Then in the logic for the <em>/device_version</em> route I pass back the version found in the env_var.</p>
+
+<p>The logic for comparing versions is very basic and flawed, but will work in this simple case.</p>
+
+<h3>Improvements</h3>
+
+<p>Ideally instead of a straight <em>git pull</em> you can instead download a tagged version, and keep the current and next version info for each device in the web service db. This would allow rolling out upgrades to specific devices, etc. Another approach would be to pass back version info to the device so updates could roll out immediately if the device is in use. Finally more logic on the device to schedule an update when not active would be ideal. In that case maybe adding more than <em>versionNumber</em> of the latest version to the server response, maybe a priority value also.</p>
+
+<p>This was a quick experiment it getting updates to percolate out to devices prototype devices, and so far it seems to be working well.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-18T10:49:00-07:00" pubdate data-updated="true">Aug 18<span>th</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app/" data-via="" data-counturl="http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/17/workbench/" title="Previous Post: Workbench Replaces My Desk">&laquo; Workbench Replaces My Desk</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://fooqri.github.io" title=""><img id="logo" src="http://fooqri.github.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://fooqri.github.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://fooqri.github.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://fooqri.github.io/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://fooqri.github.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://fooqri.github.io/atom.xml"> Feed </a></li> 
+    <li><i class="fa fa-twitter fa-lg"></i><a href="https://twitter.com/fooqri"> twitter </a></li>
+    <li><i class="fa fa-linkedin fa-lg"></i><a href="http://www.linkedin.com/in/goddi/"> LinkedIn </a></li> </ul>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/16/esp8266/">ESP8266</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/16/edison-wifi-config/">Edison Wi-Fi Configuration</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/fast-photosync-from-iphone/">Fast PhotoSync from iPhone</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/26/foldingtext-and-productivity/">FoldingText and productivity</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Patrick Goddi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'goddio';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app/';
+        var disqus_url = 'http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

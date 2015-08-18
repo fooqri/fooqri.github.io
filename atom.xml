@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-18T06:40:50-07:00</updated>
+  <updated>2015-08-18T12:03:38-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,295 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Self Updating Edison Apps]]></title>
+    <link href="http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app/"/>
+    <updated>2015-08-18T10:49:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2015/08/18/self-updating-edison-app</id>
+    <content type="html"><![CDATA[<p>One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like <a href-"www.resin.io" target="_blank">resin.io</a> do a nice job of deploying <a href="http://bundler.io/" target="_blank">bundler images</a> onto devices like the Edison. The primary issue I had was the overhead of pushing bundler images around when the only thing that was changing was the node app. It seemed easier to just use git and npm to handle the updates. I may go the resin.io route later, but this early in dev and testing the git route seems simpler.</p>
+
+<h2>Overview of What I Did</h2>
+
+<p>The product I am prototyping has two parts, an Edison device (with additional sensors and actuators) running a node app, and a node web service for managing device configuration and data running in the cloud.</p>
+
+<ol>
+<li>The device&rsquo;s node app is published in a private github repository.</li>
+<li>I installed and configured git on each of the Edison devices.</li>
+<li>I cloned the github repository onto each of the Edison devices.</li>
+<li>I installed the forever module on each of the devices to keep the app up and allow easy restarting of the app.</li>
+<li>I created a startup script that starts the app using forever.</li>
+<li>I created and enabled a linux service that runs the startup script on boot.</li>
+<li>I added code to the app to periodically ask the web service what the latest version of the app should be.</li>
+<li>If a new version is available the app will do a pull and use forever to do a restart using the new version.</li>
+</ol>
+
+
+<h2>The Details</h2>
+
+<h3>Initial Cleanup</h3>
+
+<ul>
+<li>Remove any app from the default Edison node_app_slot directory so you don&rsquo;t accidentally start the app using the default Edison process.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mv /node_app_slot /node_app_slotbk
+</span><span class='line'>mv  ~/.node_app_slot/ ~/.node_app_slotbk</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Install Git</h3>
+
+<h4>Update /etc/opkg/base-feeds.conf with these 3 lines</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>src all     http://iotdk.intel.com/repos/1.1/iotdk/all
+</span><span class='line'>src x86 http://iotdk.intel.com/repos/1.1/iotdk/x86
+</span><span class='line'>src i586    http://iotdk.intel.com/repos/1.1/iotdk/i586</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Update opkg and install git</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>opkg update
+</span><span class='line'>opkg install git</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Option 1: Modify Edison&rsquo;s default port</h3>
+
+<p>I wanted to use port 80 for the node app so I moved the default Edison config service to port 8080</p>
+
+<h4>Change default port in edison-cofig-server</h4>
+
+<p>Edit <em>/usr/lib/edison_config_tools/edison-config-server.js</em>
+and change the last line to use a port other than 80.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http.createServer(requestHandler).listen(8080);</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Option 2: Disable the Edison config web service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl disable edison_config
+</span><span class='line'>systemctl stop    edison_config</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Setup to use github</h3>
+
+<h4>Generate a key for use with github</h4>
+
+<ul>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x6d;&#x65;&#64;&#109;&#x79;&#x2e;&#101;&#x6d;&#x61;&#x69;&#108;">&#x6d;&#x65;&#64;&#109;&#x79;&#46;&#x65;&#x6d;&#97;&#x69;&#x6c;</a>&rdquo;</li>
+</ul>
+
+
+<p>Follow the directions, easiest is just to hit return at the prompts. I chose to not do a passphrase for my small pilot.</p>
+
+<h4>Generate a deployment key for the github repository</h4>
+
+<ul>
+<li>Go to your app&rsquo;s github repository, choose <em>settings</em>, choose <em>deployment keys</em></li>
+<li>Click the <em>Add Deployment Key</em> button</li>
+<li>Give it a title (the host name for the device works)</li>
+<li>Back on the Edison run cat /home/root/.ssh/id_rsa.pub to get the text for the public key</li>
+<li>copy the text for the public key to the <em>Key</em> input box back on github.</li>
+</ul>
+
+
+<h3>Clone your repo</h3>
+
+<p>Back on the Edison</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /
+</span><span class='line'>git clone &lt;your repo&gt; AppDirName
+</span><span class='line'>cd /AppDirName</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Pull Latest code</h3>
+
+<p>Now any time you update code on master a simple <em>git pull</em> will update the latest code.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git pull</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Install forever module using npm</h3>
+
+<p>Forever will automatically restart a node app if it crashes. It also has some handy restart features.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g forever</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Create a startup script &amp; service</h3>
+
+<p>Creating a startup service will allow your app to start automatically using forever.</p>
+
+<h4>Create startup.sh to start node app (server.js in this case)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>cd /AppDirName 
+</span><span class='line'>forever start server.js</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Make startup.sh executable</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chmod -x startup.sh</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Create a startup service file at /lib/systemd/system/startup.service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[Unit]
+</span><span class='line'> Description=STARTUP
+</span><span class='line'> [Service]                           
+</span><span class='line'> Type=idle                           
+</span><span class='line'> RemainAfterExit=true
+</span><span class='line'> ExecStart=/AppDirName/startup.sh
+</span><span class='line'> Environment="HOME=/home/root"    
+</span><span class='line'> WorkingDirectory=/AppDirName/   
+</span><span class='line'> [Install]                     
+</span><span class='line'> WantedBy=multi-user.target </span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Enable startup service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl enable /lib/systemd/system/startup.service</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Enable your node app to update itself</h3>
+
+<p>By using a simple update function you can get your app to update itself and restart.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var checkVersion = function(){
+</span><span class='line'>  var currentVersion = pjson.version;
+</span><span class='line'>  var options = {  hostname: 'www.myhost.com',
+</span><span class='line'>                             port: 80,
+</span><span class='line'>                   path: 'http://www.myhost.com/device_version/',
+</span><span class='line'>                   method: 'GET',
+</span><span class='line'>                   headers: {'Content-Type': 'application/json'}
+</span><span class='line'>                };
+</span><span class='line'>  var callback = function(response) {
+</span><span class='line'>    var str = '';
+</span><span class='line'>    response.on('data', function (chunk) {
+</span><span class='line'>      str += chunk;
+</span><span class='line'>    });
+</span><span class='line'>
+</span><span class='line'>    response.on('end', function () {
+</span><span class='line'>      var versionInfo = JSON.parse(str);
+</span><span class='line'>      console.log("current version: ", currentVersion);
+</span><span class='line'>      console.log("latest version: ", versionInfo.client_version);
+</span><span class='line'>
+</span><span class='line'>      if (versionInfo.client_version !== 0 && currentVersion != versionInfo.client_version){
+</span><span class='line'>        console.log("pulling newer versions");
+</span><span class='line'>        spawn('git pull', function(error, stdout, stderr) {
+</span><span class='line'>          if (error){
+</span><span class='line'>            console.log("ERROR: ", error);
+</span><span class='line'>          }
+</span><span class='line'>          else{
+</span><span class='line'>            console.log("restarting");
+</span><span class='line'>            console.log("restarting node");
+</span><span class='line'>            spawn('forever restartall', function(error, stdout, stderr){
+</span><span class='line'>              //nothing to do
+</span><span class='line'>            });
+</span><span class='line'>          }
+</span><span class='line'>        }); 
+</span><span class='line'>      }
+</span><span class='line'>    });
+</span><span class='line'>  };
+</span><span class='line'>
+</span><span class='line'>//check for updates at app startup
+</span><span class='line'>checkVersion();
+</span><span class='line'>
+</span><span class='line'>//then check for updates every hour;
+</span><span class='line'>setInterval(function() {
+</span><span class='line'>    checkVersion();                                                       
+</span><span class='line'>  }, 3600000);
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>On the server</h3>
+
+<p>You will need to add a route on your server to provide the version info. In this example the route was a GET request to the  <em>/device_version</em> route. For simplicity I just use an env_var on the service. I simply update the env_var when a new version is available. Then in the logic for the <em>/device_version</em> route I pass back the version found in the env_var.</p>
+
+<p>The logic for comparing versions is very basic and flawed, but will work in this simple case.</p>
+
+<h3>Improvements</h3>
+
+<p>Ideally instead of a straight <em>git pull</em> you can instead download a tagged version, and keep the current and next version info for each device in the web service db. This would allow rolling out upgrades to specific devices, etc. Another approach would be to pass back version info to the device so updates could roll out immediately if the device is in use. Finally more logic on the device to schedule an update when not active would be ideal. In that case maybe adding more than <em>versionNumber</em> of the latest version to the server response, maybe a priority value also.</p>
+
+<p>This was a quick experiment it getting updates to percolate out to devices prototype devices, and so far it seems to be working well.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Workbench Replaces My Desk]]></title>
@@ -1075,35 +1364,6 @@ application block.</p>
 
 
 <p>Also see this great <a href="http://www.confreaks.com/videos/491-rubyconf2010-consuming-gherkin-one-byte-at-a-time"> Consuming Gherkin: One Byte at a Time video</a> intro of Mike Sassak &amp; Greg Hnatiuk discussing their experience using Ragel for the Cucumber parser.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pattern problems vs logic problems]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems/"/>
-    <updated>2013-01-18T11:48:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/18/pattern-problems-vs-logic-problems</id>
-    <content type="html"><![CDATA[<blockquote><p>Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence?</p></blockquote>
-
-<p>I ran across this interesting problem in <a href="http://www.amazon.com/The-Joy-Guided-Infinity-ebook/dp/B006R8PL7G/ref=tmm_kin_title_0">&ldquo;The Joy of x: A Guided Tour of Math, from One to Infinity,&rdquo;</a> a very accessible and interesting tour of mathematics.</p>
-
-<p>It turns out most people quickly answer “one hour.”  As Strogatz opines,</p>
-
-<blockquote><p>The words themselves nudge you that way. The drumbeat in the first sentence— three men, three fences, three hours— catches your attention by establishing a rhythm, so when the next sentence repeats the pattern with one man, one fence, ____ hours, it’s hard to resist filling in the blank with “one.” The parallel construction suggests an answer that’s linguistically right but mathematically wrong.</p></blockquote>
-
-<p>The correct answer is three hours. It is obvious if you imagine each person painting their own fence for three hours. Remove two people and two fences and you are left with one person, still painting their one fence for three hours, as before.</p>
-
-<p>What struck me about this problem is that it is an incredibly simple, concrete, and visual example of how our brains try to match patterns, but more importantly the side effect that occurs when a pattern is matched. Neuroscience studies suggest that dopamine (a neurotransmitter associated with pleasure) is released when we solve a problem, thus giving us a biological explanation for that wonderful feeling we get when we have solved a problem.</p>
-
-<p>This made me wonder, does our brain perhaps release dopamine when we solve the faux pattern matching problem and <em>tricks</em> us into thinking we solved the actual logic problem? Thus we quickly blurt out the wrong answer.  After all, we have spent a lifetime feeling the dopamine rush when we believe we have the answer to a problem. Strogatz&rsquo;s observation about this particular word problem having two solutions (a pattern solution, and a logic solution) is very interesting, and is likely very related to a number of <a href="http://en.wikipedia.org/wiki/List_of_biases_in_judgment_and_decision_making">Cognitive Biases</a>. It is perhaps valuable to think about this explicitly when considering information:</p>
-
-<ul>
-<li>What is the pattern problem being suggested?</li>
-<li>What is the logic problem being suggested?</li>
-</ul>
-
-
-<p>And make sure you have the answer the right question when you feel that first burst of dopamine show up.</p>
 ]]></content>
   </entry>
   
