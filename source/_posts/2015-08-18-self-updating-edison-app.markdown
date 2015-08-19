@@ -145,10 +145,10 @@ var spawn = require('child_process').exec;
 var semver = require('semver');
 var bunyan = require('bunyan');
 var log = bunyan.createLogger({
-    name: 'pocketwatch',
+    name: 'app',
     streams: [{
         type: 'rotating-file',
-        path: '/var/log/pocketwatch.log',
+        path: '/var/log/app.log',
         period: '1d',
         count: 7        
     }]
