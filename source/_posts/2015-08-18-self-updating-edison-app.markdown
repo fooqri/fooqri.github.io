@@ -141,6 +141,20 @@ systemctl enable /lib/systemd/system/startup.service
 By using a simple update function you can get your app to update itself and restart.
 
 ```
+var spawn = require('child_process').exec;
+var semver = require('semver');
+var bunyan = require('bunyan');
+var log = bunyan.createLogger({
+    name: 'pocketwatch',
+    streams: [{
+        type: 'rotating-file',
+        path: '/var/log/pocketwatch.log',
+        period: '1d',
+        count: 7        
+    }]
+});
+var pjson = require('./package.json');
+
 var checkVersion = function(){
   var currentVersion = pjson.version;
   var options = {  hostname: 'www.myhost.com',
@@ -150,27 +164,39 @@ var checkVersion = function(){
                    headers: {'Content-Type': 'application/json'}
                 };
   var callback = function(response) {
-    var str = '';
+    var dataStr = '';
     response.on('data', function (chunk) {
-      str += chunk;
+      dataStr += chunk;
     });
 
     response.on('end', function () {
-      var versionInfo = JSON.parse(str);
-      console.log("current version: ", currentVersion);
-      console.log("latest version: ", versionInfo.client_version);
-
-      if (versionInfo.client_version !== 0 && currentVersion != versionInfo.client_version){
-        console.log("pulling newer versions");
+      var versionInfo = JSON.parse(dataStr);
+      var latestVersion = versionInfo.client_version || "0.0.0"; //don't update if missing version info
+      log.info("current version: ", currentVersion);
+      log.info("latest version: ", latestVersion);
+      if (semver.gt(latestVersion, currentVersion)){
+        log.info("pulling newer versions");
         spawn('git pull', function(error, stdout, stderr) {
           if (error){
-            console.log("ERROR: ", error);
+            log.error("ERROR pulling latest: ", error);
           }
           else{
-            console.log("restarting");
-            console.log("restarting node");
-            spawn('forever restartall', function(error, stdout, stderr){
-              //nothing to do
+            log.info("updating packages");
+            spawn('npm update', function(error, stdout, stderr){
+              if (error){
+                log.error("ERROR updating packages: ", error);
+              }
+              else {
+                log.info("restarting node");
+                spawn('forever restartall', function(error, stdout, stderr){
+                  if (error){
+                    log.error("ERROR restarting: ", error);
+                  }
+                  else {
+                     log.info("restarted");
+                  }
+                });
+              }           
             });
           }
         }); 
