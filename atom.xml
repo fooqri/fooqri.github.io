@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-18T12:03:38-07:00</updated>
+  <updated>2015-08-19T12:14:48-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -97,7 +97,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x6d;&#x65;&#64;&#109;&#x79;&#x2e;&#101;&#x6d;&#x61;&#x69;&#108;">&#x6d;&#x65;&#64;&#109;&#x79;&#46;&#x65;&#x6d;&#97;&#x69;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#109;&#x65;&#x40;&#x6d;&#x79;&#x2e;&#x65;&#109;&#x61;&#x69;&#x6c;">&#x6d;&#101;&#64;&#x6d;&#x79;&#x2e;&#x65;&#x6d;&#x61;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
@@ -241,7 +241,47 @@ and change the last line to use a port other than 80.</p>
 <span class='line-number'>43</span>
 <span class='line-number'>44</span>
 <span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var checkVersion = function(){
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var spawn = require('child_process').exec;
+</span><span class='line'>var semver = require('semver');
+</span><span class='line'>var bunyan = require('bunyan');
+</span><span class='line'>var log = bunyan.createLogger({
+</span><span class='line'>    name: 'pocketwatch',
+</span><span class='line'>    streams: [{
+</span><span class='line'>        type: 'rotating-file',
+</span><span class='line'>        path: '/var/log/pocketwatch.log',
+</span><span class='line'>        period: '1d',
+</span><span class='line'>        count: 7        
+</span><span class='line'>    }]
+</span><span class='line'>});
+</span><span class='line'>var pjson = require('./package.json');
+</span><span class='line'>
+</span><span class='line'>var checkVersion = function(){
 </span><span class='line'>  var currentVersion = pjson.version;
 </span><span class='line'>  var options = {  hostname: 'www.myhost.com',
 </span><span class='line'>                             port: 80,
@@ -250,27 +290,39 @@ and change the last line to use a port other than 80.</p>
 </span><span class='line'>                   headers: {'Content-Type': 'application/json'}
 </span><span class='line'>                };
 </span><span class='line'>  var callback = function(response) {
-</span><span class='line'>    var str = '';
+</span><span class='line'>    var dataStr = '';
 </span><span class='line'>    response.on('data', function (chunk) {
-</span><span class='line'>      str += chunk;
+</span><span class='line'>      dataStr += chunk;
 </span><span class='line'>    });
 </span><span class='line'>
 </span><span class='line'>    response.on('end', function () {
-</span><span class='line'>      var versionInfo = JSON.parse(str);
-</span><span class='line'>      console.log("current version: ", currentVersion);
-</span><span class='line'>      console.log("latest version: ", versionInfo.client_version);
-</span><span class='line'>
-</span><span class='line'>      if (versionInfo.client_version !== 0 && currentVersion != versionInfo.client_version){
-</span><span class='line'>        console.log("pulling newer versions");
+</span><span class='line'>      var versionInfo = JSON.parse(dataStr);
+</span><span class='line'>      var latestVersion = versionInfo.client_version || "0.0.0"; //don't update if missing version info
+</span><span class='line'>      log.info("current version: ", currentVersion);
+</span><span class='line'>      log.info("latest version: ", latestVersion);
+</span><span class='line'>      if (semver.gt(latestVersion, currentVersion)){
+</span><span class='line'>        log.info("pulling newer versions");
 </span><span class='line'>        spawn('git pull', function(error, stdout, stderr) {
 </span><span class='line'>          if (error){
-</span><span class='line'>            console.log("ERROR: ", error);
+</span><span class='line'>            log.error("ERROR pulling latest: ", error);
 </span><span class='line'>          }
 </span><span class='line'>          else{
-</span><span class='line'>            console.log("restarting");
-</span><span class='line'>            console.log("restarting node");
-</span><span class='line'>            spawn('forever restartall', function(error, stdout, stderr){
-</span><span class='line'>              //nothing to do
+</span><span class='line'>            log.info("updating packages");
+</span><span class='line'>            spawn('npm update', function(error, stdout, stderr){
+</span><span class='line'>              if (error){
+</span><span class='line'>                log.error("ERROR updating packages: ", error);
+</span><span class='line'>              }
+</span><span class='line'>              else {
+</span><span class='line'>                log.info("restarting node");
+</span><span class='line'>                spawn('forever restartall', function(error, stdout, stderr){
+</span><span class='line'>                  if (error){
+</span><span class='line'>                    log.error("ERROR restarting: ", error);
+</span><span class='line'>                  }
+</span><span class='line'>                  else {
+</span><span class='line'>                     log.info("restarted");
+</span><span class='line'>                  }
+</span><span class='line'>                });
+</span><span class='line'>              }           
 </span><span class='line'>            });
 </span><span class='line'>          }
 </span><span class='line'>        }); 
