@@ -30,7 +30,7 @@ When using the FTDI to program the board take note that GPIO0 is used to set the
 ## Power Management
 To use the *deep sleep* mode on the *Sparkfun Thing* you must connect *XPD* to *DTR*. Sparkfun connected DTR to RST on the *Thing* so a short negative voltage will reset the device. When in *deep sleep* most system services are powered off, but the RTC and timer interrupt remains active for the purpose of waking the device from sleep. This is handled by the firmware once these pins are connected, however this means you will have to remove the FTDI programmer to test the deep-sleep mode.
 
-The *deepsleep()* call looks a lot like a *delayMicroseconds()* call, simply pass it the number of microseconds before it should wake up again. In deep sleep mode, the ESP8266 hits about 60 µA of power draw, down from its average of around 75mA, and the 200mA used while transmitting. Note that power draw of 200mA while transmitting is close to its max draw of around 250mA, so timing the use of a power hungry component like an RGB LED could be an important.
+The *deepsleep()* call looks a lot like a *delayMicroseconds()* call, simply pass it the number of microseconds before it should wake up again. In deep sleep mode, the ESP8266 hits about 60 µA of power draw, down from its average of around 75mA, and the 200mA used while transmitting. 
 
 It should be possible to connect a button or some other independent sensor as an alternative to a timer based wakeup, so the device can be awaken by a button press or some physical world event.
 
@@ -133,7 +133,7 @@ I  tested  analog sensor input in the form of a second piezo connected to the AD
   
 ```
 
-Finally there were enough pins remaining to hookup an RGB LED breakout. I added this test using the  <a href="//github.com/joushx/Arduino-RGB-Tools" target="_blank">RGB Tools Lib</a>. As I mentioned earlier power consumption of an RGB along with simultaneous WiFi transmission may hit max draw; for my case I have control over when transmission can occur, but be aware of this case. To lower power draw further it is possibly to permanently disable the onboard power status led by cutting the trace on the board.
+Finally there were enough pins remaining to hookup an RGB LED breakout. I added this test using the  <a href="//github.com/joushx/Arduino-RGB-Tools" target="_blank">RGB Tools Lib</a>. 
 
 ```
   #include <RGBTools.h>
