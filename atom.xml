@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-09-09T10:46:29-07:00</updated>
+  <updated>2015-09-09T11:25:42-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -339,7 +339,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6d;&#x65;&#x40;&#x6d;&#121;&#46;&#101;&#x6d;&#x61;&#105;&#108;">&#109;&#101;&#64;&#109;&#x79;&#x2e;&#x65;&#x6d;&#x61;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#109;&#x65;&#x40;&#109;&#x79;&#46;&#x65;&#x6d;&#97;&#105;&#108;">&#x6d;&#101;&#x40;&#x6d;&#x79;&#46;&#101;&#x6d;&#x61;&#105;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
