@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-08-19T12:17:02-07:00</updated>
+  <updated>2015-09-09T10:46:29-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,248 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ESP8266 Initial Notes]]></title>
+    <link href="http://fooqri.github.io/blog/2015/09/09/esp8266-initial-notes/"/>
+    <updated>2015-09-09T08:05:00-07:00</updated>
+    <id>http://fooqri.github.io/blog/2015/09/09/esp8266-initial-notes</id>
+    <content type="html"><![CDATA[<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/sparkfun_thing.jpg"  style="height: 400px; display: block; margin: auto;"></p>
+
+<h1>Here are a few notes from my experiments with the ESP8266</h1>
+
+<p>I have started testing  the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.</p>
+
+<p>I started with the <a href="https://www.sparkfun.com/products/13231" target="_blank">Sparkfun Thing</a>, which is a nice ESP8266 dev board that supports integrated LiPo battery management. They have a nice <a href="http://fooqri.github.io//learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide" target="_blank">Hookup Guide</a> to get you started.</p>
+
+<p>My use case is a very simple IoT type device that will send data to a cloud service that I have developed. The cloud service will aggregate the data from multiple personal IoT devices for a user. These devices will generally be powered via LiPo battery when in use for interaction and placed in a charging tray when not in interactive use. The devices are always active but have special meaning when in interactive use.</p>
+
+<p>These constraints mean that battery life is a critical factor, but I do not need days, months, or years of battery life. The ESP8266 is a fairly power hungry device, especially when transmitting data, but it does have some power management features, most notably <strong>deep sleep</strong>.</p>
+
+<h2>Notes from my initial experiments:</h2>
+
+<h3>The Kit</h3>
+
+<p>I used the <a href="http://fooqri.github.io//www.sparkfun.com/products/13231" target="_blank">Sparkfun Thing</a>, <a href="http://fooqri.github.io//www.sparkfun.com/products/9873" target="_blank">FTDIBreakout</a> for uploading code, and  <a href="http://fooqri.github.io//www.sparkfun.com/products/10718" target="_blank">LiPo battery</a>.</p>
+
+<h3>Setup</h3>
+
+<p>An easy way to get code running is to use the <a href="http://fooqri.github.io//learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-esp8266-arduino-addon" target="_blank">Arduino Addon</a> that lets you leverage the Arduino libraries in programming the ESP8266. An alternative I will try in the future is the  <a href="http://fooqri.github.io//github.com/nodemcu/nodemcu-firmware" target="_blank">Lua based firmware</a></p>
+
+<p>When using the FTDI to program the board take note that GPIO0 is used to set the run mode of the firmware. 3.3V puts it in <em>run mode</em> and 0V puts it in <em>program mode (bootloader)</em>. This is easy to miss in the instructions, so be sure to connect the <em>0</em> pin to ground when you wish to upload the code from the Arduino IDE.</p>
+
+<h2>Power Management</h2>
+
+<p>To use the <em>deep sleep</em> mode on the <em>Sparkfun Thing</em> you must connect <em>XPD</em> to <em>DTR</em>. Sparkfun connected DTR to RST on the <em>Thing</em> so a short negative voltage will reset the device. When in <em>deep sleep</em> most system services are powered off, but the RTC and timer interrupt remains active for the purpose of waking the device from sleep. This is handled by the firmware once these pins are connected, however this means you will have to remove the FTDI programmer to test the deep-sleep mode.</p>
+
+<p>The <em>deepsleep()</em> call looks a lot like a <em>delayMicroseconds()</em> call, simply pass it the number of microseconds before it should wake up again. In deep sleep mode, the ESP8266 hits about 60 µA of power draw, down from its average of around 75mA, and the 200mA used while transmitting. Note that power draw of 200mA while transmitting is close to its max draw of around 250mA, so timing the use of a power hungry component like an RGB LED could be an important.</p>
+
+<p>It should be possible to connect a button or some other independent sensor as an alternative to a timer based wakeup, so the device can be awaken by a button press or some physical world event.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  ESP.deepSleep(1000000);  //sleep for 1 second</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Saving State</h3>
+
+<p>Unlike a call to <em>delay()</em> or <em>delayMicroseconds()</em>, the <em>deepsleep()</em> function actually causes the device to power down everything except the RTC and related services. Wake is essentially a device reboot and previous state is not maintained. This means any state will need to be stored in the ESP8266 EEPROM. For this there is an EEPROM library and EEPROM.get()</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  //some struct for saved object
+</span><span class='line'>  struct BackupObj{
+</span><span class='line'>    int setting;
+</span><span class='line'>    int data;
+</span><span class='line'>  };
+</span><span class='line'>
+</span><span class='line'>  //write
+</span><span class='line'>  int eeAddress = 0;
+</span><span class='line'>  EEPROM.begin(4096);  //set up memory allocation
+</span><span class='line'>  EEPROM.put( eeAddress, backupObj );
+</span><span class='line'>  EEPROM.commit();
+</span><span class='line'>  EEPROM.end();
+</span><span class='line'>
+</span><span class='line'>  //read
+</span><span class='line'>  int eeAddress = 0; 
+</span><span class='line'>  EEPROM.begin(4096);
+</span><span class='line'>  EEPROM.get( eeAddress, backupObj );
+</span><span class='line'>  EEPROM.end();</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Adding Components</h3>
+
+<p>The device works well for I2C, in my case I tested with an MPU-6050.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  #include &lt;Wire.h&gt;
+</span><span class='line'>
+</span><span class='line'>  void setup() {
+</span><span class='line'>    // ... other setup code
+</span><span class='line'>    Wire.begin();
+</span><span class='line'>    Wire.beginTransmission(MPU);
+</span><span class='line'>    Wire.write(0x6B);  // PWR_MGMT_1 register
+</span><span class='line'>    Wire.write(0);     // set to zero (wakes up the MPU-6050)
+</span><span class='line'>    Wire.endTransmission(true);
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  // using arduino's loop mechanism
+</span><span class='line'>  void loop(){
+</span><span class='line'>    // ... other loop code
+</span><span class='line'>    Wire.beginTransmission(MPU);
+</span><span class='line'>    Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
+</span><span class='line'>    Wire.endTransmission(false);
+</span><span class='line'>    Wire.requestFrom(MPU,14,true); 
+</span><span class='line'>    AcX=Wire.read()&lt;&lt;8|Wire.read();     
+</span><span class='line'>    AcY=Wire.read()&lt;&lt;8|Wire.read();  
+</span><span class='line'>    AcZ=Wire.read()&lt;&lt;8|Wire.read(); 
+</span><span class='line'>    // ... other loop code
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I tested using GPIO with a piezo used as a speaker. The Speaker is capable of playing simple notes using frequency of note mapped to cycles of sound and delay.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  #define NOTE_C5  523 //middle C
+</span><span class='line'>  #define NOTE_D5  587
+</span><span class='line'>
+</span><span class='line'>  const int SPEAKER_PIN = 5;
+</span><span class='line'>  
+</span><span class='line'>  void playNote(int targetPin, long frequency, long length) {
+</span><span class='line'>    long delay = 1000000 / frequency / 2; 
+</span><span class='line'>    long cycles = frequency * length / 1000; 
+</span><span class='line'>    for (long i = 0; i &lt; cycle; i++) { 
+</span><span class='line'>      digitalWrite(targetPin, HIGH); 
+</span><span class='line'>      delayMicroseconds(delay); 
+</span><span class='line'>      digitalWrite(targetPin, LOW); 
+</span><span class='line'>      delayMicroseconds(delay);
+</span><span class='line'>    } 
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  long noteDuration = 500;
+</span><span class='line'>  long frequency = NOTE_C5;
+</span><span class='line'>
+</span><span class='line'>  playNote(SPEAKER_PIN, frequency, noteDuration);
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>I  tested  analog sensor input in the form of a second piezo connected to the ADC pin as a knock sensor. ADC is the only analog input pin on this device.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  const int KNOCK_SENSOR = A0;
+</span><span class='line'>  const int KNOCK_THRESHOLD = 70;
+</span><span class='line'>
+</span><span class='line'>  sensorReading = analogRead(KNOCK_SENSOR); 
+</span><span class='line'>  if (sensorReading &gt;= KNOCK_THRESHOLD) {
+</span><span class='line'>    long noteDuration = 500;
+</span><span class='line'>    long frequency = NOTE_E5;
+</span><span class='line'>    playNode(SPEAKER_PIN, frequency, noteDuration); 
+</span><span class='line'>  }
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally there were enough pins remaining to hookup an RGB LED breakout. I added this test using the  <a href="http://fooqri.github.io//github.com/joushx/Arduino-RGB-Tools" target="_blank">RGB Tools Lib</a>. As I mentioned earlier power consumption of an RGB along with simultaneous WiFi transmission may hit max draw; for my case I have control over when transmission can occur, but be aware of this case. To lower power draw further it is possibly to permanently disable the onboard power status led by cutting the trace on the board.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  #include &lt;RGBTools.h&gt;
+</span><span class='line'>
+</span><span class='line'>  const int RED_PIN = 4; 
+</span><span class='line'>  const int GREEN_PIN = 12; 
+</span><span class='line'>  const int BLUE_PIN = 13;
+</span><span class='line'>
+</span><span class='line'>  // set the RGB pins - here I used pins 4, 13, and 12
+</span><span class='line'>  // use RGBTools rgb(4,13,12, COMMON_CATHODE); if using a cathode RGB
+</span><span class='line'>  RGBTools rgb(4,13,12); 
+</span><span class='line'>
+</span><span class='line'>  //set a nice red
+</span><span class='line'>  rgb.setColor(174,10,0);
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>This was a quick run through to test some of the feature of the device, but even with a few sensors/actuators and a simple setup there is a nice combination of status and interaction feedback that can be performed with a simple and relatively inexpensive device. The <em>Sparkfun Thing</em> retails for around $15 right now but the <a href="http://fooqri.github.io//learn.adafruit.com/adafruit-huzzah-esp8266-breakout/overview" target="_blank">Huzzah</a> is under $10, and others can be found closer to $5.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Self Updating Edison Apps]]></title>
@@ -97,7 +339,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#109;&#x65;&#x40;&#109;&#121;&#46;&#x65;&#x6d;&#x61;&#105;&#x6c;">&#109;&#x65;&#x40;&#109;&#121;&#46;&#101;&#x6d;&#97;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6d;&#x65;&#x40;&#x6d;&#121;&#46;&#101;&#x6d;&#x61;&#105;&#108;">&#109;&#101;&#64;&#109;&#x79;&#x2e;&#x65;&#x6d;&#x61;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
@@ -1290,132 +1532,6 @@ application block.</p>
 
 
 <p>Given my team&rsquo;s success was based solely on shipping successful products my most important task was usually at the early phase of projects, and mostly making sure that projects scored high on their combined CCC levels.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Parsing a simple markdown style list in Ragel]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/"/>
-    <updated>2013-01-19T13:04:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel</id>
-    <content type="html"><![CDATA[<p>In an earlier post <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">Simple state machine example</a>, I provided an example of using the Ruby <em>state_machine</em> gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate &ldquo;list&rdquo; object.</p>
-
-<p>I found the <a href="http://www.complang.org/ragel/ragel-guide-6.7.pdf">Ragel documentation</a> to be excellent. The only issue is a lack of practical examples. Given the dearth of examples available, I though I would add my +1 example to help the cause. If you are serious about using Ragel I recommend reading the documentation start to finish quickly, then a second go through taking notes on key items like default machines, syntax, priorities, actions, etc before building a parser. Having a strong base will help tremendously when using examples.</p>
-
-<p>There are three files involved in this solution to the list problem:</p>
-
-<ul>
-<li>lists.txt: a data file that contains two lists for the parser to parse.</li>
-<li>mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.</li>
-<li>mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).</li>
-</ul>
-
-
-<p>I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).</p>
-
-<!--more-->
-
-
-
-
-<div><script src='https://gist.github.com/4573704.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
-
-<p>In this example I am using Ragel, which uses a set of state machine definitions to generate a state machine. In this case I am using Ragel to generate a parser to parse lists similar to the ones shown in lists.txt. In Ragel you specify a Ruby class that uses a series of preprocessors (%%) that are processed by the Ragel library.  Ragel will replace these blocks and preprocessor commands with ruby parser code and a parse table; resulting in a state machine for parsing the file.  The documentation will describe all of the required preprocessor commands for Ruby. Ragel supports many languages and the preprocessor commands differ slightly for different languages. Check the documentation for meaning.</p>
-
-<p>The bulk of the instructions for creating a parser are inside the <em>%%{ }%%</em> block. The block is made up of machine definitions and actions. Ragel state machines recognize byte sequences as regular expression machines do, but can also execute code at arbitrary points in the recognition of a regular language (actions).  Here regular expressions are used to define a regular grammar, see type-3 in the <a href="http://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a>.</p>
-
-<p>Thus when you see the statement:</p>
-
-<pre><code>task_title =  [^\n]+ [\n]
-</code></pre>
-
-<p>this is defining a machine (<em>[^\n]+ [\n]</em>) and assigning it a name <em>task_title</em>. The Ragel documentation refers to the right side of the expression as a <em>regular expression machine</em> or <em>machine</em>, this is roughy equivalent to production rules in tradition grammar design. Using named expressions this way allows grammar rules to be built up recursively, much like non-terminals are used in traditional grammar definitions.</p>
-
-<p>Thus an expression like:</p>
-
-<p>   task = (task_header &gt;MarkTaskStart) . task_item*;</p>
-
-<p>uses the rules <em>task_header</em><strong><strong> and <em>task_item</em></strong></strong> in the definition of the expression. Ragel expressions look unusual at first because they are both defining a grammar and embedding behavior (code). For example the above expression includes a reference to of a block of code <strong><em>MarkTaskStart</em></strong> that should be executed when the <strong><em>task_header</em></strong> machine is matched. These code blocks are called <em>actions</em> in Ragel. It can be useful to use a convention like all lowercase for rules, and CamelCase for actions to make the expressions easier to read.</p>
-
-<p>Ragel defines a syntax for specifying when an action is to be called relative to state transitions between machines. For example before a transition, after a transition, or at the end of file, etc. The documentation is very good, though it is terse.</p>
-
-<table border="1">
-<col style="padding-right: 30px;" />
-<col style="padding-right: 30px;" />
-<col />
-  <tr>
-    <th>Name</th>
-    <th>Syntax</th>
-  </tr>
-  <tr>
-    <td style="width: 200px;">entering action</td>
-    <td style="width: 200px;">expr &gt;action</td>
-  </tr>
-  <tr>
-    <td style="width: 200px;">finishing action</td>
-    <td style="width: 200px;">expr @ action </td>
-  </tr>
-    <tr>
-    <td style="width: 200px;">all transitions action</td>
-    <td style="width: 200px;">expr $ action</td>
-  </tr>
-  <tr>
-    <td style="width: 200px;">leaving actions</td>
-    <td style="width: 200px;">expr % action</td>
-  </tr>
-</table>
-
-
-<br />
-
-
-<p>Ragel also allows you to embed error handling behavior using a similar mechanism.</p>
-
-<p>Finally, one of the challenges of regular grammars is the requirement that they are <a href="http://en.wikipedia.org/wiki/Deterministic_finite_automaton">DFA&rsquo;s</a> and thus need to be deterministic. Ragel provides a mechanism for including priorities in the case where multiple next states are possible; you can define which state will be taken. For more see the Ragel documentation on priorities and guarded expressions. The reason I suggested reading through the documentation prior to reading example grammars is that Ragel expressions can begin to look very confusing if you are not versed in the difference between the syntax associated with machines, actions, priorities and guards, since they all appear intermingled in a Ragel expression.</p>
-
-<p>To create a parser for the <em>mdlist_parser.rl</em> file shown above use this command:</p>
-
-<pre><code> ragel -R mdlist_parser.rl
-</code></pre>
-
-<p>This will create a parser written in ruby called <em>mdlist_parser.rb</em> that can be included into your Ruby program.</p>
-
-<p>Now we need a simple Ruby program to use the parser, I am including this because I didn&rsquo;t see a lot of examples for how to do this so wanted to add one here.</p>
-
-<p>The simple ruby class defined in <em>mdlist.rb</em> will open the data file and read it in to a string, and pass the string to the parser. The parser will return a Ruby object that has a <em>lists</em> method that returns the list in a data structure. The above class will then output the list formatted to show the hierarchy. The list could easily be used to create a list object that includes the state machine from my earlier <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">state machine</a> post.</p>
-
-<p>I will assume you have Ragel, installed, if not get it <a href="http://www.complang.org/ragel/">here</a>. To see the parser in action you need all three files (mdlist_parser.rl, mdlist.rb, lists.txt) in the same directory and then take these steps:</p>
-
-<ol>
-<li><strong>run the ragel parser:</strong>   ragel -R mdlist_parser.rl</li>
-<li><p><strong>run irb</strong> and enter the following into irb:</p>
-
-<ul>
-<li>load &ldquo;mdlist.rb&rdquo;</li>
-<li>list = MDList.new(&ldquo;lists.txt&rdquo;)</li>
-</ul>
-</li>
-</ol>
-
-
-<p>You should see the output of the puts statements displaying the lists data structure with information about the hierarchy of the list. It would be easy to replace the puts with a call to a method like add_item() from my state_machine example referenced earlier.</p>
-
-<p>That&rsquo;s it. Defining grammars and using parser generators can seem challenging at first, but once you get through a few examples and build a simple grammer it will become very simple, since the rules are really very simple. The language of grammar definition can be challenging at first,  but just try to understand the concepts and don&rsquo;t get too bogged down in the terminology. Ragel is a very powerful tool for any developer to have in their tool belt, especially if you are interested in building high performance APIs, it combines a powerful parser generator with an expressive syntax for generating powerful state machines. To fully understand this and other examples check out the Ragel documentation and tutorials listed below.</p>
-
-<ul>
-<li><a href="http://www.complang.org/ragel/">Ragel Home</a></li>
-<li><a href="http://thingsaaronmade.com/blog/a-simple-intro-to-writing-a-lexer-with-ragel.html">A simple intro to writing a lexer with Ragel.</a></li>
-<li><a href="http://www.devchix.com/2008/01/13/a-hello-world-for-ruby-on-ragel-60/">A Hello World for Ruby on Ragel 6.0</a></li>
-<li><a href="http://www.zedshaw.com/essays/ragel_state_charts.html">Ragel State Charts</a></li>
-<li><a href="http://tech.blog.cueup.com/regular-expressions-will-stab-you-in-the-back">Regular Expressions Will Stab You in the Back</a></li>
-</ul>
-
-
-<p>Also see this great <a href="http://www.confreaks.com/videos/491-rubyconf2010-consuming-gherkin-one-byte-at-a-time"> Consuming Gherkin: One Byte at a Time video</a> intro of Mike Sassak &amp; Greg Hnatiuk discussing their experience using Ragel for the Cucumber parser.</p>
 ]]></content>
   </entry>
   

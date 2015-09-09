@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like resin.io do a nice job of &hellip;">
+  <meta name="description" content="Here are a few notes from my experiments with the ESP8266 I have started testing the ESP8266 as an inexpensive WiFi enabled IoT device platform. I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,275 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-09T08:05:00-07:00" pubdate data-updated="true">Sep 9<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="//s3.amazonaws.com/rwx-blog/sparkfun_thing.jpg"  style="height: 400px; display: block; margin: auto;"></p>
+
+<h1>Here are a few notes from my experiments with the ESP8266</h1>
+
+<p>I have started testing  the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.</p>
+
+<p>I started with the <a href="https://www.sparkfun.com/products/13231" target="_blank">Sparkfun Thing</a>, which is a nice ESP8266 dev board that supports integrated LiPo battery management. They have a nice <a href="//learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide" target="_blank">Hookup Guide</a> to get you started.</p>
+
+<p>My use case is a very simple IoT type device that will send data to a cloud service that I have developed. The cloud service will aggregate the data from multiple personal IoT devices for a user. These devices will generally be powered via LiPo battery when in use for interaction and placed in a charging tray when not in interactive use. The devices are always active but have special meaning when in interactive use.</p>
+
+<p>These constraints mean that battery life is a critical factor, but I do not need days, months, or years of battery life. The ESP8266 is a fairly power hungry device, especially when transmitting data, but it does have some power management features, most notably <strong>deep sleep</strong>.</p>
+
+<h2>Notes from my initial experiments:</h2>
+
+<h3>The Kit</h3>
+
+<p>I used the <a href="//www.sparkfun.com/products/13231" target="_blank">Sparkfun Thing</a>, <a href="//www.sparkfun.com/products/9873" target="_blank">FTDIBreakout</a> for uploading code, and  <a href="//www.sparkfun.com/products/10718" target="_blank">LiPo battery</a>.</p>
+
+<h3>Setup</h3>
+
+<p>An easy way to get code running is to use the <a href="//learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-esp8266-arduino-addon" target="_blank">Arduino Addon</a> that lets you leverage the Arduino libraries in programming the ESP8266. An alternative I will try in the future is the  <a href="//github.com/nodemcu/nodemcu-firmware" target="_blank">Lua based firmware</a></p>
+
+<p>When using the FTDI to program the board take note that GPIO0 is used to set the run mode of the firmware. 3.3V puts it in <em>run mode</em> and 0V puts it in <em>program mode (bootloader)</em>. This is easy to miss in the instructions, so be sure to connect the <em>0</em> pin to ground when you wish to upload the code from the Arduino IDE.</p>
+
+<h2>Power Management</h2>
+
+<p>To use the <em>deep sleep</em> mode on the <em>Sparkfun Thing</em> you must connect <em>XPD</em> to <em>DTR</em>. Sparkfun connected DTR to RST on the <em>Thing</em> so a short negative voltage will reset the device. When in <em>deep sleep</em> most system services are powered off, but the RTC and timer interrupt remains active for the purpose of waking the device from sleep. This is handled by the firmware once these pins are connected, however this means you will have to remove the FTDI programmer to test the deep-sleep mode.</p>
+
+<p>The <em>deepsleep()</em> call looks a lot like a <em>delayMicroseconds()</em> call, simply pass it the number of microseconds before it should wake up again. In deep sleep mode, the ESP8266 hits about 60 µA of power draw, down from its average of around 75mA, and the 200mA used while transmitting. Note that power draw of 200mA while transmitting is close to its max draw of around 250mA, so timing the use of a power hungry component like an RGB LED could be an important.</p>
+
+<p>It should be possible to connect a button or some other independent sensor as an alternative to a timer based wakeup, so the device can be awaken by a button press or some physical world event.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  ESP.deepSleep(1000000);  //sleep for 1 second</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Saving State</h3>
+
+<p>Unlike a call to <em>delay()</em> or <em>delayMicroseconds()</em>, the <em>deepsleep()</em> function actually causes the device to power down everything except the RTC and related services. Wake is essentially a device reboot and previous state is not maintained. This means any state will need to be stored in the ESP8266 EEPROM. For this there is an EEPROM library and EEPROM.get()</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  //some struct for saved object
+</span><span class='line'>  struct BackupObj{
+</span><span class='line'>    int setting;
+</span><span class='line'>    int data;
+</span><span class='line'>  };
+</span><span class='line'>
+</span><span class='line'>  //write
+</span><span class='line'>  int eeAddress = 0;
+</span><span class='line'>  EEPROM.begin(4096);  //set up memory allocation
+</span><span class='line'>  EEPROM.put( eeAddress, backupObj );
+</span><span class='line'>  EEPROM.commit();
+</span><span class='line'>  EEPROM.end();
+</span><span class='line'>
+</span><span class='line'>  //read
+</span><span class='line'>  int eeAddress = 0; 
+</span><span class='line'>  EEPROM.begin(4096);
+</span><span class='line'>  EEPROM.get( eeAddress, backupObj );
+</span><span class='line'>  EEPROM.end();</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Adding Components</h3>
+
+<p>The device works well for I2C, in my case I tested with an MPU-6050.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  #include &lt;Wire.h&gt;
+</span><span class='line'>
+</span><span class='line'>  void setup() {
+</span><span class='line'>    // ... other setup code
+</span><span class='line'>    Wire.begin();
+</span><span class='line'>    Wire.beginTransmission(MPU);
+</span><span class='line'>    Wire.write(0x6B);  // PWR_MGMT_1 register
+</span><span class='line'>    Wire.write(0);     // set to zero (wakes up the MPU-6050)
+</span><span class='line'>    Wire.endTransmission(true);
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  // using arduino's loop mechanism
+</span><span class='line'>  void loop(){
+</span><span class='line'>    // ... other loop code
+</span><span class='line'>    Wire.beginTransmission(MPU);
+</span><span class='line'>    Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
+</span><span class='line'>    Wire.endTransmission(false);
+</span><span class='line'>    Wire.requestFrom(MPU,14,true); 
+</span><span class='line'>    AcX=Wire.read()&lt;&lt;8|Wire.read();     
+</span><span class='line'>    AcY=Wire.read()&lt;&lt;8|Wire.read();  
+</span><span class='line'>    AcZ=Wire.read()&lt;&lt;8|Wire.read(); 
+</span><span class='line'>    // ... other loop code
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I tested using GPIO with a piezo used as a speaker. The Speaker is capable of playing simple notes using frequency of note mapped to cycles of sound and delay.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  #define NOTE_C5  523 //middle C
+</span><span class='line'>  #define NOTE_D5  587
+</span><span class='line'>
+</span><span class='line'>  const int SPEAKER_PIN = 5;
+</span><span class='line'>  
+</span><span class='line'>  void playNote(int targetPin, long frequency, long length) {
+</span><span class='line'>    long delay = 1000000 / frequency / 2; 
+</span><span class='line'>    long cycles = frequency * length / 1000; 
+</span><span class='line'>    for (long i = 0; i &lt; cycle; i++) { 
+</span><span class='line'>      digitalWrite(targetPin, HIGH); 
+</span><span class='line'>      delayMicroseconds(delay); 
+</span><span class='line'>      digitalWrite(targetPin, LOW); 
+</span><span class='line'>      delayMicroseconds(delay);
+</span><span class='line'>    } 
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  long noteDuration = 500;
+</span><span class='line'>  long frequency = NOTE_C5;
+</span><span class='line'>
+</span><span class='line'>  playNote(SPEAKER_PIN, frequency, noteDuration);
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>I  tested  analog sensor input in the form of a second piezo connected to the ADC pin as a knock sensor. ADC is the only analog input pin on this device.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  const int KNOCK_SENSOR = A0;
+</span><span class='line'>  const int KNOCK_THRESHOLD = 70;
+</span><span class='line'>
+</span><span class='line'>  sensorReading = analogRead(KNOCK_SENSOR); 
+</span><span class='line'>  if (sensorReading &gt;= KNOCK_THRESHOLD) {
+</span><span class='line'>    long noteDuration = 500;
+</span><span class='line'>    long frequency = NOTE_E5;
+</span><span class='line'>    playNode(SPEAKER_PIN, frequency, noteDuration); 
+</span><span class='line'>  }
+</span><span class='line'>  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally there were enough pins remaining to hookup an RGB LED breakout. I added this test using the  <a href="//github.com/joushx/Arduino-RGB-Tools" target="_blank">RGB Tools Lib</a>. As I mentioned earlier power consumption of an RGB along with simultaneous WiFi transmission may hit max draw; for my case I have control over when transmission can occur, but be aware of this case. To lower power draw further it is possibly to permanently disable the onboard power status led by cutting the trace on the board.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  #include &lt;RGBTools.h&gt;
+</span><span class='line'>
+</span><span class='line'>  const int RED_PIN = 4; 
+</span><span class='line'>  const int GREEN_PIN = 12; 
+</span><span class='line'>  const int BLUE_PIN = 13;
+</span><span class='line'>
+</span><span class='line'>  // set the RGB pins - here I used pins 4, 13, and 12
+</span><span class='line'>  // use RGBTools rgb(4,13,12, COMMON_CATHODE); if using a cathode RGB
+</span><span class='line'>  RGBTools rgb(4,13,12); 
+</span><span class='line'>
+</span><span class='line'>  //set a nice red
+</span><span class='line'>  rgb.setColor(174,10,0);
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>This was a quick run through to test some of the feature of the device, but even with a few sensors/actuators and a simple setup there is a nice combination of status and interaction feedback that can be performed with a simple and relatively inexpensive device. The <em>Sparkfun Thing</em> retails for around $15 right now but the <a href="//learn.adafruit.com/adafruit-huzzah-esp8266-breakout/overview" target="_blank">Huzzah</a> is under $10, and others can be found closer to $5.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -189,7 +458,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#109;&#x65;&#x40;&#109;&#121;&#46;&#x65;&#x6d;&#x61;&#105;&#x6c;">&#109;&#x65;&#x40;&#109;&#121;&#46;&#101;&#x6d;&#97;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6d;&#x65;&#x40;&#x6d;&#121;&#46;&#101;&#x6d;&#x61;&#105;&#108;">&#109;&#101;&#64;&#109;&#x79;&#x2e;&#x65;&#x6d;&#x61;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
@@ -1182,54 +1451,6 @@ and change the last line to use a port other than 80.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App - Version 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-22T19:46:00-07:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I promised a few examples of spreadsheet driven apps. You may remember the <a href="http://rwx.io/blog/2014/10/15/spreadsheet-driven-web-apps/">Hipster List</a> was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone. There is even a way for users to point the app at their own Google Spreadsheet if the app developer wants to turn feature that on.</p>
-
-<p>The next example of a spreadsheet driven app (<em>below</em>) is the <strong><em>Mobile Buyer&rsquo;s Agent</em></strong> app. This may take a little time to load because it is an experiment, and thus not using a vulcanized Polymer library, so it is importing lots of individual library documents. Be patient and once cached in your browser it will be fast.</p>
-
-<p><a href="//fooqri.poggr.com/pe16vKTbVLg::16" target="_blank"><img src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png"  style="height: 400px; display: block; margin: auto;"></a></p>
-
-<p>The idea is to create a mobile web app that can be used by buyers as they shop for a home. Once again the data is maintained in a Google spreadsheet, this time by the buyer&rsquo;s agent. The agent can add houses, home information, and notes to the spreadsheet and the buyer can use the app to view the information as they shop. This is an easy way for an agent to personalize their client experience.</p>
-
-<p>Take a look at the <a href="https://docs.google.com/spreadsheet/ccc?key=0Ahy9ODkMXc1GdEhuM1gxY1g0ckwwWl9RSzNGTGQwemc&amp;usp=sharing#gid=4">spreadsheet</a> to see how information is organized. It allows the agent to add personalized title and notes to each house.</p>
-
-<p><a href="//docs.google.com/spreadsheet/ccc?key=0Ahy9ODkMXc1GdEhuM1gxY1g0ckwwWl9RSzNGTGQwemc&usp=sharing#gid=4"><img class="spreadsheet-screen" src="//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/spreadsheet.png"></a></p>
-
-<p>The <a href="https://fooqri.poggr.com/pe16vKTbVLg:dgkE6vtp-4Ll::16">README</a> document provides  more details on how the app was built. Or <a href="https://fooqri.poggr.com/pe16vKTbVLg::16">try the app here</a>. I will likely provide a few updates to this app in the near future to make it a bit more interesting, but I though the first version showed a few nice features, and how to build them.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1277,6 +1498,10 @@ and change the last line to use a port other than 80.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
       </li>
     
@@ -1290,10 +1515,6 @@ and change the last line to use a port other than 80.</p>
     
       <li class="post">
         <a href="/blog/2015/08/16/esp8266/">ESP8266</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/16/edison-wifi-config/">Edison Wi-Fi Configuration</a>
       </li>
     
   </ul>
