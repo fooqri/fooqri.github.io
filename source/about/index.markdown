@@ -16,11 +16,11 @@ I am always looking for interesting projects to work on with interesting people.
  
 
 ##poggr.com
-<a href='http://www.poggr.com/home/#' target='_blank'>poggr.com</a> is a web based authoring platform I built as a tool to create, share, and test ideas and experiments. It is the scaffolding I use regularly for rapid prototyping, sharing, and testing web app ideas. I originally built poggr to support the creation and sharing of interactive content with the simplicity of making a blog post.
+<a href='http://www.poggr.com/home/#' target='_blank'>poggr.com</a> is a web based authoring platform I built as a tool to create, share, and test ideas and experiments. It is the scaffolding I use regularly for rapid prototyping, sharing, and testing web app ideas.
 
-Poggr is an authoring and publishing platform designed to support interactive content creation using only a web browser and web components, but in a way that  affords the ability to grow applications into a more sophisticated form as the user's skills grow. It is a riff off the Douglas Engelbart quote: *“If ease of use were the only requirement, we would all be riding tricycles.”* 
+Poggr is an authoring and publishing platform designed to support interactive content creation using only a web browser and web components, but with the simplicity of making a blog post. It affords the ability to grow applications into a more sophisticated form as the user's skills grow. It is a riff off the Douglas Engelbart quote: *“If ease of use were the only requirement, we would all be riding tricycles.”* 
 
-The vision was to provide a project-based authoring environment that can start with cloning an existing project. The user can easily modifying simple markdown documents and a Google spreadsheet to customized their content (training wheels). As the user's skills grow they can use the same process to deploy interactive content using HTML5, JavaScript, and CSS (racing bike). So the  approach was not to hide code, but instead to hide everything else (dependencies, versioning, deployment, etc).
+The vision was to provide a project-based authoring environment that can start with cloning an existing project. The user can easily modifying simple markdown documents and a Google spreadsheet filled with data to customized their content (training wheels). As the user's skills grow they can use the same process to deploy custom interactive content using HTML5, JavaScript, and CSS (racing bike). So the approach was not to hide code, but instead to hide all the other complexity (dependencies, versioning, deployment, permissions, etc).
 
 <a href='http://www.poggr.com/home/#' target='_blank'><img src="/images/poggr_screens.png" style="margin: 0 10px 3em 0;float: left;/* align-content: center; *//* text-align: inherit; */"></a>
 
