@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I promised a few examples of spreadsheet driven apps. You may remember the Hipster List was the first example. These are simple web apps that are &hellip;">
+  <meta name="description" content="One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - Using Facebook Login, S3, and DynamoDb in Browser App</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T13:18:00-07:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a <em>photo caption</em> and then invites friends to add photo responses that <em>most creatively</em> match the caption. The second feature is to allow people to vote on their favorite photo responses.</p>
+
+<p><a href="//fooqri.poggr.com/peJE7qM0YUl" target="_blank"><img src="//s3.amazonaws.com/fooqri-poggs/peJE7qM0YUl/static/images/peJE7qM0YUl_screen.png"  style="height: 400px; display: block; margin: auto;"></a></p>
+
+<p>Such a game would typically require a server to support a few key behaviors:</p>
+
+<ul>
+<li><strong>player login</strong>: is needed to connect players with their uploaded photos, and also to limit their votes so as to keep voting fair.</li>
+<li><strong>photo storage</strong>: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded. In addition a back-end service is typically used to re-size uploaded images before storing them to reduce storage costs.</li>
+<li><strong>global state</strong>: is generally provided by a database that stores information such as: which players have uploaded photos, and where the corresponding photos are located.</li>
+</ul>
+
+
+<p>There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the <strong>Photo Caption Challenge</strong> app I explored using the following services instead of running an app server.</p>
+
+<ul>
+<li><strong>player login</strong>: I  used Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
+<li><strong>photo storage</strong>: I used Amazon S3 for storing photos uploaded by players, and  used <em>canvas</em> and <em>canvas.toBlob()</em> (using <a href="https://github.com/blueimp/javascript-canvas-to-blob">JavaScript Canvas to Blob</a> polyfill) to re-size images and store them in a blob for upload to S3. Thus all image re-sizing is done in the client.</li>
+<li><strong>global state</strong>: I used Amazon DynamoDB to provide state via a table that stores information about photo entries and votes.</li>
+</ul>
+
+
+<p>I  also used the Amazon IAM is the way to limit privileges from the client app to the data services (S3 and DynamoDB). For example you want the user to have write/delete access to only their information in the data services, but client API calls to the server can be manipulated, thus authentication information is critical to limiting privileges in accessing the data services.</p>
+
+<p>IAM policies can specify an <em>identity provider</em> like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures S3 bucket privileges so that sub-folder privileges are connected to user identity. In the case of &ldquo;Photo Challenge&rdquo; the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in any sub-folder, but only upload, modify, or delete items that are in a folder that matches their identity provider&rsquo;s assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identity provider&rsquo;s assigned userid.</p>
+
+<p>The Amazon IAM policy for DynamoDB works similarly. Any logged in Facebook user running the Photo Challenges app will be able to query the DB index for the current list of photo entries, but can only add/delete records that have a userId value that matches their identity provider&rsquo;s assigned userid. Thus a user can&rsquo;t spoof who added the record, it is connected to their userId or it is rejected by the IAM policy assigned to the DynamoDB table. For more information see <a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html">Fine-Grained Access Control for DynamoDB</a>.</p>
+
+<h2>Conclusion</h2>
+
+<p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, write, and query transactions, a database like DynamoDB is a great solution.</p>
+
+<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  Use this app at <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxJ4NmcMAK8x">fooqri.po.gg/peJE7qM0YUl</a> or if you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a> and use its configuration tool to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes. If you don&rsquo;t have an account you can still check out the pogg&rsquo;s <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a> to learn more about how it was build and view the source documents.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -597,59 +665,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/21/the-three-cs/">The Three C&#8217;s</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-21T10:26:00-08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I really enjoyed <a href="http://www.networkworld.com/community/blog/tony-fadell-unique-nature-apples-design-process">this interview</a> with Tony Fadell on the unique nature of Apple&rsquo;s design process. The discussion about project abandonment percentages is incredibly important, and often overlooked in large companies. In many cases abandonment is a financial decision related to either real or opportunity costs associated with launching a product. People who have never worked for a large consumer products company likely have no idea how many products are cancelled just before launch because of the incredible cost in launching a product into the market.</p>
-
-<p>Tony makes an amazing point about the toll such high cancellation rates have on employees at a company, and on the quality of the products the company ships. The inverse is that high commitment to ship products that pass key milestones leads to better employee commitment.</p>
-
-<blockquote><p>&ldquo;When you’re in a culture that has a point of view, and drives to launch everything it does, you know you’re on the hook and you better bring your best game every time,&rdquo; Fadell explained.</p></blockquote>
-
-<p>Tony contrasts his experience at Apple with his experience at Philips:</p>
-
-<blockquote><p>Fadell explained that a key and yet often overlooked difference between Apple and other tech companies is that Apple ships 99% of the products that pass certain internal milestones. By way of contrast, during Fadell&rsquo;s tenure at Philips &ndash; where he was charged with overseeing the company&rsquo;s audio strategy &ndash; the iPod guru noted that Philips would axe 9 projects out of 10, even if a particular product was about to ship.</p></blockquote>
-
-<p>I don&rsquo;t think large companies have a metric for tracking the number and impact of cancelled projects. In my experience executive teams wanted to forget cancellations as quickly as possible and move on. They considered the cost to be in the past, and by having cancelled the project they had cut any ongoing cost.  But as Tony points out, there are ongoing costs, just not costs that have their own column on a balance sheet or scorecard. In my experience it was clear &hellip; the impact of cancellations were cumulative and devastating.</p>
-
-<p>The importance of commitment is actually one of the 3 c&rsquo;s I use when evaluating a project: <em>Clarity</em>, <em>Competency</em>, and <em>Commitment</em>. Over the years I have found these to be the key pieces of early stage information that will best predict the success of a project. Tony&rsquo;s pont about commitment is that it isn&rsquo;t only about commitment to a project, it is about the culture of commitment in an organization. I like this point, and I imagine there is a corollary for organizational clarity and competency. Below are a few notes related to project level evaluation of the 3 c&rsquo;s</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/21/the-three-cs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -699,6 +714,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
       </li>
     
@@ -712,10 +731,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/16/esp8266/">ESP8266</a>
       </li>
     
   </ul>

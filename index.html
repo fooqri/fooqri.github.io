@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Here are a few notes from my experiments with the ESP8266 I have started testing the ESP8266 as an inexpensive WiFi enabled IoT device platform. I &hellip;">
+  <meta name="description" content="I use emacs org mode to keep notes including code nodes that support inline execution. It is convenient for keeping useful code snippets, as well as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,137 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between kepping coding notes organized but aslo easily searched.</p>
+
+<p>As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.</p>
+
+<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the config below with the location of any local node modules you want to pick up. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
+
+<p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(setenv "NODE_PATH"
+</span><span class='line'>  (concat
+</span><span class='line'>   "~/org/node_modules" ":"
+</span><span class='line'>   (getenv "NODE_PATH")
+</span><span class='line'>  )
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'>(org-babel-do-load-languages
+</span><span class='line'> 'org-babel-load-languages
+</span><span class='line'> '((js . t)))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next install the babel npm module globally, this allows you toc call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g babel
+</span><span class='line'>npm install mongodb
+</span><span class='line'>npm install bluebird</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The default  org-mode interpreter for js is node, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case <strong>babel-node</strong>, which also transpiles.</p>
+
+<p>Adding  <em>:cmd &ldquo;babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the babel_node command instead of the default JavaScript interpreter. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
+
+<pre><code>   #+name: production.activities.findOne
+   #+begin_src js :cmd "babel-node" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log("first activity name: ", result.name);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+</code></pre>
+
+<p>Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: <em>#+RESULTS:</em></p>
+
+<p>The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.</p>
+
+<pre><code>   #+name: db.activities.findOne
+   #+begin_src js :cmd "babel-node" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+
+   #+RESULTS: db.activities.findOne
+   :RESULTS:
+   The first activity name is Shopping
+   :END:
+</code></pre>
+
+<p>You can see several new and experimental language features including <em>async functions</em>, the <em>await</em> keyword for performing a non-blocking wait on a promise to complete, and <em>template strings</em>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -458,7 +589,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#109;&#101;&#x40;&#x6d;&#x79;&#46;&#101;&#109;&#x61;&#x69;&#x6c;">&#109;&#x65;&#64;&#109;&#x79;&#46;&#x65;&#x6d;&#x61;&#x69;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#109;&#101;&#64;&#109;&#x79;&#x2e;&#x65;&#x6d;&#x61;&#x69;&#108;">&#x6d;&#101;&#64;&#109;&#121;&#46;&#101;&#x6d;&#x61;&#x69;&#108;</a>&rdquo;</li>
 </ul>
 
 
@@ -1383,74 +1514,6 @@ and change the last line to use a port other than 80.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app/">Photo Caption Challenge - Using Facebook Login, S3, and DynamoDb in Browser App</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-23T13:18:00-07:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a <em>photo caption</em> and then invites friends to add photo responses that <em>most creatively</em> match the caption. The second feature is to allow people to vote on their favorite photo responses.</p>
-
-<p><a href="//fooqri.poggr.com/peJE7qM0YUl" target="_blank"><img src="//s3.amazonaws.com/fooqri-poggs/peJE7qM0YUl/static/images/peJE7qM0YUl_screen.png"  style="height: 400px; display: block; margin: auto;"></a></p>
-
-<p>Such a game would typically require a server to support a few key behaviors:</p>
-
-<ul>
-<li><strong>player login</strong>: is needed to connect players with their uploaded photos, and also to limit their votes so as to keep voting fair.</li>
-<li><strong>photo storage</strong>: photo upload and storage is needed to store the photos so they can be displayed when the page is loaded. In addition a back-end service is typically used to re-size uploaded images before storing them to reduce storage costs.</li>
-<li><strong>global state</strong>: is generally provided by a database that stores information such as: which players have uploaded photos, and where the corresponding photos are located.</li>
-</ul>
-
-
-<p>There are many challenges to running a back-end server to support an app, including configuration, maintenance, and security. In the ideal case one could build all sorts of small fun apps without having to manage any such servers. With the <strong>Photo Caption Challenge</strong> app I explored using the following services instead of running an app server.</p>
-
-<ul>
-<li><strong>player login</strong>: I  used Facebook for player login as a way to differentiate players, and connect ids to votes and photos.</li>
-<li><strong>photo storage</strong>: I used Amazon S3 for storing photos uploaded by players, and  used <em>canvas</em> and <em>canvas.toBlob()</em> (using <a href="https://github.com/blueimp/javascript-canvas-to-blob">JavaScript Canvas to Blob</a> polyfill) to re-size images and store them in a blob for upload to S3. Thus all image re-sizing is done in the client.</li>
-<li><strong>global state</strong>: I used Amazon DynamoDB to provide state via a table that stores information about photo entries and votes.</li>
-</ul>
-
-
-<p>I  also used the Amazon IAM is the way to limit privileges from the client app to the data services (S3 and DynamoDB). For example you want the user to have write/delete access to only their information in the data services, but client API calls to the server can be manipulated, thus authentication information is critical to limiting privileges in accessing the data services.</p>
-
-<p>IAM policies can specify an <em>identity provider</em> like Facebook to make sure to limit access based on current session identity information, and not the API request data. For example you can configure an IAM policy for S3 that secures S3 bucket privileges so that sub-folder privileges are connected to user identity. In the case of &ldquo;Photo Challenge&rdquo; the policy states any logged in Facebook user running the Photo Challenges app will be able to view photos in any sub-folder, but only upload, modify, or delete items that are in a folder that matches their identity provider&rsquo;s assigned userid. It also states that any user can create a folder in the bucket as long as the folder name matches their identity provider&rsquo;s assigned userid.</p>
-
-<p>The Amazon IAM policy for DynamoDB works similarly. Any logged in Facebook user running the Photo Challenges app will be able to query the DB index for the current list of photo entries, but can only add/delete records that have a userId value that matches their identity provider&rsquo;s assigned userid. Thus a user can&rsquo;t spoof who added the record, it is connected to their userId or it is rejected by the IAM policy assigned to the DynamoDB table. For more information see <a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/FGAC_DDB.html">Fine-Grained Access Control for DynamoDB</a>.</p>
-
-<h2>Conclusion</h2>
-
-<p>In <a href="http://octopress.dev/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> and <a href="http://octopress.dev/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a> I  described a technique for using a Google Spreadsheet to provide web application data, but this works best when the application data is read only. For an app that requires both read, write, and query transactions, a database like DynamoDB is a great solution.</p>
-
-<p>Like many examples on this blog, I built this app using <em><a href="http://www.poggr.com">poggr.com</a></em> because poggs are incredibly flexible and require zero configuration.  Use this app at <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxJ4NmcMAK8x">fooqri.po.gg/peJE7qM0YUl</a> or if you have a poggr account you can clone <a href="http://www.poggr.com/#/projects/project/peJE7qM0YUl">this pogg</a> and use its configuration tool to set up Facebook, S3, IAM, and DynamoDB and have your version of the game running in less than 5 minutes. If you don&rsquo;t have an account you can still check out the pogg&rsquo;s <a href="http://fooqri.poggr.com/peJE7qM0YUl:dxkgN7qMCtLg">README</a> to learn more about how it was build and view the source documents.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1498,6 +1561,10 @@ and change the last line to use a port other than 80.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
       </li>
     
@@ -1511,10 +1578,6 @@ and change the last line to use a port other than 80.</p>
     
       <li class="post">
         <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/16/esp8266/">ESP8266</a>
       </li>
     
   </ul>

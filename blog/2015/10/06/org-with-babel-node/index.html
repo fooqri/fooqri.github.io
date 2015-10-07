@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>d3 charts - wrapping 'NVD3 Charts' in a web component - </title>
+  <title>Org Mode ES2015+ Code Blocks - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="In my continued experiments with Polymer, I created a web component that wraps NVD3 &ndash; a reusable chart library for d3.js.
-As part of the &hellip;">
+  <meta name="description" content="I use emacs org mode to keep notes including code nodes that support inline execution. It is convenient for keeping useful code snippets, as well as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ As part of the &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -85,7 +84,7 @@ As part of the &hellip;">
   
   <header>
     
-      <h1 class="entry-title">D3 Charts - Wrapping 'NVD3 Charts' in a Web Component</h1>
+      <h1 class="entry-title">Org Mode ES2015+ Code Blocks</h1>
     
     
       <p class="meta">
@@ -101,34 +100,109 @@ As part of the &hellip;">
   
 
 
-<time datetime="2014-10-17T06:39:00-07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>In my continued experiments with <a href="https://www.polymer-project.org/" target="_blank">Polymer</a>, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> &ndash; a reusable chart library for  <a href="http://d3js.org/" target="_blank">d3.js</a>.
-As part of the activity I ported all of the  <a href="http://nvd3.org/examples/index.html" target="_blank">NVD3 example charts</a> to a web component I am calling <em>&lt;goddip-charts></em>. The component is contained in a <a href="http://www.poggr.com/pekqyTpXDEe:deJoY70GdVx" target="_blank">pogg</a> on <a href="http://www.poggr.com/home/" target="_blank">poggr.com</a>, as this is where I do my experimenting and it allows me to code and serve the project documents in the one place.</p>
+<div class="entry-content"><p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between kepping coding notes organized but aslo easily searched.</p>
 
-<iframe width="680px" height="380px" src="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::53"></iframe>
+<p>As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.</p>
+
+<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the config below with the location of any local node modules you want to pick up. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
+
+<p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(setenv "NODE_PATH"
+</span><span class='line'>  (concat
+</span><span class='line'>   "~/org/node_modules" ":"
+</span><span class='line'>   (getenv "NODE_PATH")
+</span><span class='line'>  )
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'>(org-babel-do-load-languages
+</span><span class='line'> 'org-babel-load-languages
+</span><span class='line'> '((js . t)))</span></code></pre></td></tr></table></div></figure>
 
 
-<p></p>
+<p>Next install the babel npm module globally, this allows you toc call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.</p>
 
-<p>The above chart is an iframe to <a href="http://www.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::53" target="_blank">this document</a> The actual element tag used is as follows:</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g babel
+</span><span class='line'>npm install mongodb
+</span><span class='line'>npm install bluebird</span></code></pre></td></tr></table></div></figure>
 
-<pre><code> &lt;goddip-charts  
-   class="small-chart-styles"
-   chartType="bar"
-   context="/pg1GXbi9MBx:deyDCclAEUg::53" 
-   css="/pg1GXbi9MBx:dxkNM7ZicfBe::53" &gt;
- &lt;/goddip-charts &gt;
+
+<p>The default  org-mode interpreter for js is node, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case <strong>babel-node</strong>, which also transpiles.</p>
+
+<p>Adding  <em>:cmd &ldquo;babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the babel_node command instead of the default JavaScript interpreter. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
+
+<pre><code>   #+name: production.activities.findOne
+   #+begin_src js :cmd "babel-node" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log("first activity name: ", result.name);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
 </code></pre>
 
-<p>To view the uncompiled and unminified source see (<a href="http://source.poggr.com/pg1GXbi9MBx:dlym9bhp4Lx::49" target="_blank">html document source</a>, <a href="http://source.poggr.com/pg1GXbi9MBx:deyDCclAEUg::49" target="_blank">data document source</a>, and <a href="http://source.poggr.com/pg1GXbi9MBx:dxkNM7ZicfBe::49" target="_blank">style document source</a>).</p>
+<p>Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: <em>#+RESULTS:</em></p>
 
-<p>The best way to learn about the <em>&lt;goddip-charts></em> component is to take a look at its <a href="http://www.poggr.com/pg1GXbi9MBx:dgJXG7boqzSe" target="_blank">README document</a>. This describes how to use each of the charts, reference data, add styling, etc. You can always view the component <a href="http://source.poggr.com/pg1GXbi9MBx:dlJkI7k9tBe" target="_blank">source</a>. If you have a <em>poggr.com</em> account you can view, clone, and edit <em>goddip-charts</em> using the <a href="http://project.poggr.com/pg1GXbi9MBx" target="_blank">poggr project UI</a>.</p>
+<p>The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.</p>
+
+<pre><code>   #+name: db.activities.findOne
+   #+begin_src js :cmd "babel-node" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+
+   #+RESULTS: db.activities.findOne
+   :RESULTS:
+   The first activity name is Shopping
+   :END:
+</code></pre>
+
+<p>You can see several new and experimental language features including <em>async functions</em>, the <em>await</em> keyword for performing a non-blocking wait on a promise to complete, and <em>template strings</em>.</p>
 </div>
 
 
@@ -151,21 +225,15 @@ As part of the activity I ported all of the  <a href="http://nvd3.org/examples/i
   
 
 
-<time datetime="2014-10-17T06:39:00-07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2014</time>
+<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/charts/'>charts</a>, <a class='category' href='/blog/categories/d3/'>d3</a>, <a class='category' href='/blog/categories/nvd3/'>nvd3</a>, <a class='category' href='/blog/categories/polymer/'>polymer</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/" data-via="" data-counturl="http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/" data-via="" data-counturl="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/" >Tweet</a>
   
   
   
@@ -174,10 +242,8 @@ As part of the activity I ported all of the  <a href="http://nvd3.org/examples/i
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/10/15/fun-with-literate-coffeescript/" title="Previous Post: Fun with Literate CoffeeScript">&laquo; Fun with Literate CoffeeScript</a>
+        <a class="basic-alignment left" href="/blog/2015/09/09/esp8266-initial-notes/" title="Previous Post: ESP8266 Initial Notes">&laquo; ESP8266 Initial Notes</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/10/22/mobile-real-estate-app-version-1/" title="Next Post: Mobile Real Estate App - Version 1">Mobile Real Estate App - Version 1 &raquo;</a>
       
     </p>
   </footer>
@@ -302,8 +368,8 @@ As part of the activity I ported all of the  <a href="http://nvd3.org/examples/i
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/';
-        var disqus_url = 'http://fooqri.github.io/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/';
+        var disqus_identifier = 'http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/';
+        var disqus_url = 'http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/';
         var disqus_script = 'embed.js';
       
     (function () {
