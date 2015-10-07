@@ -45,7 +45,7 @@ Adding  _:cmd "babel-node"_   after the  _#+begin_src js_ tells _org mode_ to us
                   let MongoDB = require('mongodb');
                   let Promise = require('bluebird');
                   Promise.promisifyAll(MongoDB);
-                  let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+                  let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
                   let activityCol = db.collection('activities')
                   let result = await activityCol.findOne();
                   db.close();
