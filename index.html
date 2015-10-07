@@ -161,7 +161,7 @@
               let MongoDB = require('mongodb');
               let Promise = require('bluebird');
               Promise.promisifyAll(MongoDB);
-              let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
               let activityCol = db.collection('activities')
               let result = await activityCol.findOne();
               db.close();
@@ -589,7 +589,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#109;&#101;&#64;&#109;&#x79;&#x2e;&#x65;&#x6d;&#x61;&#x69;&#108;">&#x6d;&#101;&#64;&#109;&#121;&#46;&#101;&#x6d;&#x61;&#x69;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#109;&#101;&#64;&#109;&#x79;&#46;&#101;&#109;&#x61;&#105;&#x6c;">&#x6d;&#101;&#64;&#109;&#x79;&#46;&#101;&#109;&#x61;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
