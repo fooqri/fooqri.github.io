@@ -25,7 +25,7 @@ Add the following to your emacs init.el file and evaluate it (or restart emacs).
  'org-babel-load-languages
  '((js . t)))
 ```
-Next install the babel npm module globally, this allows you toc call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.
+Next install the babel npm module globally, this allows you to call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.
 
 ```
 npm install -g babel
