@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-10-07T08:59:53-07:00</updated>
+  <updated>2015-10-07T09:02:52-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -73,7 +73,7 @@
               let activityCol = db.collection('activities')
               let result = await activityCol.findOne();
               db.close();
-              console.log("first activity name: ", result.name);
+              console.log(`The first activity name is ${result.name}`);
             }
            catch(err){
              consule.log(err);
@@ -94,7 +94,7 @@
               let MongoDB = require('mongodb');
               let Promise = require('bluebird');
               Promise.promisifyAll(MongoDB);
-              let db = await MongoDB.MongoClient.connectAsync(process.env.PW_PROD_DB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
               let activityCol = db.collection('activities')
               let result = await activityCol.findOne();
               db.close();
@@ -443,7 +443,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#109;&#101;&#64;&#109;&#x79;&#46;&#101;&#109;&#x61;&#105;&#x6c;">&#x6d;&#101;&#64;&#109;&#x79;&#46;&#101;&#109;&#x61;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x6d;&#x65;&#64;&#x6d;&#121;&#46;&#101;&#x6d;&#x61;&#105;&#108;">&#x6d;&#x65;&#x40;&#109;&#121;&#x2e;&#101;&#x6d;&#97;&#x69;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
