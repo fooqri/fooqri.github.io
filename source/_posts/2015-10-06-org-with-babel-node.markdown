@@ -38,7 +38,7 @@ The default  org-mode interpreter for js is node, so you need to have that insta
 Adding  _:cmd "babel-node"_   after the  _#+begin_src js_ tells _org mode_ to use the babel_node command instead of the default JavaScript interpreter. The _:results output_ tells _org mode_ that the results will be from an output statement _(using console.log() for JavaScript)_
 
  
-       #+name: production.activities.findOne
+       #+name: db.activities.findOne
        #+begin_src js :cmd "babel-node" :results output drawer
           (async function(){
               try {
