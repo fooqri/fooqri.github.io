@@ -151,7 +151,7 @@
 
 <p>Adding  <em>:cmd &ldquo;babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the babel_node command instead of the default JavaScript interpreter. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
 
-<pre><code>   #+name: production.activities.findOne
+<pre><code>   #+name: db.activities.findOne
    #+begin_src js :cmd "babel-node" :results output drawer
       (async function(){
           try {

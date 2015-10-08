@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-10-07T10:32:19-07:00</updated>
+  <updated>2015-10-08T10:20:57-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -62,7 +62,7 @@
 
 <p>Adding  <em>:cmd &ldquo;babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the babel_node command instead of the default JavaScript interpreter. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
 
-<pre><code>   #+name: production.activities.findOne
+<pre><code>   #+name: db.activities.findOne
    #+begin_src js :cmd "babel-node" :results output drawer
       (async function(){
           try {
@@ -443,7 +443,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#109;&#101;&#x40;&#109;&#121;&#x2e;&#101;&#109;&#97;&#105;&#x6c;">&#109;&#101;&#x40;&#109;&#121;&#46;&#x65;&#109;&#97;&#105;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#109;&#101;&#x40;&#x6d;&#x79;&#46;&#101;&#109;&#97;&#105;&#108;">&#109;&#x65;&#x40;&#x6d;&#121;&#x2e;&#101;&#x6d;&#97;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
