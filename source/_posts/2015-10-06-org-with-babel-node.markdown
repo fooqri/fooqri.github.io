@@ -5,7 +5,7 @@ date: 2015-10-06 16:57
 comments: true
 categories: 
 ---
-I use __emacs org mode__ to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like [Org + Deft](http://rwx.io/blog/2013/03/04/nvalt-and-emacs/) it is really easy to find the sweet spot between keeping coding notes organized but aslo easily searched.
+I use __emacs org mode__ to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like [Org + Deft](http://rwx.io/blog/2013/03/04/nvalt-and-emacs/) it is really easy to find the sweet spot between keeping coding notes organized but also easily searched. 
 
 As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.
 
