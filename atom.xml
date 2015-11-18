@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2015-11-18T06:20:31-08:00</updated>
+  <updated>2015-11-18T06:25:05-08:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -18,7 +18,7 @@
     <link href="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/"/>
     <updated>2015-10-06T16:57:00-07:00</updated>
     <id>http://fooqri.github.io/blog/2015/10/06/org-with-babel-node</id>
-    <content type="html"><![CDATA[<p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between keeping coding notes organized but aslo easily searched.</p>
+    <content type="html"><![CDATA[<p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.</p>
 
 <p>As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.</p>
 
@@ -443,7 +443,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#109;&#101;&#x40;&#x6d;&#121;&#x2e;&#x65;&#109;&#97;&#x69;&#108;">&#x6d;&#101;&#64;&#x6d;&#121;&#46;&#101;&#x6d;&#x61;&#x69;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#109;&#x65;&#x40;&#x6d;&#121;&#46;&#x65;&#109;&#x61;&#x69;&#108;">&#109;&#101;&#64;&#x6d;&#x79;&#x2e;&#x65;&#109;&#97;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
