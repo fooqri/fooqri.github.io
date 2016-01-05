@@ -112,7 +112,7 @@ forever start server.js
 #### Make startup.sh executable
 
 ```
-chmod -x startup.sh
+chmod +x startup.sh
 ```
 
 #### Create a startup service file at /lib/systemd/system/startup.service
