@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-01-05T06:32:49-08:00</updated>
+  <updated>2016-01-23T13:37:01-08:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,89 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ANCS Message Display]]></title>
+    <link href="http://fooqri.github.io/blog/2016/01/23/ancs-message-display/"/>
+    <updated>2016-01-23T11:12:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2016/01/23/ancs-message-display</id>
+    <content type="html"><![CDATA[<h2>Overview</h2>
+
+<p>Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display using an Arduino, BLE, and an LCD display.
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6097.JPG"></p>
+
+<p>For this project I used the <a href="http://redbearlab.com/blendmicro/" target="_blank">Blend Micro</a> from  RedBearLab, combined with an <a href="https://www.adafruit.com/product/358" target="_blank">AdaFruit ST7735R TFT LCD display</a>  The <em>Blend Micro</em> combines an Atmel ATmega32U4 micro-controller with a Nordic nRF8001 BLE chip. Simply hook up the LCD using SPI and you are in business. For this project I added a <a href="https://www.adafruit.com/products/160">piezo buzzer</a> for sound effects and a button to wake up the display if it has timed out.</p>
+
+<p><img src="http://fooqri.github.io//s3.amazonaws.com/rwx-blog/IMG_6098.JPG"></p>
+
+<p>The basic idea is to have the iPhone pass along alerts to the device using BLE/ANCS and to have the device play a tone and display the alert information. There is a timeout to power down the backlight on the display after a minute, and a button that can be pressed to turn the display&rsquo;s backlight on, so the last message can be viewed after the one minute timeout.  This power savings mode could allow the device to be powered by a battery.</p>
+
+<p>I created a demo project on <a herf="https://codebender.cc/sketch:222511" target="_blank">codebender</a> to make it easy to replicate. You will need to import a few libraries into your personal libraries on codebender to get the project to work. It would be easy to enhance the project to save the last several messages and use a <a href="https://www.adafruit.com/product/444">2-Axis Analog Thumb Joystick</a> to control a simple interface that scans through messages.</p>
+
+<p>Unfortunately the <em>Blend Micro</em> does not have an on-board LIPO charging circuit, so if you want to enable a combined USB/Battery solution a charging circuit would have to be added. RedBear warns that connecting a battery to VIN and USB simultaneously could damage the board.</p>
+
+<p>I printed up a simple enclosure on the 3D printer and here is the enclosed LCD panel.</p>
+
+<p><img src="https://s3.amazonaws.com/rwx-blog/IMG_6110.JPG"></p>
+
+<h2>Pinouts</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  VIN & GND -&gt; to LIPO battery (DO NOT use USB power when battery connected)
+</span><span class='line'>  PIN 2     -&gt; ST7735R LITE
+</span><span class='line'>  PIN 8     -&gt; ST7735R D/C
+</span><span class='line'>  PIN 9     -&gt; ST7735R Reset
+</span><span class='line'>  PIN 10    -&gt; ST7735R TFT_CS
+</span><span class='line'>  PIN 11    -&gt; ST7735R MOSI
+</span><span class='line'>  PIN 13    -&gt; ST7735R SCK
+</span><span class='line'>  PIN V33   -&gt; ST7735R VCC
+</span><span class='line'>  PIN GND   -&gt; ST7735R GND
+</span><span class='line'>
+</span><span class='line'>  Button -&gt; PIN 5, GND
+</span><span class='line'>  Buzzer -&gt; PIN 3, GND
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Detailed Instructions</h2>
+
+<p>Follow the instructions for using <a href="http://redbearlab.com/quick-start-codebender" target="_blank">Blend Micro on codebender</a>. You should be able to get the LED Blink example working before continuing.</p>
+
+<h3>Add key libraries</h3>
+
+<p>To compile the code in the project above you will need to add several libraries to your personal libraries on codebender. Go to  <a href="https://codebender.cc" target="_blank">codebender.cc</a> and you will see the <em>*Upload Libraries</em> button on the upper right side of the page. There are four libraries you need to add.</p>
+
+<ul>
+<li><a href="https://github.com/NordicSemiconductor/ble-sdk-arduino" target="_blank">Nordic Bluetooth low energy SDK for Arduino beta version 0.9.0</a></li>
+<li><a href="https://github.com/RedBearLab/nRF8001/" target="_blank">RedBearLab nRF8001 Library version 20140701</a></li>
+<li><a href="https://github.com/RedBearLab/nRF8001/" target="_blank">RedBearLab Blend Add-On version 20140701</a></li>
+<li><a href="https://github.com/robotastic/ANCS-Library" target="_blank">Robotastic/ANCS-Library</a></li>
+</ul>
+
+
+<p>Just download each of these as a zip file from github, and upload them to your <em>codebender personal library</em>. I created a fork of the <em>ANCS-Library</em> to thin it down a bit as memory was tight on the <em>Blend Micro</em> for another version of the project I am working on. It is on a branch called <strong>code-diet</strong> available on github  <a href="http://fooqri.github.io//github.com/fooqri/ANCS-Library/archive/code-diet.zip">ANCS-Library on a code-diet zip</a></p>
+
+<p>Finally, clone my <a herf="https://codebender.cc/sketch:222511" target="_blank">codebender ANCS_Display_ST7735 project</a> and verify the code compiles with the libraries you uploaded, and run the project on Arduino.</p>
+
+<p>Open the iPhone  <em>Settings</em> app and select <em>Bluetooth</em>. If everything is working correcly you should see <strong>ANCS_RUSK</strong> listed under <em>MyDevices</em>. Select it and choose pair.
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6095.PNG">
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6094.PNG"></p>
+
+<p>Once paired you should hear a tone on the device, and the display will change from <strong>Status: Not Connected</strong> to <strong>Status: Connected</strong>.  If you receive any alerts on your iPhone you should now hear a tone on the device and the screen should display a message.</p>
+
+<p>You can update the code to support custom tones and messages for different alert types, or add other interesting features.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Org Mode ES2015+ Code Blocks]]></title>
@@ -443,7 +526,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#109;&#x65;&#64;&#x6d;&#121;&#x2e;&#101;&#109;&#x61;&#105;&#x6c;">&#x6d;&#x65;&#64;&#109;&#121;&#46;&#x65;&#109;&#97;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x6d;&#101;&#x40;&#109;&#121;&#x2e;&#101;&#109;&#x61;&#105;&#x6c;">&#x6d;&#101;&#x40;&#109;&#121;&#x2e;&#x65;&#109;&#x61;&#105;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
@@ -1459,112 +1542,6 @@ application block.</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Trying out Pixate - CSS for iOS app Development]]></title>
-    <link href="http://fooqri.github.io/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development/"/>
-    <updated>2013-01-23T22:09:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/01/23/trying-out-pixate-css-for-ios-app-development</id>
-    <content type="html"><![CDATA[<p>Recently I have been using RubyMotion for iOS development; I really  appreciate developing in Ruby, and prefer Emacs to Xcode. Compared to using interface builder, styling apps can be a challenge. It is possible to use RubyMotion with XIB files created in Xcode&rsquo;s Interface Builder, but I have been trying to avoid this. I am striving for a more web-app like design and development workflow.</p>
-
-<p>I have been using <a href="https://github.com/rubymotion/teacup">teacup</a>, which takes a declarative approach to styling and uses a CSS-like DSL. Although I liked teacup, I had been anxiously awaiting the arrival of <a href="http://www.pixate.com/">Pixate</a> because of its support for CSS-based styling. Pixate became generally available this month, and I purchased a license. The license is $199, and although expensive, a small price compared to time saved if it works. Since I already do a lot of CSS work on the web side it seems like a nice way to leverage my CSS skills and experience. The Pixate team along with the RubyMotion team created a <a href="https://github.com/Pixate/RubyMotion-Pixate">RubyMotion-Pixate gem</a> that makes it easy to get Pixate working with RubyMotion.</p>
-
-<p>After 2 days of coding I have my basic controllers in place as well as several TableViewControllers. I have used Pixate to style many of the elements. With Pixate you can style with four types of selectors:</p>
-
-<ul>
-<li>element type selector &ndash; Select a control by element name</li>
-<li>universal selector &ndash; Select any control</li>
-<li>class selector &ndash; Select a control by class name</li>
-<li>id selector &ndash; Select a control by ID</li>
-</ul>
-
-
-<!--more-->
-
-
-<p>It also supports attribute selectors and pseudo classes. See the <a href="http://cdn.pixate.com/docs/engine/ios/1.0/Pixate%20Engine%20for%20iOS%20Styling%20Reference.html">complete list</a> for more information on selectors and styling.</p>
-
-<p>One really nice feature is the ability to set up Pixate to dynamically change your app in the simulator when you update the CSS. This is an awesome feature. To set it up add these two  <em>PXStylesheet</em> lines to your app_delegate.rb file near the end of the <em>application</em> method:</p>
-
-<pre><code> def application(application, didFinishLaunchingWithOptions:launchOptions)
-    ...
-    PXStylesheet.styleSheetFromFilePath('path-to/default.css', withOrigin:0)
-    PXStylesheet.currentApplicationStylesheet.monitorChanges = true  
-    true
- end
-</code></pre>
-
-<p>I was only able to get it to work by providing the absolute path to the css file, so add your absolute path in place of <em>path-to</em> in the above method call. I will post if I figure out how to do a relative path, I hate putting in absolute paths.</p>
-
-<p><strong>Warning</strong>: I found that Pixate 1.0.2 does not work properly on the device if these two statements are left in the app delegate when compiling for the device. If your styles are not being picked up on the device this may be the reason. To get around this during development I put in a test for simulator using the <em>Device.simulator?</em> method in <a href="https://github.com/rubymotion/BubbleWrap">Bubblewrap</a>,</p>
-
-<pre><code> def setup_pixate_monitor 
-   PXStylesheet.styleSheetFromFilePath('path-to/default.css', withOrigin:0)
-   PXStylesheet.currentApplicationStylesheet.monitorChanges = true
- end
-</code></pre>
-
-<p>Then include this conditional call:</p>
-
-<pre><code> setup_pixate_monitor if Device.simulator?
-</code></pre>
-
-<p>So far Pixate has mostly worked as expected, but there was one odd issue. I had expected that I could create zero-sized frames and allow CSS to style them to the correct size. For example creating a new label object might look like this.</p>
-
-<pre><code> @name_label = UILabel.alloc.initWithFrame(CGRectZero)
- @name_label.styleId = 'name_label'
-</code></pre>
-
-<p>CGRectZero, a CGRect constant, will set the frame to size [0,0][0,0]. Then the CSS style definition below should set the frame size correctly.</p>
-
-<pre><code> #name_label { 
-   position:fixed;
-   top              :20px;
-   left             :5px;
-   width            :300px;
-   height           :30px;  
-   font-size        :16px;
-   font-align       :center;  
- } 
-</code></pre>
-
-<p>I would expect the frame to be set to [5,20][300, 30] when the application is run. Instead the frame remains set to [0,0][0,0], so the text in the label is not displayed in the interface. This [0,0][0,0] frame size is confirmed with REPL using the tree command that comes with the <a href="https://github.com/rubymotion/sugarcube">sugarcube gem</a>.</p>
-
-<p>When I set the frame to a non-zero size when creating the UI object, then the CSS style is picked up and the frame size is set correctly by Pixate. Very odd, I am assuming this to be a bug, but maybe there was a reason to leave zero-sized frames unaltered by CSS. Typically CGRectZero frames are used to hide UI elements until they are ready to be used, or until the dimensions are known based on content.  If a CSS selector matched zero-sized frames I suppose this could lead to some unexpected behavior for iOS developers accustom to zero-sized frames not being displayed until the specifically resize them in code.</p>
-
-<p>In the end I created a new global constant</p>
-
-<pre><code> CSSRect = [0, 0], [1, 0] 
-</code></pre>
-
-<p>and this allows the CSS to do its job. So</p>
-
-<pre><code> @name_label = UILabel.alloc.initWithFrame(CSSRect)
- @name_label.styleId = 'name_label'
-</code></pre>
-
-<p>allows me to create frames that are then altered to the correct size via CSS. I also found that using CGRectInfinite works as well. Basically it sets a huge rectangle but the CSS resizes it as expected.</p>
-
-<p>The  <a href="https://github.com/Pixate/RubyMotion-Pixate">RubyMotion-Pixate gem</a> also adds REPL support for changing the style via REPL. This is handy, but I find the dynamic updating via the CSS file to be easier to use.</p>
-
-<p>The Pixate Engine consists of two core technologies: a 2D graphics engine and a CSS styling engine. So far my focus has been using the CSS styling engine.  By using a styling rendering engine, design execution can be pushed to run-time. One of the benefits of this approach is the ability to dynamically modify the look of an app, which can be useful in user testing, including A/B testing. For this, Pixate allows CSS to be loaded via a URL, much like a web browser. I am sure there will be performance implications of this dynamic rendering approach, so this will also have to be explored as a cost versus the benefit of dynamic styling.</p>
-
-<p>I really liked Colin Gray&rsquo;s ideas around teacup, and the rubyesque way it integrated with rubymotion.</p>
-
-<pre><code> @search = subview(UITextField, :search)
-</code></pre>
-
-<p>It would be interesting if this syntax could be used with Pixate versus the less elegant:</p>
-
-<pre><code> @search = UITextField.alloc.initWithFrame(CSSRect)
- @search.styleId = 'search'
-</code></pre>
-
-<p>I have only just begun to use Pixate, there may be possibilities for making the calls a bit more elegant without writing too many helpers.</p>
-
-<p>I will add more posts as I learn more.</p>
 ]]></content>
   </entry>
   

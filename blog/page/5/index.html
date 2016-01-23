@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>FoldingText and productivity - </title>
+  <title>rwx.io: Design, development, productivity – notes and explorations.  - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I have been using the FoldingText app for a couple of weeks. It is a very interesting app targeting writers, something I am not, but I was intrigued &hellip;">
+  <meta name="description" content="tl;wr Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2012/12/26/foldingtext-and-productivity/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/page/5/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -79,12 +79,15 @@
 </nav> -->
   <div id="main">
     <div id="content">
-      <div>
-<article class="hentry" role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
     
-      <h1 class="entry-title">FoldingText and Productivity</h1>
+      <h1 class="entry-title"><a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen Capture Goodness&#8230;</a></h1>
     
     
       <p class="meta">
@@ -100,88 +103,71 @@
   
 
 
-<time datetime="2012-12-26T19:19:00-08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2012</time>
+<time datetime="2012-01-17T14:17:00-08:00" pubdate data-updated="true">Jan 17<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I have been using the <a href="http://www.foldingtext.com/">FoldingText</a> app for  a couple of weeks. It is a very interesting app targeting writers, something I am not, but I was intrigued by the  interactivity of this minimalist app. Specifically the ability to add interactive todo lists and timers and have them execute in a text document. Please take a look at the <a href="http://www.foldingtext.com/#watchmovie">FoldingText Video</a> to get a feel for it, I don&rsquo;t want to describe ideas that a video shows so clearly.</p>
+  <div class="entry-content"><h3>tl;wr</h3>
 
-<p>I have been using it for my daily plan the past 2 weeks. I usually start each day with a mix of items I want to accomplish. These items usually include a mix of coding items for a sprint, some user stories for the backlog, and some wireframes for a future sprint, etc.  The mix keeps the day feeling balanced. I add a mix of these to the day&rsquo;s plan, and then organize them into <a href="http://en.wikipedia.org/wiki/Pomodoro_Technique">pomodoro</a> time slices.</p>
+<p>Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.</p>
 
-<p>The app&rsquo;s simplicity allows some really interesting customization that isn&rsquo;t present in an app like Vitamin-R, which is a good pomodoro app, but like most apps is not very flexible. For example, I have found that keeping the daily plan, now and later notes, and the time slices all in a single document is very powerful. Further I can add notes indented under time slices to describe what I did during each slice. Since everything is in a single text document (markdown) and lives in my nvALT notes app, I can easily search and find my daily notes that include what I accomplished each day, etc. This is good for reviewing how well certain activities mix together, looking at my velocity over time, etc.</p>
+<h3>verbose</h3>
 
-<p>All of that is useful but the reason for my making this post is that I find the interaction model to be very interesting, basically a text document with very simple embedded mini-apps that are triggered by simple human-readable phrases that add functionality while the document is open and in use. With all output living in the text document. It gives hints of a feeing of empowerment that early spreadsheet apps like Lotus123 delivered. I can imagine all sorts of useful embedded mini-apps, the key will be maintaining the simplicity. Many apps used for productivity today are incredibly prescriptive, FoldingText feels like you are really in control and able to customize the document as a very simple app. Of course FoldingText itself is still more of an app than a platform, but I can imagine it as a platform with many developers adding these mini-apps. Todo lists and timers seem like a powerful start, I can&rsquo;t wait to see what comes next.</p>
+<p>When making notes on wireframes, screen designs, activity diagrams, etc, I have a particular workflow where I do a screen capture and want to link the result in my markdown notes or from our project wiki. The power of markdown text files is their portability, the challenge can be losing the rich cut and paste of apps like Evernote.</p>
+
+<p>In a previous post <a href="http://fooqri.tumblr.com/post/38158334752/wiki-searchable-notes" title="Wiki + Searchable Notes">Wiki + searchable notes</a>. I mentioned that I was now using the github clone feature for the wiki, allowing me to work on the wiki locally and then push changes to the server with git push. Another benefit of this approach, it makes it very easy to add images to the wiki. </p>
+
+<p>The problem was it took too many steps to go from capturing the screen, saving it, and finally linking to it in the wiki/notes file. So I created a TextExpander snippet to do all of this in 2 steps (OSX only)</p>
+
+<ol>
+<li>screen capture (ctrl-cmd-shift-4)</li>
+<li>type &ldquo;wpng&rdquo; into the editor where I want the image to be placed.</li>
+</ol>
+
+
+<p>First you need <a href="http://smilesoftware.com/TextExpander/index.html" title="TextExpander">TextExpander</a> and also you need to install <a href="https://github.com/jcsalterego/pngpaste" title="pngpaste">pngpaste</a> a small bit of code that handles saving a clipboard image to a png file.</p>
+
+<p>Then you just need this snippet (I used &ldquo;wpng&rdquo; as the snippet abbreviation):</p>
+
+<div><script src='https://gist.github.com/4321473.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>I chose to just use a UUID for the file name to keep it simple and unique for each file.</p>
+
+<p>I added this as a snippet in TextExpander and now instead of 10+ steps across 3 apps my workflow for getting a screen capture into a wiki page is this:</p>
+
+<ol>
+<li>screen capture (ctrl-cmd-shift-4)</li>
+<li>type &ldquo;wpng&rdquo; into the editor where I want the image to be placed.</li>
+</ol>
+
+
+<p>The result: typing &ldquo;wpng&rdquo; causes the last clipboard item to be saved as a png in the wiki images directory and the &ldquo;wpng&rdquo; text I just typed is replaced with the markup for the image that was just saved. Quick and simple.</p>
 </div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
-
-      
-
-
-
-
-
-
-
-
   
 
 
-<time datetime="2012-12-26T19:19:00-08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2012</time>
-      
-
-<span class="categories">
+    </article>
   
-    <a class='category' href='/blog/categories/productivity/'>productivity</a>
-  
-</span>
-
-
-    </p>
+  <div class="pagination">
     
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2012/12/26/foldingtext-and-productivity/" data-via="" data-counturl="http://fooqri.github.io/blog/2012/12/26/foldingtext-and-productivity/" >Tweet</a>
-  
-  
-  
-</div>
-
+    <a href="/blog/archives/"> Archives </a>
     
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2012/12/17/wiki-plus-searchable-notes/" title="Previous Post: Wiki + searchable notes.">&laquo; Wiki + searchable notes.</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/" title="Next Post: Treetop and Parsing Expression Grammars (PEGs)">Treetop and Parsing Expression Grammars (PEGs) &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a class="next" href="/blog/page/4/">Newer &rarr;</a>
+    
+  </div>
 </div>
-  </section>
-
-</div>
-
 <aside class="sidebar">
   
     <section id="titles">
   <a href="http://fooqri.github.io" title=""><img id="logo" src="http://fooqri.github.io/images/profile.jpg" /></a>
   <h1 id="site_title"><a href="http://fooqri.github.io" title=""></a></h1>
-  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+  <h3 id="site_subtitle">Design, development, productivity &#8211; notes and explorations.</h3>
 </section>
 
 <section id="menu">
@@ -241,7 +227,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness&#8230;</a>
       </li>
     
       <li class="post">
@@ -271,7 +257,6 @@
   
 </aside>
 
-
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -286,10 +271,7 @@
       var disqus_shortname = 'goddio';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://fooqri.github.io/blog/2012/12/26/foldingtext-and-productivity/';
-        var disqus_url = 'http://fooqri.github.io/blog/2012/12/26/foldingtext-and-productivity/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

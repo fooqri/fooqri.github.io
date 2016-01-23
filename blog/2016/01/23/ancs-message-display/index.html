@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Org Mode ES2015+ Code Blocks - </title>
+  <title>ANCS Message Display - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I use emacs org mode to keep notes including code nodes that support inline execution. It is convenient for keeping useful code snippets, as well as &hellip;">
+  <meta name="description" content="Overview Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2016/01/23/ancs-message-display/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -84,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Org Mode ES2015+ Code Blocks</h1>
+      <h1 class="entry-title">ANCS Message Display</h1>
     
     
       <p class="meta">
@@ -100,20 +100,33 @@
   
 
 
-<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
+<time datetime="2016-01-23T11:12:00-08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2016</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.</p>
+<div class="entry-content"><h2>Overview</h2>
 
-<p>As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.</p>
+<p>Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display using an Arduino, BLE, and an LCD display.
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6097.JPG"></p>
 
-<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the config below with the location of any local node modules you want to pick up. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
+<p>For this project I used the <a href="http://redbearlab.com/blendmicro/" target="_blank">Blend Micro</a> from  RedBearLab, combined with an <a href="https://www.adafruit.com/product/358" target="_blank">AdaFruit ST7735R TFT LCD display</a>  The <em>Blend Micro</em> combines an Atmel ATmega32U4 micro-controller with a Nordic nRF8001 BLE chip. Simply hook up the LCD using SPI and you are in business. For this project I added a <a href="https://www.adafruit.com/products/160">piezo buzzer</a> for sound effects and a button to wake up the display if it has timed out.</p>
 
-<p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
+<p><img src="//s3.amazonaws.com/rwx-blog/IMG_6098.JPG"></p>
+
+<p>The basic idea is to have the iPhone pass along alerts to the device using BLE/ANCS and to have the device play a tone and display the alert information. There is a timeout to power down the backlight on the display after a minute, and a button that can be pressed to turn the display&rsquo;s backlight on, so the last message can be viewed after the one minute timeout.  This power savings mode could allow the device to be powered by a battery.</p>
+
+<p>I created a demo project on <a herf="https://codebender.cc/sketch:222511" target="_blank">codebender</a> to make it easy to replicate. You will need to import a few libraries into your personal libraries on codebender to get the project to work. It would be easy to enhance the project to save the last several messages and use a <a href="https://www.adafruit.com/product/444">2-Axis Analog Thumb Joystick</a> to control a simple interface that scans through messages.</p>
+
+<p>Unfortunately the <em>Blend Micro</em> does not have an on-board LIPO charging circuit, so if you want to enable a combined USB/Battery solution a charging circuit would have to be added. RedBear warns that connecting a battery to VIN and USB simultaneously could damage the board.</p>
+
+<p>I printed up a simple enclosure on the 3D printer and here is the enclosed LCD panel.</p>
+
+<p><img src="https://s3.amazonaws.com/rwx-blog/IMG_6110.JPG"></p>
+
+<h2>Pinouts</h2>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -125,84 +138,50 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>(setenv "NODE_PATH"
-</span><span class='line'>  (concat
-</span><span class='line'>   "~/org/node_modules" ":"
-</span><span class='line'>   (getenv "NODE_PATH")
-</span><span class='line'>  )
-</span><span class='line'>)
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  VIN & GND -&gt; to LIPO battery (DO NOT use USB power when battery connected)
+</span><span class='line'>  PIN 2     -&gt; ST7735R LITE
+</span><span class='line'>  PIN 8     -&gt; ST7735R D/C
+</span><span class='line'>  PIN 9     -&gt; ST7735R Reset
+</span><span class='line'>  PIN 10    -&gt; ST7735R TFT_CS
+</span><span class='line'>  PIN 11    -&gt; ST7735R MOSI
+</span><span class='line'>  PIN 13    -&gt; ST7735R SCK
+</span><span class='line'>  PIN V33   -&gt; ST7735R VCC
+</span><span class='line'>  PIN GND   -&gt; ST7735R GND
 </span><span class='line'>
-</span><span class='line'>(org-babel-do-load-languages
-</span><span class='line'> 'org-babel-load-languages
-</span><span class='line'> '((js . t)))</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  Button -&gt; PIN 5, GND
+</span><span class='line'>  Buzzer -&gt; PIN 3, GND
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Next install the babel npm module globally, this allows you to call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.</p>
+<h2>Detailed Instructions</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g babel
-</span><span class='line'>npm install mongodb
-</span><span class='line'>npm install bluebird</span></code></pre></td></tr></table></div></figure>
+<p>Follow the instructions for using <a href="http://redbearlab.com/quick-start-codebender" target="_blank">Blend Micro on codebender</a>. You should be able to get the LED Blink example working before continuing.</p>
+
+<h3>Add key libraries</h3>
+
+<p>To compile the code in the project above you will need to add several libraries to your personal libraries on codebender. Go to  <a href="https://codebender.cc" target="_blank">codebender.cc</a> and you will see the <em>*Upload Libraries</em> button on the upper right side of the page. There are four libraries you need to add.</p>
+
+<ul>
+<li><a href="https://github.com/NordicSemiconductor/ble-sdk-arduino" target="_blank">Nordic Bluetooth low energy SDK for Arduino beta version 0.9.0</a></li>
+<li><a href="https://github.com/RedBearLab/nRF8001/" target="_blank">RedBearLab nRF8001 Library version 20140701</a></li>
+<li><a href="https://github.com/RedBearLab/nRF8001/" target="_blank">RedBearLab Blend Add-On version 20140701</a></li>
+<li><a href="https://github.com/robotastic/ANCS-Library" target="_blank">Robotastic/ANCS-Library</a></li>
+</ul>
 
 
-<p>The default  org-mode interpreter for js is node, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case <strong>babel-node</strong>, which also transpiles.</p>
+<p>Just download each of these as a zip file from github, and upload them to your <em>codebender personal library</em>. I created a fork of the <em>ANCS-Library</em> to thin it down a bit as memory was tight on the <em>Blend Micro</em> for another version of the project I am working on. It is on a branch called <strong>code-diet</strong> available on github  <a href="//github.com/fooqri/ANCS-Library/archive/code-diet.zip">ANCS-Library on a code-diet zip</a></p>
 
-<p>Adding  <em>:cmd &ldquo;babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the babel_node command instead of the default JavaScript interpreter. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
+<p>Finally, clone my <a herf="https://codebender.cc/sketch:222511" target="_blank">codebender ANCS_Display_ST7735 project</a> and verify the code compiles with the libraries you uploaded, and run the project on Arduino.</p>
 
-<pre><code>   #+name: db.activities.findOne
-   #+begin_src js :cmd "babel-node" :results output drawer
-      (async function(){
-          try {
-              let MongoDB = require('mongodb');
-              let Promise = require('bluebird');
-              Promise.promisifyAll(MongoDB);
-              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
-              let activityCol = db.collection('activities')
-              let result = await activityCol.findOne();
-              db.close();
-              console.log(`The first activity name is ${result.name}`);
-            }
-           catch(err){
-             consule.log(err);
-             throw err;
-           }
-         })()
-   #+END_SRC
-</code></pre>
+<p>Open the iPhone  <em>Settings</em> app and select <em>Bluetooth</em>. If everything is working correcly you should see <strong>ANCS_RUSK</strong> listed under <em>MyDevices</em>. Select it and choose pair.
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6095.PNG">
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6094.PNG"></p>
 
-<p>Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: <em>#+RESULTS:</em></p>
+<p>Once paired you should hear a tone on the device, and the display will change from <strong>Status: Not Connected</strong> to <strong>Status: Connected</strong>.  If you receive any alerts on your iPhone you should now hear a tone on the device and the screen should display a message.</p>
 
-<p>The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.</p>
-
-<pre><code>   #+name: db.activities.findOne
-   #+begin_src js :cmd "babel-node" :results output drawer
-      (async function(){
-          try {
-              let MongoDB = require('mongodb');
-              let Promise = require('bluebird');
-              Promise.promisifyAll(MongoDB);
-              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
-              let activityCol = db.collection('activities')
-              let result = await activityCol.findOne();
-              db.close();
-              console.log(`The first activity name is ${result.name}`);
-            }
-           catch(err){
-             consule.log(err);
-             throw err;
-           }
-         })()
-   #+END_SRC
-
-   #+RESULTS: db.activities.findOne
-   :RESULTS:
-   The first activity name is Shopping
-   :END:
-</code></pre>
-
-<p>You can see several new and experimental language features including <em>async functions</em>, the <em>await</em> keyword for performing a non-blocking wait on a promise to complete, and <em>template strings</em>.</p>
+<p>You can update the code to support custom tones and messages for different alert types, or add other interesting features.</p>
 </div>
 
 
@@ -225,7 +204,7 @@
   
 
 
-<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
+<time datetime="2016-01-23T11:12:00-08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2016</time>
       
 
 
@@ -233,7 +212,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/" data-via="" data-counturl="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2016/01/23/ancs-message-display/" data-via="" data-counturl="http://fooqri.github.io/blog/2016/01/23/ancs-message-display/" >Tweet</a>
   
   
   
@@ -242,10 +221,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/09/09/esp8266-initial-notes/" title="Previous Post: ESP8266 Initial Notes">&laquo; ESP8266 Initial Notes</a>
+        <a class="basic-alignment left" href="/blog/2015/10/06/org-with-babel-node/" title="Previous Post: Org Mode ES2015+ Code Blocks">&laquo; Org Mode ES2015+ Code Blocks</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/01/23/ancs-message-display/" title="Next Post: ANCS Message Display">ANCS Message Display &raquo;</a>
       
     </p>
   </footer>
@@ -370,8 +347,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/';
-        var disqus_url = 'http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/';
+        var disqus_identifier = 'http://fooqri.github.io/blog/2016/01/23/ancs-message-display/';
+        var disqus_url = 'http://fooqri.github.io/blog/2016/01/23/ancs-message-display/';
         var disqus_script = 'embed.js';
       
     (function () {
