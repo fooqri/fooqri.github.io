@@ -22,7 +22,7 @@ Unfortunately the *Blend Micro* does not have an on-board LIPO charging circuit,
 
 I printed up a simple enclosure on the 3D printer and here is the enclosed LCD panel.
 
-<img src="https://s3.amazonaws.com/rwx-blog/IMG_6110.JPG">
+<img src="https://s3.amazonaws.com/rwx-blog/IMG_6111.JPG">
 
 ## Pinouts
 ```
