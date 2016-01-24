@@ -7,7 +7,7 @@ categories:
 ---
 
 ## Overview
-Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display using an Arduino, BLE, and an LCD display.
+Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display using an Arduino, BLE, and an LCD display to conect to the Apple Notification Center Service on your iPhone.
 <img src="https://s3.amazonaws.com/rwx-blog/IMG_6097.JPG">
 
 For this project I used the <a href="http://redbearlab.com/blendmicro/" target="_blank">Blend Micro</a> from  RedBearLab, combined with an <a href="https://www.adafruit.com/product/358" target="_blank">AdaFruit ST7735R TFT LCD display</a>  The *Blend Micro* combines an Atmel ATmega32U4 micro-controller with a Nordic nRF8001 BLE chip. Simply hook up the LCD using SPI and you are in business. For this project I added a <a href="https://www.adafruit.com/products/160">piezo buzzer</a> for sound effects and a button to wake up the display if it has timed out.
