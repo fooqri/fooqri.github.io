@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-01-24T08:12:20-08:00</updated>
+  <updated>2016-01-24T11:15:36-08:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -99,7 +99,7 @@
 <ul>
 <li>The <a href="http://redbearlab.com/blenano/">Blend Nano</a> from ReadBearLab is a tiny alternative to the Blend Micro but it is based on the ARM Cortex-M0 SoC and uses the newer Nordic nRF51822 BLE chipset. The <em>ANCS-Library</em> is only compatible with the Nordic nRF8001 BLE chipset, so some work would be needed to port the library to the new platform.</li>
 <li>Adafruit has just announced a few similar Arduino+BLE boards. The <a href="https://www.adafruit.com/products/2829">Feather 32u4 Bluefruit LE</a> using the ATmega32u4, and the <a href="https://www.adafruit.com/products/2995">Feather M0 Bluefruit LE</a> using the ATSAMD21G18 ARM Cortex. Both these boards provide a built in 100mA lipoly charger, so either would be a better choice for a mobile device. Both these boards use the  nRF51822 BLE chipset so like the Blend Nano would require porting the <em>ANCS-Library</em> before the code above could be used.</li>
-<li>I have a <a href="https://www.adafruit.com/products/1393">SHARP Memory Display Breakout</a> from adafruit, which is a really nice eInk type display, but was unable to get it working with this demo on first try. This <a href="https://codebender.cc/sketch:220214">codebender sketch</a> was my first attempt. It seems that there is a conflict between the <em>Adafruit_SharpMem</em> library and the <em>ANCS Library</em>, because instantiating the Adafruit_SharpMem display object causes calls to notif.setup() to hang. I may look at it a bit more if I get a chance, but this was to be a quick experiment. There were some memory size issues initially, but I believe the hang may be an SPI issue, but I haven&rsquo;t yet has time to investigate further.</li>
+<li>I have a <a href="https://www.adafruit.com/products/1393">SHARP Memory Display Breakout</a> from adafruit, which is a really nice eInk type display, but was unable to get it working with this demo on first try. This <a href="https://codebender.cc/sketch:220214">codebender sketch</a> was my first attempt. It seems that there is a conflict between the <em>Adafruit_SharpMem</em> library and the <em>ANCS Library</em>, because instantiating the Adafruit_SharpMem display object causes calls to notif.setup() to hang. I may look at it a bit more if I get a chance, but this was to be a quick experiment. There were some memory size issues initially, but I believe the hang may be an SPI issue, but I haven&rsquo;t yet had time to investigate further.</li>
 <li>I also started to play with a headless version that instead uses neoPixels. I will post when I finish it. I like the idea of a fun neoPixel and sound only display connected with an iOS app that allows the user to customize what notifications the display responds to and how it responds. This would allow cheap simple peripheral displays to be created that respond to different notifications in different ways.</li>
 <li>The <a href="http://makezine.com/2015/12/09/meet-esp32-new-big-brother-to-iot-board-esp8266/">ESP32</a> should make for an interesting platform for these types of displays because they could allow BLE for notifications, and use WiFi for connection to the home network. This could allow control a wide range of WiFi enabled home devices based on iOS app notifications. That sounds fun.</li>
 </ul>
@@ -537,7 +537,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x6d;&#101;&#x40;&#109;&#121;&#x2e;&#x65;&#109;&#97;&#x69;&#x6c;">&#109;&#101;&#64;&#109;&#121;&#x2e;&#101;&#x6d;&#97;&#x69;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#109;&#x65;&#x40;&#x6d;&#x79;&#x2e;&#101;&#x6d;&#97;&#x69;&#108;">&#109;&#x65;&#x40;&#x6d;&#x79;&#46;&#x65;&#109;&#x61;&#x69;&#108;</a>&rdquo;</li>
 </ul>
 
 
