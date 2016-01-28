@@ -100,7 +100,7 @@ To manipulate hex code you will need the **srecord** tool, which can be installe
 brew install srecord 
 ```
 
-or
+or 
 
 ```
 port install srecord
