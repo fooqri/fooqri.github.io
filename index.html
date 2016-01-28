@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Overview Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display &hellip;">
+  <meta name="description" content="I decided to try getting Apple Notification Center Service (ANCS) working with the RedBearLab BLE Nano, and this post describes one way to get the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,171 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-27T12:19:00-08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="https://s3.amazonaws.com/rwx-blog/nano.png"></p>
+
+<p>I decided to try getting <em>Apple Notification Center Service (ANCS)</em> working with the <a href="http://redbearlab.com/blenano/" target="_blank">RedBearLab BLE Nano</a>, and this post describes one way to get the Nordic ANCS demo running on a BLE Nano. This post shows how to get an <em>ARM</em> development environment and toolchain up and running on OSX in order to develop apps for the Nordic BLE SoC&rsquo;s (e.g. nRF51822 based boards like the BLE Nano).</p>
+
+<p>There are a few options for developing applications for the BLE Nano:</p>
+
+<ol>
+<li>Using the <em>Nordic nRF5 BLE SDK</em> along with the  <em>arm-gcc</em> compiler. This requires setting up a toolchain on your local development machine (Mac OSX in my case).</li>
+<li>Using <a href="http://mbed.org" target="_blank">mbed.org</a> and the <a href="https://developer.mbed.org/teams/Bluetooth-Low-Energy/" target="_blank">mbed Bluetooth Low Energy API</a>. This is the fastest way to get started, but unfortunately at the time of this post the API does not yet support peripherals as GATT Clients, and thus does not support ANCS development.</li>
+<li>Using the Arduino SDK along with the <a href="https://github.com/RedBearLab/nRF51822-Arduino" target="_blank">nRF51822-Arduino add-on</a>. I am not sure whether this add-on would support peripherals as GATT Clients either, and haven&rsquo;t yet investigated the option.</li>
+</ol>
+
+
+<p>I decided to start with approach 1 since it seemed like the most stable approach to development. Below I describe my steps to getting the environment set up on OSX. For more on approach 2 &amp; 3 see <a href="http://redbearlab.com/getting-started-nrf51822" target="_blank">Getting Started with nRF51822</a></p>
+
+<h2>Setting Up the Tool Chain on OSX</h2>
+
+<p>Install the <em>arm-gcc compiler</em> for OSX so you can compile for ARM devices. Fortunately both <em>HomeBrew</em> and <em>MacPorts</em> have recipes for installing the compiler. Pick the one that works for you. If you don&rsquo;t have either HomeBrew or MacPorts installed please install one of them before proceeding.</p>
+
+<p>Install the gcc-arm compiler using either <em>brew</em> command (HomeBrew) or <em>port</em> command (MacPorts):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>brew install gcc-arm-none-eabi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>port install arm-none-eabi-gcc</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Note: If you get a permissions error you may need to prepend the sudo command to provide brew/port with enhanced security privileges.</em></p>
+
+<p>You will need to save the location of the arm-gcc compiler for updating the nRF5 toolchain config files later. In my case it was located in</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>you will also need the comiler version number, just run <em>arm-none-eabi-gcc  &mdash;version</em> and write down the resulting version number</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/bin/arm-none-eabi-gcc  --version </span></code></pre></td></tr></table></div></figure>
+
+
+<p>In my case the <em>/arm-none-eabi-gcc</em> version was <em>5.2.1</em></p>
+
+<h2>Download the Nordic SDK</h2>
+
+<p>The next step is to download the <a href="http://developer.nordicsemi.com/nRF5_SDK/" target="_blank">Nordic nRF5 SDK</a> I chose <em>nRF51_SDK_v10.x.x</em>. Unzip into a location that will be your working directory for the project.</p>
+
+<h2>Download the Nordic Soft Device BLE Protocol Stack</h2>
+
+<p>Nordic uses the term <em>Soft Device</em> to refer to its BLE protocol stack. I chose to use <em>S130-SD</em>, it can be downloaded from the <a href="http://www.nordicsemi.com/eng/Products/Bluetooth-Smart-Bluetooth-low-energy/nRF51822#Downloads" target="_blank">Nordic Download Page</a> under soft devices.</p>
+
+<p>You will need to reference the soft device later, so I suggest saving it in your working directory at the same level you saved the SDK so it is easy to find.</p>
+
+<h2>Updating the SDK configuration</h2>
+
+<p>The next step is to modify the SDK configuration to point to your arm-gcc compiler. In your SDK directory edit <em>components/toolchain/gcc/Makefile.posix</em> to correct the <em>GNU_INSTALL_ROOT</em> and <em>GNU_VERSION</em>.  <strong>GNU_INSTALL_ROOT</strong> should be the location of the arm-gcc compiler directory.  <em><em>GNU_VERSIO</em>N</em> should be the version number of the arm-gcc compiler that I mentioned above. My <em>Makefile.posix</em> file looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>GNU_INSTALL_ROOT := /usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/
+</span><span class='line'>GNU_VERSION := 5.2.1 
+</span><span class='line'>GNU_PREFIX := arm-none-eabi</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Compile the ANCS example</h2>
+
+<p>The ANCS example is located in the sdk driectory under the <strong>examples</strong> sub directory. change to the subdirectory for the ble_app_ancs_c example. For example from the main SDK directory:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd examples/ble_peripheral/ble_app_ancs_c</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Like all the examples the ble_app_ancs_c directory contains <em>board package</em> subdirectories that are set up for the various development boards. For my test I changed to subdirectory:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pca10028/s130/armgcc/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is essentially choosing the example created for <em>board package</em> <strong>pca10028</strong> and <em>soft device</em> <strong>s130</strong> and finally the <strong>armgcc</strong> build directory.</p>
+
+<p>In this directory your will find a Makefile for compiling this example, so run <strong>make</strong> to compile the example.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>make</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The compilation process will create a new subdirectory called <strong>_build</strong> that will hold the output of the compile. The key file for our purposes will be the one with a <strong>.hex</strong> extension. In my case is was named <em>nrf51422_xxac_s130.hex</em>. This is the hex code that will be loaded by the bootloader on the BLE Nano&rsquo;s nRF51822 SoC.</p>
+
+<p>Since the nRF51 device is completely flash based. All the executable code, including Nordic’s “Soft Device” (SD) BLE protocol stack and your applications, is programmed in this flash memory. The soft device is always in the lower region of the flash, using up to 128 kB, and the rest of the upper region of flash is available for your application. So before your applications hex code can be loaded on the BLE Nano, it must be merged with the hex code for the soft device, in this case the <em>S130</em> hex code.</p>
+
+<p>To manipulate hex code you will need the srec_cat application, which can be installed with HomeBrew or MacPorts.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>brew install srecord </span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>port install srecord</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Merging application Hex Code with Soft Device Hex Code.</h2>
+
+<p>Assuming the <em>S130 Soft Device</em> code was uncompressed into the same working directory as the sdk and was named <em>s130_nrf51_1.0.0</em> and the example application hex code file was named <em>nrf51422_xxac_s130.hex</em>. Then from inside the <em>_build</em> directory created above we could merge the hex code files with the following command.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>srec_cat &lt;SDK_DIRECTORY&gt;/s130_nrf51_1.0.0/s130_nrf51_1.0.0_softdevice.hex -intel nrf51422_xxac_s130.hex  -intel -o ancs.hex -intel --line-length=44</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above command would create a new (combined) hex code file in _build named <strong>ancd.hex</strong></p>
+
+<h2>Loading the code on the BLE Nano</h2>
+
+<p><img src="https://s3.amazonaws.com/rwx-blog/nano2.png"></p>
+
+<p>This is the easy part. With the BLE Nano piggy backing on its MK20 USB board and plugged into a USB port, a folder named MBED should appear on your desktop (at least that is what it is named in my case). Just drag the combined hex file we created above <em>(ancs.hex)</em> to the MBED folder associated with the Nano device. The bootloader should load the new code, and the USB device may disappear momentarily from the desktop, then reappear.</p>
+
+<h2>Test that the ANCS application was loaded correctly</h2>
+
+<p>On an iPhone, open the <em>Settings</em> app, and choose <em>Bluetooth</em> and make sure Bluetooth is on. Under Devices you should see ANCS appear, and by tapping ANCS you should be able to successfully pair with the device.</p>
+
+<h2>Next Steps</h2>
+
+<p>The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop and custom ANCS app for some device using the BLE Nano. I hope to post some examples in the future as I work with the Nano more.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -710,7 +875,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#109;&#x65;&#x40;&#x6d;&#x79;&#x2e;&#101;&#x6d;&#97;&#x69;&#108;">&#109;&#x65;&#x40;&#x6d;&#x79;&#46;&#x65;&#109;&#x61;&#x69;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x6d;&#101;&#64;&#x6d;&#x79;&#x2e;&#x65;&#109;&#97;&#105;&#x6c;">&#109;&#101;&#x40;&#109;&#121;&#46;&#101;&#109;&#97;&#x69;&#108;</a>&rdquo;</li>
 </ul>
 
 
@@ -1442,70 +1607,6 @@ and change the last line to use a port other than 80.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/">Revisiting Buyer&#8217;s Agent App Using React.js</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-09T11:45:00-07:00" pubdate data-updated="true">Jun 9<span>th</span>, 2015</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In a past post I showed a <a href="http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> that was built with Polymer. This time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a>. The <strong>Mobile Buyer&rsquo;s Agent</strong> is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer&rsquo;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.</p>
-
-<p><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank"><img src="https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png"></a></p>
-
-<p>This is a demonstration of using a shared <em>Google Spreadsheet</em>  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the <strong><em><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank">Mobile Buyer&rsquo;s Agent</a></em></strong>.</p>
-
-<p>The <em>Real Estate Shopper List</em> Google spreadsheet contains properties the agent wishes to present in the app. The neighborhood column is associated with the dropdown box, and allows a simple grouping/categorization of properties. The agent also provides other features and details associated with the properties.</p>
-
-<p><a href="//docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml" target="_blank"><img class="spreadsheet-screen" src="//s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent2.png" ></a></p>
-
-<p><strong>Note:</strong> if you duplicate the example spreadsheet you must remember to publish it so it can be accessed by the <em>Mobile Buyer&rsquo;s Agent</em> app. If you get an error it is likely you forgotto publish the spreadsheet. To publish a spreadsheet while viewing it, use the file menu on Google Docs and choose <em>&ldquo;publish to the web&rdquo;</em>, and follow the instructions.</p>
-
-<h3>Trying your own spreadsheet</h3>
-
-<p>If you publish your own copy of the spreadsheet you can easily substitute it in the app with a simple url parameter called <strong>sheetid</strong>.</p>
-
-<p>For example if the link your are given when you plublish your spreadsheet is</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>https://docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then your sheetid is <strong>1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</strong>, and you can use it in this app by using a url with sheetid parameter as shown below:</p>
-
-<p><code style="white-space: nowrap;">po.gg/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</code></p>
-
-<p>This will substitue your spreadsheet for the default spreadsheet used in the app.</p>
-
-<p>For info on the code take a look at the <a href="http://www.poggr.com/p-kz3NoHhgl:dbJMG3EjSneg" target="_blank">README</a> document.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1553,6 +1654,10 @@ and change the last line to use a port other than 80.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
       </li>
     
@@ -1566,10 +1671,6 @@ and change the last line to use a port other than 80.</p>
     
       <li class="post">
         <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
       </li>
     
   </ul>

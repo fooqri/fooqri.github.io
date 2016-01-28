@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="The Edison is a tiny and amazing computer, and ideal prototyping tool for wearable and IoT experiments. Here are the steps I am currently following &hellip;">
+  <meta name="description" content="In a past post I showed a Mobile Real Estate App that was built with Polymer. This time around I will revisit the app but instead use react.js. The &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,70 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js/">Revisiting Buyer&#8217;s Agent App Using React.js</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-09T11:45:00-07:00" pubdate data-updated="true">Jun 9<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In a past post I showed a <a href="http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/">Mobile Real Estate App</a> that was built with Polymer. This time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a>. The <strong>Mobile Buyer&rsquo;s Agent</strong> is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer&rsquo;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.</p>
+
+<p><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank"><img src="https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png"></a></p>
+
+<p>This is a demonstration of using a shared <em>Google Spreadsheet</em>  as the data source for a simple web based application. By using poggr.com and <a href="http://facebook.github.io/react/" target="_blank">React.js</a> it is extremely easy to create a web application like the <strong><em><a href="http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9" target="_blank">Mobile Buyer&rsquo;s Agent</a></em></strong>.</p>
+
+<p>The <em>Real Estate Shopper List</em> Google spreadsheet contains properties the agent wishes to present in the app. The neighborhood column is associated with the dropdown box, and allows a simple grouping/categorization of properties. The agent also provides other features and details associated with the properties.</p>
+
+<p><a href="//docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml" target="_blank"><img class="spreadsheet-screen" src="//s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent2.png" ></a></p>
+
+<p><strong>Note:</strong> if you duplicate the example spreadsheet you must remember to publish it so it can be accessed by the <em>Mobile Buyer&rsquo;s Agent</em> app. If you get an error it is likely you forgotto publish the spreadsheet. To publish a spreadsheet while viewing it, use the file menu on Google Docs and choose <em>&ldquo;publish to the web&rdquo;</em>, and follow the instructions.</p>
+
+<h3>Trying your own spreadsheet</h3>
+
+<p>If you publish your own copy of the spreadsheet you can easily substitute it in the app with a simple url parameter called <strong>sheetid</strong>.</p>
+
+<p>For example if the link your are given when you plublish your spreadsheet is</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://docs.google.com/spreadsheets/d/1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8/pubhtml</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then your sheetid is <strong>1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</strong>, and you can use it in this app by using a url with sheetid parameter as shown below:</p>
+
+<p><code style="white-space: nowrap;">po.gg/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m8</code></p>
+
+<p>This will substitue your spreadsheet for the default spreadsheet used in the app.</p>
+
+<p>For info on the code take a look at the <a href="http://www.poggr.com/p-kz3NoHhgl:dbJMG3EjSneg" target="_blank">README</a> document.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -676,71 +740,6 @@ application block.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/30/emacs-experimental-hyper-key-mappings/">Emacs Experimental Hyper-Key Mappings</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-30T10:19:00-08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In a previous post <a href="http://www.pragmaux.com/post/39243391147/remapping-my-caps-lock-key">Remapping My Caps Lock Key</a> I mentioned that I remapped my caps-lock key to escape, but also created a &ldquo;hyper-key&rdquo; (ctrl-shift-cmd-opt) when the caps-lock key is held down. This opens up a keyboard worth of new shortcuts for emacs. Here are a few I have been playing with for the past few days. An alternative key mapping would be to map the hyper key to holding down the tab key, if you already have the caps lock key mapped to control, and thus muscle memory might preclude this mapping from working for you.</p>
-
-<p>H is the remapped caps-lock HyperKey from my earlier post, which translates as C-M-S-s in the emacs init.el key-mappings. I include an init.el excerpt at the end of the post for all of these mappings.</p>
-
-<ul>
-<li>(H-l) This will mark the entire current line, from any position on the line. Using the arrow keys will extent the selection one line at a time either up or down.</li>
-<li>(H-f) This invokes text expansion for code completion, I do this a lot so I wanted it to be very comfortable.</li>
-<li>(H-3) This invokes the comment/uncomment function on a region, ruby comment is the # so I thought I would try this binding.</li>
-<li>(H-Right Arrow) This opens a new window to the right of the current window, I do this often enough I wanted it to be quick</li>
-<li>(H-Left Arrow) This closes the current window, sort of the opposite of Right arrow.</li>
-<li>(H-Down Arrow) This opens a new window below the current window</li>
-<li>(H-p) In the current window switch to the previous buffer</li>
-<li>(H-n) In the current window switch to the next buffer</li>
-<li>(H-delete) Kill this buffer</li>
-<li>(H-w) Quick copy line, pressing multiple times adds more lines to the copy</li>
-<li>(H-k) Quick cut line, pressing multiple times adds more lines to the cut</li>
-<li>(H-c) Copy region into register (prompts for register number)</li>
-<li>(H-v) Paste from register (prompts for register number)</li>
-<li>(H-spacebar) Open a popup shell in directory of current buffer.</li>
-<li>(H-e) Eval buffer, mostly used to eval init.el after tweaks</li>
-</ul>
-
-
-<p>I will likely be tweaking more in the upcoming weeks as I experiment with key mappings, I will post an update after I get a chance to work with the hyper-key for a while, and settle on a favorite set of key-mappings. See the excerpt from my init.el below.</p>
-
-<div><script src='https://gist.github.com/5691402.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -790,6 +789,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
       </li>
     
@@ -803,10 +806,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
       </li>
     
   </ul>
