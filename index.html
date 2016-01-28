@@ -112,22 +112,22 @@
 
   <div class="entry-content"><p><img src="https://s3.amazonaws.com/rwx-blog/nano.png"></p>
 
-<p>I decided to try getting <em>Apple Notification Center Service (ANCS)</em> working with the <a href="http://redbearlab.com/blenano/" target="_blank">RedBearLab BLE Nano</a>, and this post describes one way to get the Nordic ANCS demo running on a BLE Nano. This post shows how to get an <em>ARM</em> development environment and toolchain up and running on OSX in order to develop apps for the Nordic BLE SoC&rsquo;s (e.g. nRF51822 based boards like the BLE Nano).</p>
+<p>I decided to try getting <em>Apple Notification Center Service (ANCS)</em> working with the <a href="http://redbearlab.com/blenano/" target="_blank">RedBearLab BLE Nano</a>, and this post describes one way to get the Nordic ANCS demo running on a BLE Nano. This post shows how to get an <em>ARM</em> development environment and toolchain up and running on OS X in order to develop apps for the Nordic BLE SoC&rsquo;s (e.g. nRF51822 based boards like the BLE Nano).</p>
 
 <p>There are a few options for developing applications for the BLE Nano:</p>
 
 <ol>
-<li>Using the <em>Nordic nRF5 BLE SDK</em> along with the  <em>arm-gcc</em> compiler. This requires setting up a toolchain on your local development machine (Mac OSX in my case).</li>
+<li>Using the <em>Nordic nRF5 BLE SDK</em> along with the  <em>arm-gcc</em> compiler. This requires setting up a toolchain on your local development machine (Mac OS X in my case).</li>
 <li>Using <a href="http://mbed.org" target="_blank">mbed.org</a> and the <a href="https://developer.mbed.org/teams/Bluetooth-Low-Energy/" target="_blank">mbed Bluetooth Low Energy API</a>. This is the fastest way to get started, but unfortunately at the time of this post the API does not yet support peripherals as GATT Clients, and thus does not support ANCS development.</li>
 <li>Using the Arduino SDK along with the <a href="https://github.com/RedBearLab/nRF51822-Arduino" target="_blank">nRF51822-Arduino add-on</a>. I am not sure whether this add-on would support peripherals as GATT Clients either, and haven&rsquo;t yet investigated the option.</li>
 </ol>
 
 
-<p>I decided to start with approach 1 since it seemed like the most stable approach to development. Below I describe my steps to getting the environment set up on OSX. For more on approach 2 &amp; 3 see <a href="http://redbearlab.com/getting-started-nrf51822" target="_blank">Getting Started with nRF51822</a></p>
+<p>I decided to start with approach 1 since it seemed like the most stable approach to development. Below I describe my steps to getting the environment set up on OS X. For more on approach 2 &amp; 3 see <a href="http://redbearlab.com/getting-started-nrf51822" target="_blank">Getting Started with nRF51822</a></p>
 
-<h2>Setting Up the Tool Chain on OSX</h2>
+<h2>Setting Up the Tool Chain on OS X</h2>
 
-<p>Install the <em>arm-gcc compiler</em> for OSX so you can compile for ARM devices. Fortunately both <em>HomeBrew</em> and <em>MacPorts</em> have recipes for installing the compiler. Pick the one that works for you. If you don&rsquo;t have either HomeBrew or MacPorts installed please install one of them before proceeding.</p>
+<p>Install the <em>arm-gcc compiler</em> for OS X so you can compile for ARM devices. Fortunately both <em>HomeBrew</em> and <em>MacPorts</em> have recipes for installing the compiler. Pick the one that works for you. If you don&rsquo;t have either HomeBrew or MacPorts installed please install one of them before proceeding.</p>
 
 <p>Install the gcc-arm compiler using either <em>brew</em> command (HomeBrew) or <em>port</em> command (MacPorts):</p>
 
@@ -875,7 +875,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x6d;&#101;&#64;&#x6d;&#x79;&#x2e;&#x65;&#109;&#97;&#105;&#x6c;">&#109;&#101;&#x40;&#109;&#121;&#46;&#101;&#109;&#97;&#x69;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x6d;&#x65;&#x40;&#109;&#x79;&#x2e;&#101;&#109;&#97;&#x69;&#x6c;">&#x6d;&#101;&#x40;&#x6d;&#121;&#x2e;&#x65;&#109;&#x61;&#105;&#108;</a>&rdquo;</li>
 </ul>
 
 
