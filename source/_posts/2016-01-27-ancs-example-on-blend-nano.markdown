@@ -7,19 +7,19 @@ categories:
 ---
 <img src="https://s3.amazonaws.com/rwx-blog/nano.png">
 
-I decided to try getting *Apple Notification Center Service (ANCS)* working with the <a href="http://redbearlab.com/blenano/" target="_blank">RedBearLab BLE Nano</a>, and this post describes one way to get the Nordic ANCS demo running on a BLE Nano. This post shows how to get an *ARM* development environment and toolchain up and running on OSX in order to develop apps for the Nordic BLE SoC's (e.g. nRF51822 based boards like the BLE Nano).
+I decided to try getting *Apple Notification Center Service (ANCS)* working with the <a href="http://redbearlab.com/blenano/" target="_blank">RedBearLab BLE Nano</a>, and this post describes one way to get the Nordic ANCS demo running on a BLE Nano. This post shows how to get an *ARM* development environment and toolchain up and running on OS X in order to develop apps for the Nordic BLE SoC's (e.g. nRF51822 based boards like the BLE Nano).
 
 There are a few options for developing applications for the BLE Nano:
 
-1. Using the *Nordic nRF5 BLE SDK* along with the  *arm-gcc* compiler. This requires setting up a toolchain on your local development machine (Mac OSX in my case).
+1. Using the *Nordic nRF5 BLE SDK* along with the  *arm-gcc* compiler. This requires setting up a toolchain on your local development machine (Mac OS X in my case).
 2. Using <a href="http://mbed.org" target="_blank">mbed.org</a> and the <a href="https://developer.mbed.org/teams/Bluetooth-Low-Energy/" target="_blank">mbed Bluetooth Low Energy API</a>. This is the fastest way to get started, but unfortunately at the time of this post the API does not yet support peripherals as GATT Clients, and thus does not support ANCS development. 
 3. Using the Arduino SDK along with the <a href="https://github.com/RedBearLab/nRF51822-Arduino" target="_blank">nRF51822-Arduino add-on</a>. I am not sure whether this add-on would support peripherals as GATT Clients either, and haven't yet investigated the option.
 
-I decided to start with approach 1 since it seemed like the most stable approach to development. Below I describe my steps to getting the environment set up on OSX. For more on approach 2 & 3 see <a href="http://redbearlab.com/getting-started-nrf51822" target="_blank">Getting Started with nRF51822</a>
+I decided to start with approach 1 since it seemed like the most stable approach to development. Below I describe my steps to getting the environment set up on OS X. For more on approach 2 & 3 see <a href="http://redbearlab.com/getting-started-nrf51822" target="_blank">Getting Started with nRF51822</a>
 
-## Setting Up the Tool Chain on OSX
+## Setting Up the Tool Chain on OS X
 
-Install the *arm-gcc compiler* for OSX so you can compile for ARM devices. Fortunately both *HomeBrew* and *MacPorts* have recipes for installing the compiler. Pick the one that works for you. If you don't have either HomeBrew or MacPorts installed please install one of them before proceeding.
+Install the *arm-gcc compiler* for OS X so you can compile for ARM devices. Fortunately both *HomeBrew* and *MacPorts* have recipes for installing the compiler. Pick the one that works for you. If you don't have either HomeBrew or MacPorts installed please install one of them before proceeding.
 
 Install the gcc-arm compiler using either *brew* command (HomeBrew) or *port* command (MacPorts):
 
