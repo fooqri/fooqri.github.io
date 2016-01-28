@@ -41,7 +41,7 @@ You will need to save the location of the arm-gcc compiler for updating the nRF5
 /usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/
 ```
 
-you will also need the comiler version number, just run *arm-none-eabi-gcc  --version* and write down the resulting version number
+you will also need the compiler version number, just run the command below and write down the resulting version number
 
 ```
 /usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/bin/arm-none-eabi-gcc  --version 
@@ -70,7 +70,7 @@ GNU_PREFIX := arm-none-eabi
 
 ## Compile the ANCS example
 
-The ANCS example is located in the sdk driectory under the **examples** sub directory. change to the subdirectory for the ble_app_ancs_c example. For example from the main SDK directory:
+The ANCS example is located in the sdk driectory under the **examples** subdirectory. Change to the subdirectory for the ble_app_ancs_c example. For example from the main SDK directory:
 
 ```
 cd examples/ble_peripheral/ble_app_ancs_c
@@ -92,9 +92,9 @@ make
 
 The compilation process will create a new subdirectory called **_build** that will hold the output of the compile. The key file for our purposes will be the one with a **.hex** extension. In my case is was named *nrf51422_xxac_s130.hex*. This is the hex code that will be loaded by the bootloader on the BLE Nano's nRF51822 SoC. 
 
-Since the nRF51 device is completely flash based. All the executable code, including Nordic’s “Soft Device” (SD) BLE protocol stack and your applications, is programmed in this flash memory. The soft device is always in the lower region of the flash, using up to 128 kB, and the rest of the upper region of flash is available for your application. So before your applications hex code can be loaded on the BLE Nano, it must be merged with the hex code for the soft device, in this case the *S130* hex code.
+Since the nRF51 device is completely flash based. All the executable code, including Nordic’s “Soft Device” protocol stack and your applications, is programmed in this flash memory. The soft device is always in the lower region of the flash, using up to 128 kB, and the rest of the upper region of flash is available for your application. So before your applications hex code can be loaded on the BLE Nano, it must be merged with the hex code for the soft device, in this case the *S130* hex code.
 
-To manipulate hex code you will need the srec_cat application, which can be installed with HomeBrew or MacPorts. 
+To manipulate hex code you will need the **srecord** tool, which can be installed with HomeBrew or MacPorts. 
 
 ```
 brew install srecord 
@@ -115,7 +115,7 @@ Assuming the *S130 Soft Device* code was uncompressed into the same working dire
 srec_cat <SDK_DIRECTORY>/s130_nrf51_1.0.0/s130_nrf51_1.0.0_softdevice.hex -intel nrf51422_xxac_s130.hex  -intel -o ancs.hex -intel --line-length=44
 ```
 
-The above command would create a new (combined) hex code file in _build named **ancd.hex**
+The above command would create a new (combined) hex code file in _build named **ancs.hex**
 
 ## Loading the code on the BLE Nano
 
@@ -127,4 +127,4 @@ This is the easy part. With the BLE Nano piggy backing on its MK20 USB board and
 On an iPhone, open the *Settings* app, and choose *Bluetooth* and make sure Bluetooth is on. Under Devices you should see ANCS appear, and by tapping ANCS you should be able to successfully pair with the device.
 
 ## Next Steps
-The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop and custom ANCS app for some device using the BLE Nano. I hope to post some examples in the future as I work with the Nano more.
+The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop a custom ANCS app for some device that utilizes the BLE Nano. I hope to post some examples in the future as I work with the Nano more.
