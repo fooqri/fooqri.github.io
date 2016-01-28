@@ -146,7 +146,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>/usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/</span></code></pre></td></tr></table></div></figure>
 
 
-<p>you will also need the comiler version number, just run <em>arm-none-eabi-gcc  &mdash;version</em> and write down the resulting version number</p>
+<p>you will also need the compiler version number, just run the command below and write down the resulting version number</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>/usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/bin/arm-none-eabi-gcc  --version </span></code></pre></td></tr></table></div></figure>
@@ -178,7 +178,7 @@
 
 <h2>Compile the ANCS example</h2>
 
-<p>The ANCS example is located in the sdk driectory under the <strong>examples</strong> sub directory. change to the subdirectory for the ble_app_ancs_c example. For example from the main SDK directory:</p>
+<p>The ANCS example is located in the sdk driectory under the <strong>examples</strong> subdirectory. Change to the subdirectory for the ble_app_ancs_c example. For example from the main SDK directory:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>cd examples/ble_peripheral/ble_app_ancs_c</span></code></pre></td></tr></table></div></figure>
@@ -200,9 +200,9 @@
 
 <p>The compilation process will create a new subdirectory called <strong>_build</strong> that will hold the output of the compile. The key file for our purposes will be the one with a <strong>.hex</strong> extension. In my case is was named <em>nrf51422_xxac_s130.hex</em>. This is the hex code that will be loaded by the bootloader on the BLE Nano&rsquo;s nRF51822 SoC.</p>
 
-<p>Since the nRF51 device is completely flash based. All the executable code, including Nordic’s “Soft Device” (SD) BLE protocol stack and your applications, is programmed in this flash memory. The soft device is always in the lower region of the flash, using up to 128 kB, and the rest of the upper region of flash is available for your application. So before your applications hex code can be loaded on the BLE Nano, it must be merged with the hex code for the soft device, in this case the <em>S130</em> hex code.</p>
+<p>Since the nRF51 device is completely flash based. All the executable code, including Nordic’s “Soft Device” protocol stack and your applications, is programmed in this flash memory. The soft device is always in the lower region of the flash, using up to 128 kB, and the rest of the upper region of flash is available for your application. So before your applications hex code can be loaded on the BLE Nano, it must be merged with the hex code for the soft device, in this case the <em>S130</em> hex code.</p>
 
-<p>To manipulate hex code you will need the srec_cat application, which can be installed with HomeBrew or MacPorts.</p>
+<p>To manipulate hex code you will need the <strong>srecord</strong> tool, which can be installed with HomeBrew or MacPorts.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>brew install srecord </span></code></pre></td></tr></table></div></figure>
@@ -222,7 +222,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>srec_cat &lt;SDK_DIRECTORY&gt;/s130_nrf51_1.0.0/s130_nrf51_1.0.0_softdevice.hex -intel nrf51422_xxac_s130.hex  -intel -o ancs.hex -intel --line-length=44</span></code></pre></td></tr></table></div></figure>
 
 
-<p>The above command would create a new (combined) hex code file in _build named <strong>ancd.hex</strong></p>
+<p>The above command would create a new (combined) hex code file in _build named <strong>ancs.hex</strong></p>
 
 <h2>Loading the code on the BLE Nano</h2>
 
@@ -236,7 +236,7 @@
 
 <h2>Next Steps</h2>
 
-<p>The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop and custom ANCS app for some device using the BLE Nano. I hope to post some examples in the future as I work with the Nano more.</p>
+<p>The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop a custom ANCS app for some device that utilizes the BLE Nano. I hope to post some examples in the future as I work with the Nano more.</p>
 </div>
 
 
