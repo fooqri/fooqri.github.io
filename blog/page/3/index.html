@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="In a previous post Remapping My Caps Lock Key I mentioned that I remapped my caps-lock key to escape, but also created a &ldquo;hyper-key&rdquo; ( &hellip;">
+  <meta name="description" content="In a previous post wiki-searchable-notes I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,81 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-04T11:19:00-08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In a previous post <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.</p>
+
+<p>I am an Emacs user and often found myself dropping out of emacs to find a note I needed in nvALT. I went looking for the best way to index and access my nvALT notes inside Emacs, and found the very cool emacs script called <a href="http://jblevins.org/projects/deft/">Deft</a> that works with <a href="http://jblevins.org/projects/markdown-mode/">EMacs Markdown Mode</a> to create the equivalent of nvALT inside of emacs. It can be configured to work with the nvALT repository so they work well together.</p>
+
+<p>A few pointers&hellip;</p>
+
+<ul>
+<li>If you use markdown in nvALT as I do, follow the instructions to install <a href="http://jblevins.org/projects/markdown-mode/">markdown-mode</a> via git clone.</li>
+<li>Follow the instructions to install  <a href="http://jblevins.org/projects/deft/">Deft</a> via git clone. It is an active repository, so clone makes keeping up-to-date easy. Also update init.el to require the deft.el script.</li>
+<li>For markdown and nvALT using the flat file config (see  <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> for flat file config) you need to add a few additional expressions in init.el. Add these four lines as discussed on the deft documentation.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(setq deft-extension "md")
+</span><span class='line'>(setq deft-directory "~/Development/wikis/Notes.wiki/")
+</span><span class='line'>(setq deft-text-mode 'markdown-mode)
+</span><span class='line'>(setq deft-use-filename-as-title t)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Follow the instructions to map a keyboard shortcut to open deft. I use H-d (see my <a href="http://www.pragmaux.com/post/41867238595/emacs-experimental-hyper-key-mappings">emacs hyper-key post</a> ) but a simple function key mapping would be.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key [f8] 'deft)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>    <br/>
+* Create a symlink from ~/.deft to your nvALT notes directory, this is shown in the nvALT preferences under the notes tab. See example below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s ~/Documents/notes/ .deft</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When you eval init.el or restart emacs you should be set. Fire up Deft and the UI will operate just like nvALT, only it works in an Emacs buffer!!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -631,50 +706,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/14/refactoring-making-master-programmers/">Refactoring: Making Master Programmers</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-14T16:34:00-08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code refactoring.  One could even explain this in terms of top line vs bottom line descriptions. Features mean sales, codebase is an asset, and poor code quality is a liability that affects cost and thus profit. Sloppy, risky, or fragile code is even called &ldquo;technical debt&rdquo; in many circles. This tension between features and code quality has always been a tightrope walk for any successful software or Internet company. Starve features and you kill sales, ignore expanding bloat and you will never win a sprint, let alone the marathon of staying relevant.</p>
-
-<p>But there is a lot more to refactoring than code quality. In this post I wanted to mention one that is often overlooked: <em>&ldquo;refactoring makes good coders into master coders.&rdquo;</em>  The best lessons come from revisiting your mistakes and improving them, but without refactoring the revisiting is limited to quick fixes to limit the impact of a bad architecture, design, or implementation. Yes we can learn from our mistakes by trying different approaches on future projects, but the problems are ever changing, and thus the learnings are not as clear. I have always found I learned so much more as a designer and a developer by revisiting a problem with a new level of experience to draw from.</p>
-
-<p>Design has been more fortunate regarding the opportunity for refactoring; good design organizations understand how much can be learned by refactoring a design and thus fight hard to allow for it. Development has often not been as successful in making the case. I wonder if the cost analysis could be changed if executives understood that refactoring actually significantly improved two of the most important assets at a software company: the code base and the engineering talent. Then it becomes a more interesting decision versus a simple weighing of new features vs improved quality.</p>
-
-<p><img src="http://media.tumblr.com/7095223771e3c38939367f18458726e1/tumblr_inline_mgmwbwyolq1qz562v.jpg" alt="image" />Bull</p>
-
-<p>I got to thinking about this looking at Picasso&rsquo;s Bull series.  This is an excellent example of a master working through a problem to develop the most elegantly simplified expression of the subject. To become a master, one must work through a problem incrementally and always looking for elegant ways to improve, to simplify the end expression of the solution. Even for a competent coder, it is not always apparent what is elegant without seeing the real life consequences of chosen approaches. Whether the approach makes the code fragile, bloated, or unfriendly, it is only through the experience of trying to grow a code base that these issues can be truly understood. Under the right conditions refactoring provides a sort of express lane  to becoming a master developer. This is very difficult if you are never allowed to truly revisit a subject after completing the first expression of the solution. I like the &ldquo;Bull&rdquo; example because it is how I think of elegant design and development, just enough to represent the solution and no more, anything else is bloat that will be nothing but cost later. Through refactoring, a developer can develop insights, skills, and techniques more quickly by addressing a well understood problem from a more experienced perspective.  Practice make perfect. If not the code, maybe the coder.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -724,6 +755,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
       </li>
     
@@ -737,10 +772,6 @@
     
       <li class="post">
         <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-01-27T18:32:26-08:00</updated>
+  <updated>2016-03-09T14:48:12-08:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Org Mode ES2015+ Code Blocks (updated)]]></title>
+    <link href="http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/"/>
+    <updated>2016-03-09T16:57:00-08:00</updated>
+    <id>http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated</id>
+    <content type="html"><![CDATA[<ul>
+<li><strong>Note:</strong> In this post I have updated the instructions for use with <em>Babel 6x</em>. For <em>Babel 5x</em> see the <a href="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/">original post</a>.</li>
+</ul>
+
+
+<p>Babel 6x is a significant change from Babel 5x, as the <em>cli</em> is now a separate node module called <em>babel-cli</em> and transforms are now also delivered as separate packages.</p>
+
+<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the configuration below with the location of any local node modules you want to use. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
+
+<p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(setenv "NODE_PATH"
+</span><span class='line'>  (concat
+</span><span class='line'>   "~/org/node_modules" ":"
+</span><span class='line'>   (getenv "NODE_PATH")
+</span><span class='line'>  )
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'>(org-babel-do-load-languages
+</span><span class='line'> 'org-babel-load-languages
+</span><span class='line'> '((js . t)))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can choose to install the Babel modules globally, or you can do it locally. In this example I will install them locally in the org directory (~/org/node_modules).</p>
+
+<p>Next install the <em>babel-cli</em> module, this allows you to call Babel from the command line. You will also want to install the transforms you plan to use, the example below installs the common preset transforms used with <em>Babel 6</em>. Also install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path to <em>node_modules</em> set above.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install --save-dev babel-cli
+</span><span class='line'>npm install --save-dev babel-preset-es2015
+</span><span class='line'>npm install --save-dev babel-preset-stage-0
+</span><span class='line'>npm install --save-dev babel-preset-stage-1
+</span><span class='line'>npm install --save-dev babel-preset-stage-2
+</span><span class='line'>npm install --save-dev babel-preset-stage-3
+</span><span class='line'>npm install --save-dev babel-preset-react
+</span><span class='line'>npm install --save-dev mongodb
+</span><span class='line'>npm install --save-dev bluebird</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next you want to set up a symbolic link to the <em>babel-cli</em> script you just installed so it can be found from the command line. I decided to call it <em>org-babel-node</em> so it won&rsquo;t interfere with a <em>babel-node</em> executable linked to a global module of the same name.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s ~/org/node_modules/babel-cli/bin/babel-node.js /usr/local/bin/org-babel-node</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The default org-mode interpreter for JavaScript is <em>Node</em>, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case the <strong>babel-node</strong> transpiler installed earlier and linked as <em>org-babel-node</em>.</p>
+
+<p>Adding  <em>:cmd &ldquo;org-babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the <em>org-babel-node</em> transpiler instead of the default JavaScript interpreter. Because <em>Babel 6</em> uses external modules for transforms you need to also tell Babel which preset or plugins you wish to use with either the <strong>&mdash;presets</strong> or <strong>&mdash;plugins</strong> options. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
+
+<pre><code>   #+name: db.activities.findOne
+   #+begin_src js :cmd "org-babel-node --presets stage-1" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+</code></pre>
+
+<p>Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: <em>#+RESULTS:</em></p>
+
+<p>The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.</p>
+
+<pre><code>   #+name: db.activities.findOne
+   #+begin_src js :cmd "org-babel-node --presets stage-1" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+
+   #+RESULTS: db.activities.findOne
+   :RESULTS:
+   The first activity name is Shopping
+   :END:
+</code></pre>
+
+<p>You can see several new and experimental language features including <em>async functions</em>, the <em>await</em> keyword for performing a non-blocking wait on a promise to complete, and <em>template strings</em>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ANCS Example on BLE Nano]]></title>
@@ -250,7 +377,12 @@
     <link href="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/"/>
     <updated>2015-10-06T16:57:00-07:00</updated>
     <id>http://fooqri.github.io/blog/2015/10/06/org-with-babel-node</id>
-    <content type="html"><![CDATA[<p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.</p>
+    <content type="html"><![CDATA[<ul>
+<li><strong>Updated:</strong> I have <a href="http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/">updated instructions</a> for installing and using the recently released <em>Babel 6</em> with <em>org mode</em>.</li>
+</ul>
+
+
+<p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.</p>
 
 <p>As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.</p>
 
@@ -675,7 +807,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#109;&#101;&#64;&#109;&#121;&#46;&#x65;&#x6d;&#97;&#105;&#x6c;">&#x6d;&#x65;&#x40;&#x6d;&#x79;&#x2e;&#101;&#x6d;&#x61;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#109;&#101;&#x40;&#109;&#121;&#46;&#101;&#109;&#x61;&#105;&#108;">&#109;&#x65;&#64;&#109;&#121;&#46;&#x65;&#109;&#x61;&#x69;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
@@ -1605,54 +1737,6 @@ application block.</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[nvALT and Emacs]]></title>
-    <link href="http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs/"/>
-    <updated>2013-03-04T11:19:00-08:00</updated>
-    <id>http://fooqri.github.io/blog/2013/03/04/nvalt-and-emacs</id>
-    <content type="html"><![CDATA[<p>In a previous post <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.</p>
-
-<p>I am an Emacs user and often found myself dropping out of emacs to find a note I needed in nvALT. I went looking for the best way to index and access my nvALT notes inside Emacs, and found the very cool emacs script called <a href="http://jblevins.org/projects/deft/">Deft</a> that works with <a href="http://jblevins.org/projects/markdown-mode/">EMacs Markdown Mode</a> to create the equivalent of nvALT inside of emacs. It can be configured to work with the nvALT repository so they work well together.</p>
-
-<p>A few pointers&hellip;</p>
-
-<ul>
-<li>If you use markdown in nvALT as I do, follow the instructions to install <a href="http://jblevins.org/projects/markdown-mode/">markdown-mode</a> via git clone.</li>
-<li>Follow the instructions to install  <a href="http://jblevins.org/projects/deft/">Deft</a> via git clone. It is an active repository, so clone makes keeping up-to-date easy. Also update init.el to require the deft.el script.</li>
-<li>For markdown and nvALT using the flat file config (see  <a href="http://www.pragmaux.com/post/38158334752/wiki-searchable-notes">wiki-searchable-notes</a> for flat file config) you need to add a few additional expressions in init.el. Add these four lines as discussed on the deft documentation.</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>(setq deft-extension "md")
-</span><span class='line'>(setq deft-directory "~/Development/wikis/Notes.wiki/")
-</span><span class='line'>(setq deft-text-mode 'markdown-mode)
-</span><span class='line'>(setq deft-use-filename-as-title t)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Follow the instructions to map a keyboard shortcut to open deft. I use H-d (see my <a href="http://www.pragmaux.com/post/41867238595/emacs-experimental-hyper-key-mappings">emacs hyper-key post</a> ) but a simple function key mapping would be.</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key [f8] 'deft)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>    <br/>
-* Create a symlink from ~/.deft to your nvALT notes directory, this is shown in the nvALT preferences under the notes tab. See example below.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s ~/Documents/notes/ .deft</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When you eval init.el or restart emacs you should be set. Fire up Deft and the UI will operate just like nvALT, only it works in an Emacs buffer!!</p>
 ]]></content>
   </entry>
   

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Org Mode ES2015+ Code Blocks - </title>
+  <title>Org Mode ES2015+ Code Blocks (updated) - </title>
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Updated: I have updated instructions for installing and using the recently released Babel 6 with org mode. I use emacs org mode to keep notes &hellip;">
+  <meta name="description" content="Note: In this post I have updated the instructions for use with Babel 6x. For Babel 5x see the original post. Babel 6x is a significant change from &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/">
+  <link rel="canonical" href="http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -84,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Org Mode ES2015+ Code Blocks</h1>
+      <h1 class="entry-title">Org Mode ES2015+ Code Blocks (Updated)</h1>
     
     
       <p class="meta">
@@ -100,7 +100,7 @@
   
 
 
-<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
+<time datetime="2016-03-09T16:57:00-08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2016</time>
         
       </p>
     
@@ -108,15 +108,13 @@
 
 
 <div class="entry-content"><ul>
-<li><strong>Updated:</strong> I have <a href="/blog/2016/03/09/org-with-babel-node-updated/">updated instructions</a> for installing and using the recently released <em>Babel 6</em> with <em>org mode</em>.</li>
+<li><strong>Note:</strong> In this post I have updated the instructions for use with <em>Babel 6x</em>. For <em>Babel 5x</em> see the <a href="/blog/2015/10/06/org-with-babel-node/">original post</a>.</li>
 </ul>
 
 
-<p>I use <strong>emacs org mode</strong> to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">Org + Deft</a> it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.</p>
+<p>Babel 6x is a significant change from Babel 5x, as the <em>cli</em> is now a separate node module called <em>babel-cli</em> and transforms are now also delivered as separate packages.</p>
 
-<p>As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.</p>
-
-<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the config below with the location of any local node modules you want to pick up. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
+<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the configuration below with the location of any local node modules you want to use. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
 
 <p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
 
@@ -142,22 +140,42 @@
 </span><span class='line'> '((js . t)))</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Next install the babel npm module globally, this allows you to call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.</p>
+<p>You can choose to install the Babel modules globally, or you can do it locally. In this example I will install them locally in the org directory (~/org/node_modules).</p>
+
+<p>Next install the <em>babel-cli</em> module, this allows you to call Babel from the command line. You will also want to install the transforms you plan to use, the example below installs the common preset transforms used with <em>Babel 6</em>. Also install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path to <em>node_modules</em> set above.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g babel
-</span><span class='line'>npm install mongodb
-</span><span class='line'>npm install bluebird</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install --save-dev babel-cli
+</span><span class='line'>npm install --save-dev babel-preset-es2015
+</span><span class='line'>npm install --save-dev babel-preset-stage-0
+</span><span class='line'>npm install --save-dev babel-preset-stage-1
+</span><span class='line'>npm install --save-dev babel-preset-stage-2
+</span><span class='line'>npm install --save-dev babel-preset-stage-3
+</span><span class='line'>npm install --save-dev babel-preset-react
+</span><span class='line'>npm install --save-dev mongodb
+</span><span class='line'>npm install --save-dev bluebird</span></code></pre></td></tr></table></div></figure>
 
 
-<p>The default  org-mode interpreter for js is node, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case <strong>babel-node</strong>, which also transpiles.</p>
+<p>Next you want to set up a symbolic link to the <em>babel-cli</em> script you just installed so it can be found from the command line. I decided to call it <em>org-babel-node</em> so it won&rsquo;t interfere with a <em>babel-node</em> executable linked to a global module of the same name.</p>
 
-<p>Adding  <em>:cmd &ldquo;babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the babel_node command instead of the default JavaScript interpreter. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ln -s ~/org/node_modules/babel-cli/bin/babel-node.js /usr/local/bin/org-babel-node</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The default org-mode interpreter for JavaScript is <em>Node</em>, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case the <strong>babel-node</strong> transpiler installed earlier and linked as <em>org-babel-node</em>.</p>
+
+<p>Adding  <em>:cmd &ldquo;org-babel-node&rdquo;</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the <em>org-babel-node</em> transpiler instead of the default JavaScript interpreter. Because <em>Babel 6</em> uses external modules for transforms you need to also tell Babel which preset or plugins you wish to use with either the <strong>&mdash;presets</strong> or <strong>&mdash;plugins</strong> options. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
 
 <pre><code>   #+name: db.activities.findOne
-   #+begin_src js :cmd "babel-node" :results output drawer
+   #+begin_src js :cmd "org-babel-node --presets stage-1" :results output drawer
       (async function(){
           try {
               let MongoDB = require('mongodb');
@@ -182,7 +200,7 @@
 <p>The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.</p>
 
 <pre><code>   #+name: db.activities.findOne
-   #+begin_src js :cmd "babel-node" :results output drawer
+   #+begin_src js :cmd "org-babel-node --presets stage-1" :results output drawer
       (async function(){
           try {
               let MongoDB = require('mongodb');
@@ -230,7 +248,7 @@
   
 
 
-<time datetime="2015-10-06T16:57:00-07:00" pubdate data-updated="true">Oct 6<span>th</span>, 2015</time>
+<time datetime="2016-03-09T16:57:00-08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2016</time>
       
 
 
@@ -238,7 +256,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/" data-via="" data-counturl="http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/" data-via="" data-counturl="http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/" >Tweet</a>
   
   
   
@@ -247,10 +265,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/09/09/esp8266-initial-notes/" title="Previous Post: ESP8266 Initial Notes">&laquo; ESP8266 Initial Notes</a>
+        <a class="basic-alignment left" href="/blog/2016/01/27/ancs-example-on-blend-nano/" title="Previous Post: ANCS Example on BLE Nano">&laquo; ANCS Example on BLE Nano</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/01/23/ancs-message-display/" title="Next Post: ANCS Message Display">ANCS Message Display &raquo;</a>
       
     </p>
   </footer>
@@ -375,8 +391,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/';
-        var disqus_url = 'http://fooqri.github.io/blog/2015/10/06/org-with-babel-node/';
+        var disqus_identifier = 'http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/';
+        var disqus_url = 'http://fooqri.github.io/blog/2016/03/09/org-with-babel-node-updated/';
         var disqus_script = 'embed.js';
       
     (function () {
