@@ -6,7 +6,7 @@ comments: true
 author: "Patrick Goddi"
 categories: [emacs, productivity] 
 ---
-In a previous post [wiki-searchable-notes](http://www.pragmaux.com/post/38158334752/wiki-searchable-notes) I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.
+In a previous post [wiki-searchable-notes](/blog/2012/12/17/wiki-plus-searchable-notes/) I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.
 
 I am an Emacs user and often found myself dropping out of emacs to find a note I needed in nvALT. I went looking for the best way to index and access my nvALT notes inside Emacs, and found the very cool emacs script called [Deft](http://jblevins.org/projects/deft/) that works with [EMacs Markdown Mode](http://jblevins.org/projects/markdown-mode/) to create the equivalent of nvALT inside of emacs. It can be configured to work with the nvALT repository so they work well together.
 
