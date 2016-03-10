@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="We are down to one car, as we can walk/bike to about anything we could possibly need including caltrain and light rail. So the garage is now empty &hellip;">
+  <meta name="description" content="I built a handful of prototype devices using Intel Edison boards to hand out to testers, but one challenge is each tester will bring the devices to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,190 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/16/edison-wifi-config/">Edison Wi-Fi Configuration</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-16T13:55:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="//s3.amazonaws.com/rwx-blog/IMG_4161.JPG"  style="height: 400px; display: block; margin: auto;"></p>
+
+<p>I built a handful of prototype devices using Intel Edison boards to hand out to testers, but one challenge is each tester will bring the devices to their own Wi-Fi environment (home, work, etc). The default method for configuring an Edison is to use a console and the command line configuration tool to add a Wi-Fi access point.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>configure_edison --wifi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <em>configure_edison</em> app will scan for Wi-Fi networks and provide a list of networks for the user to pick from, and then prompt the user for the access point password. Since my headless IoT device has no traditional interface, let alone terminal interface this posed a problem. I needed a way for users to configure the device for new Wi-Fi networks as they were encountered, and make it accessible using a web page presented by the Edison. I will post the code once I have it completed and tested with users but for a quick hint the trick is to allow the running node.js app to switch the device between access point mode and client mode so if no network is available the device becomes an access point allowing the user to use any Wi-Fi enabled device to connect with it. Once connected the user can use a standard web browser to update the configuration to include the new Wi-Fi network they are intending to use.</p>
+
+<h3>wpa_supplicant</h3>
+
+<p>The Edison uses the wpa_supplicant service to manage the client-mode Wi-Fi. The wpa_supplicant configuration file is located at: <strong>/etc/wpa_supplicant/wpa_supplicant.conf</strong></p>
+
+<p>Wi-Fi networks are added and removed by updating this configuration file. Se an example configuration below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ctrl_interface=/var/run/wpa_supplicant
+</span><span class='line'>ctrl_interface_group=0
+</span><span class='line'>config_methods=virtual_push_button virtual_display push_button keypad
+</span><span class='line'>update_config=1
+</span><span class='line'>fast_reauth=1
+</span><span class='line'>device_name=Edison
+</span><span class='line'>manufacturer=Intel
+</span><span class='line'>model_name=Edison
+</span><span class='line'>
+</span><span class='line'>network={
+</span><span class='line'>  ssid="guest"
+</span><span class='line'>  key_mgmt=WPA-PSK
+</span><span class='line'>  pairwise=CCMP TKIP
+</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
+</span><span class='line'>  eap=TTLS PEAP TLS
+</span><span class='line'>  psk="guest_pw"
+</span><span class='line'>  id_str="guest"
+</span><span class='line'>  priority=4
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>network={
+</span><span class='line'>  ssid="MyPhone"
+</span><span class='line'>  key_mgmt=WPA-PSK
+</span><span class='line'>  pairwise=CCMP TKIP
+</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
+</span><span class='line'>  eap=TTLS PEAP TLS
+</span><span class='line'>  psk="hotspot_pw"
+</span><span class='line'>  id_str="iphone_hotspot"
+</span><span class='line'>  priority=2
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see I have added two networks to the configuration, and given the network associated with my phone (in personal hotspot mode) a lower priority so it will be a fallback only. <em>Note: you can change the name of your iPhone (and thus its personal hotspot) using itunes, and you can find the hotspot password in the hotspot settings on the iphone.</em></p>
+
+<p>You can also add support for connecting to any open network (at your own risk) with an empty network statement</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>network={
+</span><span class='line'>  id_str="open"
+</span><span class='line'>  priority=0
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the network you are connecting to has a hidden ssid then you need to add <em>scan_ssid=1</em> to the configuration description. Because <em>scan_ssid=0</em> is the default setting and is used for a broadcast ssid it can be omitted from the configuration of networks using a broadcast ssid.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>network={
+</span><span class='line'>  scan_ssid=1
+</span><span class='line'>  ssid="MyHiddenSSID"
+</span><span class='line'>  key_mgmt=WPA-PSK
+</span><span class='line'>  pairwise=CCMP TKIP
+</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
+</span><span class='line'>  eap=TTLS PEAP TLS
+</span><span class='line'>  psk="hidden_hotspot_pw"
+</span><span class='line'>  id_str="hidden_hotspot"
+</span><span class='line'>  priority=2
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Switching to AP mode and back</h3>
+
+<p>The Edison comes pre-configured for AP mode but if you are curious about changing the settings the configuration file can be found at <em>/etc/hostapd/hostapd.conf</em>.  The other key networking file that should require no changes for this configuration is <em>/etc/network/interfaces</em>.</p>
+
+<p>In the case when no configured network is available it is possible to connect a gesture (my device has an mpu-6050) to force the device into AP mode so it can get information from the user about how to connect to a new local network. The gesture observer thread can inform the node app when the preconditions of an AP mode switch should occur, the node app can then switch the Wi-Fi network temporarily to AP mode.</p>
+
+<p>This is accomplished by stoping the wpa_supplicant service and starting the APN services using these two system commands that can be executed in  exec() or spawn() calls.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl stop wpa_supplicant
+</span><span class='line'>systemctl start hostapd</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Adding a network</h3>
+
+<p>Now the device is in AP mode and the user can connect to the device by selecting it from the list of available networks, and go to the device confguration page for information about available networks and choose one to connect to. I won&rsquo;t get into the scanning now but you can look <a href="https://goo.gl/xDxM5R" target="_blank">here</a> for more info on using _wpa_cli scan<strong> and </strong>wpa scan_results__ for getting info on available networks.</p>
+
+<p>Once the user chooses a network and provides a password you can configure the device to use the network. My preference is to add the network and a config entry in the wpa_supplicant.conf file so the network can be used again in the future, but you can also use the wpa_cli to configure the network directly. Just use the format shown above to append your entry to the file.</p>
+
+<h3>Switch back to Wi-Fi client mode to connect to the newly added network.</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wpa_cli reconfigure
+</span><span class='line'>systemctl stop hostapd
+</span><span class='line'>systemctl start wpa_supplicant</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I will add my code for the entire process to a public gist when I have fully tested it out, and update this post.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -659,60 +843,6 @@ sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName Working in RubyMotion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Just a quick note, I was getting an undefined constant error for
-RKLogConfigureByName, the standard way of setting up logging in
-RestKit. It seems that the #define statements in the
-<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
-picked up. I am using the pod and loading with RubyMotion pod support,
-so Iåm not sure what the issue is. I will need to investigate further
-but this quick workaround works, just call the lower-level method
-mapped via the #define. For example instead of RKLogConfigureByName
-use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
-use instead of the RKLogLevel constants. I also included an example of
-how they are used, in this case I have put the setup in a method, and
-it gets called from the the standard didFinishLaunchingWithOption
-application block.</p>
-
-<div><script src='https://gist.github.com/4733618.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -762,6 +892,10 @@ application block.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
       </li>
     
@@ -775,10 +909,6 @@ application block.</p>
     
       <li class="post">
         <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
       </li>
     
   </ul>

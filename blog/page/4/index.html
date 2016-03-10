@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code &hellip;">
+  <meta name="description" content="I have been investigating using the ruby state_machine gem for a project. State machines can be very handy in simplifying code where objects move &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,111 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/15/simple-state-machine-example/">Simple State Machine Example</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-15T12:24:00-08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been investigating using the ruby <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem for a project. State machines can be very handy in simplifying code where objects move through various states. The <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example.  The todo list will include a main list that contains items and sublists.  This allows a way to organize items easily into sublists.</p>
+
+<p>A simple way to do this is to declare two classes <em>List</em> and <em>Item</em> and allow an object of class <em>List</em> to contain a list of <em>Lists</em> and a list of <em>Items</em>. This approach allows a flat list with many items, or a hierarchical list with top-level items, but also sub-lists that contain their own items.</p>
+
+<p>In addition to lists and items, I want is to track whether I have completed all of the items in a list. In the case of a hierarchical list this means all items of sub-lists as well. Thus in addition to lists and items, we need to track whether items and lists are in progress or completed.</p>
+
+<p>The next step is deciding on the states of the two object types. For my example, I decided:
+* a list will have an initial state of <em>available</em>, and will transition to state <em>started</em> when the first item on the list is completed. When all items and sublists are <em>completed</em> the list will move to the state <em>completed</em>.
+* an item will have an initial state of <em>available</em> and will transition to <em>completed</em> when the item is finished.</p>
+
+<p>Finally I want to inform the user when:
+* an item is completed
+* a list is completed
+* the project is completed (all items and sublists are completed)</p>
+
+<p>Here is a quick example of the code to meet these requirements:</p>
+
+<div><script src='https://gist.github.com/4549146.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
+
+<p>Now if you load this example in IRB you can play with the lists and items like so:</p>
+
+<pre><code> load "list_example.rb"
+ list = List.new("Groceries", "Get some groceries")
+ wf = list.add_list("Whole Foods", "Get some groceries from Whole Foods")
+ milk = list.add_item("Milk", "2% Milk")
+ strawberries = wf.add_item("Strawberries", "Ripe organic Strawberries"))
+ oranges = wf.add_item("Oranges", "Ripe mandarine oranges")
+
+ strawberries.finish 
+ =&amp;gt; finished item Strawberries
+
+ oranges.finish  
+ =&amp;gt; finished item Oranges
+ =&amp;gt; congrats on completing list Whole Foods
+
+ milk.finish
+ =&amp;gt; finished item Milk
+ =&amp;gt; congrats on completing project Groceries
+</code></pre>
+
+<p>This was a really simple example, but shows how easy it is to create classes that embed state machines. For more check out the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem.</p>
+
+<h3>State Diagrams</h3>
+
+<p>The library also allows you to generate graphs of the states and transitions in each class. For example:</p>
+
+<p>create a Rakefile.rb</p>
+
+<pre><code> require 'tasks/state_machine'
+ require './list_example.rb
+</code></pre>
+
+<p>Then in terminal execute:</p>
+
+<pre><code> rake state_machine:draw CLASS=List 
+</code></pre>
+
+<p>For the <em>List</em> class shown above this will generate a png file named <em>List_list_state.png</em> that looks like the image below.</p>
+
+<p><img src="http://media.tumblr.com/d78e332b4656b62dec36c2a2d2408a82/tumblr_inline_mgqav0Q8uW1qz562v.png" alt="" /></p>
+
+<p>The <em>List</em> class is very simple so the diagram is also simple. In the case of my project there are many states and more complicated transitions between states so the diagram can be very handy to visualize what is happening when  debugging a strange transition,</p>
+
+<h3>Wrapup</h3>
+
+<p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes.  If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -515,48 +620,6 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/26/foldingtext-and-productivity/">FoldingText and Productivity</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-26T19:19:00-08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have been using the <a href="http://www.foldingtext.com/">FoldingText</a> app for  a couple of weeks. It is a very interesting app targeting writers, something I am not, but I was intrigued by the  interactivity of this minimalist app. Specifically the ability to add interactive todo lists and timers and have them execute in a text document. Please take a look at the <a href="http://www.foldingtext.com/#watchmovie">FoldingText Video</a> to get a feel for it, I don&rsquo;t want to describe ideas that a video shows so clearly.</p>
-
-<p>I have been using it for my daily plan the past 2 weeks. I usually start each day with a mix of items I want to accomplish. These items usually include a mix of coding items for a sprint, some user stories for the backlog, and some wireframes for a future sprint, etc.  The mix keeps the day feeling balanced. I add a mix of these to the day&rsquo;s plan, and then organize them into <a href="http://en.wikipedia.org/wiki/Pomodoro_Technique">pomodoro</a> time slices.</p>
-
-<p>The app&rsquo;s simplicity allows some really interesting customization that isn&rsquo;t present in an app like Vitamin-R, which is a good pomodoro app, but like most apps is not very flexible. For example, I have found that keeping the daily plan, now and later notes, and the time slices all in a single document is very powerful. Further I can add notes indented under time slices to describe what I did during each slice. Since everything is in a single text document (markdown) and lives in my nvALT notes app, I can easily search and find my daily notes that include what I accomplished each day, etc. This is good for reviewing how well certain activities mix together, looking at my velocity over time, etc.</p>
-
-<p>All of that is useful but the reason for my making this post is that I find the interaction model to be very interesting, basically a text document with very simple embedded mini-apps that are triggered by simple human-readable phrases that add functionality while the document is open and in use. With all output living in the text document. It gives hints of a feeing of empowerment that early spreadsheet apps like Lotus123 delivered. I can imagine all sorts of useful embedded mini-apps, the key will be maintaining the simplicity. Many apps used for productivity today are incredibly prescriptive, FoldingText feels like you are really in control and able to customize the document as a very simple app. Of course FoldingText itself is still more of an app than a platform, but I can imagine it as a platform with many developers adding these mini-apps. Todo lists and timers seem like a powerful start, I can&rsquo;t wait to see what comes next.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -606,6 +669,10 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
       </li>
     
@@ -619,10 +686,6 @@ Get the book: <a href="http://www.amazon.com/How-Measure-Anything-Intangibles-e
     
       <li class="post">
         <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
       </li>
     
   </ul>

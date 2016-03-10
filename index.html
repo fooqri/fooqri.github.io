@@ -9,7 +9,7 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="Note: In this post I have updated the instructions for use with Babel 6x. For Babel 5x see the original post. Babel 6x is a significant change from &hellip;">
+  <meta name="description" content="In the nvALT and Emacs post I described an integration between nvAlt and Emacs using Deft for markdown notes. I the past year I have moved to using &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,68 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-10T00:00:00-08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the <a href="http://rwx.io/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs post</a> I described an integration between <em>nvAlt</em> and <em>Emacs</em> using <a href="http://jblevins.org/projects/deft/">Deft</a> for <em>markdown</em> notes. I the past year I have moved to using <em>Deft</em> for <em>org</em> notes rather than <em>markdown</em> notes. The nice thing about combining Deft with Org is that your notes are indexed and easy to find using Deft, but also retain all of the power of Org to orgainize and present information. For example typing <em>parsing</em> into <strong>deft</strong> quickly cuts down hundreds of org text notes to the handful that have the tag or word <strong>parsing</strong> in them. Deft makes it easy to create new notes also, simply type a title and hit <em>ctrl-return</em> to create a new note with that title.</p>
+
+<p><img src="/images/750af164-e70b-11e5-8302-040cce2069a4.png" alt="img" /></p>
+
+<p>Below I describe setting up Deft for emacs, and show my current customization&rsquo;s.  Org also supports export to many different formats. In a future posts I will cover my setup for exporting notes to <em>markdown</em> documents, <em>reveal</em> presentations, and even <em>mindmaps</em>.</p>
+
+<p>Follow the instructions at <a href="http://jblevins.org/projects/deft/">Deft</a> to install from source (usually the latest version this way) or use the Emacs package installer as shown below.</p>
+
+<pre><code>M-x package-install deft
+</code></pre>
+
+<p>I prefer to use Deft for <em>org</em> files and not others (txt, md, etc), so that is reflected in my configuration below. Using <a href="http://rwx.io/blog/2012/12/30/remapping-my-caps-lock-key/">this technique</a> I converted the tab key into a hyper-key (C-M-S-s), so with the key mapping below Deft can be called up with <strong>tab-d</strong> This technique is nice, because the tab key still works for tabbing, but when held down it acts like an additional modifier key that can be use in emacs key bindings.</p>
+
+<pre><code>(require 'deft)
+(setq deft-default-extension "org")
+(setq deft-extensions '("org"))
+(setq deft-directory "~/org")
+(setq deft-recursive t)
+(setq deft-use-filename-as-title nil)
+(setq deft-use-filter-string-for-filename t)
+(setq deft-file-naming-rules '((noslash . "-")
+                               (nospace . "-")
+                               (case-fn . downcase)))
+(setq deft-text-mode 'org-mode)
+(global-set-key (kbd "C-M-S-s-d") 'deft)
+(global-set-key (kbd "C-x C-g") 'deft-find-file)
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1034,7 +1096,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#x6d;&#101;&#64;&#109;&#121;&#46;&#101;&#x6d;&#x61;&#x69;&#108;">&#x6d;&#101;&#64;&#x6d;&#x79;&#46;&#x65;&#109;&#x61;&#x69;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#109;&#x65;&#x40;&#109;&#x79;&#46;&#x65;&#x6d;&#x61;&#105;&#x6c;">&#x6d;&#x65;&#64;&#109;&#121;&#46;&#101;&#x6d;&#x61;&#x69;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
@@ -1534,190 +1596,6 @@ and change the last line to use a port other than 80.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/16/edison-wifi-config/">Edison Wi-Fi Configuration</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-16T13:55:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2015</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="//s3.amazonaws.com/rwx-blog/IMG_4161.JPG"  style="height: 400px; display: block; margin: auto;"></p>
-
-<p>I built a handful of prototype devices using Intel Edison boards to hand out to testers, but one challenge is each tester will bring the devices to their own Wi-Fi environment (home, work, etc). The default method for configuring an Edison is to use a console and the command line configuration tool to add a Wi-Fi access point.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>configure_edison --wifi</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <em>configure_edison</em> app will scan for Wi-Fi networks and provide a list of networks for the user to pick from, and then prompt the user for the access point password. Since my headless IoT device has no traditional interface, let alone terminal interface this posed a problem. I needed a way for users to configure the device for new Wi-Fi networks as they were encountered, and make it accessible using a web page presented by the Edison. I will post the code once I have it completed and tested with users but for a quick hint the trick is to allow the running node.js app to switch the device between access point mode and client mode so if no network is available the device becomes an access point allowing the user to use any Wi-Fi enabled device to connect with it. Once connected the user can use a standard web browser to update the configuration to include the new Wi-Fi network they are intending to use.</p>
-
-<h3>wpa_supplicant</h3>
-
-<p>The Edison uses the wpa_supplicant service to manage the client-mode Wi-Fi. The wpa_supplicant configuration file is located at: <strong>/etc/wpa_supplicant/wpa_supplicant.conf</strong></p>
-
-<p>Wi-Fi networks are added and removed by updating this configuration file. Se an example configuration below.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ctrl_interface=/var/run/wpa_supplicant
-</span><span class='line'>ctrl_interface_group=0
-</span><span class='line'>config_methods=virtual_push_button virtual_display push_button keypad
-</span><span class='line'>update_config=1
-</span><span class='line'>fast_reauth=1
-</span><span class='line'>device_name=Edison
-</span><span class='line'>manufacturer=Intel
-</span><span class='line'>model_name=Edison
-</span><span class='line'>
-</span><span class='line'>network={
-</span><span class='line'>  ssid="guest"
-</span><span class='line'>  key_mgmt=WPA-PSK
-</span><span class='line'>  pairwise=CCMP TKIP
-</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
-</span><span class='line'>  eap=TTLS PEAP TLS
-</span><span class='line'>  psk="guest_pw"
-</span><span class='line'>  id_str="guest"
-</span><span class='line'>  priority=4
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>network={
-</span><span class='line'>  ssid="MyPhone"
-</span><span class='line'>  key_mgmt=WPA-PSK
-</span><span class='line'>  pairwise=CCMP TKIP
-</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
-</span><span class='line'>  eap=TTLS PEAP TLS
-</span><span class='line'>  psk="hotspot_pw"
-</span><span class='line'>  id_str="iphone_hotspot"
-</span><span class='line'>  priority=2
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As you can see I have added two networks to the configuration, and given the network associated with my phone (in personal hotspot mode) a lower priority so it will be a fallback only. <em>Note: you can change the name of your iPhone (and thus its personal hotspot) using itunes, and you can find the hotspot password in the hotspot settings on the iphone.</em></p>
-
-<p>You can also add support for connecting to any open network (at your own risk) with an empty network statement</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>network={
-</span><span class='line'>  id_str="open"
-</span><span class='line'>  priority=0
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If the network you are connecting to has a hidden ssid then you need to add <em>scan_ssid=1</em> to the configuration description. Because <em>scan_ssid=0</em> is the default setting and is used for a broadcast ssid it can be omitted from the configuration of networks using a broadcast ssid.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>network={
-</span><span class='line'>  scan_ssid=1
-</span><span class='line'>  ssid="MyHiddenSSID"
-</span><span class='line'>  key_mgmt=WPA-PSK
-</span><span class='line'>  pairwise=CCMP TKIP
-</span><span class='line'>  group=CCMP TKIP WEP104 WEP40
-</span><span class='line'>  eap=TTLS PEAP TLS
-</span><span class='line'>  psk="hidden_hotspot_pw"
-</span><span class='line'>  id_str="hidden_hotspot"
-</span><span class='line'>  priority=2
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Switching to AP mode and back</h3>
-
-<p>The Edison comes pre-configured for AP mode but if you are curious about changing the settings the configuration file can be found at <em>/etc/hostapd/hostapd.conf</em>.  The other key networking file that should require no changes for this configuration is <em>/etc/network/interfaces</em>.</p>
-
-<p>In the case when no configured network is available it is possible to connect a gesture (my device has an mpu-6050) to force the device into AP mode so it can get information from the user about how to connect to a new local network. The gesture observer thread can inform the node app when the preconditions of an AP mode switch should occur, the node app can then switch the Wi-Fi network temporarily to AP mode.</p>
-
-<p>This is accomplished by stoping the wpa_supplicant service and starting the APN services using these two system commands that can be executed in  exec() or spawn() calls.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>systemctl stop wpa_supplicant
-</span><span class='line'>systemctl start hostapd</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Adding a network</h3>
-
-<p>Now the device is in AP mode and the user can connect to the device by selecting it from the list of available networks, and go to the device confguration page for information about available networks and choose one to connect to. I won&rsquo;t get into the scanning now but you can look <a href="https://goo.gl/xDxM5R" target="_blank">here</a> for more info on using _wpa_cli scan<strong> and </strong>wpa scan_results__ for getting info on available networks.</p>
-
-<p>Once the user chooses a network and provides a password you can configure the device to use the network. My preference is to add the network and a config entry in the wpa_supplicant.conf file so the network can be used again in the future, but you can also use the wpa_cli to configure the network directly. Just use the format shown above to append your entry to the file.</p>
-
-<h3>Switch back to Wi-Fi client mode to connect to the newly added network.</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wpa_cli reconfigure
-</span><span class='line'>systemctl stop hostapd
-</span><span class='line'>systemctl start wpa_supplicant</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I will add my code for the entire process to a public gist when I have fully tested it out, and update this post.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1765,6 +1643,10 @@ and change the last line to use a port other than 80.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
       </li>
     
@@ -1778,10 +1660,6 @@ and change the last line to use a port other than 80.</p>
     
       <li class="post">
         <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
       </li>
     
   </ul>

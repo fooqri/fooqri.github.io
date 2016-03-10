@@ -9,7 +9,9 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="In a previous post wiki-searchable-notes I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes &hellip;">
+  <meta name="description" content="Just a quick note, I was getting an undefined constant error for
+RKLogConfigureByName, the standard way of setting up logging in
+RestKit. It seems &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +83,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName Working in RubyMotion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-07T15:21:00-08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Just a quick note, I was getting an undefined constant error for
+RKLogConfigureByName, the standard way of setting up logging in
+RestKit. It seems that the #define statements in the
+<em>/vendor/Pods/RestKit/Code/Support/RKLog.h</em> file are not getting
+picked up. I am using the pod and loading with RubyMotion pod support,
+so Iåm not sure what the issue is. I will need to investigate further
+but this quick workaround works, just call the lower-level method
+mapped via the #define. For example instead of RKLogConfigureByName
+use RKlcl_configure_by_name.  I also list all the RKlcl_v constants to
+use instead of the RKLogLevel constants. I also included an example of
+how they are used, in this case I have put the setup in a method, and
+it gets called from the the standard didFinishLaunchingWithOption
+application block.</p>
+
+<div><script src='https://gist.github.com/4733618.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -601,111 +657,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/15/simple-state-machine-example/">Simple State Machine Example</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-15T12:24:00-08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have been investigating using the ruby <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem for a project. State machines can be very handy in simplifying code where objects move through various states. The <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example.  The todo list will include a main list that contains items and sublists.  This allows a way to organize items easily into sublists.</p>
-
-<p>A simple way to do this is to declare two classes <em>List</em> and <em>Item</em> and allow an object of class <em>List</em> to contain a list of <em>Lists</em> and a list of <em>Items</em>. This approach allows a flat list with many items, or a hierarchical list with top-level items, but also sub-lists that contain their own items.</p>
-
-<p>In addition to lists and items, I want is to track whether I have completed all of the items in a list. In the case of a hierarchical list this means all items of sub-lists as well. Thus in addition to lists and items, we need to track whether items and lists are in progress or completed.</p>
-
-<p>The next step is deciding on the states of the two object types. For my example, I decided:
-* a list will have an initial state of <em>available</em>, and will transition to state <em>started</em> when the first item on the list is completed. When all items and sublists are <em>completed</em> the list will move to the state <em>completed</em>.
-* an item will have an initial state of <em>available</em> and will transition to <em>completed</em> when the item is finished.</p>
-
-<p>Finally I want to inform the user when:
-* an item is completed
-* a list is completed
-* the project is completed (all items and sublists are completed)</p>
-
-<p>Here is a quick example of the code to meet these requirements:</p>
-
-<div><script src='https://gist.github.com/4549146.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
-
-<p>Now if you load this example in IRB you can play with the lists and items like so:</p>
-
-<pre><code> load "list_example.rb"
- list = List.new("Groceries", "Get some groceries")
- wf = list.add_list("Whole Foods", "Get some groceries from Whole Foods")
- milk = list.add_item("Milk", "2% Milk")
- strawberries = wf.add_item("Strawberries", "Ripe organic Strawberries"))
- oranges = wf.add_item("Oranges", "Ripe mandarine oranges")
-
- strawberries.finish 
- =&amp;gt; finished item Strawberries
-
- oranges.finish  
- =&amp;gt; finished item Oranges
- =&amp;gt; congrats on completing list Whole Foods
-
- milk.finish
- =&amp;gt; finished item Milk
- =&amp;gt; congrats on completing project Groceries
-</code></pre>
-
-<p>This was a really simple example, but shows how easy it is to create classes that embed state machines. For more check out the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem.</p>
-
-<h3>State Diagrams</h3>
-
-<p>The library also allows you to generate graphs of the states and transitions in each class. For example:</p>
-
-<p>create a Rakefile.rb</p>
-
-<pre><code> require 'tasks/state_machine'
- require './list_example.rb
-</code></pre>
-
-<p>Then in terminal execute:</p>
-
-<pre><code> rake state_machine:draw CLASS=List 
-</code></pre>
-
-<p>For the <em>List</em> class shown above this will generate a png file named <em>List_list_state.png</em> that looks like the image below.</p>
-
-<p><img src="http://media.tumblr.com/d78e332b4656b62dec36c2a2d2408a82/tumblr_inline_mgqav0Q8uW1qz562v.png" alt="" /></p>
-
-<p>The <em>List</em> class is very simple so the diagram is also simple. In the case of my project there are many states and more complicated transitions between states so the diagram can be very handy to visualize what is happening when  debugging a strange transition,</p>
-
-<h3>Wrapup</h3>
-
-<p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes.  If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -755,6 +706,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
       </li>
     
@@ -768,10 +723,6 @@
     
       <li class="post">
         <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
       </li>
     
   </ul>
