@@ -7,7 +7,7 @@ published: true
 
 In the [nvALT and Emacs post](http://rwx.io/blog/2013/03/04/nvalt-and-emacs/) I described an integration between *nvAlt* and *Emacs* using [Deft](http://jblevins.org/projects/deft/) for *markdown* notes. I the past year I have moved to using *Deft* for *org* notes rather than *markdown* notes. The nice thing about combining Deft with Org is that your notes are indexed and easy to find using Deft, but also retain all of the power of Org to orgainize and present information. For example typing *decision boundary* into **deft** quickly cuts down hundreds of org text notes to the handful that contain the words **decision** and **boundary** in them. 
 
-Deft also supports *regex* search mode to provide more precise searches (use C-c C-t to toggle search modes). Deft makes it easy to create new notes also, simply type a title and hit *ctrl-return* to create a new note with that title. See the UI in action the animated gif below (image by [Jason Blevins](http://jblevins.org/) via [Deft](http://jblevins.org/projects/deft/) ). See the [Documentation](http://jblevins.org/projects/deft/) for other handy features.
+Deft also supports *regular expression* search mode to provide more precise searches (use C-c C-t to toggle search modes). Deft makes it easy to create new notes also, simply type a title and hit *ctrl-return* to create a new note with that title. See the UI in action the animated gif below (image by [Jason Blevins](http://jblevins.org/) via [Deft](http://jblevins.org/projects/deft/) ). See the [Documentation](http://jblevins.org/projects/deft/) for other handy features.
 
 ![img](/images/deft-v0.6.gif)
 
