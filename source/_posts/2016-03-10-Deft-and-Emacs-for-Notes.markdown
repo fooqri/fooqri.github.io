@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deft + OrgMode for Notes"
+title: "Deft + Org for Notes"
 date: 2016-03-10
 published: true
 ---
