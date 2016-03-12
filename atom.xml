@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-03-12T08:10:41-08:00</updated>
+  <updated>2016-03-12T08:23:09-08:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -26,7 +26,7 @@
 
 <p>Another purpose for notes is information logging, such as meeting notes, project team notes, daily journal, etc. Although <em>org</em> does an excellent job of supporting information logging and task management, I will leave that as a topic for a future post.</p>
 
-<p>Ideally the summary of a topic can easily be converted to a presentation, and the details can be converted to a markdown document.   I will describe below how to accomplish this. Further I will describe how to convert the notes to OPML so it can be explored as a mindmap. Also see <a href="http://octopress.dev/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + OrgMode for Notes</a> for information on quick search of all notes.</p>
+<p>Ideally the summary of a topic can easily be converted to a presentation, and the details can be converted to a markdown document.   I will describe below how to accomplish this. Further I will describe how to convert the notes to OPML so it can be explored as a mindmap. Also see <a href="http://rwx.io/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + Org for Notes</a>for information on quick search of all notes.</p>
 
 <h1>Setting Export Directory</h1>
 
@@ -185,7 +185,7 @@ alert(s);
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Deft + OrgMode for Notes]]></title>
+    <title type="html"><![CDATA[Deft + Org for Notes]]></title>
     <link href="http://fooqri.github.io/blog/2016/03/10/Deft-and-Emacs-for-Notes/"/>
     <updated>2016-03-10T00:00:00-08:00</updated>
     <id>http://fooqri.github.io/blog/2016/03/10/Deft-and-Emacs-for-Notes</id>
@@ -1019,7 +1019,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#109;&#101;&#x40;&#109;&#121;&#46;&#x65;&#x6d;&#x61;&#105;&#x6c;">&#x6d;&#x65;&#64;&#109;&#x79;&#46;&#101;&#x6d;&#x61;&#105;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x6d;&#101;&#x40;&#109;&#121;&#x2e;&#x65;&#x6d;&#x61;&#x69;&#x6c;">&#109;&#x65;&#x40;&#x6d;&#121;&#x2e;&#101;&#109;&#x61;&#105;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
