@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deft and Emacs for Notes"
+title: "Deft + OrgMode for Notes"
 date: 2016-03-10
 published: true
 ---
@@ -13,9 +13,13 @@ Deft also supports *regular expression* search mode to provide more precise sear
 
 Below I describe setting up Deft for emacs, and show my current customization's.  Org also supports export to many different formats. In a future posts I will cover my setup for exporting notes to *markdown* documents, *reveal* presentations, and even *mindmaps*. 
 
+# Installing Deft
+
 Follow the instructions at [Deft](http://jblevins.org/projects/deft/) to install from source (usually the latest version this way) or use the Emacs package installer as shown below.
 
     M-x package-install deft
+
+# Configuring Deft
 
 I prefer to use Deft for *org* files and not others (txt, md, etc), so that is reflected in my configuration below. Using [this technique](http://rwx.io/blog/2012/12/30/remapping-my-caps-lock-key/) I converted the tab key into a hyper-key (C-M-S-s), so with the key mapping below Deft can be called up with **tab-d** This technique is nice, because the tab key still works for tabbing, but when held down it acts like an additional modifier key that can be use in emacs key bindings.
 
