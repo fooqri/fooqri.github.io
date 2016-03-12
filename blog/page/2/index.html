@@ -9,7 +9,10 @@
   <meta name="author" content="Patrick Goddi">
 
   
-  <meta name="description" content="I built a handful of prototype devices using Intel Edison boards to hand out to testers, but one challenge is each tester will bring the devices to &hellip;">
+  <meta name="description" content="I have been building a few prototype devices with the following parts: Intel Edison
+Sparkfun Battery Block
+Sparkfun I2C Block
+MPU-6050 The device &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +84,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/16/esp8266/">ESP8266</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-16T15:41:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="//s3.amazonaws.com/rwx-blog/ESP8266.jpg"  style="height: 400px; display: block; margin: auto;"></p>
+
+<p>I have been building a few prototype devices with the following parts:</p>
+
+<ul>
+<li><a href="https://www.sparkfun.com/products/13024" target="_blank">Intel Edison</a></li>
+<li><a href="https://www.sparkfun.com/products/13037" target="_blank">Sparkfun Battery Block</a></li>
+<li><a href="https://www.sparkfun.com/products/13034" target="_blank">Sparkfun I2C Block</a></li>
+<li><a href="http://www.amazon.com/gp/product/B00H1OYE4Q" target="_blank">MPU-6050</a></li>
+</ul>
+
+
+<p>The device runs a node.js app that handles configuration and also posting data to a web service running in the cloud. Each user has an account and can have 1 or more devices. I won&rsquo;t get into the purpose of the device here (or a few more components it has) but the device is working for its intended early prototyping purpose.</p>
+
+<p>I have a drawer full of SparkFun Edison blocks, and often use them with an Edison for the first prototype of a device because it is such a powerful prototyping platform if you know Linux well. They Sparkfun boards are rather expensive, but so quick to use for rapid prototyping that I tend to always start with them. They also integrate well with various node libs including <a href="https://www.npmjs.com/package/cylon" target="_blank">cylon</a> and <a href="https://github.com/node-red/node-red" target="_blank">nodered</a>.</p>
+
+<p>But when it is time to build more than a few prototype units, cost does start to matter.  Replacing the Sparkfun boards with a PCB approach is the next obvious step to lowering cost and customizing the device, but in this latest device the Edison platform itself is too expensive to create the devices at the price point I am targeting. It is the perfect physical size, but the price is too high.</p>
+
+<p>After some analysis I have decided to try to reproduce the behavior of the current device using an ESP8266 instead of the Edison. I ordered some very inexpensive ESP8266 that are coming via the slow boat, but in the mean time my <a href="https://goo.gl/yCnruP" target="_blank">Sparkfun ESP8266 Thing</a> arrived. It is a breakout board featuring the ESP8266.</p>
+
+<p>I hope to get time over the next week to dive into coding the ESP8266, but if anyone has previously hooked up an MPU-6050 to an 8266 I would love to hear about your experiences and any issues, etc.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -792,57 +851,6 @@ in his <em><a href="https://gist.github.com/macournoyer/7357908" target="_blank"
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-01T12:23:00-07:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in finding the hard to find little bugs that pop-up between restkit and core data. It can also help find performance issues with the database.  Unfortunately there isn&rsquo;t any documentation for how to do this in RubyMotion. I found one solution that works to a degree. It requires installing the ios_sim app and forcing the simulator into CoreData.SQLDebug mode after the rubymotion build.</p>
-
-<p>You will need to install ios_sim</p>
-
-<pre><code>$ brew install ios-sim
-</code></pre>
-
-<p>Then add the following two line as the last lines in your RubyMotion rakefile</p>
-
-<pre><code># Be sure to substitute your app name and make sure you are using
-# the correct path to the app based on simulator version.
-ios_sim = `which ios-sim`.strip
-sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -com.apple.CoreData.SQLDebug 1"
-</code></pre>
-
-<p>This will open the simulator in CoreData.SQLDebug mode, and log debug information to the terminal.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -892,7 +900,11 @@ sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a>
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + OrgMode for Notes</a>
       </li>
     
       <li class="post">
@@ -905,10 +917,6 @@ sh "#{ios_sim} launch build/iPhoneSimulator-6.1-Development/appname.app --args -
     
       <li class="post">
         <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
       </li>
     
   </ul>

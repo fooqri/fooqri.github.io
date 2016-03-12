@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Deft and Emacs for Notes - </title>
+  <title>Deft + OrgMode for Notes - </title>
   <meta name="author" content="Patrick Goddi">
 
   
@@ -84,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Deft and Emacs for Notes</h1>
+      <h1 class="entry-title">Deft + OrgMode for Notes</h1>
     
     
       <p class="meta">
@@ -115,10 +115,14 @@
 
 <p>Below I describe setting up Deft for emacs, and show my current customization&rsquo;s.  Org also supports export to many different formats. In a future posts I will cover my setup for exporting notes to <em>markdown</em> documents, <em>reveal</em> presentations, and even <em>mindmaps</em>.</p>
 
+<h1>Installing Deft</h1>
+
 <p>Follow the instructions at <a href="http://jblevins.org/projects/deft/">Deft</a> to install from source (usually the latest version this way) or use the Emacs package installer as shown below.</p>
 
 <pre><code>M-x package-install deft
 </code></pre>
+
+<h1>Configuring Deft</h1>
 
 <p>I prefer to use Deft for <em>org</em> files and not others (txt, md, etc), so that is reflected in my configuration below. Using <a href="http://rwx.io/blog/2012/12/30/remapping-my-caps-lock-key/">this technique</a> I converted the tab key into a hyper-key (C-M-S-s), so with the key mapping below Deft can be called up with <strong>tab-d</strong> This technique is nice, because the tab key still works for tabbing, but when held down it acts like an additional modifier key that can be use in emacs key bindings.</p>
 
@@ -178,6 +182,8 @@
         <a class="basic-alignment left" href="/blog/2016/03/09/org-with-babel-node-updated/" title="Previous Post: Org Mode ES2015+ Code Blocks (updated)">&laquo; Org Mode ES2015+ Code Blocks (updated)</a>
       
       
+        <a class="basic-alignment right" href="/blog/2016/03/11/Org-Export-Configurations/" title="Next Post: Org Export Configurations">Org Export Configurations &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -223,7 +229,11 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft and Emacs for Notes</a>
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + OrgMode for Notes</a>
       </li>
     
       <li class="post">
@@ -236,10 +246,6 @@
     
       <li class="post">
         <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
       </li>
     
   </ul>
