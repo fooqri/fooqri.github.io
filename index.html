@@ -145,7 +145,7 @@
   (let* ((md-original-filename (concat (file-name-directory buffer-file-name) "export_md/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))
          (google-drive-filename (concat  "../Google Drive/notes/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))) 
     (execute-kbd-macro (kbd "C-c C-e m m"))
-    (copy-file (shell-quote-argument  md-original-filename) google-drive-filename t)
+    (copy-file  md-original-filename google-drive-filename t)
     (message  "Saved to Google Drive: %s" (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md")) )
   )
 
@@ -1306,7 +1306,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x6d;&#101;&#x40;&#109;&#x79;&#46;&#101;&#109;&#97;&#x69;&#108;">&#109;&#101;&#x40;&#109;&#x79;&#46;&#101;&#x6d;&#97;&#105;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#109;&#x65;&#x40;&#109;&#121;&#46;&#x65;&#109;&#97;&#x69;&#x6c;">&#x6d;&#101;&#x40;&#109;&#x79;&#46;&#x65;&#x6d;&#x61;&#x69;&#x6c;</a>&rdquo;</li>
 </ul>
 
 

@@ -142,7 +142,7 @@
   (let* ((md-original-filename (concat (file-name-directory buffer-file-name) "export_md/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))
          (google-drive-filename (concat  "../Google Drive/notes/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))) 
     (execute-kbd-macro (kbd "C-c C-e m m"))
-    (copy-file (shell-quote-argument  md-original-filename) google-drive-filename t)
+    (copy-file  md-original-filename google-drive-filename t)
     (message  "Saved to Google Drive: %s" (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md")) )
   )
 
