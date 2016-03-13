@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-03-13T08:21:53-07:00</updated>
+  <updated>2016-03-13T08:47:59-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -44,7 +44,7 @@
 
 <h1>Exporting to Markdown</h1>
 
-<p>The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser.</p>
+<p>The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser. The <a href="https://chrome.google.com/webstore/detail/minimalist-markdown-edito/pghodfjepegmciihfhdipmimghiakcjf?hl=en">Minamalist Markdown Editor</a> is a nice tool for viewing these documents on a Chromebook.</p>
 
 <p>The (C-c m) keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the <em>Marked 2</em> app will also allow you to follow note links to any interlinked notes. <em>Marked 2</em> provides a very nice reading interface for detailed notes so having this option is handy.</p>
 
@@ -1025,7 +1025,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x6d;&#x65;&#x40;&#109;&#x79;&#46;&#101;&#109;&#x61;&#x69;&#x6c;">&#109;&#101;&#64;&#x6d;&#x79;&#46;&#101;&#x6d;&#97;&#x69;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x6d;&#101;&#x40;&#109;&#x79;&#46;&#101;&#109;&#97;&#x69;&#108;">&#109;&#101;&#x40;&#109;&#x79;&#46;&#101;&#x6d;&#97;&#105;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
