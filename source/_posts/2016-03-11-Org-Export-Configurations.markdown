@@ -30,7 +30,7 @@ I want to keep everything under the org directory but to keep things tidy create
 
 # Exporting to Markdown
 
-The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser.
+The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser. The [Minamalist Markdown Editor](https://chrome.google.com/webstore/detail/minimalist-markdown-edito/pghodfjepegmciihfhdipmimghiakcjf?hl=en) is a nice tool for viewing these documents on a Chromebook.
 
 The (C-c m) keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the *Marked 2* app will also allow you to follow note links to any interlinked notes. *Marked 2* provides a very nice reading interface for detailed notes so having this option is handy.
 
