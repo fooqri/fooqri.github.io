@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-03-12T08:25:08-08:00</updated>
+  <updated>2016-03-13T08:21:53-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -44,11 +44,17 @@
 
 <h1>Exporting to Markdown</h1>
 
-<p>The configuration below will export markdown every time an org file is saved. The (C-c m) keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the <em>Marked 2</em> app will also allow you to follow note links to any interlinked notes. <em>Marked 2</em> provides a very nice reading interface for detailed notes so having this option is handy.</p>
+<p>The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser.</p>
+
+<p>The (C-c m) keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the <em>Marked 2</em> app will also allow you to follow note links to any interlinked notes. <em>Marked 2</em> provides a very nice reading interface for detailed notes so having this option is handy.</p>
 
 <pre><code>(defun export-org-md-command-events ()
   (interactive)
-  (execute-kbd-macro (kbd "C-c C-e m m"))
+  (let* ((md-original-filename (concat (file-name-directory buffer-file-name) "export_md/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))
+         (google-drive-filename (concat  "../Google Drive/notes/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))) 
+    (execute-kbd-macro (kbd "C-c C-e m m"))
+    (copy-file (shell-quote-argument  md-original-filename) google-drive-filename t)
+    (message  "Saved to Google Drive: %s" (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md")) )
   )
 
 ;; Auto-export org files to Markdown when saved
@@ -1019,7 +1025,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#109;&#101;&#64;&#109;&#121;&#46;&#101;&#x6d;&#x61;&#x69;&#x6c;">&#x6d;&#x65;&#64;&#109;&#121;&#46;&#x65;&#109;&#x61;&#x69;&#108;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x6d;&#x65;&#x40;&#109;&#x79;&#46;&#101;&#109;&#x61;&#x69;&#x6c;">&#109;&#101;&#64;&#x6d;&#x79;&#46;&#101;&#x6d;&#97;&#x69;&#108;</a>&rdquo;</li>
 </ul>
 
 
