@@ -116,7 +116,7 @@
 
 <p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the configuration below with the location of any local node modules you want to use. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
 
-<p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
+<p>Add the following to your emacs init.el file and evaluate it (or restart emacs). Make sure the $HOME environment variable is set in your environment; or you could just hard code the absolute path to the node_modules directory in the code below.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -130,7 +130,7 @@
 <span class='line-number'>10</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>(setenv "NODE_PATH"
 </span><span class='line'>  (concat
-</span><span class='line'>   "~/org/node_modules" ":"
+</span><span class='line'>   (getenv "HOME") "/org/node_modules"  ":"
 </span><span class='line'>   (getenv "NODE_PATH")
 </span><span class='line'>  )
 </span><span class='line'>)

@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://fooqri.github.io/atom.xml" rel="self"/>
   <link href="http://fooqri.github.io/"/>
-  <updated>2016-03-13T09:04:02-07:00</updated>
+  <updated>2016-03-17T07:25:20-07:00</updated>
   <id>http://fooqri.github.io/</id>
   <author>
     <name><![CDATA[Patrick Goddi]]></name>
@@ -245,7 +245,7 @@ alert(s);
 
 <p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>&ldquo;~/org/node_modules&rdquo;</em> in the configuration below with the location of any local node modules you want to use. Using this approach you don&rsquo;t have to pollute the global node_module directory if you don&rsquo;t want to.</p>
 
-<p>Add the following to your emacs init.el file and evaluate it (or restart emacs).</p>
+<p>Add the following to your emacs init.el file and evaluate it (or restart emacs). Make sure the $HOME environment variable is set in your environment; or you could just hard code the absolute path to the node_modules directory in the code below.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -259,7 +259,7 @@ alert(s);
 <span class='line-number'>10</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>(setenv "NODE_PATH"
 </span><span class='line'>  (concat
-</span><span class='line'>   "~/org/node_modules" ":"
+</span><span class='line'>   (getenv "HOME") "/org/node_modules"  ":"
 </span><span class='line'>   (getenv "NODE_PATH")
 </span><span class='line'>  )
 </span><span class='line'>)
@@ -1025,7 +1025,7 @@ and change the last line to use a port other than 80.</p>
 <h4>Generate a key for use with github</h4>
 
 <ul>
-<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#109;&#x65;&#x40;&#109;&#121;&#46;&#x65;&#109;&#97;&#x69;&#x6c;">&#x6d;&#101;&#x40;&#109;&#x79;&#46;&#x65;&#x6d;&#x61;&#x69;&#x6c;</a>&rdquo;</li>
+<li>ssh-keygen -t rsa -b 4096 -C &ldquo;<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#109;&#101;&#64;&#x6d;&#121;&#x2e;&#x65;&#109;&#x61;&#x69;&#108;">&#109;&#101;&#64;&#109;&#x79;&#46;&#101;&#x6d;&#x61;&#105;&#x6c;</a>&rdquo;</li>
 </ul>
 
 
