@@ -11,12 +11,12 @@ Babel 6x is a significant change from Babel 5x, as the *cli* is now a separate n
 
 First make a few changes to the emacs environment so you can use JavaScript in __org mode__, as well as find local _node.js_ modules you have installed. Replace _"~/org/node_modules"_ in the configuration below with the location of any local node modules you want to use. Using this approach you don't have to pollute the global node_module directory if you don't want to.
 
-Add the following to your emacs init.el file and evaluate it (or restart emacs).
+Add the following to your emacs init.el file and evaluate it (or restart emacs). Make sure the $HOME environment variable is set in your environment; or you could just hard code the absolute path to the node_modules directory in the code below.
 
 ```
 (setenv "NODE_PATH"
   (concat
-   "~/org/node_modules" ":"
+   (getenv "HOME") "/org/node_modules"  ":"
    (getenv "NODE_PATH")
   )
 )
