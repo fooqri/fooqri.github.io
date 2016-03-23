@@ -3,7 +3,8 @@ layout: post
 title: "ESP8266 Initial Notes"
 date: 2015-09-09 08:05
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/09/09/esp8266-initial-notes
 ---
 
 <img src="//s3.amazonaws.com/rwx-blog/sparkfun_thing.jpg"  style="height: 400px; display: block; margin: auto;">

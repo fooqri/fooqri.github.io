@@ -5,6 +5,7 @@ date: 2013-01-18 11:48
 author: "Patrick Goddi"
 comments: true
 categories: [opinion, creativity, brain-hacks]
+redirect_from: /blog/2013/01/18/pattern-problems-vs-logic-problems
 ---
 > Suppose three men can paint three fences in three hours. How long would it take one man to paint one fence? 
 

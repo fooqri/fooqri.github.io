@@ -5,6 +5,7 @@ date: 2012-12-26 19:19
 comments: true
 author: "Patrick Goddi"
 categories: [productivity]
+redirect_from: /blog/2012/01/26/foldingtext-and-productivity
 ---         
 I have been using the [FoldingText](http://www.foldingtext.com/) app for  a couple of weeks. It is a very interesting app targeting writers, something I am not, but I was intrigued by the  interactivity of this minimalist app. Specifically the ability to add interactive todo lists and timers and have them execute in a text document. Please take a look at the [FoldingText Video](http://www.foldingtext.com/#watchmovie) to get a feel for it, I don't want to describe ideas that a video shows so clearly.
 

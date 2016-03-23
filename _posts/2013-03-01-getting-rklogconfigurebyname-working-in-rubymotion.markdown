@@ -6,6 +6,7 @@ comments: true
 categories: [RubyMotion, RestKit]
 author: "Patrick Goddi"
 publish: true
+redirect_from: /blog/2013/03/01/getting-rklogconfigurebyname-working-in-rubymotion
 ---
 Just a quick note, I was getting an undefined constant error for
 RKLogConfigureByName, the standard way of setting up logging in

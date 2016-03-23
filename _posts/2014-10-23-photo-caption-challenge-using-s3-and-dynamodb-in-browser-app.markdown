@@ -3,7 +3,8 @@ layout: post
 title: "Photo Caption Challenge - using Facebook Login, S3, and DynamoDb in browser app"
 date: 2014-10-23 13:18
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2014/10/23/photo-caption-challenge-using-s3-and-dynamodb-in-browser-app
 ---
 
 One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a _photo caption_ and then invites friends to add photo responses that _most creatively_ match the caption. The second feature is to allow people to vote on their favorite photo responses.

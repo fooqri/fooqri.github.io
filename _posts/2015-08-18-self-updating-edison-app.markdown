@@ -3,7 +3,8 @@ layout: post
 title: "Self Updating Edison Apps"
 date: 2015-08-18 10:49
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/08/18/self-updating-edison-app
 ---
 One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like <a href-"www.resin.io" target="_blank">resin.io</a> do a nice job of deploying <a href="http://bundler.io/" target="_blank">bundler images</a> onto devices like the Edison. The primary issue I had was the overhead of pushing bundler images around when the only thing that was changing was the node app. It seemed easier to just use git and npm to handle the updates. I may go the resin.io route later, but this early in dev and testing the git route seems simpler.
 

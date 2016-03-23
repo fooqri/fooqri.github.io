@@ -4,7 +4,8 @@ title: "nvALT and Emacs"
 date: 2013-03-04 11:19
 comments: true
 author: "Patrick Goddi"
-categories: [emacs, productivity] 
+categories: [emacs, productivity]
+redirect_from: /blog/2013/03/04/nvalt-and-emacs
 ---
 In a previous post [wiki-searchable-notes](/blog/2012/12/17/wiki-plus-searchable-notes/) I mentioned that I was using nvALT for note taking. nvALT is a very simple way to create and search notes and store them in flat files that can be used by other tools. One use is publishing to a github wiki, today I will discuss another.
 

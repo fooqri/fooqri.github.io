@@ -3,7 +3,8 @@ layout: post
 title: "Popup Workbench"
 date: 2015-08-16 13:00
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/08/16/the-post-title
 ---
 
 <img src="//s3.amazonaws.com/rwx-blog/popup_workbench1.JPG"  style="height: 400px; display: block; margin: auto;">

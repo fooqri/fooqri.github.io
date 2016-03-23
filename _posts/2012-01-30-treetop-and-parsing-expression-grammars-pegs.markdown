@@ -5,6 +5,7 @@ date: 2012-12-30 04:54
 comments: true
 author: "Patrick Goddi"
 categories: [parsers]
+redirect_from: /blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs
 ---
 Over the holiday I had some time to investigate parsing expression grammers. I had done work in Lex and Yacc many years back when I was responsible for some kernel functionality and related system management kernel commands for a proprietary commercial operating system. I don't remember fondly my time working with Yacc. But then I read about [PEGs](http://en.wikipedia.org/wiki/Parsing_expression_grammar) and the [Treetop](http://treetop.rubyforge.org/) Ruby library. It allows the use of simple grammer rules based in regular expressions and creates a parser ruby class from the grammer that can then be used in a ruby program. It also allows ruby blocks to be embedded directly into the grammer rules. 
 

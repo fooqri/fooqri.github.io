@@ -3,7 +3,8 @@ layout: post
 title: "Revisiting Buyer's Agent app using React.js"
 date: 2015-06-09 11:45
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/06/09/revisiting-buyers-agent-app-using-react-dot-js
 ---
 
 In a past post I showed a [Mobile Real Estate App](http://rwx.io/blog/2014/10/22/mobile-real-estate-app-version-1/) that was built with Polymer. This time around I will revisit the app but instead use <a href="https://facebook.github.io/react/" target="_blank">react.js</a>. The __Mobile Buyer's Agent__ is a simple web based application used to demonstrate a basic React.js mobile web app.The goal is to allows a real estate buyer's agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.

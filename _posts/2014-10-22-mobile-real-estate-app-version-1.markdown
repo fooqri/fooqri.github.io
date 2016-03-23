@@ -3,7 +3,8 @@ layout: post
 title: "Mobile Real Estate App - Version 1"
 date: 2014-10-22 19:46 
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2014/10/22/mobile-real-estate-app-version-1
 ---
     
 I promised a few examples of spreadsheet driven apps. You may remember the [Hipster List](http://rwx.io/blog/2014/10/15/spreadsheet-driven-web-apps/) was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone. There is even a way for users to point the app at their own Google Spreadsheet if the app developer wants to turn feature that on.

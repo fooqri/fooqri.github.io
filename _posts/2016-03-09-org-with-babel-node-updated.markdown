@@ -3,7 +3,8 @@ layout: post
 title: "Org Mode ES2015+ Code Blocks (updated)"
 date: 2016-03-09 16:57
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2016/03/09/org-with-babel-node-updated
 ---
 - **Note:** In this post I have updated the instructions for use with *Babel 6x*. For *Babel 5x* see the [original post](/blog/2015/10/06/org-with-babel-node/).
 

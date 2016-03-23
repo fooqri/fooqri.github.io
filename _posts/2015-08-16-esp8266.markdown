@@ -3,7 +3,8 @@ layout: post
 title: "ESP8266"
 date: 2015-08-16 15:41
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/08/16/esp8266
 ---
 
 <img src="//s3.amazonaws.com/rwx-blog/ESP8266.jpg"  style="height: 400px; display: block; margin: auto;">

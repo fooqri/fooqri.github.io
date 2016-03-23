@@ -3,6 +3,8 @@ layout: post
 title: "Deft + Org for Notes"
 date: 2016-03-10
 published: true
+categories:
+redirect_from: /blog/2016/03/10/Deft-and-Emacs-for-Notes
 ---
 
 In the [nvALT and Emacs post](http://rwx.io/blog/2013/03/04/nvalt-and-emacs/) I described an integration between *nvAlt* and *Emacs* using [Deft](http://jblevins.org/projects/deft/) for *markdown* notes. I the past year I have moved to using *Deft* for *org* notes rather than *markdown* notes. The nice thing about combining Deft with Org is that your notes are indexed and easy to find using Deft, but also retain all of the power of Org to orgainize and present information. For example typing *decision boundary* into **deft** quickly cuts down hundreds of org text notes to the handful that contain the words **decision** and **boundary** in them. 

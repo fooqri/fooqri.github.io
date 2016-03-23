@@ -3,7 +3,8 @@ layout: post
 title: "Edison Wi-Fi Configuration"
 date: 2015-08-16 13:55
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/08/16/edison-wifi-config
 ---
 
 <img src="//s3.amazonaws.com/rwx-blog/IMG_4161.JPG"  style="height: 400px; display: block; margin: auto;">

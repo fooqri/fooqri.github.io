@@ -3,6 +3,7 @@ layout: post
 title: Org Export Configurations
 date: 2016-03-11
 published: true
+redirect_from: /blog/2016/03/11/Org-Export-Configurations
 ---
 
 Emacs *org mode* offers a variety of export options that make it easy to look at your notes in different formats, or perhaps make them available for others to view. Three I use regularly are *markdown*, *mindmap*, and *reveal presentation*. 

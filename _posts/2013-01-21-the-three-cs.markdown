@@ -5,6 +5,7 @@ date: 2013-01-21 10:26
 author: Patrick Goddi
 comments: true
 categories: [opinion, project-management]
+redirect_from: /blog/2013/01/21/the-three-cs
 ---
 I really enjoyed [this interview](http://www.networkworld.com/community/blog/tony-fadell-unique-nature-apples-design-process) with Tony Fadell on the unique nature of Apple's design process. The discussion about project abandonment percentages is incredibly important, and often overlooked in large companies. In many cases abandonment is a financial decision related to either real or opportunity costs associated with launching a product. People who have never worked for a large consumer products company likely have no idea how many products are cancelled just before launch because of the incredible cost in launching a product into the market. 
 
