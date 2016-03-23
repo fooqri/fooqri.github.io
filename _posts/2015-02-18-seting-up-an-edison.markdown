@@ -4,7 +4,7 @@ title: "Setting Up a New Intel Edison"
 date: 2015-02-18 12:42
 comments: true
 categories: edison iot
-redirect_from: /blog/2015/02/18/seting-up-an-edison
+redirect_from: /blog/edison/iot/2015/02/18/seting-up-an-edison
 ---
 <img src="//s3.amazonaws.com/rwx-blog/IMG_4161.JPG"  style="height: 400px; display: block; margin: auto;">
 

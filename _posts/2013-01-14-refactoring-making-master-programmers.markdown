@@ -5,7 +5,7 @@ date: 2013-01-14 16:34
 author: "Patrick Goddi"
 comments: true
 categories: [opinion, development]
-redirect_from: /blog/2013/01/14/refactoring-making-master-programmers
+redirect_from: /blog/opinion/development/2013/01/14/refactoring-making-master-programmers
 ---
 There is often a tension between product management and engineering when it comes to time spent adding new features vs. time spent in code refactoring.  One could even explain this in terms of top line vs bottom line descriptions. Features mean sales, codebase is an asset, and poor code quality is a liability that affects cost and thus profit. Sloppy, risky, or fragile code is even called "technical debt" in many circles. This tension between features and code quality has always been a tightrope walk for any successful software or Internet company. Starve features and you kill sales, ignore expanding bloat and you will never win a sprint, let alone the marathon of staying relevant.
 

@@ -5,7 +5,7 @@ date: 2012-01-17 14:17
 comments: true
 author: "Patrick Goddi"
 categories: [hacks, productivity]
-redirect_from: /blog/2012/01/17/screen-capture-goodness-dot-dot-dot
+redirect_from: /blog/hacks/productivity/2012/01/17/screen-capture-goodness-dot-dot-dot
 ---
 
 ### tl;wr

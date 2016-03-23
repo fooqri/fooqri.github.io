@@ -5,7 +5,7 @@ date: 2013-01-19 13:04
 author: "Patrick Goddi"
 comments: true
 categories: [ruby, parsers]
-redirect_from: /blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel
+redirect_from: /blog/ruby/parsers/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel
 ---
 In an earlier post [Simple state machine example](http://www.pragmaux.com/post/40689737812/simple-state-machine-example), I provided an example of using the Ruby _state_machine_ gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate "list" object. 
 

@@ -4,7 +4,7 @@ title: "RubyMotion iOS Apps"
 date: 2013-01-17 11:28
 comments: true
 categories: [rubymotion]
-redirect_from: /blog/2013/01/28/rubymotion-ios-apps
+redirect_from: /blog/rubymotion/2013/01/28/rubymotion-ios-apps
 ---
 I wanted to make a quick note that I have been using [RubyMotion](http://www.rubymotion.com/) the past few months. I don't mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI. Call me old fashioned, but I find I can work much faster when I can operate on the code directly, versus through an intermediary UI.
 

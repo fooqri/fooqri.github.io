@@ -4,7 +4,7 @@ title: "Emacs Experimental Hyper-Key Mappings"
 date: 2013-01-30 10:19
 comments: true
 categories: [emacs, hacks]
-redirect_from: /blog/2013/01/30/emacs-experimental-hyper-key-mappings
+redirect_from: /blog/emacs/hacks/2013/01/30/emacs-experimental-hyper-key-mappings
 ---
 In a previous post [Remapping My Caps Lock Key](http://www.pragmaux.com/post/39243391147/remapping-my-caps-lock-key) I mentioned that I remapped my caps-lock key to escape, but also created a "hyper-key" (ctrl-shift-cmd-opt) when the caps-lock key is held down. This opens up a keyboard worth of new shortcuts for emacs. Here are a few I have been playing with for the past few days. An alternative key mapping would be to map the hyper key to holding down the tab key, if you already have the caps lock key mapped to control, and thus muscle memory might preclude this mapping from working for you.
 

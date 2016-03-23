@@ -4,7 +4,7 @@ title: "Fun with Literate CoffeeScript"
 date: 2014-10-15 16:53
 comments: true
 categories: poggr literate-coffee-script
-redirect_from: /blog/2014/10/15/fun-with-literate-coffeescript
+redirect_from: /blog/poggr/literate-coffee-script/2014/10/15/fun-with-literate-coffeescript
 ---
 
 As an emacs/<a href="http://orgmode.org/" target="_blank">org-mode</a>/<a href="http://orgmode.org/worg/org-contrib/babel/" target="_blank">babel</a> user I have always been fascinated with the potential of <a href="http://en.wikipedia.org/wiki/Literate_programming" target="_blank">literate programming</a> and combining inline code in my notes. I have many org-mode documents that interactively execute code for various tasks and procedures. These tasks includes certain maintenance activities, or destructive operations I don't want to get wrong. I have an entire org document devoted to db maintenance, filled with Ruby code to execute complicated db queries and operations.  It is nice to see the example code inline in my notes, and be able to modify the code and execute it directly in my notes. This works especially well for checklist where calculations or actions are called for. You might even say org-mode was one inspiration for building _<a href="http://www.poggr.com/home" target="_blank">poggr.com</a>_; creating a browser based tool that is simple, flexible, and powerful for creating interactive and compelling documents that work in any web browser.

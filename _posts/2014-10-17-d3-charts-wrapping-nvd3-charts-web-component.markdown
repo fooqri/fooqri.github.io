@@ -4,7 +4,7 @@ title: "d3 charts - wrapping 'NVD3 Charts' in a web component"
 date: 2014-10-17 06:39
 comments: true
 categories:  polymer nvd3 d3 charts
-redirect_from: /blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component
+redirect_from: /blog/polymer/nvd3/d3/charts/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component
 ---
 
 In my continued experiments with <a href="https://www.polymer-project.org/" target="_blank">Polymer</a>, I created a web component that wraps  <a href="http://nvd3.org/" target="_blank">NVD3</a> - a reusable chart library for  <a href="http://d3js.org/" target="_blank">d3.js</a>.

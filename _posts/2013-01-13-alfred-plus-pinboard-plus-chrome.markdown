@@ -5,7 +5,7 @@ date: 2013-01-13 12:29
 author: Patrick Goddi
 comments: true
 categories: [hacks, tips]
-redirect_from: /blog/2013/01/13/alfred-plus-pinboard-plus-chrome
+redirect_from: /blog/hacks/tips/2013/01/13/alfred-plus-pinboard-plus-chrome
 ---
 If you happen to use [Alfred](http://www.alfredapp.com/), [Pinboard](http://pinboard.in), and Chrome, here is a nice extension to save the current browser page to Pinboard using Alfred. Much faster than any chrome extension, and fingers never leave the keyboard.
 
