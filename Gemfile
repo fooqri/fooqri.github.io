@@ -3,6 +3,7 @@ gem 'octopress', '~> 3.0'
 gem 'rake'
 gem 'octopress-deploy'
 group :jekyll_plugins do
+  gem 'jekyll-redirect-from'
   gem 'jekyll-lunr-js-search'
   gem 'PageRankr'
   gem 'octopress-popular-posts'
