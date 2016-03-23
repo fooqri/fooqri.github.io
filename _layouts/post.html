@@ -1,6 +1,7 @@
 ---
 layout: default
 single: true
+categories: test
 ---
 
 <div>
@@ -8,12 +9,11 @@ single: true
   {% include article.html %}
   <footer>
     <p class="meta">
-      {% include post/author.html %}
-      {% include post/date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
-      {% include post/categories.html %}
+      {{ page.date | date: '%B %d, %Y' }}
+      
     </p>
     {% unless page.sharing == false %}
-      {% include post/sharing.html %}
+      {% tweet_button %}
     {% endunless %}
     <p class="meta">
       {% if page.previous.url %}
@@ -25,10 +25,10 @@ single: true
     </p>
   </footer>
 </article>
-{% if site.disqus_short_name and page.comments == true %}
+{% if site.short_name and page.comments == true %}
   <section>
     <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
+    <div id="disqus_thread" aria-live="polite">{% disqus_comments %}</div>
   </section>
 {% endif %}
 </div>

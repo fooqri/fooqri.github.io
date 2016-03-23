@@ -51,6 +51,6 @@ twitter:
   tweet_link_title:    Share on Twitter   # Share link title
   profile_link_text:   Follow :username
   profile_link_title:  Follow :username on Twitter  # Profile link title text
+
 disqus:
   shortname: goddio                                # Your site's disqus identifier
-  comments_link_text: Comments                     # Text label for comments link
