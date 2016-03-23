@@ -6,10 +6,10 @@ comments: true
 author: "Patrick Goddi"
 categories: [hacks, productivity]
 ---
-###tl;wr
+### tl;wr
 Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.
 
-###verbose
+### verbose
 When making notes on wireframes, screen designs, activity diagrams, etc, I have a particular workflow where I do a screen capture and want to link the result in my markdown notes or from our project wiki. The power of markdown text files is their portability, the challenge can be losing the rich cut and paste of apps like Evernote. 
 
 In a previous post <a href="http://fooqri.tumblr.com/post/38158334752/wiki-searchable-notes" title="Wiki + Searchable Notes">Wiki + searchable notes</a>. I mentioned that I was now using the github clone feature for the wiki, allowing me to work on the wiki locally and then push changes to the server with git push. Another benefit of this approach, it makes it very easy to add images to the wiki. 
