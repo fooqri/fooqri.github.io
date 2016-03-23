@@ -6,6 +6,7 @@ comments: true
 author: "Patrick Goddi"
 categories: [hacks, productivity]
 ---
+
 ### tl;wr
 Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.
 
@@ -33,4 +34,4 @@ I added this as a snippet in TextExpander and now instead of 10+ steps across 3 
 1. screen capture (ctrl-cmd-shift-4)
 1. type "wpng" into the editor where I want the image to be placed. 
 
-The result: typing "wpng" causes the last clipboard item to be saved as a png in the wiki images directory and the "wpng" text I just typed is replaced with the markup for the image that was just saved. Quick and simple.
+The result: typing "wpng" causes the last clipboard item to be saved as a png in the wiki images directory and the "wpng" text I just typed is replaced with the markup for the image that was just saved. Quick and simple. 
