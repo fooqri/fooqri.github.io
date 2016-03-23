@@ -1,0 +1,1170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description>Design, development, productivity – notes and explorations.
+</description>
+    <link>http://rwx.io/</link>
+    <atom:link href="http://rwx.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 23 Mar 2016 09:39:35 -0700</pubDate>
+    <lastBuildDate>Wed, 23 Mar 2016 09:39:35 -0700</lastBuildDate>
+    <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>Org Export Configurations</title>
+        <description>&lt;p&gt;Emacs &lt;em&gt;org mode&lt;/em&gt; offers a variety of export options that make it easy to look at your notes in different formats, or perhaps make them available for others to view. Three I use regularly are &lt;em&gt;markdown&lt;/em&gt;, &lt;em&gt;mindmap&lt;/em&gt;, and &lt;em&gt;reveal presentation&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;my-approach-to-note-taking&quot;&gt;My approach to Note Taking&lt;/h1&gt;
+
+&lt;p&gt;The best way to learn something is to sumarize the topic in your own words, in your own context, and present it to others with concrete examples. But in many cases notes must also serve to provide details that are easily forgotten like code snippets, checklists, etc. Even with detailed notes it is important to refactor the information into your own context to aid learning the topic. For this reason many of my notes on a topic have a &lt;em&gt;summary&lt;/em&gt; section and a &lt;em&gt;details&lt;/em&gt; section both organized in an org document.&lt;/p&gt;
+
+&lt;p&gt;Another purpose for notes is information logging, such as meeting notes, project team notes, daily journal, etc. Although &lt;em&gt;org&lt;/em&gt; does an excellent job of supporting information logging and task management, I will leave that as a topic for a future post.&lt;/p&gt;
+
+&lt;p&gt;Ideally the summary of a topic can easily be converted to a presentation, and the details can be converted to a markdown document.   I will describe below how to accomplish this. Further I will describe how to convert the notes to OPML so it can be explored as a mindmap. Also see &lt;a href=&quot;http://rwx.io/blog/2016/03/10/Deft-and-Emacs-for-Notes/&quot;&gt;Deft + Org for Notes&lt;/a&gt; for information on quick search of all notes.&lt;/p&gt;
+
+&lt;h1 id=&quot;setting-export-directory&quot;&gt;Setting Export Directory&lt;/h1&gt;
+
+&lt;p&gt;I want to keep everything under the org directory but to keep things tidy create sub directories by export type. The code snippet below when placed in init.el will set the correct export directory based on export type. Thus &lt;em&gt;opml&lt;/em&gt; documents will be kept in &lt;code class=&quot;highlighter-rouge&quot;&gt;~/org/export_opml/&lt;/code&gt;, &lt;em&gt;markdown&lt;/em&gt; documents in &lt;code class=&quot;highlighter-rouge&quot;&gt;~/org/export_md/&lt;/code&gt;, and &lt;em&gt;html&lt;/em&gt; documents in &lt;code class=&quot;highlighter-rouge&quot;&gt;~/org/export_md/&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(defvar org-export-output-directory-prefix &quot;export_&quot; &quot;prefix of directory used for org-mode export&quot;)
+
+(defadvice org-export-output-file-name (before org-add-export-dir activate)
+  &quot;Modifies org-export to place exported files in a different directory&quot;
+  (when (not pub-dir)
+      (setq pub-dir (concat org-export-output-directory-prefix (substring extension 1)))
+      (when (not (file-directory-p pub-dir))
+       (make-directory pub-dir))))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;exporting-to-markdown&quot;&gt;Exporting to Markdown&lt;/h1&gt;
+
+&lt;p&gt;The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser. The &lt;a href=&quot;https://chrome.google.com/webstore/detail/minimalist-markdown-edito/pghodfjepegmciihfhdipmimghiakcjf?hl=en&quot;&gt;Minamalist Markdown Editor&lt;/a&gt; is a nice tool for viewing these documents on a Chromebook.&lt;/p&gt;
+
+&lt;p&gt;The (C-c m) keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the &lt;em&gt;Marked 2&lt;/em&gt; app will also allow you to follow note links to any interlinked notes. &lt;em&gt;Marked 2&lt;/em&gt; provides a very nice reading interface for detailed notes so having this option is handy.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(defun export-org-md-command-events ()
+  (interactive)
+  (let* ((md-original-filename (concat (file-name-directory buffer-file-name) &quot;export_md/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;))
+         (google-drive-filename (concat  &quot;../Google Drive/notes/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;))) 
+    (execute-kbd-macro (kbd &quot;C-c C-e m m&quot;))
+    (copy-file  md-original-filename google-drive-filename t)
+    (message  &quot;Saved to Google Drive: %s&quot; (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;)) )
+  )
+
+;; Auto-export org files to Markdown when saved
+(defun org-mode-export-hook ()
+  (when (equal major-mode &#39;org-mode)
+    (add-hook &#39;after-save-hook &#39;export-org-md-command-events t t)
+  )
+)
+
+(defun markdown-preview-file ()
+  &quot;run Marked on the current file and revert the buffer&quot;
+  (interactive)
+  (execute-kbd-macro (kbd &quot;C-c C-e m m&quot;))
+  (shell-command
+   (format &quot;open -a /Applications/Marked2.app %s&quot; 
+       (shell-quote-argument (concat (file-name-directory buffer-file-name) &quot;export_md/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;))))
+  )
+
+(global-set-key (kbd &quot;C-c m&quot;) &#39;markdown-preview-file)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The markdown conversion works well but if you need to you can  embed markdown directly into your org document at any time using a markdown block. This will allow the markdown to pass through during export so it will be handled properly by the markdown rendering app.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#+BEGIN_SRC js  :results output drawer
+  var s = &quot;JavaScript syntax highlighting&quot;; 
+  alert(s);
+#+END_SRC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;exporting-to-mindmap&quot;&gt;Exporting to Mindmap&lt;/h1&gt;
+
+&lt;p&gt;Mindmaps are a visualization of an outline, and since org mode specializes in keeping notes in a hierarchical fashion it is fairly easy to convert notes to mindmaps. OPML is an XML format for outlines that is supported by all mindmapping  apps. You can use &lt;a href=&quot;https://www.emacswiki.org/emacs/FreeMind&quot;&gt;org-freemind&lt;/a&gt; to do mindmaps, but I use &lt;a href=&quot;https://github.com/edavis/org-opml&quot;&gt;org-opml&lt;/a&gt; instead. Follow the &lt;a href=&quot;https://github.com/edavis/org-opml&quot;&gt;org-opml&lt;/a&gt; installation instructions.&lt;/p&gt;
+
+&lt;p&gt;I also use a slight customization of the ox-opml.el file delivered with &lt;a href=&quot;https://github.com/edavis/org-opml&quot;&gt;org-opml&lt;/a&gt;, because I use iThoughtsX and think it is cleaner to put paragraph blocks in notes rather than have them forced into a topic bubble.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;; modify original ox-opml.el to put paragraphs into the notes attribute of a topic
+;; instead of displaying paragraph as topic name.  
+(defun org-opml-paragraph (paragraph contents info)
+  (let* ((parent (org-element-type (org-export-get-parent paragraph)))
+         (text (clean-text contents)))
+    ;; Only display paragraphs when not in a list item
+    (unless (eq parent &#39;item)
+      (format &quot;&amp;lt;outline text=&#39;notes&#39; note=&#39;%s&#39; structure=\&quot;paragraph\&quot;/&amp;gt;&quot;  text))))
+
+(defun org-opml-item (item contents info)
+  (let* ((p (car (org-element-contents item)))
+         (elements (org-element-contents p))
+         (text (mapconcat
+                (lambda (el)
+                  (cond ((stringp el) (clean-text el))
+                        ((equal (car el) &#39;link)  
+                         (let ((url (org-element-property :raw-link el))
+                               (text (org-element-contents el)))
+                           (clean-text (format &quot;%s&quot; (car text)))))
+                        ((equal (car el) &#39;italic)
+                         (format &quot;/%s/&quot; (car (org-element-contents el))))
+                        ((equal (car el) &#39;bold)
+                         (format &quot;*%s*&quot; (car (org-element-contents el))))
+                        ((equal (car el) &#39;verbatim)
+                         (format &quot;=%s=&quot; (org-element-property :value el)))))
+                elements &quot; &quot;)))
+    (format &quot;&amp;lt;outline text=&#39;%s&#39; structure=&#39;list&#39;&amp;gt;%s&amp;lt;/outline&amp;gt;&quot; text contents)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;A second modification I use is to change the key-bindings for export because they conflict with markdown export. Below I changed the &lt;code class=&quot;highlighter-rouge&quot;&gt;?m&lt;/code&gt; in the original &lt;code class=&quot;highlighter-rouge&quot;&gt;ox-opml.el&lt;/code&gt; file to &lt;code class=&quot;highlighter-rouge&quot;&gt;?g&lt;/code&gt; so &lt;code class=&quot;highlighter-rouge&quot;&gt;Export to OPML&lt;/code&gt; will appear in the org export menu under the &lt;code class=&quot;highlighter-rouge&quot;&gt;g&lt;/code&gt; key, and not &lt;code class=&quot;highlighter-rouge&quot;&gt;m&lt;/code&gt; key&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:menu-entry &#39;(?g &quot;Export to OPML&quot;
+                 (lambda (a s v b) (org-opml-export-to-opml a s v b)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The Lisp snippet below can be added to init.el and will allow viewing an org buffer as a mindmap using iThoughtsX with the (C-c o) keyboard sequence.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(defun opml-preview-file ()
+  &quot;run iThoughtsX on the current file and revert the buffer&quot;
+  (interactive)
+  (execute-kbd-macro (kbd &quot;C-c C-e g&quot;))
+  (shell-command 
+   (format &quot;open -a /Applications/iThoughtsX.app %s&quot;  
+       (shell-quote-argument (concat (file-name-directory buffer-file-name) &quot;export_opml/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.opml&quot;))))
+)
+
+(global-set-key  (kbd &quot;C-c o&quot;) &#39;opml-preview-file)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;exporting-to-reveal-presentation&quot;&gt;Exporting to Reveal Presentation&lt;/h1&gt;
+
+&lt;p&gt;Another useful feature is exporting the current org buffer as a &lt;a href=&quot;http://lab.hakim.se/reveal-js/&quot;&gt;Reveal Presentation&lt;/a&gt; and opening it in a browser. To do this you need to install and configure &lt;a href=&quot;https://github.com/yjwen/org-reveal&quot;&gt;org-reveal&lt;/a&gt;. Once installed you can use the Lisp snippet below, the (C-c p) keyboard sequence will open the the current buffer as a &lt;em&gt;Reveal Presentation&lt;/em&gt; in Safari (I use Mac).&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(defun &#39;presentation-preview-file ()
+  &quot;run export with ox-reveal on the current file and open browser&quot;
+  (interactive)
+  (execute-kbd-macro (kbd &quot;C-c C-e R R&quot;))
+  (shell-command 
+   (format &quot;open -a /Applications/Safari.app %s&quot; 
+       (shell-quote-argument (concat (file-name-directory buffer-file-name) &quot;export_html/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.html&quot;))))
+)
+
+(global-set-key  (kbd &quot;C-c p&quot;) &#39;presentation-preview-file)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;hiding-content&quot;&gt;Hiding Content&lt;/h2&gt;
+
+&lt;p&gt;I mentioned above that I like to organize my notes with both a summary for presentation, and details that would not work well in a presentation. To make it easy to hide content from the various export modules I added the code below to my init.el file.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; (defun set-ignored-headlines-tags (backend)
+ &quot;Remove all headlines with tag ignore_heading in the current buffer. 
+    BACKEND is the export back-end being used, as a symbol.&quot;
+ (cond ((org-export-derived-backend-p backend &#39;md) (setq  org-export-exclude-tags &#39;(&quot;noexport&quot; &quot;mdignore&quot;)))
+       ((org-export-derived-backend-p backend &#39;reveal) (setq  org-export-exclude-tags &#39;(&quot;noexport&quot; &quot;revealignore&quot;)))
+       ((org-export-derived-backend-p backend &#39;opml)  (setq  org-export-exclude-tags &#39;(&quot;noexport&quot; &quot;opmlignore&quot;))) 
+       (t (setq  org-export-exclude-tags &#39;(&quot;noexport&quot;)))
+   ) 
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now I can hide content from reveal by adding a &lt;em&gt;:revealignore:&lt;/em&gt; tag to the heading. The &lt;em&gt;:opmlignore:&lt;/em&gt; and &lt;em&gt;:mdignore:&lt;/em&gt; work similarly. &lt;em&gt;:noexport:&lt;/em&gt; means hide from all exports. The tags support hierarchy so will hide any sub-headings.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* My Slides :mdignore:opmlignore:
+ ** Topic 1
+    Slide content
+ ** Topic 2
+    Slide content
+* My Detailed Notes  :revealignore:
+ ** Chapter Notes
+ ** Code Experiments :opmlignore:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;With this setup is is easy to keep notes in a fashion that makes them easy to use in a number of formats, including presentations, mindmaps, and markdown documents. Org mode also supports the concept of &lt;a href=&quot;http://orgmode.org/manual/Publishing.html&quot;&gt;publishing&lt;/a&gt; that is useful when sharing specific content, for example exporting specific notes to a web site along with images and attachments used in the notes.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 11 Mar 2016 00:00:00 -0800</pubDate>
+        <link>http://rwx.io/2016/03/11/Org-Export-Configurations.html</link>
+        <guid isPermaLink="true">http://rwx.io/2016/03/11/Org-Export-Configurations.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Deft + Org for Notes</title>
+        <description>&lt;p&gt;In the &lt;a href=&quot;http://rwx.io/blog/2013/03/04/nvalt-and-emacs/&quot;&gt;nvALT and Emacs post&lt;/a&gt; I described an integration between &lt;em&gt;nvAlt&lt;/em&gt; and &lt;em&gt;Emacs&lt;/em&gt; using &lt;a href=&quot;http://jblevins.org/projects/deft/&quot;&gt;Deft&lt;/a&gt; for &lt;em&gt;markdown&lt;/em&gt; notes. I the past year I have moved to using &lt;em&gt;Deft&lt;/em&gt; for &lt;em&gt;org&lt;/em&gt; notes rather than &lt;em&gt;markdown&lt;/em&gt; notes. The nice thing about combining Deft with Org is that your notes are indexed and easy to find using Deft, but also retain all of the power of Org to orgainize and present information. For example typing &lt;em&gt;decision boundary&lt;/em&gt; into &lt;strong&gt;deft&lt;/strong&gt; quickly cuts down hundreds of org text notes to the handful that contain the words &lt;strong&gt;decision&lt;/strong&gt; and &lt;strong&gt;boundary&lt;/strong&gt; in them.&lt;/p&gt;
+
+&lt;p&gt;Deft also supports &lt;em&gt;regular expression&lt;/em&gt; search mode to provide more precise searches (use C-c C-t to toggle search modes). Deft makes it easy to create new notes also, simply type a title and hit &lt;em&gt;ctrl-return&lt;/em&gt; to create a new note with that title. See the UI in action in the animated gif below (image by &lt;a href=&quot;http://jblevins.org/&quot;&gt;Jason Blevins&lt;/a&gt; via &lt;a href=&quot;http://jblevins.org/projects/deft/&quot;&gt;Deft&lt;/a&gt; ). See the &lt;a href=&quot;http://jblevins.org/projects/deft/&quot;&gt;Documentation&lt;/a&gt; for other handy features.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/deft-v0.6.gif&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Below I describe setting up Deft for emacs, and show my current customization’s.  Org also supports export to many different formats. In a future posts I will cover my setup for exporting notes to &lt;em&gt;markdown&lt;/em&gt; documents, &lt;em&gt;reveal&lt;/em&gt; presentations, and even &lt;em&gt;mindmaps&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;installing-deft&quot;&gt;Installing Deft&lt;/h1&gt;
+
+&lt;p&gt;Follow the instructions at &lt;a href=&quot;http://jblevins.org/projects/deft/&quot;&gt;Deft&lt;/a&gt; to install from source (usually the latest version this way) or use the Emacs package installer as shown below.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;M-x package-install deft
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;configuring-deft&quot;&gt;Configuring Deft&lt;/h1&gt;
+
+&lt;p&gt;I prefer to use Deft for &lt;em&gt;org&lt;/em&gt; files and not others (txt, md, etc), so that is reflected in my configuration below. Using &lt;a href=&quot;http://rwx.io/blog/2012/12/30/remapping-my-caps-lock-key/&quot;&gt;this technique&lt;/a&gt; I converted the tab key into a hyper-key (C-M-S-s), so with the key mapping below Deft can be called up with &lt;strong&gt;tab-d&lt;/strong&gt; This technique is nice, because the tab key still works for tabbing, but when held down it acts like an additional modifier key that can be use in emacs key bindings.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(require &#39;deft)
+(setq deft-default-extension &quot;org&quot;)
+(setq deft-extensions &#39;(&quot;org&quot;))
+(setq deft-directory &quot;~/org&quot;)
+(setq deft-recursive t)
+(setq deft-use-filename-as-title nil)
+(setq deft-use-filter-string-for-filename t)
+(setq deft-file-naming-rules &#39;((noslash . &quot;-&quot;)
+                               (nospace . &quot;-&quot;)
+                               (case-fn . downcase)))
+(setq deft-text-mode &#39;org-mode)
+(global-set-key (kbd &quot;C-M-S-s-d&quot;) &#39;deft)
+(global-set-key (kbd &quot;C-x C-g&quot;) &#39;deft-find-file)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 10 Mar 2016 00:00:00 -0800</pubDate>
+        <link>http://rwx.io/2016/03/10/Deft-and-Emacs-for-Notes.html</link>
+        <guid isPermaLink="true">http://rwx.io/2016/03/10/Deft-and-Emacs-for-Notes.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Org Mode ES2015+ Code Blocks (updated)</title>
+        <description>&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Note:&lt;/strong&gt; In this post I have updated the instructions for use with &lt;em&gt;Babel 6x&lt;/em&gt;. For &lt;em&gt;Babel 5x&lt;/em&gt; see the &lt;a href=&quot;/blog/2015/10/06/org-with-babel-node/&quot;&gt;original post&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Babel 6x is a significant change from Babel 5x, as the &lt;em&gt;cli&lt;/em&gt; is now a separate node module called &lt;em&gt;babel-cli&lt;/em&gt; and transforms are now also delivered as separate packages.&lt;/p&gt;
+
+&lt;p&gt;First make a few changes to the emacs environment so you can use JavaScript in &lt;strong&gt;org mode&lt;/strong&gt;, as well as find local &lt;em&gt;node.js&lt;/em&gt; modules you have installed. Replace &lt;em&gt;”~/org/node_modules”&lt;/em&gt; in the configuration below with the location of any local node modules you want to use. Using this approach you don’t have to pollute the global node_module directory if you don’t want to.&lt;/p&gt;
+
+&lt;p&gt;Add the following to your emacs init.el file and evaluate it (or restart emacs). Make sure the $HOME environment variable is set in your environment; or you could just hard code the absolute path to the node_modules directory in the code below.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(setenv &quot;NODE_PATH&quot;
+  (concat
+   (getenv &quot;HOME&quot;) &quot;/org/node_modules&quot;  &quot;:&quot;
+   (getenv &quot;NODE_PATH&quot;)
+  )
+)
+
+(org-babel-do-load-languages
+ &#39;org-babel-load-languages
+ &#39;((js . t)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can choose to install the Babel modules globally, or you can do it locally. In this example I will install them locally in the org directory (~/org/node_modules).&lt;/p&gt;
+
+&lt;p&gt;Next install the &lt;em&gt;babel-cli&lt;/em&gt; module, this allows you to call Babel from the command line. You will also want to install the transforms you plan to use, the example below installs the common preset transforms used with &lt;em&gt;Babel 6&lt;/em&gt;. Also install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path to &lt;em&gt;node_modules&lt;/em&gt; set above.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install --save-dev babel-cli
+npm install --save-dev babel-preset-es2015
+npm install --save-dev babel-preset-stage-0
+npm install --save-dev babel-preset-stage-1
+npm install --save-dev babel-preset-stage-2
+npm install --save-dev babel-preset-stage-3
+npm install --save-dev babel-preset-react
+npm install --save-dev mongodb
+npm install --save-dev bluebird
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next you want to set up a symbolic link to the &lt;em&gt;babel-cli&lt;/em&gt; script you just installed so it can be found from the command line. I decided to call it &lt;em&gt;org-babel-node&lt;/em&gt; so it won’t interfere with a &lt;em&gt;babel-node&lt;/em&gt; executable linked to a global module of the same name.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ln -s ~/org/node_modules/babel-cli/bin/babel-node.js /usr/local/bin/org-babel-node
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The default org-mode interpreter for JavaScript is &lt;em&gt;Node&lt;/em&gt;, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell &lt;em&gt;org mode&lt;/em&gt; to use an alternative interpreter; in this case the &lt;strong&gt;babel-node&lt;/strong&gt; transpiler installed earlier and linked as &lt;em&gt;org-babel-node&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Adding  &lt;em&gt;:cmd “org-babel-node”&lt;/em&gt;   after the  &lt;em&gt;#+begin_src js&lt;/em&gt; tells &lt;em&gt;org mode&lt;/em&gt; to use the &lt;em&gt;org-babel-node&lt;/em&gt; transpiler instead of the default JavaScript interpreter. Because &lt;em&gt;Babel 6&lt;/em&gt; uses external modules for transforms you need to also tell Babel which preset or plugins you wish to use with either the &lt;strong&gt;–presets&lt;/strong&gt; or &lt;strong&gt;–plugins&lt;/strong&gt; options. The &lt;em&gt;:results output&lt;/em&gt; tells &lt;em&gt;org mode&lt;/em&gt; that the results will be from an output statement &lt;em&gt;(using console.log() for JavaScript)&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   #+name: db.activities.findOne
+   #+begin_src js :cmd &quot;org-babel-node --presets stage-1&quot; :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require(&#39;mongodb&#39;);
+              let Promise = require(&#39;bluebird&#39;);
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection(&#39;activities&#39;)
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: &lt;em&gt;#+RESULTS:&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   #+name: db.activities.findOne
+   #+begin_src js :cmd &quot;org-babel-node --presets stage-1&quot; :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require(&#39;mongodb&#39;);
+              let Promise = require(&#39;bluebird&#39;);
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection(&#39;activities&#39;)
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+
+   #+RESULTS: db.activities.findOne
+   :RESULTS:
+   The first activity name is Shopping
+   :END:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can see several new and experimental language features including &lt;em&gt;async functions&lt;/em&gt;, the &lt;em&gt;await&lt;/em&gt; keyword for performing a non-blocking wait on a promise to complete, and &lt;em&gt;template strings&lt;/em&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 09 Mar 2016 16:57:00 -0800</pubDate>
+        <link>http://rwx.io/2016/03/09/org-with-babel-node-updated.html</link>
+        <guid isPermaLink="true">http://rwx.io/2016/03/09/org-with-babel-node-updated.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>ANCS Example on BLE Nano</title>
+        <description>&lt;p&gt;&lt;img src=&quot;https://s3.amazonaws.com/rwx-blog/nano.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I decided to try getting &lt;em&gt;Apple Notification Center Service (ANCS)&lt;/em&gt; working with the &lt;a href=&quot;http://redbearlab.com/blenano/&quot; target=&quot;_blank&quot;&gt;RedBearLab BLE Nano&lt;/a&gt;, and this post describes one way to get the Nordic ANCS demo running on a BLE Nano. This post shows how to get an &lt;em&gt;ARM&lt;/em&gt; development environment and toolchain up and running on OS X in order to develop apps for the Nordic BLE SoC’s (e.g. nRF51822 based boards like the BLE Nano).&lt;/p&gt;
+
+&lt;p&gt;There are a few options for developing applications for the BLE Nano:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Using the &lt;em&gt;Nordic nRF5 BLE SDK&lt;/em&gt; along with the  &lt;em&gt;arm-gcc&lt;/em&gt; compiler. This requires setting up a toolchain on your local development machine (Mac OS X in my case).&lt;/li&gt;
+  &lt;li&gt;Using &lt;a href=&quot;http://mbed.org&quot; target=&quot;_blank&quot;&gt;mbed.org&lt;/a&gt; and the &lt;a href=&quot;https://developer.mbed.org/teams/Bluetooth-Low-Energy/&quot; target=&quot;_blank&quot;&gt;mbed Bluetooth Low Energy API&lt;/a&gt;. This is the fastest way to get started, but unfortunately at the time of this post the API does not yet support peripherals as GATT Clients, and thus does not support ANCS development.&lt;/li&gt;
+  &lt;li&gt;Using the Arduino SDK along with the &lt;a href=&quot;https://github.com/RedBearLab/nRF51822-Arduino&quot; target=&quot;_blank&quot;&gt;nRF51822-Arduino add-on&lt;/a&gt;. I am not sure whether this add-on would support peripherals as GATT Clients either, and haven’t yet investigated the option.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I decided to start with approach 1 since it seemed like the most stable approach to development. Below I describe my steps to getting the environment set up on OS X. For more on approach 2 &amp;amp; 3 see &lt;a href=&quot;http://redbearlab.com/getting-started-nrf51822&quot; target=&quot;_blank&quot;&gt;Getting Started with nRF51822&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setting-up-the-tool-chain-on-os-x&quot;&gt;Setting Up the Tool Chain on OS X&lt;/h2&gt;
+
+&lt;p&gt;Install the &lt;em&gt;arm-gcc compiler&lt;/em&gt; for OS X so you can compile for ARM devices. Fortunately both &lt;em&gt;HomeBrew&lt;/em&gt; and &lt;em&gt;MacPorts&lt;/em&gt; have recipes for installing the compiler. Pick the one that works for you. If you don’t have either HomeBrew or MacPorts installed please install one of them before proceeding.&lt;/p&gt;
+
+&lt;p&gt;Install the gcc-arm compiler using either &lt;em&gt;brew&lt;/em&gt; command (HomeBrew) or &lt;em&gt;port&lt;/em&gt; command (MacPorts):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install gcc-arm-none-eabi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port install arm-none-eabi-gcc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Note: If you get a permissions error you may need to prepend the sudo command to provide brew/port with enhanced security privileges.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;You will need to save the location of the arm-gcc compiler for updating the nRF5 toolchain config files later. In my case it was located in&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;you will also need the compiler version number, just run the command below and write down the resulting version number&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/bin/arm-none-eabi-gcc  --version 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In my case the &lt;em&gt;/arm-none-eabi-gcc&lt;/em&gt; version was &lt;em&gt;5.2.1&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;download-the-nordic-sdk&quot;&gt;Download the Nordic SDK&lt;/h2&gt;
+&lt;p&gt;The next step is to download the &lt;a href=&quot;http://developer.nordicsemi.com/nRF5_SDK/&quot; target=&quot;_blank&quot;&gt;Nordic nRF5 SDK&lt;/a&gt; I chose &lt;em&gt;nRF51_SDK_v10.x.x&lt;/em&gt;. Unzip into a location that will be your working directory for the project.&lt;/p&gt;
+
+&lt;h2 id=&quot;download-the-nordic-soft-device-ble-protocol-stack&quot;&gt;Download the Nordic Soft Device BLE Protocol Stack&lt;/h2&gt;
+&lt;p&gt;Nordic uses the term &lt;em&gt;Soft Device&lt;/em&gt; to refer to its BLE protocol stack. I chose to use &lt;em&gt;S130-SD&lt;/em&gt;, it can be downloaded from the &lt;a href=&quot;http://www.nordicsemi.com/eng/Products/Bluetooth-Smart-Bluetooth-low-energy/nRF51822#Downloads&quot; target=&quot;_blank&quot;&gt;Nordic Download Page&lt;/a&gt; under soft devices.&lt;/p&gt;
+
+&lt;p&gt;You will need to reference the soft device later, so I suggest saving it in your working directory at the same level you saved the SDK so it is easy to find.&lt;/p&gt;
+
+&lt;h2 id=&quot;updating-the-sdk-configuration&quot;&gt;Updating the SDK configuration&lt;/h2&gt;
+&lt;p&gt;The next step is to modify the SDK configuration to point to your arm-gcc compiler. In your SDK directory edit &lt;em&gt;components/toolchain/gcc/Makefile.posix&lt;/em&gt; to correct the &lt;em&gt;GNU_INSTALL_ROOT&lt;/em&gt; and &lt;em&gt;GNU_VERSION&lt;/em&gt;.  &lt;strong&gt;GNU_INSTALL_ROOT&lt;/strong&gt; should be the location of the arm-gcc compiler directory.  &lt;em&gt;*GNU_VERSIO&lt;/em&gt;N* should be the version number of the arm-gcc compiler that I mentioned above. My &lt;em&gt;Makefile.posix&lt;/em&gt; file looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GNU_INSTALL_ROOT := /usr/local/gcc_arm/gcc-arm-none-eabi-5_2-2015q4/
+GNU_VERSION := 5.2.1 
+GNU_PREFIX := arm-none-eabi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;compile-the-ancs-example&quot;&gt;Compile the ANCS example&lt;/h2&gt;
+
+&lt;p&gt;The ANCS example is located in the sdk driectory under the &lt;strong&gt;examples&lt;/strong&gt; subdirectory. Change to the subdirectory for the ble_app_ancs_c example. For example from the main SDK directory:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd examples/ble_peripheral/ble_app_ancs_c
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Like all the examples the ble_app_ancs_c directory contains &lt;em&gt;board package&lt;/em&gt; subdirectories that are set up for the various development boards. For my test I changed to subdirectory:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pca10028/s130/armgcc/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is essentially choosing the example created for &lt;em&gt;board package&lt;/em&gt; &lt;strong&gt;pca10028&lt;/strong&gt; and &lt;em&gt;soft device&lt;/em&gt; &lt;strong&gt;s130&lt;/strong&gt; and finally the &lt;strong&gt;armgcc&lt;/strong&gt; build directory.&lt;/p&gt;
+
+&lt;p&gt;In this directory your will find a Makefile for compiling this example, so run &lt;strong&gt;make&lt;/strong&gt; to compile the example.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The compilation process will create a new subdirectory called &lt;strong&gt;_build&lt;/strong&gt; that will hold the output of the compile. The key file for our purposes will be the one with a &lt;strong&gt;.hex&lt;/strong&gt; extension. In my case is was named &lt;em&gt;nrf51422_xxac_s130.hex&lt;/em&gt;. This is the hex code that will be loaded by the bootloader on the BLE Nano’s nRF51822 SoC.&lt;/p&gt;
+
+&lt;p&gt;Since the nRF51 device is completely flash based. All the executable code, including Nordic’s “Soft Device” protocol stack and your applications, is programmed in this flash memory. The soft device is always in the lower region of the flash, using up to 128 kB, and the rest of the upper region of flash is available for your application. So before your applications hex code can be loaded on the BLE Nano, it must be merged with the hex code for the soft device, in this case the &lt;em&gt;S130&lt;/em&gt; hex code.&lt;/p&gt;
+
+&lt;p&gt;To manipulate hex code you will need the &lt;strong&gt;srecord&lt;/strong&gt; tool, which can be installed with HomeBrew or MacPorts.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install srecord 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port install srecord
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;merging-application-hex-code-with-soft-device-hex-code&quot;&gt;Merging application Hex Code with Soft Device Hex Code.&lt;/h2&gt;
+
+&lt;p&gt;Assuming the &lt;em&gt;S130 Soft Device&lt;/em&gt; code was uncompressed into the same working directory as the sdk and was named &lt;em&gt;s130_nrf51_1.0.0&lt;/em&gt; and the example application hex code file was named &lt;em&gt;nrf51422_xxac_s130.hex&lt;/em&gt;. Then from inside the &lt;em&gt;_build&lt;/em&gt; directory created above we could merge the hex code files with the following command.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;srec_cat &amp;lt;SDK_DIRECTORY&amp;gt;/s130_nrf51_1.0.0/s130_nrf51_1.0.0_softdevice.hex -intel nrf51422_xxac_s130.hex  -intel -o ancs.hex -intel --line-length=44
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above command would create a new (combined) hex code file in _build named &lt;strong&gt;ancs.hex&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;loading-the-code-on-the-ble-nano&quot;&gt;Loading the code on the BLE Nano&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s3.amazonaws.com/rwx-blog/nano2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is the easy part. With the BLE Nano piggy backing on its MK20 USB board and plugged into a USB port, a folder named MBED should appear on your desktop (at least that is what it is named in my case). Just drag the combined hex file we created above &lt;em&gt;(ancs.hex)&lt;/em&gt; to the MBED folder associated with the Nano device. The bootloader should load the new code, and the USB device may disappear momentarily from the desktop, then reappear.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-that-the-ancs-application-was-loaded-correctly&quot;&gt;Test that the ANCS application was loaded correctly&lt;/h2&gt;
+&lt;p&gt;On an iPhone, open the &lt;em&gt;Settings&lt;/em&gt; app, and choose &lt;em&gt;Bluetooth&lt;/em&gt; and make sure Bluetooth is on. Under Devices you should see ANCS appear, and by tapping ANCS you should be able to successfully pair with the device.&lt;/p&gt;
+
+&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop a custom ANCS app for some device that utilizes the BLE Nano. I hope to post some examples in the future as I work with the Nano more.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 27 Jan 2016 12:19:00 -0800</pubDate>
+        <link>http://rwx.io/2016/01/27/ancs-example-on-blend-nano.html</link>
+        <guid isPermaLink="true">http://rwx.io/2016/01/27/ancs-example-on-blend-nano.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>ANCS Message Display</title>
+        <description>&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display using an Arduino, BLE, and an LCD display to conect to the &lt;em&gt;Apple Notification Center Service&lt;/em&gt; on your iPhone.
+&lt;img src=&quot;https://s3.amazonaws.com/rwx-blog/IMG_6097.JPG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For this project I used the &lt;a href=&quot;http://redbearlab.com/blendmicro/&quot; target=&quot;_blank&quot;&gt;Blend Micro&lt;/a&gt; from  RedBearLab, combined with an &lt;a href=&quot;https://www.adafruit.com/product/358&quot; target=&quot;_blank&quot;&gt;AdaFruit ST7735R TFT LCD display&lt;/a&gt;  The &lt;em&gt;Blend Micro&lt;/em&gt; combines an Atmel ATmega32U4 micro-controller with a Nordic nRF8001 BLE chip. Simply hook up the LCD using SPI and you are in business. For this project I added a &lt;a href=&quot;https://www.adafruit.com/products/160&quot;&gt;piezo buzzer&lt;/a&gt; for sound effects and a button to wake up the display if it has timed out.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//s3.amazonaws.com/rwx-blog/IMG_6098.JPG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The basic idea is to have the iPhone pass along alerts to the device using BLE/ANCS and to have the device play a tone and display the alert information. There is a timeout to power down the backlight on the display after a minute, and a button that can be pressed to turn the display’s backlight on, so the last message can be viewed after the one minute timeout.  This power savings mode could allow the device to be powered by a battery.&lt;/p&gt;
+
+&lt;p&gt;I created a demo project on &lt;a herf=&quot;https://codebender.cc/sketch:222511&quot; target=&quot;_blank&quot;&gt;codebender&lt;/a&gt; to make it easy to replicate. You will need to import a few libraries into your personal libraries on codebender to get the project to work. It would be easy to enhance the project to save the last several messages and use a &lt;a href=&quot;https://www.adafruit.com/product/444&quot;&gt;2-Axis Analog Thumb Joystick&lt;/a&gt; to control a simple interface that scans through messages.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately the &lt;em&gt;Blend Micro&lt;/em&gt; does not have an on-board LIPO charging circuit, so if you want to enable a combined USB/Battery solution a charging circuit would have to be added. RedBear warns that connecting a battery to VIN and USB simultaneously could damage the board.&lt;/p&gt;
+
+&lt;p&gt;I printed up a simple enclosure on the 3D printer and here is the enclosed LCD panel.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s3.amazonaws.com/rwx-blog/IMG_6111.JPG&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;pinouts&quot;&gt;Pinouts&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  VIN &amp;amp; GND -&amp;gt; to LIPO battery (DO NOT use USB power when battery connected)
+  PIN 2     -&amp;gt; ST7735R LITE
+  PIN 8     -&amp;gt; ST7735R D/C
+  PIN 9     -&amp;gt; ST7735R Reset
+  PIN 10    -&amp;gt; ST7735R TFT_CS
+  PIN 11    -&amp;gt; ST7735R MOSI
+  PIN 13    -&amp;gt; ST7735R SCK
+  PIN V33   -&amp;gt; ST7735R VCC
+  PIN GND   -&amp;gt; ST7735R GND
+
+  Button -&amp;gt; PIN 5, GND
+  Buzzer -&amp;gt; PIN 3, GND
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;detailed-instructions&quot;&gt;Detailed Instructions&lt;/h2&gt;
+
+&lt;p&gt;Follow the instructions for using &lt;a href=&quot;http://redbearlab.com/quick-start-codebender&quot; target=&quot;_blank&quot;&gt;Blend Micro on codebender&lt;/a&gt;. You should be able to get the LED Blink example working before continuing.&lt;/p&gt;
+
+&lt;h3 id=&quot;add-key-libraries&quot;&gt;Add key libraries&lt;/h3&gt;
+&lt;p&gt;To compile the code in the project above you will need to add several libraries to your personal libraries on codebender. Go to  &lt;a href=&quot;https://codebender.cc&quot; target=&quot;_blank&quot;&gt;codebender.cc&lt;/a&gt; and you will see the &lt;em&gt;*Upload Libraries&lt;/em&gt; button on the upper right side of the page. There are four libraries you need to add.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/NordicSemiconductor/ble-sdk-arduino&quot; target=&quot;_blank&quot;&gt;Nordic Bluetooth low energy SDK for Arduino beta version 0.9.0&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/RedBearLab/nRF8001/&quot; target=&quot;_blank&quot;&gt;RedBearLab nRF8001 Library version 20140701&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/RedBearLab/nRF8001/&quot; target=&quot;_blank&quot;&gt;RedBearLab Blend Add-On version 20140701&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/robotastic/ANCS-Library&quot; target=&quot;_blank&quot;&gt;Robotastic/ANCS-Library&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Just download each of these as a zip file from github, and upload them to your &lt;em&gt;codebender personal library&lt;/em&gt;. I created a fork of the &lt;em&gt;ANCS-Library&lt;/em&gt; to thin it down a bit as memory was tight on the &lt;em&gt;Blend Micro&lt;/em&gt; for another version of the project I am working on. It is on a branch called &lt;strong&gt;code-diet&lt;/strong&gt; available on github  &lt;a href=&quot;//github.com/fooqri/ANCS-Library/archive/code-diet.zip&quot;&gt;ANCS-Library on a code-diet zip&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, clone my &lt;a herf=&quot;https://codebender.cc/sketch:222511&quot; target=&quot;_blank&quot;&gt;codebender ANCS_Display_ST7735 project&lt;/a&gt; and verify the code compiles with the libraries you uploaded, and run the project on Arduino.&lt;/p&gt;
+
+&lt;p&gt;Open the iPhone  &lt;em&gt;Settings&lt;/em&gt; app and select &lt;em&gt;Bluetooth&lt;/em&gt;. If everything is working correctly you should see &lt;strong&gt;ANCS_RUSK&lt;/strong&gt; listed under &lt;em&gt;MyDevices&lt;/em&gt;. Select it and choose pair.
+&lt;img src=&quot;https://s3.amazonaws.com/rwx-blog/IMG_6095.PNG&quot; /&gt;
+&lt;img src=&quot;https://s3.amazonaws.com/rwx-blog/IMG_6094.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once paired you should hear a tone on the device, and the display will change from &lt;strong&gt;Status: Not Connected&lt;/strong&gt; to &lt;strong&gt;Status: Connected&lt;/strong&gt;.  If you receive any alerts on your iPhone you should now hear a tone on the device and the screen should display a message.&lt;/p&gt;
+
+&lt;p&gt;You can update the code to support custom tones and messages for different alert types, or add other interesting features.&lt;/p&gt;
+
+&lt;h2 id=&quot;additional-notes&quot;&gt;Additional Notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;The &lt;a href=&quot;http://redbearlab.com/blenano/&quot;&gt;Blend Nano&lt;/a&gt; from ReadBearLab is a tiny alternative to the Blend Micro but it is based on the ARM Cortex-M0 SoC and uses the newer Nordic nRF51822 BLE chipset. The &lt;em&gt;ANCS-Library&lt;/em&gt; is only compatible with the Nordic nRF8001 BLE chipset, so some work would be needed to port the library to the new platform.&lt;/li&gt;
+  &lt;li&gt;Adafruit has just announced a few similar Arduino+BLE boards. The &lt;a href=&quot;https://www.adafruit.com/products/2829&quot;&gt;Feather 32u4 Bluefruit LE&lt;/a&gt; using the ATmega32u4, and the &lt;a href=&quot;https://www.adafruit.com/products/2995&quot;&gt;Feather M0 Bluefruit LE&lt;/a&gt; using the ATSAMD21G18 ARM Cortex. Both these boards provide a built in 100mA lipoly charger, so either would be a better choice for a mobile device. Both these boards use the  nRF51822 BLE chipset so like the Blend Nano would require porting the &lt;em&gt;ANCS-Library&lt;/em&gt; before the code above could be used.&lt;/li&gt;
+  &lt;li&gt;I have a &lt;a href=&quot;https://www.adafruit.com/products/1393&quot;&gt;SHARP Memory Display Breakout&lt;/a&gt; from adafruit, which is a really nice eInk type display, but was unable to get it working with this demo on first try. This &lt;a href=&quot;https://codebender.cc/sketch:220214&quot;&gt;codebender sketch&lt;/a&gt; was my first attempt. It seems that there is a conflict between the &lt;em&gt;Adafruit_SharpMem&lt;/em&gt; library and the &lt;em&gt;ANCS Library&lt;/em&gt;, because instantiating the Adafruit_SharpMem display object causes calls to notif.setup() to hang. I may look at it a bit more if I get a chance, but this was to be a quick experiment. There were some memory size issues initially, but I believe the hang may be an SPI issue, but I haven’t yet had time to investigate further.&lt;/li&gt;
+  &lt;li&gt;I also started to play with a headless version that instead uses neoPixels. I will post when I finish it. I like the idea of a fun neoPixel and sound only display connected with an iOS app that allows the user to customize what notifications the display responds to and how it responds. This would allow cheap simple peripheral displays to be created that respond to different notifications in different ways.&lt;/li&gt;
+  &lt;li&gt;The &lt;a href=&quot;http://makezine.com/2015/12/09/meet-esp32-new-big-brother-to-iot-board-esp8266/&quot;&gt;ESP32&lt;/a&gt; should make for an interesting platform for these types of displays because they could allow BLE for notifications, and use WiFi for connection to the home network. This could allow control a wide range of WiFi enabled home devices based on iOS app notifications. That sounds fun.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 23 Jan 2016 11:12:00 -0800</pubDate>
+        <link>http://rwx.io/2016/01/23/ancs-message-display.html</link>
+        <guid isPermaLink="true">http://rwx.io/2016/01/23/ancs-message-display.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Org Mode ES2015+ Code Blocks</title>
+        <description>&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Updated:&lt;/strong&gt; I have &lt;a href=&quot;/blog/2016/03/09/org-with-babel-node-updated/&quot;&gt;updated instructions&lt;/a&gt; for installing and using the recently released &lt;em&gt;Babel 6&lt;/em&gt; with &lt;em&gt;org mode&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I use &lt;strong&gt;emacs org mode&lt;/strong&gt; to keep notes including code nodes that support inline execution.  It is convenient for keeping useful code snippets, as well as experimenting while taking notes.  Because of features like &lt;a href=&quot;http://rwx.io/blog/2013/03/04/nvalt-and-emacs/&quot;&gt;Org + Deft&lt;/a&gt; it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.&lt;/p&gt;
+
+&lt;p&gt;As I have started to explore more ES6 and even ES7 features I wanted a way to transpile on the fly in my coding notes. It turns out it is very easy.&lt;/p&gt;
+
+&lt;p&gt;First make a few changes to the emacs environment so you can use JavaScript in &lt;strong&gt;org mode&lt;/strong&gt;, as well as find local &lt;em&gt;node.js&lt;/em&gt; modules you have installed. Replace &lt;em&gt;”~/org/node_modules”&lt;/em&gt; in the config below with the location of any local node modules you want to pick up. Using this approach you don’t have to pollute the global node_module directory if you don’t want to.&lt;/p&gt;
+
+&lt;p&gt;Add the following to your emacs init.el file and evaluate it (or restart emacs).&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(setenv &quot;NODE_PATH&quot;
+  (concat
+   &quot;~/org/node_modules&quot; &quot;:&quot;
+   (getenv &quot;NODE_PATH&quot;)
+  )
+)
+
+(org-babel-do-load-languages
+ &#39;org-babel-load-languages
+ &#39;((js . t)))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Next install the babel npm module globally, this allows you to call babel from the command line also. Then install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path set above.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install -g babel
+npm install mongodb
+npm install bluebird
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The default  org-mode interpreter for js is node, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell &lt;em&gt;org mode&lt;/em&gt; to use an alternative interpreter; in this case &lt;strong&gt;babel-node&lt;/strong&gt;, which also transpiles.&lt;/p&gt;
+
+&lt;p&gt;Adding  &lt;em&gt;:cmd “babel-node”&lt;/em&gt;   after the  &lt;em&gt;#+begin_src js&lt;/em&gt; tells &lt;em&gt;org mode&lt;/em&gt; to use the babel_node command instead of the default JavaScript interpreter. The &lt;em&gt;:results output&lt;/em&gt; tells &lt;em&gt;org mode&lt;/em&gt; that the results will be from an output statement &lt;em&gt;(using console.log() for JavaScript)&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   #+name: db.activities.findOne
+   #+begin_src js :cmd &quot;babel-node&quot; :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require(&#39;mongodb&#39;);
+              let Promise = require(&#39;bluebird&#39;);
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection(&#39;activities&#39;)
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: &lt;em&gt;#+RESULTS:&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   #+name: db.activities.findOne
+   #+begin_src js :cmd &quot;babel-node&quot; :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require(&#39;mongodb&#39;);
+              let Promise = require(&#39;bluebird&#39;);
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection(&#39;activities&#39;)
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+
+   #+RESULTS: db.activities.findOne
+   :RESULTS:
+   The first activity name is Shopping
+   :END:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can see several new and experimental language features including &lt;em&gt;async functions&lt;/em&gt;, the &lt;em&gt;await&lt;/em&gt; keyword for performing a non-blocking wait on a promise to complete, and &lt;em&gt;template strings&lt;/em&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Oct 2015 16:57:00 -0700</pubDate>
+        <link>http://rwx.io/2015/10/06/org-with-babel-node.html</link>
+        <guid isPermaLink="true">http://rwx.io/2015/10/06/org-with-babel-node.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>ESP8266 Initial Notes</title>
+        <description>&lt;p&gt;&lt;img src=&quot;//s3.amazonaws.com/rwx-blog/sparkfun_thing.jpg&quot; style=&quot;height: 400px; display: block; margin: auto;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;here-are-a-few-notes-from-my-experiments-with-the-esp8266&quot;&gt;Here are a few notes from my experiments with the ESP8266&lt;/h1&gt;
+&lt;p&gt;I have started testing  the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.&lt;/p&gt;
+
+&lt;p&gt;I started with the &lt;a href=&quot;https://www.sparkfun.com/products/13231&quot; target=&quot;_blank&quot;&gt;Sparkfun Thing&lt;/a&gt;, which is a nice ESP8266 dev board that supports integrated LiPo battery management. They have a nice &lt;a href=&quot;//learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide&quot; target=&quot;_blank&quot;&gt;Hookup Guide&lt;/a&gt; to get you started.&lt;/p&gt;
+
+&lt;p&gt;My use case is a very simple IoT type device that will send data to a cloud service that I have developed. The cloud service will aggregate the data from multiple personal IoT devices for a user. These devices will generally be powered via LiPo battery when in use for interaction and placed in a charging tray when not in interactive use. The devices are always active but have special meaning when in interactive use.&lt;/p&gt;
+
+&lt;p&gt;These constraints mean that battery life is a critical factor, but I do not need days, months, or years of battery life. The ESP8266 is a fairly power hungry device, especially when transmitting data, but it does have some power management features, most notably &lt;strong&gt;deep sleep&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;notes-from-my-initial-experiments&quot;&gt;Notes from my initial experiments:&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-kit&quot;&gt;The Kit&lt;/h3&gt;
+&lt;p&gt;I used the &lt;a href=&quot;//www.sparkfun.com/products/13231&quot; target=&quot;_blank&quot;&gt;Sparkfun Thing&lt;/a&gt;, &lt;a href=&quot;//www.sparkfun.com/products/9873&quot; target=&quot;_blank&quot;&gt;FTDIBreakout&lt;/a&gt; for uploading code, and  &lt;a href=&quot;//www.sparkfun.com/products/10718&quot; target=&quot;_blank&quot;&gt;LiPo battery&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;setup&quot;&gt;Setup&lt;/h3&gt;
+&lt;p&gt;An easy way to get code running is to use the &lt;a href=&quot;//learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-esp8266-arduino-addon&quot; target=&quot;_blank&quot;&gt;Arduino Addon&lt;/a&gt; that lets you leverage the Arduino libraries in programming the ESP8266. An alternative I will try in the future is the  &lt;a href=&quot;//github.com/nodemcu/nodemcu-firmware&quot; target=&quot;_blank&quot;&gt;Lua based firmware&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;When using the FTDI to program the board take note that GPIO0 is used to set the run mode of the firmware. 3.3V puts it in &lt;em&gt;run mode&lt;/em&gt; and 0V puts it in &lt;em&gt;program mode (bootloader)&lt;/em&gt;. This is easy to miss in the instructions, so be sure to connect the &lt;em&gt;0&lt;/em&gt; pin to ground when you wish to upload the code from the Arduino IDE.&lt;/p&gt;
+
+&lt;h2 id=&quot;power-management&quot;&gt;Power Management&lt;/h2&gt;
+&lt;p&gt;To use the &lt;em&gt;deep sleep&lt;/em&gt; mode on the &lt;em&gt;Sparkfun Thing&lt;/em&gt; you must connect &lt;em&gt;XPD&lt;/em&gt; to &lt;em&gt;DTR&lt;/em&gt;. Sparkfun connected DTR to RST on the &lt;em&gt;Thing&lt;/em&gt; so a short negative voltage will reset the device. When in &lt;em&gt;deep sleep&lt;/em&gt; most system services are powered off, but the RTC and timer interrupt remains active for the purpose of waking the device from sleep. This is handled by the firmware once these pins are connected, however this means you will have to remove the FTDI programmer to test the deep-sleep mode.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;deepsleep()&lt;/em&gt; call looks a lot like a &lt;em&gt;delayMicroseconds()&lt;/em&gt; call, simply pass it the number of microseconds before it should wake up again. In deep sleep mode, the ESP8266 hits about 60 µA of power draw, down from its average of around 75mA, and the 200mA used while transmitting.&lt;/p&gt;
+
+&lt;p&gt;It should be possible to connect a button or some other independent sensor as an alternative to a timer based wakeup, so the device can be awaken by a button press or some physical world event.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ESP.deepSleep(1000000);  //sleep for 1 second
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;saving-state&quot;&gt;Saving State&lt;/h3&gt;
+&lt;p&gt;Unlike a call to &lt;em&gt;delay()&lt;/em&gt; or &lt;em&gt;delayMicroseconds()&lt;/em&gt;, the &lt;em&gt;deepsleep()&lt;/em&gt; function actually causes the device to power down everything except the RTC and related services. Wake is essentially a device reboot and previous state is not maintained. This means any state will need to be stored in the ESP8266 EEPROM. For this there is an EEPROM library and EEPROM.get()&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  //some struct for saved object
+  struct BackupObj{
+    int setting;
+    int data;
+  };
+
+  //write
+  int eeAddress = 0;
+  EEPROM.begin(4096);  //set up memory allocation
+  EEPROM.put( eeAddress, backupObj );
+  EEPROM.commit();
+  EEPROM.end();
+
+  //read
+  int eeAddress = 0; 
+  EEPROM.begin(4096);
+  EEPROM.get( eeAddress, backupObj );
+  EEPROM.end();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;adding-components&quot;&gt;Adding Components&lt;/h3&gt;
+
+&lt;p&gt;The device works well for I2C, in my case I tested with an MPU-6050.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  #include &amp;lt;Wire.h&amp;gt;
+
+  void setup() {
+    // ... other setup code
+    Wire.begin();
+    Wire.beginTransmission(MPU);
+    Wire.write(0x6B);  // PWR_MGMT_1 register
+    Wire.write(0);     // set to zero (wakes up the MPU-6050)
+    Wire.endTransmission(true);
+  }
+
+  // using arduino&#39;s loop mechanism
+  void loop(){
+    // ... other loop code
+    Wire.beginTransmission(MPU);
+    Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
+    Wire.endTransmission(false);
+    Wire.requestFrom(MPU,14,true); 
+    AcX=Wire.read()&amp;lt;&amp;lt;8|Wire.read();     
+    AcY=Wire.read()&amp;lt;&amp;lt;8|Wire.read();  
+    AcZ=Wire.read()&amp;lt;&amp;lt;8|Wire.read(); 
+    // ... other loop code
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I tested using GPIO with a piezo used as a speaker. The Speaker is capable of playing simple notes using frequency of note mapped to cycles of sound and delay.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  #define NOTE_C5  523 //middle C
+  #define NOTE_D5  587
+
+  const int SPEAKER_PIN = 5;
+  
+  void playNote(int targetPin, long frequency, long length) {
+    long delay = 1000000 / frequency / 2; 
+    long cycles = frequency * length / 1000; 
+    for (long i = 0; i &amp;lt; cycle; i++) { 
+      digitalWrite(targetPin, HIGH); 
+      delayMicroseconds(delay); 
+      digitalWrite(targetPin, LOW); 
+      delayMicroseconds(delay);
+    } 
+  }
+
+  long noteDuration = 500;
+  long frequency = NOTE_C5;
+
+  playNote(SPEAKER_PIN, frequency, noteDuration);
+  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I  tested  analog sensor input in the form of a second piezo connected to the ADC pin as a knock sensor. ADC is the only analog input pin on this device.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  const int KNOCK_SENSOR = A0;
+  const int KNOCK_THRESHOLD = 70;
+
+  sensorReading = analogRead(KNOCK_SENSOR); 
+  if (sensorReading &amp;gt;= KNOCK_THRESHOLD) {
+    long noteDuration = 500;
+    long frequency = NOTE_E5;
+    playNode(SPEAKER_PIN, frequency, noteDuration); 
+  }
+  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Finally there were enough pins remaining to hookup an RGB LED breakout. I added this test using the  &lt;a href=&quot;//github.com/joushx/Arduino-RGB-Tools&quot; target=&quot;_blank&quot;&gt;RGB Tools Lib&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  #include &amp;lt;RGBTools.h&amp;gt;
+
+  const int RED_PIN = 4; 
+  const int GREEN_PIN = 12; 
+  const int BLUE_PIN = 13;
+
+  // set the RGB pins - here I used pins 4, 13, and 12
+  // use RGBTools rgb(4,13,12, COMMON_CATHODE); if using a cathode RGB
+  RGBTools rgb(4,13,12); 
+
+  //set a nice red
+  rgb.setColor(174,10,0);
+  
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;##Conclusion
+This was a quick run through to test some of the feature of the device, but even with a few sensors/actuators and a simple setup there is a nice combination of status and interaction feedback that can be performed with a simple and relatively inexpensive device. The &lt;em&gt;Sparkfun Thing&lt;/em&gt; retails for around $15 right now but the &lt;a href=&quot;//learn.adafruit.com/adafruit-huzzah-esp8266-breakout/overview&quot; target=&quot;_blank&quot;&gt;Huzzah&lt;/a&gt; is under $10, and others can be found closer to $5.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 09 Sep 2015 08:05:00 -0700</pubDate>
+        <link>http://rwx.io/2015/09/09/esp8266-initial-notes.html</link>
+        <guid isPermaLink="true">http://rwx.io/2015/09/09/esp8266-initial-notes.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Self Updating Edison Apps</title>
+        <description>&lt;p&gt;One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like &amp;lt;a href-“www.resin.io” target=”_blank”&amp;gt;resin.io&amp;lt;/a&amp;gt; do a nice job of deploying &lt;a href=&quot;http://bundler.io/&quot; target=&quot;_blank&quot;&gt;bundler images&lt;/a&gt; onto devices like the Edison. The primary issue I had was the overhead of pushing bundler images around when the only thing that was changing was the node app. It seemed easier to just use git and npm to handle the updates. I may go the resin.io route later, but this early in dev and testing the git route seems simpler.&lt;/p&gt;
+
+&lt;h2 id=&quot;overview-of-what-i-did&quot;&gt;Overview of What I Did&lt;/h2&gt;
+&lt;p&gt;The product I am prototyping has two parts, an Edison device (with additional sensors and actuators) running a node app, and a node web service for managing device configuration and data running in the cloud.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The device’s node app is published in a private github repository.&lt;/li&gt;
+  &lt;li&gt;I installed and configured git on each of the Edison devices.&lt;/li&gt;
+  &lt;li&gt;I cloned the github repository onto each of the Edison devices.&lt;/li&gt;
+  &lt;li&gt;I installed the forever module on each of the devices to keep the app up and allow easy restarting of the app.&lt;/li&gt;
+  &lt;li&gt;I created a startup script that starts the app using forever.&lt;/li&gt;
+  &lt;li&gt;I created and enabled a linux service that runs the startup script on boot.&lt;/li&gt;
+  &lt;li&gt;I added code to the app to periodically ask the web service what the latest version of the app should be.&lt;/li&gt;
+  &lt;li&gt;If a new version is available the app will do a pull and use forever to do a restart using the new version.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;the-details&quot;&gt;The Details&lt;/h2&gt;
+
+&lt;h3 id=&quot;initial-cleanup&quot;&gt;Initial Cleanup&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Remove any app from the default Edison node_app_slot directory so you don’t accidentally start the app using the default Edison process.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mv /node_app_slot /node_app_slotbk
+mv  ~/.node_app_slot/ ~/.node_app_slotbk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;install-git&quot;&gt;Install Git&lt;/h3&gt;
+&lt;p&gt;#### Update /etc/opkg/base-feeds.conf with these 3 lines
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+src all     http://iotdk.intel.com/repos/1.1/iotdk/all
+src x86 http://iotdk.intel.com/repos/1.1/iotdk/x86
+src i586    http://iotdk.intel.com/repos/1.1/iotdk/i586
+&lt;/code&gt;
+#### Update opkg and install git
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+opkg update
+opkg install git
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;option-1-modify-edisons-default-port&quot;&gt;Option 1: Modify Edison’s default port&lt;/h3&gt;
+&lt;p&gt;I wanted to use port 80 for the node app so I moved the default Edison config service to port 8080&lt;/p&gt;
+
+&lt;h4 id=&quot;change-default-port-in-edison-cofig-server&quot;&gt;Change default port in edison-cofig-server&lt;/h4&gt;
+
+&lt;p&gt;Edit &lt;em&gt;/usr/lib/edison_config_tools/edison-config-server.js&lt;/em&gt;
+and change the last line to use a port other than 80.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http.createServer(requestHandler).listen(8080);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;option-2-disable-the-edison-config-web-service&quot;&gt;Option 2: Disable the Edison config web service&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl disable edison_config
+systemctl stop    edison_config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;setup-to-use-github&quot;&gt;Setup to use github&lt;/h3&gt;
+
+&lt;h4 id=&quot;generate-a-key-for-use-with-github&quot;&gt;Generate a key for use with github&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;ssh-keygen -t rsa -b 4096 -C “me@my.email”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Follow the directions, easiest is just to hit return at the prompts. I chose to not do a passphrase for my small pilot.&lt;/p&gt;
+
+&lt;h4 id=&quot;generate-a-deployment-key-for-the-github-repository&quot;&gt;Generate a deployment key for the github repository&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Go to your app’s github repository, choose &lt;em&gt;settings&lt;/em&gt;, choose &lt;em&gt;deployment keys&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;Click the &lt;em&gt;Add Deployment Key&lt;/em&gt; button&lt;/li&gt;
+  &lt;li&gt;Give it a title (the host name for the device works)&lt;/li&gt;
+  &lt;li&gt;Back on the Edison run cat /home/root/.ssh/id_rsa.pub to get the text for the public key&lt;/li&gt;
+  &lt;li&gt;copy the text for the public key to the &lt;em&gt;Key&lt;/em&gt; input box back on github.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;clone-your-repo&quot;&gt;Clone your repo&lt;/h3&gt;
+&lt;p&gt;Back on the Edison&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /
+git clone &amp;lt;your repo&amp;gt; AppDirName
+cd /AppDirName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;pull-latest-code&quot;&gt;Pull Latest code&lt;/h3&gt;
+&lt;p&gt;Now any time you update code on master a simple &lt;em&gt;git pull&lt;/em&gt; will update the latest code.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git pull
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;install-forever-module-using-npm&quot;&gt;Install forever module using npm&lt;/h3&gt;
+&lt;p&gt;Forever will automatically restart a node app if it crashes. It also has some handy restart features.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install -g forever
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;create-a-startup-script--service&quot;&gt;Create a startup script &amp;amp; service&lt;/h3&gt;
+&lt;p&gt;Creating a startup service will allow your app to start automatically using forever.&lt;/p&gt;
+
+&lt;h4 id=&quot;create-startupsh-to-start-node-app-serverjs-in-this-case&quot;&gt;Create startup.sh to start node app (server.js in this case)&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /AppDirName 
+forever start server.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;make-startupsh-executable&quot;&gt;Make startup.sh executable&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chmod +x startup.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;create-a-startup-service-file-at-libsystemdsystemstartupservice&quot;&gt;Create a startup service file at /lib/systemd/system/startup.service&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Unit]
+ Description=STARTUP
+ [Service]                           
+ Type=idle                           
+ RemainAfterExit=true
+ ExecStart=/AppDirName/startup.sh
+ Environment=&quot;HOME=/home/root&quot;    
+ WorkingDirectory=/AppDirName/   
+ [Install]                     
+ WantedBy=multi-user.target 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;enable-startup-service&quot;&gt;Enable startup service&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl enable /lib/systemd/system/startup.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;enable-your-node-app-to-update-itself&quot;&gt;Enable your node app to update itself&lt;/h3&gt;
+
+&lt;p&gt;By using a simple update function you can get your app to update itself and restart.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var spawn = require(&#39;child_process&#39;).exec;
+var semver = require(&#39;semver&#39;);
+var bunyan = require(&#39;bunyan&#39;);
+var log = bunyan.createLogger({
+    name: &#39;app&#39;,
+    streams: [{
+        type: &#39;rotating-file&#39;,
+        path: &#39;/var/log/app.log&#39;,
+        period: &#39;1d&#39;,
+        count: 7        
+    }]
+});
+var pjson = require(&#39;./package.json&#39;);
+
+var checkVersion = function(){
+  var currentVersion = pjson.version;
+  var options = {  hostname: &#39;www.myhost.com&#39;,
+                             port: 80,
+                   path: &#39;http://www.myhost.com/device_version/&#39;,
+                   method: &#39;GET&#39;,
+                   headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}
+                };
+  var callback = function(response) {
+    var dataStr = &#39;&#39;;
+    response.on(&#39;data&#39;, function (chunk) {
+      dataStr += chunk;
+    });
+
+    response.on(&#39;end&#39;, function () {
+      var versionInfo = JSON.parse(dataStr);
+      var latestVersion = versionInfo.client_version || &quot;0.0.0&quot;; //don&#39;t update if missing version info
+      log.info(&quot;current version: &quot;, currentVersion);
+      log.info(&quot;latest version: &quot;, latestVersion);
+      if (semver.gt(latestVersion, currentVersion)){
+        log.info(&quot;pulling newer versions&quot;);
+        spawn(&#39;git pull&#39;, function(error, stdout, stderr) {
+          if (error){
+            log.error(&quot;ERROR pulling latest: &quot;, error);
+          }
+          else{
+            log.info(&quot;updating packages&quot;);
+            spawn(&#39;npm update&#39;, function(error, stdout, stderr){
+              if (error){
+                log.error(&quot;ERROR updating packages: &quot;, error);
+              }
+              else {
+                log.info(&quot;restarting node&quot;);
+                spawn(&#39;forever restartall&#39;, function(error, stdout, stderr){
+                  if (error){
+                    log.error(&quot;ERROR restarting: &quot;, error);
+                  }
+                  else {
+                     log.info(&quot;restarted&quot;);
+                  }
+                });
+              }           
+            });
+          }
+        }); 
+      }
+    });
+  };
+
+//check for updates at app startup
+checkVersion();
+
+//then check for updates every hour;
+setInterval(function() {
+    checkVersion();                                                       
+  }, 3600000);
+  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;on-the-server&quot;&gt;On the server&lt;/h3&gt;
+&lt;p&gt;You will need to add a route on your server to provide the version info. In this example the route was a GET request to the  &lt;em&gt;/device_version&lt;/em&gt; route. For simplicity I just use an env_var on the service. I simply update the env_var when a new version is available. Then in the logic for the &lt;em&gt;/device_version&lt;/em&gt; route I pass back the version found in the env_var.&lt;/p&gt;
+
+&lt;p&gt;The logic for comparing versions is very basic and flawed, but will work in this simple case.&lt;/p&gt;
+
+&lt;h3 id=&quot;improvements&quot;&gt;Improvements&lt;/h3&gt;
+&lt;p&gt;Ideally instead of a straight &lt;em&gt;git pull&lt;/em&gt; you can instead download a tagged version, and keep the current and next version info for each device in the web service db. This would allow rolling out upgrades to specific devices, etc. Another approach would be to pass back version info to the device so updates could roll out immediately if the device is in use. Finally more logic on the device to schedule an update when not active would be ideal. In that case maybe adding more than &lt;em&gt;versionNumber&lt;/em&gt; of the latest version to the server response, maybe a priority value also.&lt;/p&gt;
+
+&lt;p&gt;This was a quick experiment it getting updates to percolate out to devices prototype devices, and so far it seems to be working well.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 18 Aug 2015 10:49:00 -0700</pubDate>
+        <link>http://rwx.io/2015/08/18/self-updating-edison-app.html</link>
+        <guid isPermaLink="true">http://rwx.io/2015/08/18/self-updating-edison-app.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Workbench Replaces My Desk</title>
+        <description>&lt;p&gt;&lt;a href=&quot;//s3.amazonaws.com/rwx-blog/workbench.JPG&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;//s3.amazonaws.com/rwx-blog/workbench.JPG&quot; style=&quot;height: 400px; display: block; margin: auto;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I changed my desk out for a workbench and am very pleased with the results. I made the switch for two reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I spend a lot of time at my desk and wanted to mix in sitting and standing throughout the day.&lt;/li&gt;
+  &lt;li&gt;I started to work more frequently on small hardware projects and found that being able to stand and move about the bench was more comfortable.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A few additional changes I made:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I found that I needed more tools at hand when I was working on hardware projects, so I brought in a small tool cabinet from the garage.&lt;/li&gt;
+  &lt;li&gt;I wanted to have access to a large number of “Maker” materials in my office vs. the garage, so I also added an &lt;a href=&quot;http://www.ikea.com/us/en/catalog/products/40196241/&quot; target=&quot;_blank&quot;&gt;IKEA Alex&lt;/a&gt; cabinet. These can often be found in their discount section for around $60 if you don’t mind a few minor marks. This cabinet holds larger hardware components (like Arduino boards) as well as design/art supplies like paper, ink, paint, cutting/carving tools, etc.&lt;/li&gt;
+  &lt;li&gt;I wanted to have some smaller supplies at hand on top of the desk so I added a few &lt;a href=&quot;http://www.amazon.com/gp/product/B000AIDBGC&quot; target=&quot;_blank&quot;&gt;Art Supply Drawers&lt;/a&gt; for the top of the bench. The one to the left of the monitor holds small electronic components. The one to the right holds drawing pencils, pens, markers, etc that I use frequently.&lt;/li&gt;
+  &lt;li&gt;I added a &lt;a href=&quot;//www.amazon.com/gp/product/B00ANZRT4M&quot; target=&quot;_blank&quot;&gt;digital soldering station&lt;/a&gt; and &lt;a href=&quot;http://www.amazon.com/Weller-WSA350-Bench-Smoke-Absorber/dp/B000EM74SK&quot; target=&quot;_blank&quot;&gt;exhaust fan&lt;/a&gt;. I still have a soldering station in the garage, but having one at hand is very convenient.&lt;/li&gt;
+  &lt;li&gt;Another handy addition is the &lt;a href=&quot;http://www.amazon.com/gp/product/B00XNYXQHE&quot; target=&quot;_blank&quot;&gt;USB Microscope&lt;/a&gt;, as some solder joints just require very careful inspection. This is especially true with soldering of small components and SMD components.&lt;/li&gt;
+  &lt;li&gt;I also had to add a &lt;a href=&quot;http://www.amazon.com/gp/product/B001PMJXD2&quot; target=&quot;_blank&quot;&gt;bench height chair&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;The workbench is a &lt;a href=&quot;http://www.amazon.com/Gladiator-GAWB08HWEG-Adjustable-Hardwood-Workbench/dp/B00ZTH82CW&quot; target=&quot;_blank&quot;&gt;Gladiator 8 ft. maple workbench&lt;/a&gt; I had in the garage for a long time. The new ones allow height adjustment, and there are also less expensive bamboo top options.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I am very pleased with the setup. One nice feature is the workbench depth is less than a traditional desk, so I gained some space back in the office. The main benefit is just better productivity, I find certain tasks are just easier to accomplish when standing. The final benefit? With two greyhounds in the house, having a tall desk means fewer expensive pens and markers go missing.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Aug 2015 08:15:00 -0700</pubDate>
+        <link>http://rwx.io/2015/08/17/workbench.html</link>
+        <guid isPermaLink="true">http://rwx.io/2015/08/17/workbench.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>I2C MPU-6050</title>
+        <description>&lt;p&gt;&lt;img src=&quot;//s3.amazonaws.com/rwx-blog/mpu6050.jpg&quot; style=&quot;height: 400px; display: block; margin: auto;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.&lt;/p&gt;
+
+&lt;p&gt;To capture data I am using a  few node modules. In particular the &lt;a href=&quot;https://github.com/hybridgroup/cylon&quot; target=&quot;_blank&quot;&gt;cylon.js&lt;/a&gt; module, along with the &lt;a href=&quot;https://github.com/hybridgroup/cylon-i2c&quot; target=&quot;_blank&quot;&gt;cylon-i2c&lt;/a&gt; module.  This allows accelerometer data to be easily used by the following code block&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cylon                                                                          
+  .robot()                                                                    
+  .connection(&quot;edison&quot;, { adaptor: &quot;intel-iot&quot;, i2cPort: 1})                  
+  .device(&quot;accel&quot;, { driver: &quot;mpu6050&quot; })                                     
+  .on(&quot;ready&quot;, function(bot) {                                      
+    setInterval(function() {                                        
+      bot.accel.getAcceleration(function(err, data) {
+        //use data
+      });
+    });
+  });
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;the-mpus&quot;&gt;The MPUs&lt;/h2&gt;
+&lt;p&gt;The first prototype of this device is using a SparkFun Edison stack with the SparkFun I2C block connected to an MPU-6050, rather than the SparkFun Accelerometer block. At the time of this writing the cylon-i2c implementation of the lsm9ds0 driver is not working correctly with the SparkFun Accelerometer block, so I went the I2C route. The second an perhaps more important reason I went the I2C route is that MPU-6050 boards can be had for as low as $4, which is appealing for a low cost prototype.&lt;/p&gt;
+
+&lt;p&gt;I have a handful of MPUs I have tried and here is some info on them.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-hrefhttpswwwsparkfuncomproducts11028-targetblanksparkfun-mpu-6050-breakouta&quot;&gt;&lt;a href=&quot;https://www.sparkfun.com/products/11028&quot; target=&quot;_blank&quot;&gt;SparkFun MPU-6050 Breakout&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This is great accelerometer breakout that works well with the Edison and Cylon module, but much less expensive options exist.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-hrefhttpwwwamazoncomgpproductb00h1oye4q-targetblankriorand-triple-axis-mpu-6050-breakouta&quot;&gt;&lt;a href=&quot;http://www.amazon.com/gp/product/B00H1OYE4Q&quot; target=&quot;_blank&quot;&gt;RioRand Triple Axis MPU-6050 Breakout&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This is currently my go to accelerometer. It is relatively low priced at $11 and arrives in 2 days via Amazon Prime. These work well with both the Edison 3.3V boards, and the cylon i2c module. Unfortunately the default I2C address for this board is 0x69, instead of the more common  0x68 (used by the cylon mpu6050 driver) so you will need to solder the AD0 jumper plate on the top of the board.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-hrefhttpwwwamazoncomkootek-mpu-6050-mpu6050-sensors-accelerometerdpb008bopn40-targetblankkootek-gy-521-mpu-6050-mpu6050-modulea&quot;&gt;&lt;a href=&quot;http://www.amazon.com/Kootek-MPU-6050-MPU6050-sensors-Accelerometer/dp/B008BOPN40/&quot; target=&quot;_blank&quot;&gt;Kootek GY-521 MPU-6050 MPU6050 Module&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;At $4 with free shipping these look like a great option. They are reported to work well with 3.3V VCC. The down side is very slow delivery via the slow boat. I have a handful on order, I will provide an update when they arrive.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-hrefhttpwwwamazoncomgpproductb009m19l4y-targetblankgy-521-6dof-mpu6050-modulea&quot;&gt;&lt;a href=&quot;http://www.amazon.com/gp/product/B009M19L4Y&quot; target=&quot;_blank&quot;&gt;GY-521 6DOF MPU6050 Module&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;At a little over $5 with free shipping this seems like a great option, unfortunately the onboard voltage regulator in the GY-521 is designed for the Arduino 5V VCC and when used with a 3.3V VCC of the Edison blocks results in too low power on the I2C SDA/SCL pins to register as proper high and low voltage values. It is possible to give the board a separate 5V VCC supply, but that just seems overly complicated for the prototype device. Another feature of this board is the breakout of AD0 into a pin, allowing easy switching between I2C 0x68 and 0x69 addresses using either a ground or VCC connection.&lt;/p&gt;
+
+&lt;h2 id=&quot;connecting-the-mpu&quot;&gt;Connecting the MPU&lt;/h2&gt;
+&lt;p&gt;For the first prototype I am using  SparkFun Edison blocks, as I have a a few sets of these interchangeable blocks that are quick to assemble into a prototype. In this case I am using the &lt;a href=&quot;https://www.sparkfun.com/products/13034&quot; target=&quot;_blank&quot;&gt;SparkFun I2C&lt;/a&gt; block with an Edison. This block allows the Edison to be snapped onto the block, and the MPU-6050 board to be connected with 4 jumpers (VCC, GND, SDA, SCL).&lt;/p&gt;
+
+&lt;h2 id=&quot;checking-i2c-address&quot;&gt;Checking I2C Address&lt;/h2&gt;
+&lt;p&gt;Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn’t working with Cylon, the first thing to check will be whether the address is 0x68. The error message from Cylon will be a &lt;em&gt;“RangeError: Trying to access beyond buffer length”&lt;/em&gt; for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;i2cdetect -y -r 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The result will look something like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address displayed is 69, you will need to change the address to 68 using the technique recommended for your board (AD0 jumper). You may see other numbers in the results if you have other I2C components included in your assembled device, but if you are using an MPU-6050 and it is connected correctly either a 68 or a 69 should appear in the i2cdetect results.&lt;/p&gt;
+
+&lt;p&gt;I won’t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Aug 2015 05:50:00 -0700</pubDate>
+        <link>http://rwx.io/2015/08/17/i2c-mpu-6050.html</link>
+        <guid isPermaLink="true">http://rwx.io/2015/08/17/i2c-mpu-6050.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
