@@ -1,9 +1,10 @@
 ---
-Layout: post
+layout: post
 title: "Workbench Replaces My Desk"
 date: 2015-08-17 08:15
 comments: true
-categories: 
+categories:
+redirect_from: /blog/2015/08/17/workbench
 ---
  
 <a href="//s3.amazonaws.com/rwx-blog/workbench.JPG" target="_blank"><img src="//s3.amazonaws.com/rwx-blog/workbench.JPG"  style="height: 400px; display: block; margin: auto;"></a>
