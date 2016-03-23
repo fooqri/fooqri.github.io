@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>Org Mode ES2015+ Code Blocks (updated) - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      Org Mode ES2015+ Code Blocks (updated)
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+
+  Note: In this post I hav...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/2016/03/09/org-with-babel-node-updated.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Org Mode ES2015+ Code Blocks (updated)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2016-03-09T16:57:00-08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><ul>
+  <li><strong>Note:</strong> In this post I have updated the instructions for use with <em>Babel 6x</em>. For <em>Babel 5x</em> see the <a href="/blog/2015/10/06/org-with-babel-node/">original post</a>.</li>
+</ul>
+
+<p>Babel 6x is a significant change from Babel 5x, as the <em>cli</em> is now a separate node module called <em>babel-cli</em> and transforms are now also delivered as separate packages.</p>
+
+<p>First make a few changes to the emacs environment so you can use JavaScript in <strong>org mode</strong>, as well as find local <em>node.js</em> modules you have installed. Replace <em>”~/org/node_modules”</em> in the configuration below with the location of any local node modules you want to use. Using this approach you don’t have to pollute the global node_module directory if you don’t want to.</p>
+
+<p>Add the following to your emacs init.el file and evaluate it (or restart emacs). Make sure the $HOME environment variable is set in your environment; or you could just hard code the absolute path to the node_modules directory in the code below.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(setenv "NODE_PATH"
+  (concat
+   (getenv "HOME") "/org/node_modules"  ":"
+   (getenv "NODE_PATH")
+  )
+)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((js . t)))
+</code></pre>
+</div>
+
+<p>You can choose to install the Babel modules globally, or you can do it locally. In this example I will install them locally in the org directory (~/org/node_modules).</p>
+
+<p>Next install the <em>babel-cli</em> module, this allows you to call Babel from the command line. You will also want to install the transforms you plan to use, the example below installs the common preset transforms used with <em>Babel 6</em>. Also install any local modules you need to use. I chose to install them from the ~/org directory where my notes are kept, but anywhere works as long as you have the correct path to <em>node_modules</em> set above.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install --save-dev babel-cli
+npm install --save-dev babel-preset-es2015
+npm install --save-dev babel-preset-stage-0
+npm install --save-dev babel-preset-stage-1
+npm install --save-dev babel-preset-stage-2
+npm install --save-dev babel-preset-stage-3
+npm install --save-dev babel-preset-react
+npm install --save-dev mongodb
+npm install --save-dev bluebird
+</code></pre>
+</div>
+
+<p>Next you want to set up a symbolic link to the <em>babel-cli</em> script you just installed so it can be found from the command line. I decided to call it <em>org-babel-node</em> so it won’t interfere with a <em>babel-node</em> executable linked to a global module of the same name.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ln -s ~/org/node_modules/babel-cli/bin/babel-node.js /usr/local/bin/org-babel-node
+</code></pre>
+</div>
+
+<p>The default org-mode interpreter for JavaScript is <em>Node</em>, so you need to have that installed and its path set. But the cool thing is that you can change the interpreter inline in your code blocks in the cases you want to experiment with upcoming language features. To do this you simply tell <em>org mode</em> to use an alternative interpreter; in this case the <strong>babel-node</strong> transpiler installed earlier and linked as <em>org-babel-node</em>.</p>
+
+<p>Adding  <em>:cmd “org-babel-node”</em>   after the  <em>#+begin_src js</em> tells <em>org mode</em> to use the <em>org-babel-node</em> transpiler instead of the default JavaScript interpreter. Because <em>Babel 6</em> uses external modules for transforms you need to also tell Babel which preset or plugins you wish to use with either the <strong>–presets</strong> or <strong>–plugins</strong> options. The <em>:results output</em> tells <em>org mode</em> that the results will be from an output statement <em>(using console.log() for JavaScript)</em></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   #+name: db.activities.findOne
+   #+begin_src js :cmd "org-babel-node --presets stage-1" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+</code></pre>
+</div>
+
+<p>Now, simply place the cursor anywhere in the block and execute it using C-c C-c. The results will be placed under the block in second block entitled: <em>#+RESULTS:</em></p>
+
+<p>The block can be executed as often as you like and the results will be refreshed. See the updated example with its results block below.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   #+name: db.activities.findOne
+   #+begin_src js :cmd "org-babel-node --presets stage-1" :results output drawer
+      (async function(){
+          try {
+              let MongoDB = require('mongodb');
+              let Promise = require('bluebird');
+              Promise.promisifyAll(MongoDB);
+              let db = await MongoDB.MongoClient.connectAsync(process.env.MY_DB);
+              let activityCol = db.collection('activities')
+              let result = await activityCol.findOne();
+              db.close();
+              console.log(`The first activity name is ${result.name}`);
+            }
+           catch(err){
+             consule.log(err);
+             throw err;
+           }
+         })()
+   #+END_SRC
+
+   #+RESULTS: db.activities.findOne
+   :RESULTS:
+   The first activity name is Shopping
+   :END:
+</code></pre>
+</div>
+
+<p>You can see several new and experimental language features including <em>async functions</em>, the <em>await</em> keyword for performing a non-blocking wait on a promise to complete, and <em>template strings</em>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+
+
+      
+
+
+
+
+
+
+
+
+
+<time datetime="2016-03-09T16:57:00-08:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2016/01/27/ancs-example-on-blend-nano.html" title="Previous Post: ANCS Example on BLE Nano">&laquo; ANCS Example on BLE Nano</a>
+      
+      
+        <a class="basic-alignment right" href="/2016/03/10/Deft-and-Emacs-for-Notes.html" title="Next Post: Deft + Org for Notes">Deft + Org for Notes &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2016/03/11/Org-Export-Configurations.html">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/03/10/Deft-and-Emacs-for-Notes.html">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/03/09/org-with-babel-node-updated.html">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/01/27/ancs-example-on-blend-nano.html">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/01/23/ancs-message-display.html">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/10/06/org-with-babel-node.html">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/09/09/esp8266-initial-notes.html">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/18/self-updating-edison-app.html">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/17/workbench.html">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/17/i2c-mpu-6050.html">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2016/03/11/Org-Export-Configurations.html">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/emacs/productivity/2013/03/04/nvalt-and-emacs.html">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/productivity/2012/01/17/screen-capture-goodness-dot-dot-dot.html">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/rubymotion/restkit/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion.html">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/productivity/2012/12/17/wiki-plus-searchable-notes.html">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/development/rubymotion/ios/2013/06/01/coredata-dot-sqldebug-for-rubymotion.html">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/parsers/2012/12/30/treetop-and-parsing-expression-grammars-pegs.html">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/poggr/google-docs/polymer/2014/10/15/spreadsheet-driven-web-apps.html">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/design/2013/01/01/user-stories-and-activity-diagrams.html">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/poggr/literate-coffee-script/2014/10/15/fun-with-literate-coffeescript.html">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<figure class='code-highlight-figure'><figcaption class='code-highlight-caption'><span class='code-highlight-caption-title'>gistfile1.txt</span><a class='code-highlight-caption-link' href='https://gist.github.com/5691402'>link</a></figcaption><div class='code-highlight'><pre class='code-highlight-pre'><div data-line='1' class='code-highlight-row numbered'><div class='code-highlight-line'>(defun quick-copy-line ()
+</div></div><div data-line='2' class='code-highlight-row numbered'><div class='code-highlight-line'>      "Copy the whole line that point is on and move to the beginning of the next line.
+</div></div><div data-line='3' class='code-highlight-row numbered'><div class='code-highlight-line'>    Consecutive calls to this command append each line to the
+</div></div><div data-line='4' class='code-highlight-row numbered'><div class='code-highlight-line'>    kill-ring."
+</div></div><div data-line='5' class='code-highlight-row numbered'><div class='code-highlight-line'>      (interactive)
+</div></div><div data-line='6' class='code-highlight-row numbered'><div class='code-highlight-line'>      (let ((beg (line-beginning-position 1))
+</div></div><div data-line='7' class='code-highlight-row numbered'><div class='code-highlight-line'>            (end (line-beginning-position 2)))
+</div></div><div data-line='8' class='code-highlight-row numbered'><div class='code-highlight-line'>        (if (eq last-command 'quick-copy-line)
+</div></div><div data-line='9' class='code-highlight-row numbered'><div class='code-highlight-line'>            (kill-append (buffer-substring beg end) (&lt; end beg))
+</div></div><div data-line='10' class='code-highlight-row numbered'><div class='code-highlight-line'>          (kill-new (buffer-substring beg end))))
+</div></div><div data-line='11' class='code-highlight-row numbered'><div class='code-highlight-line'>      (beginning-of-line 2))
+</div></div><div data-line='12' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='13' class='code-highlight-row numbered'><div class='code-highlight-line'>(defun quick-cut-line ()
+</div></div><div data-line='14' class='code-highlight-row numbered'><div class='code-highlight-line'>  "Cut the whole line that point is on.  Consecutive calls to this command append each line to the kill-ring."
+</div></div><div data-line='15' class='code-highlight-row numbered'><div class='code-highlight-line'>  (interactive)
+</div></div><div data-line='16' class='code-highlight-row numbered'><div class='code-highlight-line'>  (let ((beg (line-beginning-position 1))
+</div></div><div data-line='17' class='code-highlight-row numbered'><div class='code-highlight-line'>  (end (line-beginning-position 2)))
+</div></div><div data-line='18' class='code-highlight-row numbered'><div class='code-highlight-line'>    (if (eq last-command 'quick-cut-line)
+</div></div><div data-line='19' class='code-highlight-row numbered'><div class='code-highlight-line'>	(kill-append (buffer-substring beg end) (&lt; end beg))
+</div></div><div data-line='20' class='code-highlight-row numbered'><div class='code-highlight-line'>      (kill-new (buffer-substring beg end)))
+</div></div><div data-line='21' class='code-highlight-row numbered'><div class='code-highlight-line'>    (delete-region beg end))
+</div></div><div data-line='22' class='code-highlight-row numbered'><div class='code-highlight-line'>  (beginning-of-line 1)
+</div></div><div data-line='23' class='code-highlight-row numbered'><div class='code-highlight-line'>  (setq this-command 'quick-cut-line))
+</div></div><div data-line='24' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='25' class='code-highlight-row numbered'><div class='code-highlight-line'>(transient-mark-mode 1)
+</div></div><div data-line='26' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='27' class='code-highlight-row numbered'><div class='code-highlight-line'>(defun select-current-line ()
+</div></div><div data-line='28' class='code-highlight-row numbered'><div class='code-highlight-line'>  "Select the current line"
+</div></div><div data-line='29' class='code-highlight-row numbered'><div class='code-highlight-line'>  (interactive)
+</div></div><div data-line='30' class='code-highlight-row numbered'><div class='code-highlight-line'>  (end-of-line) ; move to end of line
+</div></div><div data-line='31' class='code-highlight-row numbered'><div class='code-highlight-line'>  (set-mark (line-beginning-position)))
+</div></div><div data-line='32' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='33' class='code-highlight-row numbered'><div class='code-highlight-line'>(define-key help-map "d" 'docsetutil-search) ; C-h d
+</div></div><div data-line='34' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='35' class='code-highlight-row numbered'><div class='code-highlight-line'>(defvar th-shell-popup-buffer nil)
+</div></div><div data-line='36' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='37' class='code-highlight-row numbered'><div class='code-highlight-line'>(defun th-shell-popup ()
+</div></div><div data-line='38' class='code-highlight-row numbered'><div class='code-highlight-line'>  "Toggle a shell popup buffer with the current file's directory as cwd."
+</div></div><div data-line='39' class='code-highlight-row numbered'><div class='code-highlight-line'>  (interactive)
+</div></div><div data-line='40' class='code-highlight-row numbered'><div class='code-highlight-line'>  (unless (buffer-live-p th-shell-popup-buffer)
+</div></div><div data-line='41' class='code-highlight-row numbered'><div class='code-highlight-line'>    (save-window-excursion (shell "*Popup Shell*"))
+</div></div><div data-line='42' class='code-highlight-row numbered'><div class='code-highlight-line'>    (setq th-shell-popup-buffer (get-buffer "*Popup Shell*")))
+</div></div><div data-line='43' class='code-highlight-row numbered'><div class='code-highlight-line'>  (let ((win (get-buffer-window th-shell-popup-buffer))
+</div></div><div data-line='44' class='code-highlight-row numbered'><div class='code-highlight-line'>	(dir (file-name-directory (or (buffer-file-name)
+</div></div><div data-line='45' class='code-highlight-row numbered'><div class='code-highlight-line'>				      ;; dired
+</div></div><div data-line='46' class='code-highlight-row numbered'><div class='code-highlight-line'>				      dired-directory
+</div></div><div data-line='47' class='code-highlight-row numbered'><div class='code-highlight-line'>				      ;; use HOME
+</div></div><div data-line='48' class='code-highlight-row numbered'><div class='code-highlight-line'>				      "~/"))))
+</div></div><div data-line='49' class='code-highlight-row numbered'><div class='code-highlight-line'>    (if win
+</div></div><div data-line='50' class='code-highlight-row numbered'><div class='code-highlight-line'>	(quit-window nil win)
+</div></div><div data-line='51' class='code-highlight-row numbered'><div class='code-highlight-line'>      (pop-to-buffer th-shell-popup-buffer nil t)
+</div></div><div data-line='52' class='code-highlight-row numbered'><div class='code-highlight-line'>      (comint-send-string nil (concat "cd " dir "\n")))))
+</div></div><div data-line='53' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='54' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-l")  'select-current-line)
+</div></div><div data-line='55' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-f") 'hippie-expand)
+</div></div><div data-line='56' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-s-#") 'comment-or-uncomment-region)
+</div></div><div data-line='57' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-&lt;left&gt;") 'delete-window)
+</div></div><div data-line='58' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-&lt;SPC&gt;") 'th-shell-popup)
+</div></div><div data-line='59' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-p") 'switch-to-prev-buffer)
+</div></div><div data-line='60' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-n") 'switch-to-next-buffer)
+</div></div><div data-line='61' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-v") 'insert-register)
+</div></div><div data-line='62' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-c") 'copy-to-register)
+</div></div><div data-line='63' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-e") 'eval-buffer)
+</div></div><div data-line='64' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-&lt;right&gt;") 'split-window-right)
+</div></div><div data-line='65' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-&lt;down&gt;") 'split-window-below)
+</div></div><div data-line='66' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-&lt;backspace&gt;") 'kill-this-buffer)
+</div></div><div data-line='67' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-w") 'quick-copy-line)
+</div></div><div data-line='68' class='code-highlight-row numbered'><div class='code-highlight-line'>(global-set-key (kbd "C-M-S-s-k") 'quick-cut-line)</div></div></pre></div></figure>

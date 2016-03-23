@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>Screen capture goodness... - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      Screen capture goodness...
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+###tl;wr
+Take the shell script from bel...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/hacks/productivity/2012/01/17/screen-capture-goodness-dot-dot-dot.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Screen capture goodness...</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2012-01-17T14:17:00-08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>###tl;wr
+Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.</p>
+
+<p>###verbose
+When making notes on wireframes, screen designs, activity diagrams, etc, I have a particular workflow where I do a screen capture and want to link the result in my markdown notes or from our project wiki. The power of markdown text files is their portability, the challenge can be losing the rich cut and paste of apps like Evernote.</p>
+
+<p>In a previous post <a href="http://fooqri.tumblr.com/post/38158334752/wiki-searchable-notes" title="Wiki + Searchable Notes">Wiki + searchable notes</a>. I mentioned that I was now using the github clone feature for the wiki, allowing me to work on the wiki locally and then push changes to the server with git push. Another benefit of this approach, it makes it very easy to add images to the wiki. </p>
+
+<p>The problem was it took too many steps to go from capturing the screen, saving it, and finally linking to it in the wiki/notes file. So I created a TextExpander snippet to do all of this in 2 steps (OSX only)</p>
+
+<ol>
+  <li>screen capture (ctrl-cmd-shift-4)</li>
+  <li>type “wpng” into the editor where I want the image to be placed.</li>
+</ol>
+
+<p>First you need <a href="http://smilesoftware.com/TextExpander/index.html" title="TextExpander">TextExpander</a> and also you need to install <a href="https://github.com/jcsalterego/pngpaste" title="pngpaste">pngpaste</a> a small bit of code that handles saving a clipboard image to a png file.</p>
+
+<p>Then you just need this snippet (I used “wpng” as the snippet abbreviation):</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">ImageToMMD.bash</span><a class="code-highlight-caption-link" href="https://gist.github.com/4321473">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c">#!/usr/bin/env bash</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">uuid_str</span><span class="o">=</span><span class="k">$(</span>/usr/local/bin/uuid<span class="k">)</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">dir</span><span class="o">=</span><span class="s2">"/Users/my-account/my-wiki/images/"</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">target</span><span class="o">=</span><span class="s2">"</span><span class="nv">$dir$uuid_str</span><span class="s2">.png"</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nv">var</span><span class="o">=</span><span class="k">$(</span>/usr/local/bin/pngpaste <span class="nv">$target</span> 2&gt;&amp;1<span class="k">)</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$var</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"No PNG data found on the clipboard!"</span> <span class="o">]</span>;
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">then
+<div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="nb">echo</span> <span class="s2">"No-PNG"</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">else
+<div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="nb">echo</span> <span class="s2">"[![</span><span class="nv">$uuid_str</span><span class="s2">.png](images/</span><span class="nv">$uuid_str</span><span class="s2">.png)](images/</span><span class="nv">$uuid_str</span><span class="s2">.png)"</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">fi</span></div></div>
+
+I chose to just use a UUID for the file name to keep it simple and unique for each file.
+
+I added this as a snippet in TextExpander and now instead of 10+ steps across 3 apps my workflow for getting a screen capture into a wiki page is this:
+
+1. screen capture (ctrl-cmd-shift-4)
+1. type "wpng" into the editor where I want the image to be placed. 
+
+The result: typing "wpng" causes the last clipboard item to be saved as a png in the wiki images directory and the "wpng" text I just typed is replaced with the markup for the image that was just saved. Quick and simple.
+</span></div></div></span></div></div></pre></div></figure>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+<span class="byline author vcard">Posted by <span class="fn">Patrick Goddi</span></span>
+
+      
+
+
+
+
+
+
+
+
+
+<time datetime="2012-01-17T14:17:00-08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    hacksproductivity
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/productivity/2012/12/17/fast-photosync-from-iphone.html" title="Next Post: Fast PhotoSync from iPhone">Fast PhotoSync from iPhone &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2016/03/11/Org-Export-Configurations.html">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/03/10/Deft-and-Emacs-for-Notes.html">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/03/09/org-with-babel-node-updated.html">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/01/27/ancs-example-on-blend-nano.html">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/01/23/ancs-message-display.html">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/10/06/org-with-babel-node.html">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/09/09/esp8266-initial-notes.html">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/18/self-updating-edison-app.html">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/17/workbench.html">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/17/i2c-mpu-6050.html">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2016/03/11/Org-Export-Configurations.html">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/emacs/productivity/2013/03/04/nvalt-and-emacs.html">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/productivity/2012/01/17/screen-capture-goodness-dot-dot-dot.html">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/rubymotion/restkit/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion.html">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/productivity/2012/12/17/wiki-plus-searchable-notes.html">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/development/rubymotion/ios/2013/06/01/coredata-dot-sqldebug-for-rubymotion.html">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/parsers/2012/12/30/treetop-and-parsing-expression-grammars-pegs.html">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/poggr/google-docs/polymer/2014/10/15/spreadsheet-driven-web-apps.html">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/design/2013/01/01/user-stories-and-activity-diagrams.html">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/poggr/literate-coffee-script/2014/10/15/fun-with-literate-coffeescript.html">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

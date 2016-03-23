@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>I2C MPU-6050 - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      I2C MPU-6050
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+
+
+I am using an accelerometer in my most recent devic...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/2015/08/17/i2c-mpu-6050.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">I2C MPU-6050</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2015-08-17T05:50:00-07:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="//s3.amazonaws.com/rwx-blog/mpu6050.jpg" style="height: 400px; display: block; margin: auto;" /></p>
+
+<p>I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.</p>
+
+<p>To capture data I am using a  few node modules. In particular the <a href="https://github.com/hybridgroup/cylon" target="_blank">cylon.js</a> module, along with the <a href="https://github.com/hybridgroup/cylon-i2c" target="_blank">cylon-i2c</a> module.  This allows accelerometer data to be easily used by the following code block</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Cylon                                                                          
+  .robot()                                                                    
+  .connection("edison", { adaptor: "intel-iot", i2cPort: 1})                  
+  .device("accel", { driver: "mpu6050" })                                     
+  .on("ready", function(bot) {                                      
+    setInterval(function() {                                        
+      bot.accel.getAcceleration(function(err, data) {
+        //use data
+      });
+    });
+  });
+</code></pre>
+</div>
+
+<h2 id="the-mpus">The MPUs</h2>
+<p>The first prototype of this device is using a SparkFun Edison stack with the SparkFun I2C block connected to an MPU-6050, rather than the SparkFun Accelerometer block. At the time of this writing the cylon-i2c implementation of the lsm9ds0 driver is not working correctly with the SparkFun Accelerometer block, so I went the I2C route. The second an perhaps more important reason I went the I2C route is that MPU-6050 boards can be had for as low as $4, which is appealing for a low cost prototype.</p>
+
+<p>I have a handful of MPUs I have tried and here is some info on them.</p>
+
+<h3 id="a-hrefhttpswwwsparkfuncomproducts11028-targetblanksparkfun-mpu-6050-breakouta"><a href="https://www.sparkfun.com/products/11028" target="_blank">SparkFun MPU-6050 Breakout</a></h3>
+<p>This is great accelerometer breakout that works well with the Edison and Cylon module, but much less expensive options exist.</p>
+
+<h3 id="a-hrefhttpwwwamazoncomgpproductb00h1oye4q-targetblankriorand-triple-axis-mpu-6050-breakouta"><a href="http://www.amazon.com/gp/product/B00H1OYE4Q" target="_blank">RioRand Triple Axis MPU-6050 Breakout</a></h3>
+<p>This is currently my go to accelerometer. It is relatively low priced at $11 and arrives in 2 days via Amazon Prime. These work well with both the Edison 3.3V boards, and the cylon i2c module. Unfortunately the default I2C address for this board is 0x69, instead of the more common  0x68 (used by the cylon mpu6050 driver) so you will need to solder the AD0 jumper plate on the top of the board.</p>
+
+<h3 id="a-hrefhttpwwwamazoncomkootek-mpu-6050-mpu6050-sensors-accelerometerdpb008bopn40-targetblankkootek-gy-521-mpu-6050-mpu6050-modulea"><a href="http://www.amazon.com/Kootek-MPU-6050-MPU6050-sensors-Accelerometer/dp/B008BOPN40/" target="_blank">Kootek GY-521 MPU-6050 MPU6050 Module</a></h3>
+<p>At $4 with free shipping these look like a great option. They are reported to work well with 3.3V VCC. The down side is very slow delivery via the slow boat. I have a handful on order, I will provide an update when they arrive.</p>
+
+<h3 id="a-hrefhttpwwwamazoncomgpproductb009m19l4y-targetblankgy-521-6dof-mpu6050-modulea"><a href="http://www.amazon.com/gp/product/B009M19L4Y" target="_blank">GY-521 6DOF MPU6050 Module</a></h3>
+<p>At a little over $5 with free shipping this seems like a great option, unfortunately the onboard voltage regulator in the GY-521 is designed for the Arduino 5V VCC and when used with a 3.3V VCC of the Edison blocks results in too low power on the I2C SDA/SCL pins to register as proper high and low voltage values. It is possible to give the board a separate 5V VCC supply, but that just seems overly complicated for the prototype device. Another feature of this board is the breakout of AD0 into a pin, allowing easy switching between I2C 0x68 and 0x69 addresses using either a ground or VCC connection.</p>
+
+<h2 id="connecting-the-mpu">Connecting the MPU</h2>
+<p>For the first prototype I am using  SparkFun Edison blocks, as I have a a few sets of these interchangeable blocks that are quick to assemble into a prototype. In this case I am using the <a href="https://www.sparkfun.com/products/13034" target="_blank">SparkFun I2C</a> block with an Edison. This block allows the Edison to be snapped onto the block, and the MPU-6050 board to be connected with 4 jumpers (VCC, GND, SDA, SCL).</p>
+
+<h2 id="checking-i2c-address">Checking I2C Address</h2>
+<p>Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn’t working with Cylon, the first thing to check will be whether the address is 0x68. The error message from Cylon will be a <em>“RangeError: Trying to access beyond buffer length”</em> for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>i2cdetect -y -r 1
+</code></pre>
+</div>
+
+<p>The result will look something like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --
+</code></pre>
+</div>
+
+<p>You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address displayed is 69, you will need to change the address to 68 using the technique recommended for your board (AD0 jumper). You may see other numbers in the results if you have other I2C components included in your assembled device, but if you are using an MPU-6050 and it is connected correctly either a 68 or a 69 should appear in the i2cdetect results.</p>
+
+<p>I won’t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+
+
+      
+
+
+
+
+
+
+
+
+
+<time datetime="2015-08-17T05:50:00-07:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2015/08/16/esp8266.html" title="Previous Post: ESP8266">&laquo; ESP8266</a>
+      
+      
+        <a class="basic-alignment right" href="/2015/08/17/workbench.html" title="Next Post: Workbench Replaces My Desk">Workbench Replaces My Desk &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2016/03/11/Org-Export-Configurations.html">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/03/10/Deft-and-Emacs-for-Notes.html">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/03/09/org-with-babel-node-updated.html">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/01/27/ancs-example-on-blend-nano.html">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2016/01/23/ancs-message-display.html">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/10/06/org-with-babel-node.html">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/09/09/esp8266-initial-notes.html">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/18/self-updating-edison-app.html">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/17/workbench.html">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2015/08/17/i2c-mpu-6050.html">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2016/03/11/Org-Export-Configurations.html">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/emacs/productivity/2013/03/04/nvalt-and-emacs.html">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/productivity/2012/01/17/screen-capture-goodness-dot-dot-dot.html">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/rubymotion/restkit/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion.html">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/productivity/2012/12/17/wiki-plus-searchable-notes.html">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/development/rubymotion/ios/2013/06/01/coredata-dot-sqldebug-for-rubymotion.html">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/parsers/2012/12/30/treetop-and-parsing-expression-grammars-pegs.html">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/poggr/google-docs/polymer/2014/10/15/spreadsheet-driven-web-apps.html">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/hacks/design/2013/01/01/user-stories-and-activity-diagrams.html">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/poggr/literate-coffee-script/2014/10/15/fun-with-literate-coffeescript.html">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

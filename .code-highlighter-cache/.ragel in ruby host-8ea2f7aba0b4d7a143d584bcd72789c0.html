@@ -1,0 +1,64 @@
+<figure class='code-highlight-figure'><figcaption class='code-highlight-caption'><span class='code-highlight-caption-title'>mdlist_parser.rl</span><a class='code-highlight-caption-link' href='https://gist.github.com/4573704'>link</a></figcaption><div class='code-highlight'><pre class='code-highlight-pre'><div data-line='1' class='code-highlight-row numbered'><div class='code-highlight-line'>class MDListParser  
+</div></div><div data-line='2' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='3' class='code-highlight-row numbered'><div class='code-highlight-line'>  attr_accessor :lists
+</div></div><div data-line='4' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='5' class='code-highlight-row numbered'><div class='code-highlight-line'>	%%&#x7b;
+</div></div><div data-line='6' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='7' class='code-highlight-row numbered'><div class='code-highlight-line'>	  machine test_lexer;
+</div></div><div data-line='8' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='9' class='code-highlight-row numbered'><div class='code-highlight-line'>	  action MarkTaskStart &#x7b; 
+</div></div><div data-line='10' class='code-highlight-row numbered'><div class='code-highlight-line'>	    task_start = fpc  
+</div></div><div data-line='11' class='code-highlight-row numbered'><div class='code-highlight-line'>	    lists_index += 1 
+</div></div><div data-line='12' class='code-highlight-row numbered'><div class='code-highlight-line'>	    @lists[lists_index] = &#x7b;:items => []&#x7d;
+</div></div><div data-line='13' class='code-highlight-row numbered'><div class='code-highlight-line'>	    item_index=-1    
+</div></div><div data-line='14' class='code-highlight-row numbered'><div class='code-highlight-line'>	  &#x7d;
+</div></div><div data-line='15' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='16' class='code-highlight-row numbered'><div class='code-highlight-line'>	  action MarkTaskTitleStart &#x7b; 
+</div></div><div data-line='17' class='code-highlight-row numbered'><div class='code-highlight-line'>	    task_start = fpc  
+</div></div><div data-line='18' class='code-highlight-row numbered'><div class='code-highlight-line'>	  &#x7d;
+</div></div><div data-line='19' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='20' class='code-highlight-row numbered'><div class='code-highlight-line'>	  action MarkTaskDescriptionStart &#x7b; 
+</div></div><div data-line='21' class='code-highlight-row numbered'><div class='code-highlight-line'>	    task_start = fpc
+</div></div><div data-line='22' class='code-highlight-row numbered'><div class='code-highlight-line'>	    item_index=-1    
+</div></div><div data-line='23' class='code-highlight-row numbered'><div class='code-highlight-line'>	  &#x7d;
+</div></div><div data-line='24' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='25' class='code-highlight-row numbered'><div class='code-highlight-line'>	  action IncrementTaskLevel &#x7b; 
+</div></div><div data-line='26' class='code-highlight-row numbered'><div class='code-highlight-line'>	    task_level += 1  
+</div></div><div data-line='27' class='code-highlight-row numbered'><div class='code-highlight-line'>	  &#x7d;
+</div></div><div data-line='28' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='29' class='code-highlight-row numbered'><div class='code-highlight-line'>	  action TaskText &#x7b;     
+</div></div><div data-line='30' class='code-highlight-row numbered'><div class='code-highlight-line'>		if data[p]          
+</div></div><div data-line='31' class='code-highlight-row numbered'><div class='code-highlight-line'>		    item_index += 1
+</div></div><div data-line='32' class='code-highlight-row numbered'><div class='code-highlight-line'>			@lists[lists_index][:items] &lt;&lt;  &#x7b; :type => task_item_type, :level => task_level, :title => data[task_start...p].pack('c*').strip, :description => ""&#x7d;         
+</div></div><div data-line='33' class='code-highlight-row numbered'><div class='code-highlight-line'>			task_level = 1
+</div></div><div data-line='34' class='code-highlight-row numbered'><div class='code-highlight-line'>		end
+</div></div><div data-line='35' class='code-highlight-row numbered'><div class='code-highlight-line'>	  &#x7d; 
+</div></div><div data-line='36' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='37' class='code-highlight-row numbered'><div class='code-highlight-line'>	  action TaskDescriptionText &#x7b;     
+</div></div><div data-line='38' class='code-highlight-row numbered'><div class='code-highlight-line'>		if data[p]          
+</div></div><div data-line='39' class='code-highlight-row numbered'><div class='code-highlight-line'>			@lists[lists_index][:items][item_index][:description] = data[task_start...p].pack('c*').strip           
+</div></div><div data-line='40' class='code-highlight-row numbered'><div class='code-highlight-line'>			task_level = 1
+</div></div><div data-line='41' class='code-highlight-row numbered'><div class='code-highlight-line'>		end
+</div></div><div data-line='42' class='code-highlight-row numbered'><div class='code-highlight-line'>	  &#x7d;     
+</div></div><div data-line='43' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='44' class='code-highlight-row numbered'><div class='code-highlight-line'>	  space_or_tab = " " | [\t];
+</div></div><div data-line='45' class='code-highlight-row numbered'><div class='code-highlight-line'>	  indent_or_tab = "    " | [\t];  
+</div></div><div data-line='46' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='47' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_header = "##" space_or_tab* "Tasks" space_or_tab* [\n];               
+</div></div><div data-line='48' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_char = (digit+ '.' >&#x7b;task_item_type = :ordered&#x7d;) | ('-' >&#x7b;task_item_type = :unordered&#x7d;); 
+</div></div><div data-line='49' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_title =  [^\n]+ [\n]; 
+</div></div><div data-line='50' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_starter = indent_or_tab* @IncrementTaskLevel task_char;  
+</div></div><div data-line='51' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_description_line =  ([^\n]+ - ^[##]) [\n]; 
+</div></div><div data-line='52' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_description =  (task_description_line - task_header)+; 
+</div></div><div data-line='53' class='code-highlight-row numbered'><div class='code-highlight-line'>	  #task_description =  (task_description_line)+; 
+</div></div><div data-line='54' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_item =  task_starter space_or_tab* (task_title >MarkTaskTitleStart  %TaskText) (task_description*  >MarkTaskDescriptionStart %TaskDescriptionText);
+</div></div><div data-line='55' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task = (task_header >MarkTaskStart) . task_item*;      
+</div></div><div data-line='56' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='57' class='code-highlight-row numbered'><div class='code-highlight-line'>	  main := |*          
+</div></div><div data-line='58' class='code-highlight-row numbered'><div class='code-highlight-line'>	    task+; 
+</div></div><div data-line='59' class='code-highlight-row numbered'><div class='code-highlight-line'>	   *|;              
+</div></div><div data-line='60' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='61' class='code-highlight-row numbered'><div class='code-highlight-line'>	&#x7d;%%  
+</div></div><div data-line='62' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='63' class='code-highlight-row numbered'><div class='code-highlight-line'>	def initialize(data) 
+</div></div><div data-line='64' class='code-highlight-row numbered'><div class='code-highlight-line'>	  %% write data;  
+</div></div><div data-line='65' class='code-highlight-row numbered'><div class='code-highlight-line'>	  data = data.unpack("c*") if(data.is_a?(String))
+</div></div><div data-line='66' class='code-highlight-row numbered'><div class='code-highlight-line'>	  eof = data.length
+</div></div><div data-line='67' class='code-highlight-row numbered'><div class='code-highlight-line'>	  @lists = []  
+</div></div><div data-line='68' class='code-highlight-row numbered'><div class='code-highlight-line'>	  token_array = [] 
+</div></div><div data-line='69' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_item_type = "" 
+</div></div><div data-line='70' class='code-highlight-row numbered'><div class='code-highlight-line'>	  lists_index=-1 
+</div></div><div data-line='71' class='code-highlight-row numbered'><div class='code-highlight-line'>	  task_level = 1
+</div></div><div data-line='72' class='code-highlight-row numbered'><div class='code-highlight-line'>	  fpc = 0
+</div></div><div data-line='73' class='code-highlight-row numbered'><div class='code-highlight-line'>	  fc = ""
+</div></div><div data-line='74' class='code-highlight-row numbered'><div class='code-highlight-line'>	  %% write init;  
+</div></div><div data-line='75' class='code-highlight-row numbered'><div class='code-highlight-line'>	  %% write exec;
+</div></div><div data-line='76' class='code-highlight-row numbered'><div class='code-highlight-line'>	end     
+</div></div><div data-line='77' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='78' class='code-highlight-row numbered'><div class='code-highlight-line'>end
+</div></div><div data-line='79' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='80' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='81' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div><div data-line='82' class='code-highlight-row numbered'><div class='code-highlight-line'> </div></div></pre></div></figure>
