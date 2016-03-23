@@ -8,8 +8,6 @@ exclude_from_search: true
 permalink: /about/
 ---
 
-# Welcome
-
 Thanks for stopping by, I hope you find something useful here. This is a place where I share design and development explorations, ideas, and techniques. I also sprinkle in productivity and organizational techniques I find useful.
 
 My name is Patrick Goddi and I am a designer/developer living in Silicon Valley. I love designing and building products and platforms, but also find leadership roles extremely rewarding; having learned so much from amazing design, research, and engineering teams I have directed at various times. [twitter:@fooqri](http://twitter.com/fooqri), [in:goddip](http://www.linkedin.com/in/goddi/)
