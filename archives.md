@@ -1,7 +1,8 @@
 ---
 layout: page
-title: Blog Archive
-footer: false
+title: rwx.io: Archive
+footer: exclude_from_search: true
+permalink: /archives/
 ---
 
 <div id="blog-archives">
