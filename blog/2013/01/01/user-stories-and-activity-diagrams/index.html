@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>User Stories and Activity Diagrams - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      User Stories and Activity Diagrams
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+I have been using Omnigraffle t...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/blog/2013/01/01/user-stories-and-activity-diagrams/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">User Stories and Activity Diagrams</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-01-01T10:10:00-08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I have been using Omnigraffle to create activity diagrams associated with user stories. Some people may find this overkill but I find doing these diagrams makes transitions clear that might otherwise be missed until later when they lead to costly re-architecting of the screens and flows.</p>
+
+<p>I use Omnigraffle for UI wireframes, so it seemed natural to use it for activity diagrams, which is what I have been doing.  The issue is keeping the diagrams up to date.  Today, while playing with the <a href="http://www.complang.org/ragel/">Ragel</a> state machine compiler I discovered Ragel’s awesome states/transitions diagramming feature. I learned the feature uses <a href="http://www.graphviz.org/">Graphviz</a> to create the diagrams from the parser grammar.  This led me to <a href="https://github.com/glejeune/Ruby-Graphviz/">Ruby Graphviz</a>, a Ruby library for interacting with Graphviz. It got me thinking that maybe there was a simple DSL that could be used to describe UI activities and screens and then automatically generate diagrams from the description. This would make keeping descriptions and diagrams in sync very easy.</p>
+
+<p>My first step is always to get a piece of the most basic idea working, then add another piece, etc until a basic prototype is complete. Given this approach the first step was to use ruby-graphviz to create a basic diagram similar to one of our activity diagrams (a very basic one). So here was a quick pass experiment for using ruby-graphvis to create a diagram. The next step would be to define a basic DSL and then write a parser and state-machine and incorporate the graph creation into the state machine as it parses the DSL activity description.</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">simple_graphviz_example.rb</span><a class="code-highlight-caption-link" href="https://gist.github.com/4431708">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">require</span> <span class="s1">'graphviz'</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1"># Create a new graph</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span> <span class="o">=</span> <span class="no">GraphViz</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span> <span class="ss">:G</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="ss">:digraph</span> <span class="p">)</span> 
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">us_num</span> <span class="o">=</span> <span class="mi">47</span>  <span class="c1">#placeholder, will get from file name in final version.  </span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1"># set global node options</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:color</span><span class="p">]</span>    <span class="o">=</span> <span class="s2">"#333333"</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:style</span><span class="p">]</span>    <span class="o">=</span> <span class="s2">"filled"</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:shape</span><span class="p">]</span>    <span class="o">=</span> <span class="s2">"box"</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:penwidth</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"1"</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:fontname</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Trebuchet MS"</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:fontsize</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"8"</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:fillcolor</span><span class="p">]</span><span class="o">=</span> <span class="s2">"#294b76"</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:fontcolor</span><span class="p">]</span><span class="o">=</span> <span class="s2">"white"</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">node</span><span class="p">[</span><span class="ss">:margin</span><span class="p">]</span>   <span class="o">=</span> <span class="s2">"0.0"</span>
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1"># set global edge options</span>
+</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:color</span><span class="p">]</span>    <span class="o">=</span> <span class="s2">"#666666"</span>
+</div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:weight</span><span class="p">]</span>   <span class="o">=</span> <span class="s2">"1"</span>
+</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:fontsize</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"6"</span>
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:fontcolor</span><span class="p">]</span><span class="o">=</span> <span class="s2">"#444444"</span>
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:fontname</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Verdana"</span>
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:dir</span><span class="p">]</span>      <span class="o">=</span> <span class="s2">"forward"</span> 
+</div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:arrowhead</span><span class="p">]</span><span class="o">=</span><span class="s2">"open"</span>
+</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">edge</span><span class="p">[</span><span class="ss">:arrowsize</span><span class="p">]</span><span class="o">=</span> <span class="s2">"0.5"</span>
+</div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">my_nodes</span><span class="o">=</span><span class="p">&#x7b;</span><span class="s2">"WF1"</span><span class="o">=&gt;</span><span class="s2">"New Account Screen"</span><span class="p">,</span> <span class="s2">"WF2"</span> <span class="o">=&gt;</span><span class="s2">"Account Recover Screen"</span><span class="p">,</span> <span class="s2">"WF3"</span> <span class="o">=&gt;</span> <span class="s2">"Welcome Screen"</span><span class="p">&#x7d;</span>
+</div></div><div data-line="29" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">my_decisions</span><span class="o">=</span><span class="p">&#x7b;</span><span class="s2">"D1"</span><span class="o">=&gt;</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"D2"</span> <span class="o">=&gt;</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"D3"</span> <span class="o">=&gt;</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"D4"</span> <span class="o">=&gt;</span> <span class="s2">""</span><span class="p">&#x7d;</span>
+</div></div><div data-line="30" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="31" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_nodes</span><span class="p">(</span><span class="s2">"Start"</span><span class="p">,&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">""</span><span class="p">,</span> <span class="ss">:shape</span> <span class="o">=&gt;</span> <span class="s2">"circle"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="32" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="33" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">my_nodes</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>   
+</div></div><div data-line="34" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="c1"># When adding a node the node name becomes the label so can access later.</span>
+</div></div><div data-line="35" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">g</span><span class="p">.</span><span class="nf">add_nodes</span><span class="p">(</span><span class="n">key</span><span class="p">,&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="n">value</span><span class="p">&#x7d;)</span>
+</div></div><div data-line="36" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">end</span> 
+</div></div><div data-line="37" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="38" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">my_decisions</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>   
+</div></div><div data-line="39" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="c1"># When adding a node the node name becomes the label so can access later.</span>
+</div></div><div data-line="40" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="n">g</span><span class="p">.</span><span class="nf">add_nodes</span><span class="p">(</span><span class="n">key</span><span class="p">,&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="n">value</span><span class="p">,</span> <span class="ss">:shape</span> <span class="o">=&gt;</span> <span class="s2">"diamond"</span><span class="p">&#x7d;)</span>
+</div></div><div data-line="41" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">end</span>         
+</div></div><div data-line="42" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="43" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_nodes</span><span class="p">(</span><span class="s2">"End"</span><span class="p">,&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">""</span><span class="p">,</span> <span class="ss">:shape</span> <span class="o">=&gt;</span> <span class="s2">"circle"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="44" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1">#hello = g.add_nodes( "Hello" )</span>
+</div></div><div data-line="45" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1">#world = g.add_nodes( "World" )</span>
+</div></div><div data-line="46" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">puts</span> <span class="n">g</span><span class="p">.</span><span class="nf">inspect</span>
+</div></div><div data-line="47" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="48" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1"># Create an edge between the two nodes  </span>
+</div></div><div data-line="49" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">Start</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">D1</span><span class="p">)</span>  
+</div></div><div data-line="50" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D1</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">WF1</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[create account]"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="51" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D1</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">WF2</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[attach account]"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="52" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">WF1</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">D2</span><span class="p">)</span> 
+</div></div><div data-line="53" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D2</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">D3</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[failure]"</span><span class="p">&#x7d;)</span>   
+</div></div><div data-line="54" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D2</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">WF3</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[account created]"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="55" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D3</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">WF2</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[account exists]"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="56" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">WF2</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">D4</span><span class="p">)</span> 
+</div></div><div data-line="57" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D4</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">WF2</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[failure]"</span><span class="p">&#x7d;)</span>
+</div></div><div data-line="58" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">D4</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">End</span><span class="p">,</span> <span class="p">&#x7b;</span><span class="ss">:label</span> <span class="o">=&gt;</span> <span class="s2">"[recovered]"</span><span class="p">&#x7d;)</span> 
+</div></div><div data-line="59" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">add_edges</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="no">WF3</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="no">End</span><span class="p">)</span>  
+</div></div><div data-line="60" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="c1"># Generate output image</span>
+</div></div><div data-line="61" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">g</span><span class="p">.</span><span class="nf">output</span><span class="p">(</span> <span class="ss">:png</span> <span class="o">=&gt;</span> <span class="s2">"US</span><span class="si">#&#x7b;</span><span class="n">us_num</span><span class="si">&#x7d;</span><span class="s2">.png"</span> <span class="p">)</span></div></div></pre></div></figure>
+
+<p>This above very simple example creates the diagram below.</p>
+
+<p><img src="http://media.tumblr.com/61f780009a654f9724bcd4a9c703d9b4/tumblr_inline_mfz8syDgFP1qz562v.png" alt="" /></p>
+
+<p>This needs some cleanup of the aesthetics but the possibility is interesting. The next steps will be to come up with a very simple dsl, as simple as possible, maybe something that is markdown compliant so it fits inside our wiki pages cleanly. It would need to cover start and end states as well as intermediate state nodes. It would need to also handle decision points (diamonds) as well as transitions (edges) and notes. The simplest form would be to allow listing all nodes and all decisions, and then listing the connections between them. Labels would also be needed on all of these. IDs would probably help for wiring up the connections.</p>
+
+<p>Then it is a matter of running a parser on the wiki pages, looking for the syntax associated with the activity descriptions and generating a diagram using some ruby code. This might be a nice experiment to familiarize myself with Ragel to better understand its strengths and capabilities.</p>
+
+<p>I hope to get to spend some free time on this over the coming weeks, as it seems like a fun side project.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      January 01, 2013
+      
+    </p>
+    
+      <a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-url="http://rwx.io/blog/2013/01/01/user-stories-and-activity-diagrams/" data-text="User Stories and Activity Diagrams by @fooqri -" data-dnt="true">Twitter</a>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/30/remapping-my-caps-lock-key/" title="Previous Post: Remapping My Caps Lock Key">&laquo; Remapping My Caps Lock Key</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/01/how-to-measure-anything/" title="Next Post: How to measure anything">How to measure anything &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div> <script type="text/javascript"> var disqus_shortname = 'goddio'; var disqus_url = 'http://rwx.io/blog/2013/01/01/user-stories-and-activity-diagrams/'; var disqus_identifier = 'http://rwx.io/blog/2013/01/01/user-stories-and-activity-diagrams/'; var disqus_title = 'User Stories and Activity Diagrams'; (function () { var s = document.createElement('script'); s.async = true; s.type = 'text/javascript'; s.src = '//goddio.disqus.com/embed.js'; (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s); }()); </script> <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/feed/"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</body>
+</html>
