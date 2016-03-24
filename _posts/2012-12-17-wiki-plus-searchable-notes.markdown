@@ -5,7 +5,6 @@ date: 2012-12-17 13:25
 comments: true
 author: "Patrick Goddi"
 categories: [hacks, productivity]
-redirect_from: /blog/hacks/productivity/2012/12/17/wiki-plus-searchable-notes
 ---
 For our startup I have been using github wiki to keep the product specs, design docs, user stories, etc organized and up-to-date. The nice thing about github is you can clone the wiki and work on it locally and push changes up to the server. See this <a href="https://github.com/wicketstuff/core/wiki/Editing-Wiki-Locally" title="writeup" target="_blank">writeup</a> for more info. This is handy because you can then work on the wiki using markdown syntax in a regular text editor versus a web page editor.
 

@@ -4,7 +4,6 @@ title: "Org Mode ES2015+ Code Blocks"
 date: 2015-10-06 16:57
 comments: true
 categories:
-redirect_from: /blog/2015/10/06/org-with-babel-node
 ---
 
 - **Updated:** I have [updated instructions](/blog/2016/03/09/org-with-babel-node-updated/) for installing and using the recently released *Babel 6* with *org mode*.

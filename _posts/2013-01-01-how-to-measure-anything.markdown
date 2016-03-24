@@ -5,7 +5,6 @@ date: 2013-01-01 11:04
 comments: true
 author: "Patrick Goddi"
 categories: [books]
-redirect_from: /blog/books/2013/01/01/how-to-measure-anything
 ---
 Over the past year I have had the opportunity to advise a number of people I have worked with in the past who are starting companies. In the past few years my role had been that of a director of both design and R&amp;D teams and so I enjoy continuing that type of role in providing direction to these exciting new startup ventures.
 

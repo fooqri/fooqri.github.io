@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>Simple state machine example - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      Simple state machine example
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+I have been investigating using the r...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/blog/2013/01/15/simple-state-machine-example/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Simple state machine example</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-01-15T12:24:00-08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I have been investigating using the ruby <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem for a project. State machines can be very handy in simplifying code where objects move through various states. The <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example.  The todo list will include a main list that contains items and sublists.  This allows a way to organize items easily into sublists.</p>
+
+<p>A simple way to do this is to declare two classes <em>List</em> and <em>Item</em> and allow an object of class <em>List</em> to contain a list of <em>Lists</em> and a list of <em>Items</em>. This approach allows a flat list with many items, or a hierarchical list with top-level items, but also sub-lists that contain their own items.</p>
+
+<p>In addition to lists and items, I want is to track whether I have completed all of the items in a list. In the case of a hierarchical list this means all items of sub-lists as well. Thus in addition to lists and items, we need to track whether items and lists are in progress or completed.</p>
+
+<p>The next step is deciding on the states of the two object types. For my example, I decided:
+* a list will have an initial state of <em>available</em>, and will transition to state <em>started</em> when the first item on the list is completed. When all items and sublists are <em>completed</em> the list will move to the state <em>completed</em>.
+* an item will have an initial state of <em>available</em> and will transition to <em>completed</em> when the item is finished.</p>
+
+<p>Finally I want to inform the user when:
+* an item is completed
+* a list is completed
+* the project is completed (all items and sublists are completed)</p>
+
+<p>Here is a quick example of the code to meet these requirements:</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">list_example.rb</span><a class="code-highlight-caption-link" href="https://gist.github.com/4549146">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">require</span> <span class="s1">'rubygems'</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">require</span> <span class="s1">'state_machine'</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">class</span> <span class="nc">Item</span>    
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:description</span> 
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="n">state_machine</span> <span class="ss">:item_state</span><span class="p">,</span> <span class="ss">:initial</span> <span class="o">=&gt;</span> <span class="ss">:available</span> <span class="k">do</span>  
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">after_transition</span> <span class="ss">:available</span><span class="o">=&gt;</span> <span class="ss">:completed</span><span class="p">,</span> <span class="ss">:do</span> <span class="o">=&gt;</span> <span class="ss">:item_completed</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">event</span> <span class="ss">:finish</span> <span class="k">do</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="n">transition</span> <span class="p">[</span><span class="ss">:available</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="ss">:completed</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span> 
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">state</span> <span class="ss">:completed</span> <span class="k">do</span> 
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span>
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span> <span class="n">item_description</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@name</span> <span class="o">=</span> <span class="n">item_name</span> 
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@description</span> <span class="o">=</span> <span class="n">item_description</span>  
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@parent_list</span> <span class="o">=</span> <span class="n">parent</span>
+</div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">super</span><span class="p">()</span> <span class="c1"># NOTE: This *must* be called, otherwise states won't get initialized</span>
+</div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>  
+</div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="29" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">item_completed</span>
+</div></div><div data-line="30" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="nb">puts</span> <span class="s2">"finished item </span><span class="si">#&#x7b;</span><span class="nb">self</span><span class="p">.</span><span class="nf">name</span><span class="si">&#x7d;</span><span class="s2">"</span>
+</div></div><div data-line="31" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">if</span> <span class="vi">@parent_list</span>
+</div></div><div data-line="32" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="vi">@parent_list</span><span class="p">.</span><span class="nf">child_item_completed</span> 
+</div></div><div data-line="33" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span>
+</div></div><div data-line="34" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="35" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="36" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">end</span>
+</div></div><div data-line="37" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="38" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">class</span> <span class="nc">List</span>    
+</div></div><div data-line="39" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:description</span><span class="p">,</span> <span class="ss">:lists</span><span class="p">,</span> <span class="ss">:items</span> 
+</div></div><div data-line="40" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="41" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="n">state_machine</span> <span class="ss">:list_state</span><span class="p">,</span> <span class="ss">:initial</span> <span class="o">=&gt;</span> <span class="ss">:available</span> <span class="k">do</span>  
+</div></div><div data-line="42" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="43" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">after_transition</span> <span class="ss">:started</span><span class="o">=&gt;</span> <span class="ss">:completed</span><span class="p">,</span> <span class="ss">:do</span> <span class="o">=&gt;</span> <span class="ss">:list_completed</span>
+</div></div><div data-line="44" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="45" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">event</span> <span class="ss">:start</span> <span class="k">do</span>
+</div></div><div data-line="46" class="code-highlight-row numbered"><div class="code-highlight-line">              <span class="n">transition</span> <span class="p">[</span><span class="ss">:available</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="ss">:started</span>
+</div></div><div data-line="47" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span>
+</div></div><div data-line="48" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="49" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">event</span> <span class="ss">:finish</span> <span class="k">do</span>
+</div></div><div data-line="50" class="code-highlight-row numbered"><div class="code-highlight-line">              <span class="n">transition</span> <span class="p">[</span><span class="ss">:started</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="ss">:completed</span>
+</div></div><div data-line="51" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span> 
+</div></div><div data-line="52" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="53" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">state</span> <span class="ss">:started</span> <span class="k">do</span> 
+</div></div><div data-line="54" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="c1"># take any actions related to moving to started state.</span>
+</div></div><div data-line="55" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span> 
+</div></div><div data-line="56" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="57" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="n">state</span> <span class="ss">:completed</span> <span class="k">do</span> 
+</div></div><div data-line="58" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="c1"># take any actions related to moving to completed state.</span>
+</div></div><div data-line="59" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span>
+</div></div><div data-line="60" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="61" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="62" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="63" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">list_name</span><span class="p">,</span> <span class="n">list_description</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>  
+</div></div><div data-line="64" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@name</span> <span class="o">=</span> <span class="n">list_name</span> 
+</div></div><div data-line="65" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@description</span> <span class="o">=</span> <span class="n">list_description</span> 
+</div></div><div data-line="66" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@lists</span> <span class="o">=</span> <span class="p">[]</span> 
+</div></div><div data-line="67" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@items</span> <span class="o">=</span> <span class="p">[]</span>
+</div></div><div data-line="68" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="vi">@parent</span> <span class="o">=</span> <span class="n">parent</span>
+</div></div><div data-line="69" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="70" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">super</span><span class="p">()</span> <span class="c1"># NOTE: This *must* be called, otherwise states won't get initialized</span>
+</div></div><div data-line="71" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>  
+</div></div><div data-line="72" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="73" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">add_list</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span> 
+</div></div><div data-line="74" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="vi">@lists</span> <span class="o">&lt;&lt;</span> <span class="no">List</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+</div></div><div data-line="75" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="vi">@lists</span><span class="p">.</span><span class="nf">last</span>
+</div></div><div data-line="76" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="77" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="78" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">add_item</span> <span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+</div></div><div data-line="79" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="vi">@items</span> <span class="o">&lt;&lt;</span> <span class="no">Item</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
+</div></div><div data-line="80" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="vi">@items</span><span class="p">.</span><span class="nf">last</span>
+</div></div><div data-line="81" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="82" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="83" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="c1"># Called by child item when item is completed. Allows check for </span>
+</div></div><div data-line="84" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="c1"># all items completed. </span>
+</div></div><div data-line="85" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">child_item_completed</span>
+</div></div><div data-line="86" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="c1"># once the first item is completed consider this list started</span>
+</div></div><div data-line="87" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">list_state</span> <span class="o">==</span> <span class="s2">"available"</span>
+</div></div><div data-line="88" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="nb">self</span><span class="p">.</span><span class="nf">fire_events</span><span class="p">(</span><span class="ss">:start</span><span class="p">)</span>
+</div></div><div data-line="89" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">end</span>
+</div></div><div data-line="90" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="91" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="c1"># if all items are completed move this list to completed state. </span>
+</div></div><div data-line="92" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">items</span><span class="p">.</span><span class="nf">select</span><span class="p">&#x7b;</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="p">.</span><span class="nf">item_state</span> <span class="o">!=</span> <span class="s2">"completed"</span><span class="p">&#x7d;.</span><span class="nf">empty?</span>
+</div></div><div data-line="93" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="nb">self</span><span class="p">.</span><span class="nf">fire_events</span><span class="p">(</span><span class="ss">:finish</span><span class="p">)</span> 
+</div></div><div data-line="94" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">end</span>           
+</div></div><div data-line="95" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="96" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="97" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="98" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">child_list_completed</span>
+</div></div><div data-line="99" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="c1"># if this is a sublist let parent know this list is completed.</span>
+</div></div><div data-line="100" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="c1"># else this is top level list and everything is completed.</span>
+</div></div><div data-line="101" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">items</span><span class="p">.</span><span class="nf">select</span><span class="p">&#x7b;</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="p">.</span><span class="nf">item_state</span> <span class="o">!=</span> <span class="s2">"completed"</span><span class="p">&#x7d;.</span><span class="nf">empty?</span>
+</div></div><div data-line="102" class="code-highlight-row numbered"><div class="code-highlight-line">                <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">lists</span><span class="p">.</span><span class="nf">select</span><span class="p">&#x7b;</span><span class="o">|</span><span class="n">l</span><span class="o">|</span> <span class="n">l</span><span class="p">.</span><span class="nf">list_state</span> <span class="o">!=</span> <span class="s2">"completed"</span><span class="p">&#x7d;.</span><span class="nf">empty?</span>
+</div></div><div data-line="103" class="code-highlight-row numbered"><div class="code-highlight-line">                     <span class="nb">self</span><span class="p">.</span><span class="nf">fire_events</span><span class="p">(</span><span class="ss">:finish</span><span class="p">)</span> 
+</div></div><div data-line="104" class="code-highlight-row numbered"><div class="code-highlight-line">                <span class="k">end</span>
+</div></div><div data-line="105" class="code-highlight-row numbered"><div class="code-highlight-line">            <span class="k">end</span>
+</div></div><div data-line="106" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="107" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="108" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">def</span> <span class="nf">list_completed</span> 
+</div></div><div data-line="109" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">if</span> <span class="vi">@parent</span> 
+</div></div><div data-line="110" class="code-highlight-row numbered"><div class="code-highlight-line">              <span class="nb">puts</span> <span class="s2">"congrats on completing list </span><span class="si">#&#x7b;</span><span class="nb">self</span><span class="p">.</span><span class="nf">name</span><span class="si">&#x7d;</span><span class="s2">"</span>  
+</div></div><div data-line="111" class="code-highlight-row numbered"><div class="code-highlight-line">              <span class="vi">@parent</span><span class="p">.</span><span class="nf">child_list_completed</span> 
+</div></div><div data-line="112" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">else</span> 
+</div></div><div data-line="113" class="code-highlight-row numbered"><div class="code-highlight-line">             <span class="nb">puts</span> <span class="s2">"congrats on completing project </span><span class="si">#&#x7b;</span><span class="nb">self</span><span class="p">.</span><span class="nf">name</span><span class="si">&#x7d;</span><span class="s2">"</span> 
+</div></div><div data-line="114" class="code-highlight-row numbered"><div class="code-highlight-line">          <span class="k">end</span>
+</div></div><div data-line="115" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="k">end</span>
+</div></div><div data-line="116" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="117" class="code-highlight-row numbered"><div class="code-highlight-line"> <span class="k">end</span></div></div></pre></div></figure>
+
+<p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
+
+<p>Now if you load this example in IRB you can play with the lists and items like so:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> load "list_example.rb"
+ list = List.new("Groceries", "Get some groceries")
+ wf = list.add_list("Whole Foods", "Get some groceries from Whole Foods")
+ milk = list.add_item("Milk", "2% Milk")
+ strawberries = wf.add_item("Strawberries", "Ripe organic Strawberries"))
+ oranges = wf.add_item("Oranges", "Ripe mandarine oranges")
+
+ strawberries.finish 
+ =&amp;gt; finished item Strawberries
+
+ oranges.finish  
+ =&amp;gt; finished item Oranges
+ =&amp;gt; congrats on completing list Whole Foods
+
+ milk.finish
+ =&amp;gt; finished item Milk
+ =&amp;gt; congrats on completing project Groceries
+</code></pre>
+</div>
+
+<p>This was a really simple example, but shows how easy it is to create classes that embed state machines. For more check out the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem.</p>
+
+<h3 id="state-diagrams">State Diagrams</h3>
+
+<p>The library also allows you to generate graphs of the states and transitions in each class. For example:</p>
+
+<p>create a Rakefile.rb</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> require 'tasks/state_machine'
+ require './list_example.rb
+</code></pre>
+</div>
+
+<p>Then in terminal execute:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> rake state_machine:draw CLASS=List 
+</code></pre>
+</div>
+
+<p>For the <em>List</em> class shown above this will generate a png file named <em>List_list_state.png</em> that looks like the image below.</p>
+
+<p><img src="http://media.tumblr.com/d78e332b4656b62dec36c2a2d2408a82/tumblr_inline_mgqav0Q8uW1qz562v.png" alt="" /></p>
+
+<p>The <em>List</em> class is very simple so the diagram is also simple. In the case of my project there are many states and more complicated transitions between states so the diagram can be very handy to visualize what is happening when  debugging a strange transition,</p>
+
+<h3 id="wrapup">Wrapup</h3>
+
+<p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes.  If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      January 15, 2013
+      
+    </p>
+    
+      <a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-url="http://rwx.io/blog/2013/01/15/simple-state-machine-example/" data-text="Simple state machine example by @fooqri -" data-dnt="true">Twitter</a>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/14/refactoring-making-master-programmers/" title="Previous Post: Refactoring: making master programmers">&laquo; Refactoring: making master programmers</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/17/lean-api-on-heroku/" title="Next Post: Lean API on Heroku">Lean API on Heroku &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div> <script type="text/javascript"> var disqus_shortname = 'goddio'; var disqus_url = 'http://rwx.io/blog/2013/01/15/simple-state-machine-example/'; var disqus_identifier = 'http://rwx.io/blog/2013/01/15/simple-state-machine-example/'; var disqus_title = 'Simple state machine example'; (function () { var s = document.createElement('script'); s.async = true; s.type = 'text/javascript'; s.src = '//goddio.disqus.com/embed.js'; (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s); }()); </script> <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/feed/"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</body>
+</html>

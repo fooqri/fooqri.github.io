@@ -4,7 +4,6 @@ title: "ANCS Example on BLE Nano"
 date: 2016-01-27 12:19
 comments: true
 categories:
-redirect_from: /blog/2016/01/27/ancs-example-on-blend-nano
 ---
 <img src="https://s3.amazonaws.com/rwx-blog/nano.png">
 

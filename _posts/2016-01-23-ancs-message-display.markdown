@@ -4,7 +4,6 @@ title: "ANCS Message Display"
 date: 2016-01-23 11:12
 comments: true
 categories:
-redirect_from: /blog/2016/01/23/ancs-message-display
 ---
 
 ## Overview

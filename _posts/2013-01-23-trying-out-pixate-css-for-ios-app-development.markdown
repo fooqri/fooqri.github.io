@@ -5,7 +5,6 @@ date: 2013-01-23 22:09
 comments: true
 author: "Patrick Goddi"
 categories: [rubymotion, pixate, iOS, development]
-redirect_from: /blog/rubymotion/pixate/ios/development/2013/01/23/trying-out-pixate-css-for-ios-app-development
 ---
 Recently I have been using RubyMotion for iOS development; I really  appreciate developing in Ruby, and prefer Emacs to Xcode. Compared to using interface builder, styling apps can be a challenge. It is possible to use RubyMotion with XIB files created in Xcode's Interface Builder, but I have been trying to avoid this. I am striving for a more web-app like design and development workflow. 
 

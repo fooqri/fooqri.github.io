@@ -4,7 +4,6 @@ title: "I2C MPU-6050"
 date: 2015-08-17 05:50
 comments: true
 categories:
-redirect_from: /blog/2015/08/17/i2c-mpu-6050
 ---
 
 <img src="//s3.amazonaws.com/rwx-blog/mpu6050.jpg"  style="height: 400px; display: block; margin: auto;">

@@ -4,7 +4,6 @@ title: "Spreadsheet Driven Web Apps"
 date: 2014-10-15 14:45
 comments: true
 categories: poggr google-docs polymer
-redirect_from: /blog/poggr/google-docs/polymer/2014/10/15/spreadsheet-driven-web-apps
 ---
 
 <a href="//fooqri.poggr.com/pgyUYTfcMUe:dgyFhkQ9M8e"><img src="//s3.amazonaws.com/goddip-poggs/pgyUYTfcMUe/example_screen.png"></a>

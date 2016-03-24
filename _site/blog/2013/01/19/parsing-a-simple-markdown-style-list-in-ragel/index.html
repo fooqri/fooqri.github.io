@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>Parsing a simple markdown style list in Ragel - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      Parsing a simple markdown style list in Ragel
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+In an earlier post S...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Parsing a simple markdown style list in Ragel</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-01-19T13:04:00-08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In an earlier post <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">Simple state machine example</a>, I provided an example of using the Ruby <em>state_machine</em> gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate “list” object.</p>
+
+<p>I found the <a href="http://www.complang.org/ragel/ragel-guide-6.7.pdf">Ragel documentation</a> to be excellent. The only issue is a lack of practical examples. Given the dearth of examples available, I though I would add my +1 example to help the cause. If you are serious about using Ragel I recommend reading the documentation start to finish quickly, then a second go through taking notes on key items like default machines, syntax, priorities, actions, etc before building a parser. Having a strong base will help tremendously when using examples.</p>
+
+<p>There are three files involved in this solution to the list problem:</p>
+
+<ul>
+  <li>lists.txt: a data file that contains two lists for the parser to parse.</li>
+  <li>mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.</li>
+  <li>mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).</li>
+</ul>
+
+<p>I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).</p>
+
+<!--more-->
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">lists.txt</span><a class="code-highlight-caption-link" href="https://gist.github.com/4573704">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">## Tasks
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line">- Go to Whole Foods
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">    - Go to produce section   
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">        - get oranges
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">          maybe Mandarine and Valencia
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">        - get avocados
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">        - get squash
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">          maybe buttercup if they have it
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">    - Go to bakery section
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">        - get bagels
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">        - get 12 cupcakes 
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">    - Go to Dairy
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">    - get milk
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">     	  should be organic 2% if they have it
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">- Pay for items 
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">## Tasks
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">- Write up a Ragel example for blog
+</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line">    - Create simple example for parsing lists   
+</div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line">        - Ragel code for a parser
+</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">          Should provide support for parsing multiple task lists.
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">          It should also support hierarchical task lists
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">    - Create a simple ruby class that uses the parser 
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line">    - post code as gists
+</div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line">    - Write up a blog post describing the use of ragel in the example
+</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line">- Post to blog</div></div></pre></div></figure>
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">mdlist.rb</span><a class="code-highlight-caption-link" href="https://gist.github.com/4573704">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">require</span> <span class="s1">'rubygems'</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="nb">require</span> <span class="s1">'./mdlist_parser.rb'</span> 
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">class</span> <span class="nc">MDList</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> 
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="p">&#x7b;</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span> <span class="p">&#x7d;</span>   
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">lexer_lists</span> <span class="o">=</span> <span class="no">MDListParser</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">contents</span><span class="p">.</span><span class="nf">to_str</span><span class="p">.</span><span class="nf">gsub</span><span class="p">(</span><span class="s1">'\n'</span><span class="p">,</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">))</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="nb">puts</span> <span class="n">lexer_lists</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">      <span class="n">lexer_lists</span><span class="p">.</span><span class="nf">lists</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">list</span><span class="o">|</span> 
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">        	<span class="nb">puts</span> <span class="s2">"Tasks:"</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">      		<span class="n">list</span><span class="p">[</span><span class="ss">:items</span><span class="p">].</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">      		  <span class="nb">puts</span>  <span class="s2">"-"</span><span class="p">.</span><span class="nf">rjust</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">item</span><span class="p">[</span><span class="ss">:level</span><span class="p">])</span> <span class="o">+</span> <span class="n">item</span><span class="p">[</span><span class="ss">:title</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" : ("</span> <span class="o">+</span> <span class="n">item</span><span class="p">[</span><span class="ss">:level</span><span class="p">].</span><span class="nf">to_s</span> <span class="o">+</span> <span class="s2">")"</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">      		  <span class="n">item</span><span class="p">[</span><span class="ss">:description</span><span class="p">].</span><span class="nf">split</span><span class="p">(</span><span class="sr">/\r?\n/</span><span class="p">).</span><span class="nf">each</span>  <span class="k">do</span> <span class="o">|</span><span class="n">l</span><span class="o">|</span> 
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">      		     <span class="nb">puts</span> <span class="s2">" "</span><span class="p">.</span><span class="nf">rjust</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">item</span><span class="p">[</span><span class="ss">:level</span><span class="p">])</span> <span class="o">+</span> <span class="n">l</span><span class="p">.</span><span class="nf">strip</span> 
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">      		  <span class="k">end</span>  
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">      		<span class="k">end</span> 
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">        <span class="k">end</span>
+</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">end</span> 
+</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">end</span>
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div></pre></div></figure>
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">mdlist_parser.rl</span><a class="code-highlight-caption-link" href="https://gist.github.com/4573704">link</a></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line">class MDListParser  
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">  attr_accessor :lists
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">	%%&#x7b;
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">	  machine test_lexer;
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">	  action MarkTaskStart &#x7b; 
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	    task_start = fpc  
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">	    lists_index += 1 
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">	    @lists[lists_index] = &#x7b;:items =&gt; []&#x7d;
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">	    item_index=-1    
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">	  &#x7d;
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">	  action MarkTaskTitleStart &#x7b; 
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">	    task_start = fpc  
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line">	  &#x7d;
+</div></div><div data-line="19" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="20" class="code-highlight-row numbered"><div class="code-highlight-line">	  action MarkTaskDescriptionStart &#x7b; 
+</div></div><div data-line="21" class="code-highlight-row numbered"><div class="code-highlight-line">	    task_start = fpc
+</div></div><div data-line="22" class="code-highlight-row numbered"><div class="code-highlight-line">	    item_index=-1    
+</div></div><div data-line="23" class="code-highlight-row numbered"><div class="code-highlight-line">	  &#x7d;
+</div></div><div data-line="24" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="25" class="code-highlight-row numbered"><div class="code-highlight-line">	  action IncrementTaskLevel &#x7b; 
+</div></div><div data-line="26" class="code-highlight-row numbered"><div class="code-highlight-line">	    task_level += 1  
+</div></div><div data-line="27" class="code-highlight-row numbered"><div class="code-highlight-line">	  &#x7d;
+</div></div><div data-line="28" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="29" class="code-highlight-row numbered"><div class="code-highlight-line">	  action TaskText &#x7b;     
+</div></div><div data-line="30" class="code-highlight-row numbered"><div class="code-highlight-line">		if data[p]          
+</div></div><div data-line="31" class="code-highlight-row numbered"><div class="code-highlight-line">		    item_index += 1
+</div></div><div data-line="32" class="code-highlight-row numbered"><div class="code-highlight-line">			@lists[lists_index][:items] &lt;&lt;  &#x7b; :type =&gt; task_item_type, :level =&gt; task_level, :title =&gt; data[task_start...p].pack('c*').strip, :description =&gt; ""&#x7d;         
+</div></div><div data-line="33" class="code-highlight-row numbered"><div class="code-highlight-line">			task_level = 1
+</div></div><div data-line="34" class="code-highlight-row numbered"><div class="code-highlight-line">		end
+</div></div><div data-line="35" class="code-highlight-row numbered"><div class="code-highlight-line">	  &#x7d; 
+</div></div><div data-line="36" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="37" class="code-highlight-row numbered"><div class="code-highlight-line">	  action TaskDescriptionText &#x7b;     
+</div></div><div data-line="38" class="code-highlight-row numbered"><div class="code-highlight-line">		if data[p]          
+</div></div><div data-line="39" class="code-highlight-row numbered"><div class="code-highlight-line">			@lists[lists_index][:items][item_index][:description] = data[task_start...p].pack('c*').strip           
+</div></div><div data-line="40" class="code-highlight-row numbered"><div class="code-highlight-line">			task_level = 1
+</div></div><div data-line="41" class="code-highlight-row numbered"><div class="code-highlight-line">		end
+</div></div><div data-line="42" class="code-highlight-row numbered"><div class="code-highlight-line">	  &#x7d;     
+</div></div><div data-line="43" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="44" class="code-highlight-row numbered"><div class="code-highlight-line">	  space_or_tab = " " | [\t];
+</div></div><div data-line="45" class="code-highlight-row numbered"><div class="code-highlight-line">	  indent_or_tab = "    " | [\t];  
+</div></div><div data-line="46" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="47" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_header = "##" space_or_tab* "Tasks" space_or_tab* [\n];               
+</div></div><div data-line="48" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_char = (digit+ '.' &gt;&#x7b;task_item_type = :ordered&#x7d;) | ('-' &gt;&#x7b;task_item_type = :unordered&#x7d;); 
+</div></div><div data-line="49" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_title =  [^\n]+ [\n]; 
+</div></div><div data-line="50" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_starter = indent_or_tab* @IncrementTaskLevel task_char;  
+</div></div><div data-line="51" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_description_line =  ([^\n]+ - ^[##]) [\n]; 
+</div></div><div data-line="52" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_description =  (task_description_line - task_header)+; 
+</div></div><div data-line="53" class="code-highlight-row numbered"><div class="code-highlight-line">	  #task_description =  (task_description_line)+; 
+</div></div><div data-line="54" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_item =  task_starter space_or_tab* (task_title &gt;MarkTaskTitleStart  %TaskText) (task_description*  &gt;MarkTaskDescriptionStart %TaskDescriptionText);
+</div></div><div data-line="55" class="code-highlight-row numbered"><div class="code-highlight-line">	  task = (task_header &gt;MarkTaskStart) . task_item*;      
+</div></div><div data-line="56" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="57" class="code-highlight-row numbered"><div class="code-highlight-line">	  main := |*          
+</div></div><div data-line="58" class="code-highlight-row numbered"><div class="code-highlight-line">	    task+; 
+</div></div><div data-line="59" class="code-highlight-row numbered"><div class="code-highlight-line">	   *|;              
+</div></div><div data-line="60" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="61" class="code-highlight-row numbered"><div class="code-highlight-line">	&#x7d;%%  
+</div></div><div data-line="62" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="63" class="code-highlight-row numbered"><div class="code-highlight-line">	def initialize(data) 
+</div></div><div data-line="64" class="code-highlight-row numbered"><div class="code-highlight-line">	  %% write data;  
+</div></div><div data-line="65" class="code-highlight-row numbered"><div class="code-highlight-line">	  data = data.unpack("c*") if(data.is_a?(String))
+</div></div><div data-line="66" class="code-highlight-row numbered"><div class="code-highlight-line">	  eof = data.length
+</div></div><div data-line="67" class="code-highlight-row numbered"><div class="code-highlight-line">	  @lists = []  
+</div></div><div data-line="68" class="code-highlight-row numbered"><div class="code-highlight-line">	  token_array = [] 
+</div></div><div data-line="69" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_item_type = "" 
+</div></div><div data-line="70" class="code-highlight-row numbered"><div class="code-highlight-line">	  lists_index=-1 
+</div></div><div data-line="71" class="code-highlight-row numbered"><div class="code-highlight-line">	  task_level = 1
+</div></div><div data-line="72" class="code-highlight-row numbered"><div class="code-highlight-line">	  fpc = 0
+</div></div><div data-line="73" class="code-highlight-row numbered"><div class="code-highlight-line">	  fc = ""
+</div></div><div data-line="74" class="code-highlight-row numbered"><div class="code-highlight-line">	  %% write init;  
+</div></div><div data-line="75" class="code-highlight-row numbered"><div class="code-highlight-line">	  %% write exec;
+</div></div><div data-line="76" class="code-highlight-row numbered"><div class="code-highlight-line">	end     
+</div></div><div data-line="77" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="78" class="code-highlight-row numbered"><div class="code-highlight-line">end
+</div></div><div data-line="79" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="80" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="81" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="82" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div></pre></div></figure>
+
+<p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
+
+<p>In this example I am using Ragel, which uses a set of state machine definitions to generate a state machine. In this case I am using Ragel to generate a parser to parse lists similar to the ones shown in lists.txt. In Ragel you specify a Ruby class that uses a series of preprocessors (%%) that are processed by the Ragel library.  Ragel will replace these blocks and preprocessor commands with ruby parser code and a parse table; resulting in a state machine for parsing the file.  The documentation will describe all of the required preprocessor commands for Ruby. Ragel supports many languages and the preprocessor commands differ slightly for different languages. Check the documentation for meaning.</p>
+
+<p>The bulk of the instructions for creating a parser are inside the <em>%%{ }%%</em> block. The block is made up of machine definitions and actions. Ragel state machines recognize byte sequences as regular expression machines do, but can also execute code at arbitrary points in the recognition of a regular language (actions).  Here regular expressions are used to define a regular grammar, see type-3 in the <a href="http://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a>.</p>
+
+<p>Thus when you see the statement:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>task_title =  [^\n]+ [\n]
+</code></pre>
+</div>
+
+<p>this is defining a machine (<em>[^\n]+ [\n]</em>) and assigning it a name <em>task_title</em>. The Ragel documentation refers to the right side of the expression as a <em>regular expression machine</em> or <em>machine</em>, this is roughy equivalent to production rules in tradition grammar design. Using named expressions this way allows grammar rules to be built up recursively, much like non-terminals are used in traditional grammar definitions.</p>
+
+<p>Thus an expression like:</p>
+
+<p>task = (task_header &gt;MarkTaskStart) . task_item*;</p>
+
+<p>uses the rules <em>task_header</em><strong>** and <em>task_item</em></strong>** in the definition of the expression. Ragel expressions look unusual at first because they are both defining a grammar and embedding behavior (code). For example the above expression includes a reference to of a block of code <strong><em>MarkTaskStart</em></strong> that should be executed when the <strong><em>task_header</em></strong> machine is matched. These code blocks are called <em>actions</em> in Ragel. It can be useful to use a convention like all lowercase for rules, and CamelCase for actions to make the expressions easier to read.</p>
+
+<p>Ragel defines a syntax for specifying when an action is to be called relative to state transitions between machines. For example before a transition, after a transition, or at the end of file, etc. The documentation is very good, though it is terse.</p>
+
+<table border="1">
+<col style="padding-right: 30px;" />
+<col style="padding-right: 30px;" />
+<col />
+  <tr>
+    <th>Name</th>
+    <th>Syntax</th>
+  </tr>
+  <tr>
+    <td style="width: 200px;">entering action</td>
+    <td style="width: 200px;">expr &gt;action</td>
+  </tr>
+  <tr>
+    <td style="width: 200px;">finishing action</td>
+    <td style="width: 200px;">expr @ action </td>
+  </tr>
+    <tr>
+    <td style="width: 200px;">all transitions action</td>
+    <td style="width: 200px;">expr $ action</td>
+  </tr>
+  <tr>
+    <td style="width: 200px;">leaving actions</td>
+    <td style="width: 200px;">expr % action</td>
+  </tr>
+</table>
+<p><br />
+Ragel also allows you to embed error handling behavior using a similar mechanism.</p>
+
+<p>Finally, one of the challenges of regular grammars is the requirement that they are <a href="http://en.wikipedia.org/wiki/Deterministic_finite_automaton">DFA’s</a> and thus need to be deterministic. Ragel provides a mechanism for including priorities in the case where multiple next states are possible; you can define which state will be taken. For more see the Ragel documentation on priorities and guarded expressions. The reason I suggested reading through the documentation prior to reading example grammars is that Ragel expressions can begin to look very confusing if you are not versed in the difference between the syntax associated with machines, actions, priorities and guards, since they all appear intermingled in a Ragel expression.</p>
+
+<p>To create a parser for the <em>mdlist_parser.rl</em> file shown above use this command:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> ragel -R mdlist_parser.rl
+</code></pre>
+</div>
+
+<p>This will create a parser written in ruby called <em>mdlist_parser.rb</em> that can be included into your Ruby program.</p>
+
+<p>Now we need a simple Ruby program to use the parser, I am including this because I didn’t see a lot of examples for how to do this so wanted to add one here.</p>
+
+<p>The simple ruby class defined in <em>mdlist.rb</em> will open the data file and read it in to a string, and pass the string to the parser. The parser will return a Ruby object that has a <em>lists</em> method that returns the list in a data structure. The above class will then output the list formatted to show the hierarchy. The list could easily be used to create a list object that includes the state machine from my earlier <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example">state machine</a> post.</p>
+
+<p>I will assume you have Ragel, installed, if not get it <a href="http://www.complang.org/ragel/">here</a>. To see the parser in action you need all three files (mdlist_parser.rl, mdlist.rb, lists.txt) in the same directory and then take these steps:</p>
+
+<ol>
+  <li><strong>run the ragel parser:</strong>   ragel -R mdlist_parser.rl</li>
+  <li>
+    <p><strong>run irb</strong> and enter the following into irb:</p>
+
+    <ul>
+      <li>load “mdlist.rb”</li>
+      <li>list = MDList.new(“lists.txt”)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>You should see the output of the puts statements displaying the lists data structure with information about the hierarchy of the list. It would be easy to replace the puts with a call to a method like add_item() from my state_machine example referenced earlier.</p>
+
+<p>That’s it. Defining grammars and using parser generators can seem challenging at first, but once you get through a few examples and build a simple grammer it will become very simple, since the rules are really very simple. The language of grammar definition can be challenging at first,  but just try to understand the concepts and don’t get too bogged down in the terminology. Ragel is a very powerful tool for any developer to have in their tool belt, especially if you are interested in building high performance APIs, it combines a powerful parser generator with an expressive syntax for generating powerful state machines. To fully understand this and other examples check out the Ragel documentation and tutorials listed below.</p>
+
+<ul>
+  <li><a href="http://www.complang.org/ragel/">Ragel Home</a></li>
+  <li><a href="http://thingsaaronmade.com/blog/a-simple-intro-to-writing-a-lexer-with-ragel.html">A simple intro to writing a lexer with Ragel.</a></li>
+  <li><a href="http://www.devchix.com/2008/01/13/a-hello-world-for-ruby-on-ragel-60/">A Hello World for Ruby on Ragel 6.0</a></li>
+  <li><a href="http://www.zedshaw.com/essays/ragel_state_charts.html">Ragel State Charts</a></li>
+  <li><a href="http://tech.blog.cueup.com/regular-expressions-will-stab-you-in-the-back">Regular Expressions Will Stab You in the Back</a></li>
+</ul>
+
+<p>Also see this great <a href="http://www.confreaks.com/videos/491-rubyconf2010-consuming-gherkin-one-byte-at-a-time"> Consuming Gherkin: One Byte at a Time video</a> intro of Mike Sassak &amp; Greg Hnatiuk discussing their experience using Ragel for the Cucumber parser.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      January 19, 2013
+      
+    </p>
+    
+      <a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-url="http://rwx.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/" data-text="Parsing a simple markdown style list in Ragel by @fooqri -" data-dnt="true">Twitter</a>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/18/pattern-problems-vs-logic-problems/" title="Previous Post: Pattern problems vs logic problems">&laquo; Pattern problems vs logic problems</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/21/the-three-cs/" title="Next Post: The three c's">The three c's &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div> <script type="text/javascript"> var disqus_shortname = 'goddio'; var disqus_url = 'http://rwx.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/'; var disqus_identifier = 'http://rwx.io/blog/2013/01/19/parsing-a-simple-markdown-style-list-in-ragel/'; var disqus_title = 'Parsing a simple markdown style list in Ragel'; (function () { var s = document.createElement('script'); s.async = true; s.type = 'text/javascript'; s.src = '//goddio.disqus.com/embed.js'; (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s); }()); </script> <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/feed/"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</body>
+</html>

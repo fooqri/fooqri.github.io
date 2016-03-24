@@ -6,8 +6,8 @@
 </description>
     <link>http://rwx.io/</link>
     <atom:link href="http://rwx.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Mar 2016 16:45:16 -0700</pubDate>
-    <lastBuildDate>Wed, 23 Mar 2016 16:45:16 -0700</lastBuildDate>
+    <pubDate>Thu, 24 Mar 2016 07:26:18 -0700</pubDate>
+    <lastBuildDate>Thu, 24 Mar 2016 07:26:18 -0700</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -190,8 +190,8 @@
 &lt;p&gt;With this setup is is easy to keep notes in a fashion that makes them easy to use in a number of formats, including presentations, mindmaps, and markdown documents. Org mode also supports the concept of &lt;a href=&quot;http://orgmode.org/manual/Publishing.html&quot;&gt;publishing&lt;/a&gt; that is useful when sharing specific content, for example exporting specific notes to a web site along with images and attachments used in the notes.&lt;/p&gt;
 </description>
         <pubDate>Fri, 11 Mar 2016 00:00:00 -0800</pubDate>
-        <link>http://rwx.io/2016/03/11/Org-Export-Configurations.html</link>
-        <guid isPermaLink="true">http://rwx.io/2016/03/11/Org-Export-Configurations.html</guid>
+        <link>http://rwx.io/blog/2016/03/11/Org-Export-Configurations/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2016/03/11/Org-Export-Configurations/</guid>
         
         
       </item>
@@ -235,8 +235,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 10 Mar 2016 00:00:00 -0800</pubDate>
-        <link>http://rwx.io/2016/03/10/Deft-and-Emacs-for-Notes.html</link>
-        <guid isPermaLink="true">http://rwx.io/2016/03/10/Deft-and-Emacs-for-Notes.html</guid>
+        <link>http://rwx.io/blog/2016/03/10/Deft-and-Emacs-for-Notes/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2016/03/10/Deft-and-Emacs-for-Notes/</guid>
         
         
       </item>
@@ -348,8 +348,8 @@ npm install --save-dev bluebird
 &lt;p&gt;You can see several new and experimental language features including &lt;em&gt;async functions&lt;/em&gt;, the &lt;em&gt;await&lt;/em&gt; keyword for performing a non-blocking wait on a promise to complete, and &lt;em&gt;template strings&lt;/em&gt;.&lt;/p&gt;
 </description>
         <pubDate>Wed, 09 Mar 2016 16:57:00 -0800</pubDate>
-        <link>http://rwx.io/2016/03/09/org-with-babel-node-updated.html</link>
-        <guid isPermaLink="true">http://rwx.io/2016/03/09/org-with-babel-node-updated.html</guid>
+        <link>http://rwx.io/blog/2016/03/09/org-with-babel-node-updated/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2016/03/09/org-with-babel-node-updated/</guid>
         
         
       </item>
@@ -480,8 +480,8 @@ GNU_PREFIX := arm-none-eabi
 &lt;p&gt;The goal of this process was to get the ARM toolchain and Nordic SDK set up, next steps would be to use the ANCS example as a starting point to develop a custom ANCS app for some device that utilizes the BLE Nano. I hope to post some examples in the future as I work with the Nano more.&lt;/p&gt;
 </description>
         <pubDate>Wed, 27 Jan 2016 12:19:00 -0800</pubDate>
-        <link>http://rwx.io/2016/01/27/ancs-example-on-blend-nano.html</link>
-        <guid isPermaLink="true">http://rwx.io/2016/01/27/ancs-example-on-blend-nano.html</guid>
+        <link>http://rwx.io/blog/2016/01/27/ancs-example-on-blend-nano/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2016/01/27/ancs-example-on-blend-nano/</guid>
         
         
       </item>
@@ -559,8 +559,8 @@ GNU_PREFIX := arm-none-eabi
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 23 Jan 2016 11:12:00 -0800</pubDate>
-        <link>http://rwx.io/2016/01/23/ancs-message-display.html</link>
-        <guid isPermaLink="true">http://rwx.io/2016/01/23/ancs-message-display.html</guid>
+        <link>http://rwx.io/blog/2016/01/23/ancs-message-display/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2016/01/23/ancs-message-display/</guid>
         
         
       </item>
@@ -659,8 +659,8 @@ npm install bluebird
 &lt;p&gt;You can see several new and experimental language features including &lt;em&gt;async functions&lt;/em&gt;, the &lt;em&gt;await&lt;/em&gt; keyword for performing a non-blocking wait on a promise to complete, and &lt;em&gt;template strings&lt;/em&gt;.&lt;/p&gt;
 </description>
         <pubDate>Tue, 06 Oct 2015 16:57:00 -0700</pubDate>
-        <link>http://rwx.io/2015/10/06/org-with-babel-node.html</link>
-        <guid isPermaLink="true">http://rwx.io/2015/10/06/org-with-babel-node.html</guid>
+        <link>http://rwx.io/blog/2015/10/06/org-with-babel-node/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2015/10/06/org-with-babel-node/</guid>
         
         
       </item>
@@ -817,8 +817,8 @@ npm install bluebird
 This was a quick run through to test some of the feature of the device, but even with a few sensors/actuators and a simple setup there is a nice combination of status and interaction feedback that can be performed with a simple and relatively inexpensive device. The &lt;em&gt;Sparkfun Thing&lt;/em&gt; retails for around $15 right now but the &lt;a href=&quot;//learn.adafruit.com/adafruit-huzzah-esp8266-breakout/overview&quot; target=&quot;_blank&quot;&gt;Huzzah&lt;/a&gt; is under $10, and others can be found closer to $5.&lt;/p&gt;
 </description>
         <pubDate>Wed, 09 Sep 2015 08:05:00 -0700</pubDate>
-        <link>http://rwx.io/2015/09/09/esp8266-initial-notes.html</link>
-        <guid isPermaLink="true">http://rwx.io/2015/09/09/esp8266-initial-notes.html</guid>
+        <link>http://rwx.io/blog/2015/09/09/esp8266-initial-notes/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2015/09/09/esp8266-initial-notes/</guid>
         
         
       </item>
@@ -1054,8 +1054,8 @@ setInterval(function() {
 
 </description>
         <pubDate>Tue, 18 Aug 2015 10:49:00 -0700</pubDate>
-        <link>http://rwx.io/2015/08/18/self-updating-edison-app.html</link>
-        <guid isPermaLink="true">http://rwx.io/2015/08/18/self-updating-edison-app.html</guid>
+        <link>http://rwx.io/blog/2015/08/18/self-updating-edison-app/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2015/08/18/self-updating-edison-app/</guid>
         
         
       </item>
@@ -1086,8 +1086,8 @@ setInterval(function() {
 &lt;p&gt;I am very pleased with the setup. One nice feature is the workbench depth is less than a traditional desk, so I gained some space back in the office. The main benefit is just better productivity, I find certain tasks are just easier to accomplish when standing. The final benefit? With two greyhounds in the house, having a tall desk means fewer expensive pens and markers go missing.&lt;/p&gt;
 </description>
         <pubDate>Mon, 17 Aug 2015 08:15:00 -0700</pubDate>
-        <link>http://rwx.io/2015/08/17/workbench.html</link>
-        <guid isPermaLink="true">http://rwx.io/2015/08/17/workbench.html</guid>
+        <link>http://rwx.io/blog/2015/08/17/workbench/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2015/08/17/workbench/</guid>
         
         
       </item>
@@ -1160,8 +1160,8 @@ setInterval(function() {
 &lt;p&gt;I won’t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.&lt;/p&gt;
 </description>
         <pubDate>Mon, 17 Aug 2015 05:50:00 -0700</pubDate>
-        <link>http://rwx.io/2015/08/17/i2c-mpu-6050.html</link>
-        <guid isPermaLink="true">http://rwx.io/2015/08/17/i2c-mpu-6050.html</guid>
+        <link>http://rwx.io/blog/2015/08/17/i2c-mpu-6050/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2015/08/17/i2c-mpu-6050/</guid>
         
         
       </item>

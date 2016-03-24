@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head> 
+  <meta charset="utf-8">
+  <title>Org Export Configurations - </title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="
+
+  
+  
+    
+      Org Export Configurations
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+  
+
+
+Emacs org mode offers a variety of expor...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rwx.io/blog/2016/03/11/Org-Export-Configurations/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/css/custom.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/js/search.min.js" type="text/javascript" charset="utf-8"></script>
+  <link href="" rel="alternate" title="" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+ 
+  
+
+  <style>html{background: linear-gradient(180deg, rgba(62, 54, 52,
+  0.8) 0%, rgba(89, 79, 76, 0.8)),  url("/images/background.png") repeat;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Org Export Configurations</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2016-03-11T00:00:00-08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Emacs <em>org mode</em> offers a variety of export options that make it easy to look at your notes in different formats, or perhaps make them available for others to view. Three I use regularly are <em>markdown</em>, <em>mindmap</em>, and <em>reveal presentation</em>.</p>
+
+<h1 id="my-approach-to-note-taking">My approach to Note Taking</h1>
+
+<p>The best way to learn something is to sumarize the topic in your own words, in your own context, and present it to others with concrete examples. But in many cases notes must also serve to provide details that are easily forgotten like code snippets, checklists, etc. Even with detailed notes it is important to refactor the information into your own context to aid learning the topic. For this reason many of my notes on a topic have a <em>summary</em> section and a <em>details</em> section both organized in an org document.</p>
+
+<p>Another purpose for notes is information logging, such as meeting notes, project team notes, daily journal, etc. Although <em>org</em> does an excellent job of supporting information logging and task management, I will leave that as a topic for a future post.</p>
+
+<p>Ideally the summary of a topic can easily be converted to a presentation, and the details can be converted to a markdown document.   I will describe below how to accomplish this. Further I will describe how to convert the notes to OPML so it can be explored as a mindmap. Also see <a href="http://rwx.io/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + Org for Notes</a> for information on quick search of all notes.</p>
+
+<h1 id="setting-export-directory">Setting Export Directory</h1>
+
+<p>I want to keep everything under the org directory but to keep things tidy create sub directories by export type. The code snippet below when placed in init.el will set the correct export directory based on export type. Thus <em>opml</em> documents will be kept in <code class="highlighter-rouge">~/org/export_opml/</code>, <em>markdown</em> documents in <code class="highlighter-rouge">~/org/export_md/</code>, and <em>html</em> documents in <code class="highlighter-rouge">~/org/export_md/</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(defvar org-export-output-directory-prefix "export_" "prefix of directory used for org-mode export")
+
+(defadvice org-export-output-file-name (before org-add-export-dir activate)
+  "Modifies org-export to place exported files in a different directory"
+  (when (not pub-dir)
+      (setq pub-dir (concat org-export-output-directory-prefix (substring extension 1)))
+      (when (not (file-directory-p pub-dir))
+       (make-directory pub-dir))))
+</code></pre>
+</div>
+
+<h1 id="exporting-to-markdown">Exporting to Markdown</h1>
+
+<p>The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser. The <a href="https://chrome.google.com/webstore/detail/minimalist-markdown-edito/pghodfjepegmciihfhdipmimghiakcjf?hl=en">Minamalist Markdown Editor</a> is a nice tool for viewing these documents on a Chromebook.</p>
+
+<p>The (C-c m) keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the <em>Marked 2</em> app will also allow you to follow note links to any interlinked notes. <em>Marked 2</em> provides a very nice reading interface for detailed notes so having this option is handy.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(defun export-org-md-command-events ()
+  (interactive)
+  (let* ((md-original-filename (concat (file-name-directory buffer-file-name) "export_md/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))
+         (google-drive-filename (concat  "../Google Drive/notes/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))) 
+    (execute-kbd-macro (kbd "C-c C-e m m"))
+    (copy-file  md-original-filename google-drive-filename t)
+    (message  "Saved to Google Drive: %s" (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md")) )
+  )
+
+;; Auto-export org files to Markdown when saved
+(defun org-mode-export-hook ()
+  (when (equal major-mode 'org-mode)
+    (add-hook 'after-save-hook 'export-org-md-command-events t t)
+  )
+)
+
+(defun markdown-preview-file ()
+  "run Marked on the current file and revert the buffer"
+  (interactive)
+  (execute-kbd-macro (kbd "C-c C-e m m"))
+  (shell-command
+   (format "open -a /Applications/Marked2.app %s" 
+       (shell-quote-argument (concat (file-name-directory buffer-file-name) "export_md/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".md"))))
+  )
+
+(global-set-key (kbd "C-c m") 'markdown-preview-file)
+</code></pre>
+</div>
+
+<p>The markdown conversion works well but if you need to you can  embed markdown directly into your org document at any time using a markdown block. This will allow the markdown to pass through during export so it will be handled properly by the markdown rendering app.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#+BEGIN_SRC js  :results output drawer
+  var s = "JavaScript syntax highlighting"; 
+  alert(s);
+#+END_SRC
+</code></pre>
+</div>
+
+<h1 id="exporting-to-mindmap">Exporting to Mindmap</h1>
+
+<p>Mindmaps are a visualization of an outline, and since org mode specializes in keeping notes in a hierarchical fashion it is fairly easy to convert notes to mindmaps. OPML is an XML format for outlines that is supported by all mindmapping  apps. You can use <a href="https://www.emacswiki.org/emacs/FreeMind">org-freemind</a> to do mindmaps, but I use <a href="https://github.com/edavis/org-opml">org-opml</a> instead. Follow the <a href="https://github.com/edavis/org-opml">org-opml</a> installation instructions.</p>
+
+<p>I also use a slight customization of the ox-opml.el file delivered with <a href="https://github.com/edavis/org-opml">org-opml</a>, because I use iThoughtsX and think it is cleaner to put paragraph blocks in notes rather than have them forced into a topic bubble.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>;; modify original ox-opml.el to put paragraphs into the notes attribute of a topic
+;; instead of displaying paragraph as topic name.  
+(defun org-opml-paragraph (paragraph contents info)
+  (let* ((parent (org-element-type (org-export-get-parent paragraph)))
+         (text (clean-text contents)))
+    ;; Only display paragraphs when not in a list item
+    (unless (eq parent 'item)
+      (format "&lt;outline text='notes' note='%s' structure=\"paragraph\"/&gt;"  text))))
+
+(defun org-opml-item (item contents info)
+  (let* ((p (car (org-element-contents item)))
+         (elements (org-element-contents p))
+         (text (mapconcat
+                (lambda (el)
+                  (cond ((stringp el) (clean-text el))
+                        ((equal (car el) 'link)  
+                         (let ((url (org-element-property :raw-link el))
+                               (text (org-element-contents el)))
+                           (clean-text (format "%s" (car text)))))
+                        ((equal (car el) 'italic)
+                         (format "/%s/" (car (org-element-contents el))))
+                        ((equal (car el) 'bold)
+                         (format "*%s*" (car (org-element-contents el))))
+                        ((equal (car el) 'verbatim)
+                         (format "=%s=" (org-element-property :value el)))))
+                elements " ")))
+    (format "&lt;outline text='%s' structure='list'&gt;%s&lt;/outline&gt;" text contents)))
+</code></pre>
+</div>
+
+<p>A second modification I use is to change the key-bindings for export because they conflict with markdown export. Below I changed the <code class="highlighter-rouge">?m</code> in the original <code class="highlighter-rouge">ox-opml.el</code> file to <code class="highlighter-rouge">?g</code> so <code class="highlighter-rouge">Export to OPML</code> will appear in the org export menu under the <code class="highlighter-rouge">g</code> key, and not <code class="highlighter-rouge">m</code> key</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>:menu-entry '(?g "Export to OPML"
+                 (lambda (a s v b) (org-opml-export-to-opml a s v b)))
+</code></pre>
+</div>
+
+<p>The Lisp snippet below can be added to init.el and will allow viewing an org buffer as a mindmap using iThoughtsX with the (C-c o) keyboard sequence.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(defun opml-preview-file ()
+  "run iThoughtsX on the current file and revert the buffer"
+  (interactive)
+  (execute-kbd-macro (kbd "C-c C-e g"))
+  (shell-command 
+   (format "open -a /Applications/iThoughtsX.app %s"  
+       (shell-quote-argument (concat (file-name-directory buffer-file-name) "export_opml/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".opml"))))
+)
+
+(global-set-key  (kbd "C-c o") 'opml-preview-file)
+</code></pre>
+</div>
+
+<h1 id="exporting-to-reveal-presentation">Exporting to Reveal Presentation</h1>
+
+<p>Another useful feature is exporting the current org buffer as a <a href="http://lab.hakim.se/reveal-js/">Reveal Presentation</a> and opening it in a browser. To do this you need to install and configure <a href="https://github.com/yjwen/org-reveal">org-reveal</a>. Once installed you can use the Lisp snippet below, the (C-c p) keyboard sequence will open the the current buffer as a <em>Reveal Presentation</em> in Safari (I use Mac).</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(defun 'presentation-preview-file ()
+  "run export with ox-reveal on the current file and open browser"
+  (interactive)
+  (execute-kbd-macro (kbd "C-c C-e R R"))
+  (shell-command 
+   (format "open -a /Applications/Safari.app %s" 
+       (shell-quote-argument (concat (file-name-directory buffer-file-name) "export_html/" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) ".html"))))
+)
+
+(global-set-key  (kbd "C-c p") 'presentation-preview-file)
+</code></pre>
+</div>
+
+<h2 id="hiding-content">Hiding Content</h2>
+
+<p>I mentioned above that I like to organize my notes with both a summary for presentation, and details that would not work well in a presentation. To make it easy to hide content from the various export modules I added the code below to my init.el file.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> (defun set-ignored-headlines-tags (backend)
+ "Remove all headlines with tag ignore_heading in the current buffer. 
+    BACKEND is the export back-end being used, as a symbol."
+ (cond ((org-export-derived-backend-p backend 'md) (setq  org-export-exclude-tags '("noexport" "mdignore")))
+       ((org-export-derived-backend-p backend 'reveal) (setq  org-export-exclude-tags '("noexport" "revealignore")))
+       ((org-export-derived-backend-p backend 'opml)  (setq  org-export-exclude-tags '("noexport" "opmlignore"))) 
+       (t (setq  org-export-exclude-tags '("noexport")))
+   ) 
+)
+</code></pre>
+</div>
+
+<p>Now I can hide content from reveal by adding a <em>:revealignore:</em> tag to the heading. The <em>:opmlignore:</em> and <em>:mdignore:</em> work similarly. <em>:noexport:</em> means hide from all exports. The tags support hierarchy so will hide any sub-headings.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>* My Slides :mdignore:opmlignore:
+ ** Topic 1
+    Slide content
+ ** Topic 2
+    Slide content
+* My Detailed Notes  :revealignore:
+ ** Chapter Notes
+ ** Code Experiments :opmlignore:
+</code></pre>
+</div>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>With this setup is is easy to keep notes in a fashion that makes them easy to use in a number of formats, including presentations, mindmaps, and markdown documents. Org mode also supports the concept of <a href="http://orgmode.org/manual/Publishing.html">publishing</a> that is useful when sharing specific content, for example exporting specific notes to a web site along with images and attachments used in the notes.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      March 11, 2016
+      
+    </p>
+    
+      <a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-url="http://rwx.io/blog/2016/03/11/Org-Export-Configurations/" data-text="Org Export Configurations by @fooqri -" data-dnt="true">Twitter</a>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/" title="Previous Post: Deft + Org for Notes">&laquo; Deft + Org for Notes</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://rwx.io" title=""><img id="logo" src="http://rwx.io/images/profile.jpg" /></a>
+  <h1 id="site_title"><a href="http://rwx.io" title=""></a></h1>
+  <h3 id="site_subtitle">Design, development, productivity -- notes and explorations.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://rwx.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://rwx.io/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://rwx.io/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://rwx.io/feed/"> Feed </a></li>
+  </ul>
+</section>
+
+<div id="search">
+  <form action="/search" method="get">
+    <input type="text" id="search-query" name="q" placeholder="Search" autocomplete="off">
+  </form>
+</div>
+
+<section id="search-results" style="display: none;">
+  <h1 id="search-results-heading">Search Results</h1>
+  <div class="entries">
+  </div>
+</section>
+
+
+<script id="search-results-template" type="text/mustache">
+  <ul>
+  {{#entries}}
+      <li class="post">
+        <a href="{{url}}">{{title}}</a>
+      </li>
+    </article>
+  {{/entries}}
+  </ul>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('#search-query').lunrSearch({
+      indexUrl: '/js/index.json',   // Url for the .json file containing search index data
+      results : '#search-results',  // selector for containing search results element
+      entries : '.entries',         // selector for search entries containing element (contained within results above)
+      template: '#search-results-template'  // selector for Mustache.js template
+    });
+  });
+</script>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/Deft-and-Emacs-for-Notes/">Deft + Org for Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/09/org-with-babel-node-updated/">Org Mode ES2015+ Code Blocks (updated)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/ancs-example-on-blend-nano/">ANCS Example on BLE Nano</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/23/ancs-message-display/">ANCS Message Display</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/06/org-with-babel-node/">Org Mode ES2015+ Code Blocks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/09/esp8266-initial-notes/">ESP8266 Initial Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/self-updating-edison-app/">Self Updating Edison Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/07/getting-rklogconfigurebyname-working-in-rubymotion/">Getting RKLogConfigureByName working in RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/01/coredata-dot-sqldebug-for-rubymotion/">CoreData.SQLDebug for RubyMotion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/spreadsheet-driven-web-apps/">Spreadsheet Driven Web Apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 -  -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</body>
+</html>

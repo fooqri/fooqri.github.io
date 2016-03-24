@@ -5,7 +5,6 @@ date: 2013-01-15 12:24
 author: "Patrick Goddi"
 comments: true
 categories: [ruby, state-machines, development]
-redirect_from: /blog/ruby/state-machines/development/2013/01/15/simple-state-machine-example
 ---
 I have been investigating using the ruby [state_machine](https://github.com/pluginaweek/state_machine) gem for a project. State machines can be very handy in simplifying code where objects move through various states. The [state_machine](https://github.com/pluginaweek/state_machine) gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example.  The todo list will include a main list that contains items and sublists.  This allows a way to organize items easily into sublists.
 
