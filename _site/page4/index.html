@@ -17,7 +17,7 @@
       
   
     
-      Org Export Configurations
+      Simple Audio Analysis with pyAudioAnalysis
     
     
       
@@ -38,7 +38,7 @@
   
 
 
-  Emacs org mode offers...">
+  I ha...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +90,233 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/04/08/bp-pyaudioanalysis/">Simple Audio Analysis with pyAudioAnalysis</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2016-04-08T00:00:00-07:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had a need to do some classification of sets of environmental audio files so started looking for an easy to use Python library that was up for the task. Here are my notes on setting up the <a href="https://github.com/tyiannak/pyAudioAnalysis">pyAudioAnalysis Library</a> for simple audio classification task.</p>
+
+<h1 id="installation">Installation</h1>
+
+<p>This library relies on <strong>Python 2</strong>, so do a quick <em>python –version</em> to make sure you are not on <strong>Python 3</strong>. If both are installed on your machine they may be accessible as <em>python</em> and <em>python3</em></p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>You will need to make sure the following modules are installed:</p>
+
+<ul>
+  <li>numpy</li>
+  <li>matplotlib</li>
+  <li>scipy</li>
+  <li>gsl</li>
+  <li>mlpy</li>
+  <li>scikit-learn (v 0.16.1)</li>
+  <li>Simplejson</li>
+</ul>
+
+<p>Note that the <a href="https://www.continuum.io/downloads">Anaconda</a> Python 2.7 distribution has many of these packages already included, but you need <em>scikit-learn (v 0.16.1)</em> and the latest <em>Anaconda</em> distribution delivers the <em>0.17.1</em> version.  If you get an error message referencing a missing <em>hmm</em> component, you likely have the <em>0.17.*</em> version of scikit-learn, as <em>hmm</em> was deprecated in that version.</p>
+
+<p>When the dependencies are all verified or installed, simply clone the repo into a directory you want to use for development.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/audioClassification
+cd audioClassification
+mkdir trainingData
+mkdir sampleData
+git clone https://github.com/tyiannak/pyAudioAnalysis.git
+</code></pre>
+</div>
+
+<h1 id="training-data">Training Data</h1>
+
+<p>The simplest way to get started it to create sub directories under <em>trainingData</em> for each sound category you wish to recognize. For this example lets use these</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir trainingData/breaking_glass 
+mkdir trainingData/bubbles 
+mkdir trainingData/vacuum
+</code></pre>
+</div>
+
+<p>Next do a Google search looking for free audio files to add to the <em>trainingData</em> directory: e.g. <em>breaking glass audio wav free</em>, then for bubble sounds try <em>bubbles audio wav free</em>, finally for vacuum sounds try <em>vacuum audio wav free</em>. Save a dozen or so examples of each sound into the corresponding sub-directory under <em>trainingData</em>. The <em>pyAudioAnalysis</em> library requires wav files, so make sure any files you save to <em>trainingData</em> are wav files.</p>
+
+<h1 id="sample-data">Sample Data</h1>
+
+<p>Next add some audio samples that can be used to test the training. The search is the same as above, but just choose different sample files, so you can test how well the classification model works. You can save them directly under the <em>sampleData</em> directory for this example. It is also good to choose a few random other sounds to see how they are interpreted by the classification model.</p>
+
+<h1 id="scripts">Scripts</h1>
+
+<p>I wrote two quick scripts to do the classification and test a file against the classification model.</p>
+
+<h2 id="createclassifiermodel-script">createClassifierModel Script</h2>
+
+<p>From inside the <em>audioClassification</em> directory</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>touch createClassifierModel
+chmod +x createClassifierModel
+</code></pre>
+</div>
+
+<p>In your favorite editor open <em>createClassifierModel</em> and add the following code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/local/bin/python2</span>
+<span class="kn">from</span> <span class="nn">pyAudioAnalysis</span> <span class="kn">import</span> <span class="n">audioTrainTest</span> <span class="k">as</span> <span class="n">aT</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">argv</span>
+<span class="n">script</span><span class="p">,</span> <span class="n">dirname</span> <span class="o">=</span> <span class="n">argv</span>
+
+<span class="n">subdirectories</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">subdirectories</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">subdirectories</span> <span class="o">=</span> <span class="p">[</span><span class="n">dirname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">subDirName</span> <span class="k">for</span> <span class="n">subDirName</span> <span class="ow">in</span> <span class="n">subdirectories</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">subdirectories</span><span class="p">)</span>
+<span class="n">aT</span><span class="o">.</span><span class="n">featureAndTrain</span><span class="p">(</span><span class="n">subdirectories</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">aT</span><span class="o">.</span><span class="n">shortTermWindow</span><span class="p">,</span> <span class="n">aT</span><span class="o">.</span><span class="n">shortTermStep</span><span class="p">,</span> <span class="s">"svm"</span><span class="p">,</span> <span class="s">"svmModel"</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="testclassifiermodel-script">testClassifierModel Script</h2>
+
+<p>From inside the <em>audioClassification</em> directory</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>touch testClassifierModel
+chmod +x testClassifierModel
+</code></pre>
+</div>
+
+<p>In your favorite editor open <em>testClassifierModel</em> and add the following code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/local/bin/python2</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">argv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyAudioAnalysis</span> <span class="kn">import</span> <span class="n">audioTrainTest</span> <span class="k">as</span> <span class="n">aT</span>
+<span class="n">script</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">argv</span>
+<span class="n">isSignificant</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="c">#try different values.</span>
+
+<span class="c"># P: list of probabilities</span>
+<span class="n">Result</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">classNames</span> <span class="o">=</span> <span class="n">aT</span><span class="o">.</span><span class="n">fileClassification</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">"svmModel"</span><span class="p">,</span> <span class="s">"svm"</span><span class="p">)</span>
+<span class="n">winner</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="c">#pick the result with the highest probability value.</span>
+
+<span class="c"># is the highest value found above the isSignificant threshhold? </span>
+<span class="k">if</span> <span class="n">P</span><span class="p">[</span><span class="n">winner</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">isSignificant</span> <span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"File: "</span> <span class="o">+</span><span class="n">filename</span> <span class="o">+</span> <span class="s">" is in category: "</span> <span class="o">+</span> <span class="n">classNames</span><span class="p">[</span><span class="n">winner</span><span class="p">]</span> <span class="o">+</span> <span class="s">", with probability: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="n">winner</span><span class="p">]))</span>
+<span class="k">else</span> <span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"Can't classify sound: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">P</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<h1 id="run-the-createclassifiermodel-script">Run the createClassifierModel Script</h1>
+
+<p>To create a classification model simply run the <em>createClassifierMode</em> script and pass in the name of the training directory as an argument to the script.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>createClassifierModel trainingData
+</code></pre>
+</div>
+
+<p>Below is an example output of the script.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                breaking_glass                  bubbles                 vacuum          OVERALL
+        C       PRE     REC     F1      PRE     REC     F1      PRE     REC     F1      ACC     F1
+        0.001   58.1    100.0   73.5    100.0   56.0    71.8    33.3    0.0     0.0     64.0    48.4
+        0.010   83.7    100.0   91.1    100.0   95.0    97.4    98.5    65.0    78.3    90.0    89.0     best F1         best Acc
+        0.500   80.0    94.0    86.4    100.0   99.0    99.5    81.8    54.0    65.1    85.2    83.7
+        1.000   79.8    98.5    88.1    100.0   91.0    95.3    91.9    57.0    70.4    86.2    84.6
+        5.000   79.4    94.5    86.3    100.0   93.0    96.4    81.2    56.0    66.3    84.5    83.0
+        10.000  77.7    97.5    86.5    100.0   89.0    94.2    90.0    54.0    67.5    84.5    82.7
+Confusion Matrix:
+        bre     bub     vac
+bre     50.0    0.0     0.0
+bub     1.0     23.7    0.3
+vac     8.8     0.0     16.2
+Selected params: 0.01000
+</code></pre>
+</div>
+
+<h1 id="run-the-testclassifiermodel-script">Run the testClassifierModel Script</h1>
+
+<p>To categorize an audio file simply pass the file name as an argument to the <em>testClassifierModel</em> script. In the example below a sample was named <em>bubbles1.wav</em></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>testClassifierModel sampleData/bubbles1.wav
+</code></pre>
+</div>
+
+<p>Below is an example output of the script.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>File: sampleData/bubbles1.wav is in category: bubbles, with probability: 0.95486693161
+</code></pre>
+</div>
+
+<h1 id="potential-gotchas">Potential GOTCHAS</h1>
+
+<p>One issue is that not all <em>wav</em> files will be understood by the <em>wavfile.py</em> library. If the classification hangs or aborts then it is possible one of the downloaded wav files is the issue. I found the simple solution was to add a line to <em>wavefile.py</em> that printed the filename currently being worked on so I could see what was happening the first time using a new set of training files.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>for me this is the location
+/usr/local/lib/python2.7/site-packages/scipy/io/wavfile.py
+
+datadef read(filename, mmap=False):
+    """
+    Return the sample rate (in samples/sec) and data from a WAV file
+
+    Parameters
+    ----------
+    filename : string or open file handle
+        Input wav file.
+    mmap : bool, optional
+        Whether to read data as memory mapped.
+        Only to be used on real files (Default: False)
+
+        .. versionadded:: 0.12.0
+
+    Returns
+    -------
+    rate : int
+        Sample rate of wav file
+    data : numpy array
+        Data read from wav file
+
+    Notes
+    -----
+    * The file can be an open file or a filename.
+    * The returned sample rate is a Python integer.
+    * The data is returned as a numpy array with a data-type determined
+      from the file.
+    * This function cannot read wav files with 24 bit data.
+
+    """
+    print("FILENAME: " + filename)
+</code></pre>
+</div>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>This was a basic intro to help you get started with <a href="https://github.com/tyiannak/pyAudioAnalysis">pyAudioAnalysis</a> library, check out the <a href="https://github.com/tyiannak/pyAudioAnalysis/wiki">project wiki page</a> for more use case for the library including other classification model options, as well as feature extraction, segmentation and visualization capabilities.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -4155,6 +4382,10 @@ The result: typing "wpng" causes the last clipboard item to be saved as a png in
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/04/08/bp-pyaudioanalysis/">Simple Audio Analysis with pyAudioAnalysis</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
       </li>
     
@@ -4190,10 +4421,6 @@ The result: typing "wpng" causes the last clipboard item to be saved as a png in
         <a href="/blog/2015/08/17/workbench/">Workbench Replaces My Desk</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/08/17/i2c-mpu-6050/">I2C MPU-6050</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -4201,15 +4428,7 @@ The result: typing "wpng" causes the last clipboard item to be saved as a png in
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/03/11/Org-Export-Configurations/">Org Export Configurations</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/03/04/nvalt-and-emacs/">nvALT and Emacs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
+        <a href="/blog/2016/04/08/bp-pyaudioanalysis/">Simple Audio Analysis with pyAudioAnalysis</a>
       </li>
     
       <li class="post">
@@ -4217,7 +4436,7 @@ The result: typing "wpng" causes the last clipboard item to be saved as a png in
       </li>
     
       <li class="post">
-        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
+        <a href="/blog/2012/01/17/screen-capture-goodness-dot-dot-dot/">Screen capture goodness...</a>
       </li>
     
       <li class="post">
@@ -4225,7 +4444,7 @@ The result: typing "wpng" causes the last clipboard item to be saved as a png in
       </li>
     
       <li class="post">
-        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
+        <a href="/blog/2012/12/17/wiki-plus-searchable-notes/">Wiki + searchable notes.</a>
       </li>
     
       <li class="post">
@@ -4233,11 +4452,19 @@ The result: typing "wpng" causes the last clipboard item to be saved as a png in
       </li>
     
       <li class="post">
-        <a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a>
+        <a href="/blog/2012/12/30/treetop-and-parsing-expression-grammars-pegs/">Treetop and Parsing Expression Grammars (PEGs)</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/10/15/fun-with-literate-coffeescript/">Fun with Literate CoffeeScript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/user-stories-and-activity-diagrams/">User Stories and Activity Diagrams</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/17/d3-charts-wrapping-nvd3-charts-web-component/">d3 charts - wrapping 'NVD3 Charts' in a web component</a>
       </li>
     
   </ul>
