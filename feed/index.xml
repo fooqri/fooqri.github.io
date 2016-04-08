@@ -6,9 +6,213 @@
 </description>
     <link>http://rwx.io/</link>
     <atom:link href="http://rwx.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Mar 2016 08:02:22 -0700</pubDate>
-    <lastBuildDate>Thu, 24 Mar 2016 08:02:22 -0700</lastBuildDate>
+    <pubDate>Fri, 08 Apr 2016 14:44:20 -0700</pubDate>
+    <lastBuildDate>Fri, 08 Apr 2016 14:44:20 -0700</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>Simple Audio Analysis with pyAudioAnalysis</title>
+        <description>&lt;p&gt;I had a need to do some classification of sets of environmental audio files so started looking for an easy to use Python library that was up for the task. Here are my notes on setting up the &lt;a href=&quot;https://github.com/tyiannak/pyAudioAnalysis&quot;&gt;pyAudioAnalysis Library&lt;/a&gt; for simple audio classification task.&lt;/p&gt;
+
+&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
+&lt;p&gt;This library relies on &lt;strong&gt;Python 2&lt;/strong&gt;, so do a quick &lt;em&gt;python –version&lt;/em&gt; to make sure you are not on &lt;strong&gt;Python 3&lt;/strong&gt;. If both are installed on your machine they may be accessible as &lt;em&gt;python&lt;/em&gt; and &lt;em&gt;python3&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;dependencies&quot;&gt;Dependencies&lt;/h2&gt;
+
+&lt;p&gt;You will need to make sure the following modules are installed:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;numpy&lt;/li&gt;
+  &lt;li&gt;matplotlib&lt;/li&gt;
+  &lt;li&gt;scipy&lt;/li&gt;
+  &lt;li&gt;gsl&lt;/li&gt;
+  &lt;li&gt;mlpy&lt;/li&gt;
+  &lt;li&gt;scikit-learn (v 0.16.1)&lt;/li&gt;
+  &lt;li&gt;Simplejson&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note that the &lt;a href=&quot;https://www.continuum.io/downloads&quot;&gt;Anaconda&lt;/a&gt; Python 2.7 distribution has many of these packages already included, but you need &lt;em&gt;scikit-learn (v 0.16.1)&lt;/em&gt; and the latest &lt;em&gt;Anaconda&lt;/em&gt; distribution delivers the &lt;em&gt;0.17.1&lt;/em&gt; version.  If you get an error message referencing a missing &lt;em&gt;hmm&lt;/em&gt; component, you likely have the &lt;em&gt;0.17.*&lt;/em&gt; version of scikit-learn, as &lt;em&gt;hmm&lt;/em&gt; was deprecated in that version.&lt;/p&gt;
+
+&lt;p&gt;When the dependencies are all verified or installed, simply clone the repo into a directory you want to use for development.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir ~/audioClassification
+cd audioClassification
+mkdir trainingData
+mkdir sampleData
+git clone https://github.com/tyiannak/pyAudioAnalysis.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;training-data&quot;&gt;Training Data&lt;/h1&gt;
+
+&lt;p&gt;The simplest way to get started it to create sub directories under &lt;em&gt;trainingData&lt;/em&gt; for each sound category you wish to recognize. For this example lets use these&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir trainingData/breaking_glass 
+mkdir trainingData/bubbles 
+mkdir trainingData/vacuum
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next do a Google search looking for free audio files to add to the &lt;em&gt;trainingData&lt;/em&gt; directory: e.g. &lt;em&gt;breaking glass audio wav free&lt;/em&gt;, then for bubble sounds try &lt;em&gt;bubbles audio wav free&lt;/em&gt;, finally for vacuum sounds try &lt;em&gt;vacuum audio wav free&lt;/em&gt;. Save a dozen or so examples of each sound into the corresponding sub-directory under &lt;em&gt;trainingData&lt;/em&gt;. The &lt;em&gt;pyAudioAnalysis&lt;/em&gt; library requires wav files, so make sure any files you save to &lt;em&gt;trainingData&lt;/em&gt; are wav files.&lt;/p&gt;
+
+&lt;h1 id=&quot;sample-data&quot;&gt;Sample Data&lt;/h1&gt;
+
+&lt;p&gt;Next add some audio samples that can be used to test the training. The search is the same as above, but just choose different sample files, so you can test how well the classification model works. You can save them directly under the &lt;em&gt;sampleData&lt;/em&gt; directory for this example. It is also good to choose a few random other sounds to see how they are interpreted by the classification model.&lt;/p&gt;
+
+&lt;h1 id=&quot;scripts&quot;&gt;Scripts&lt;/h1&gt;
+
+&lt;p&gt;I wrote two quick scripts to do the classification and test a file against the classification model.&lt;/p&gt;
+
+&lt;h2 id=&quot;createclassifiermodel-script&quot;&gt;createClassifierModel Script&lt;/h2&gt;
+
+&lt;p&gt;From inside the &lt;em&gt;audioClassification&lt;/em&gt; directory&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;touch createClassifierModel
+chmod +x createClassifierModel
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In your favorite editor open &lt;em&gt;createClassifierModel&lt;/em&gt; and add the following code:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/local/bin/python2&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyAudioAnalysis&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;audioTrainTest&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aT&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;subdirectories&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;listdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;subdirectories&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;subdirectories&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subDirName&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subDirName&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subdirectories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subdirectories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;aT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;featureAndTrain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subdirectories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shortTermWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shortTermStep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;svm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;svmModel&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;testclassifiermodel-script&quot;&gt;testClassifierModel Script&lt;/h2&gt;
+
+&lt;p&gt;From inside the &lt;em&gt;audioClassification&lt;/em&gt; directory&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;touch testClassifierModel
+chmod +x testClassifierModel
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In your favorite editor open &lt;em&gt;testClassifierModel&lt;/em&gt; and add the following code:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/local/bin/python2&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyAudioAnalysis&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;audioTrainTest&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aT&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;isSignificant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.8&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#try different values.&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# P: list of probabilities&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;classNames&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileClassification&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;svmModel&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;svm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;winner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argmax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#pick the result with the highest probability value.&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# is the highest value found above the isSignificant threshhold? &lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;winner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isSignificant&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;File: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; is in category: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;classNames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;winner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;, with probability: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;winner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Can&#39;t classify sound: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;run-the-createclassifiermodel-script&quot;&gt;Run the createClassifierModel Script&lt;/h1&gt;
+
+&lt;p&gt;To create a classification model simply run the &lt;em&gt;createClassifierMode&lt;/em&gt; script and pass in the name of the training directory as an argument to the script.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;createClassifierModel trainingData
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Below is an example output of the script.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;                breaking_glass                  bubbles                 vacuum          OVERALL
+        C       PRE     REC     F1      PRE     REC     F1      PRE     REC     F1      ACC     F1
+        0.001   58.1    100.0   73.5    100.0   56.0    71.8    33.3    0.0     0.0     64.0    48.4
+        0.010   83.7    100.0   91.1    100.0   95.0    97.4    98.5    65.0    78.3    90.0    89.0     best F1         best Acc
+        0.500   80.0    94.0    86.4    100.0   99.0    99.5    81.8    54.0    65.1    85.2    83.7
+        1.000   79.8    98.5    88.1    100.0   91.0    95.3    91.9    57.0    70.4    86.2    84.6
+        5.000   79.4    94.5    86.3    100.0   93.0    96.4    81.2    56.0    66.3    84.5    83.0
+        10.000  77.7    97.5    86.5    100.0   89.0    94.2    90.0    54.0    67.5    84.5    82.7
+Confusion Matrix:
+        bre     bub     vac
+bre     50.0    0.0     0.0
+bub     1.0     23.7    0.3
+vac     8.8     0.0     16.2
+Selected params: 0.01000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;run-the-testclassifiermodel-script&quot;&gt;Run the testClassifierModel Script&lt;/h1&gt;
+
+&lt;p&gt;To categorize an audio file simply pass the file name as an argument to the &lt;em&gt;testClassifierModel&lt;/em&gt; script. In the example below a sample was named &lt;em&gt;bubbles1.wav&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;testClassifierModel sampleData/bubbles1.wav
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Below is an example output of the script.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;File: sampleData/bubbles1.wav is in category: bubbles, with probability: 0.95486693161
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;potential-gotchas&quot;&gt;Potential GOTCHAS&lt;/h1&gt;
+
+&lt;p&gt;One issue is that not all &lt;em&gt;wav&lt;/em&gt; files will be understood by the &lt;em&gt;wavfile.py&lt;/em&gt; library. If the classification hangs or aborts then it is possible one of the downloaded wav files is the issue. I found the simple solution was to add a line to &lt;em&gt;wavefile.py&lt;/em&gt; that printed the filename currently being worked on so I could see what was happening the first time using a new set of training files.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for me this is the location
+/usr/local/lib/python2.7/site-packages/scipy/io/wavfile.py
+
+datadef read(filename, mmap=False):
+    &quot;&quot;&quot;
+    Return the sample rate (in samples/sec) and data from a WAV file
+
+    Parameters
+    ----------
+    filename : string or open file handle
+        Input wav file.
+    mmap : bool, optional
+        Whether to read data as memory mapped.
+        Only to be used on real files (Default: False)
+
+        .. versionadded:: 0.12.0
+
+    Returns
+    -------
+    rate : int
+        Sample rate of wav file
+    data : numpy array
+        Data read from wav file
+
+    Notes
+    -----
+    * The file can be an open file or a filename.
+    * The returned sample rate is a Python integer.
+    * The data is returned as a numpy array with a data-type determined
+      from the file.
+    * This function cannot read wav files with 24 bit data.
+
+    &quot;&quot;&quot;
+    print(&quot;FILENAME: &quot; + filename)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;This was a basic intro to help you get started with &lt;a href=&quot;https://github.com/tyiannak/pyAudioAnalysis&quot;&gt;pyAudioAnalysis&lt;/a&gt; library, check out the &lt;a href=&quot;https://github.com/tyiannak/pyAudioAnalysis/wiki&quot;&gt;project wiki page&lt;/a&gt; for more use case for the library including other classification model options, as well as feature extraction, segmentation and visualization capabilities.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 08 Apr 2016 00:00:00 -0700</pubDate>
+        <link>http://rwx.io/blog/2016/04/08/bp-pyaudioanalysis/</link>
+        <guid isPermaLink="true">http://rwx.io/blog/2016/04/08/bp-pyaudioanalysis/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Org Export Configurations</title>
@@ -1088,80 +1292,6 @@ setInterval(function() {
         <pubDate>Mon, 17 Aug 2015 08:15:00 -0700</pubDate>
         <link>http://rwx.io/blog/2015/08/17/workbench/</link>
         <guid isPermaLink="true">http://rwx.io/blog/2015/08/17/workbench/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>I2C MPU-6050</title>
-        <description>&lt;p&gt;&lt;img src=&quot;//s3.amazonaws.com/rwx-blog/mpu6050.jpg&quot; style=&quot;height: 400px; display: block; margin: auto;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.&lt;/p&gt;
-
-&lt;p&gt;To capture data I am using a  few node modules. In particular the &lt;a href=&quot;https://github.com/hybridgroup/cylon&quot; target=&quot;_blank&quot;&gt;cylon.js&lt;/a&gt; module, along with the &lt;a href=&quot;https://github.com/hybridgroup/cylon-i2c&quot; target=&quot;_blank&quot;&gt;cylon-i2c&lt;/a&gt; module.  This allows accelerometer data to be easily used by the following code block&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cylon                                                                          
-  .robot()                                                                    
-  .connection(&quot;edison&quot;, { adaptor: &quot;intel-iot&quot;, i2cPort: 1})                  
-  .device(&quot;accel&quot;, { driver: &quot;mpu6050&quot; })                                     
-  .on(&quot;ready&quot;, function(bot) {                                      
-    setInterval(function() {                                        
-      bot.accel.getAcceleration(function(err, data) {
-        //use data
-      });
-    });
-  });
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;the-mpus&quot;&gt;The MPUs&lt;/h2&gt;
-&lt;p&gt;The first prototype of this device is using a SparkFun Edison stack with the SparkFun I2C block connected to an MPU-6050, rather than the SparkFun Accelerometer block. At the time of this writing the cylon-i2c implementation of the lsm9ds0 driver is not working correctly with the SparkFun Accelerometer block, so I went the I2C route. The second an perhaps more important reason I went the I2C route is that MPU-6050 boards can be had for as low as $4, which is appealing for a low cost prototype.&lt;/p&gt;
-
-&lt;p&gt;I have a handful of MPUs I have tried and here is some info on them.&lt;/p&gt;
-
-&lt;h3 id=&quot;a-hrefhttpswwwsparkfuncomproducts11028-targetblanksparkfun-mpu-6050-breakouta&quot;&gt;&lt;a href=&quot;https://www.sparkfun.com/products/11028&quot; target=&quot;_blank&quot;&gt;SparkFun MPU-6050 Breakout&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;This is great accelerometer breakout that works well with the Edison and Cylon module, but much less expensive options exist.&lt;/p&gt;
-
-&lt;h3 id=&quot;a-hrefhttpwwwamazoncomgpproductb00h1oye4q-targetblankriorand-triple-axis-mpu-6050-breakouta&quot;&gt;&lt;a href=&quot;http://www.amazon.com/gp/product/B00H1OYE4Q&quot; target=&quot;_blank&quot;&gt;RioRand Triple Axis MPU-6050 Breakout&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;This is currently my go to accelerometer. It is relatively low priced at $11 and arrives in 2 days via Amazon Prime. These work well with both the Edison 3.3V boards, and the cylon i2c module. Unfortunately the default I2C address for this board is 0x69, instead of the more common  0x68 (used by the cylon mpu6050 driver) so you will need to solder the AD0 jumper plate on the top of the board.&lt;/p&gt;
-
-&lt;h3 id=&quot;a-hrefhttpwwwamazoncomkootek-mpu-6050-mpu6050-sensors-accelerometerdpb008bopn40-targetblankkootek-gy-521-mpu-6050-mpu6050-modulea&quot;&gt;&lt;a href=&quot;http://www.amazon.com/Kootek-MPU-6050-MPU6050-sensors-Accelerometer/dp/B008BOPN40/&quot; target=&quot;_blank&quot;&gt;Kootek GY-521 MPU-6050 MPU6050 Module&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;At $4 with free shipping these look like a great option. They are reported to work well with 3.3V VCC. The down side is very slow delivery via the slow boat. I have a handful on order, I will provide an update when they arrive.&lt;/p&gt;
-
-&lt;h3 id=&quot;a-hrefhttpwwwamazoncomgpproductb009m19l4y-targetblankgy-521-6dof-mpu6050-modulea&quot;&gt;&lt;a href=&quot;http://www.amazon.com/gp/product/B009M19L4Y&quot; target=&quot;_blank&quot;&gt;GY-521 6DOF MPU6050 Module&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;At a little over $5 with free shipping this seems like a great option, unfortunately the onboard voltage regulator in the GY-521 is designed for the Arduino 5V VCC and when used with a 3.3V VCC of the Edison blocks results in too low power on the I2C SDA/SCL pins to register as proper high and low voltage values. It is possible to give the board a separate 5V VCC supply, but that just seems overly complicated for the prototype device. Another feature of this board is the breakout of AD0 into a pin, allowing easy switching between I2C 0x68 and 0x69 addresses using either a ground or VCC connection.&lt;/p&gt;
-
-&lt;h2 id=&quot;connecting-the-mpu&quot;&gt;Connecting the MPU&lt;/h2&gt;
-&lt;p&gt;For the first prototype I am using  SparkFun Edison blocks, as I have a a few sets of these interchangeable blocks that are quick to assemble into a prototype. In this case I am using the &lt;a href=&quot;https://www.sparkfun.com/products/13034&quot; target=&quot;_blank&quot;&gt;SparkFun I2C&lt;/a&gt; block with an Edison. This block allows the Edison to be snapped onto the block, and the MPU-6050 board to be connected with 4 jumpers (VCC, GND, SDA, SCL).&lt;/p&gt;
-
-&lt;h2 id=&quot;checking-i2c-address&quot;&gt;Checking I2C Address&lt;/h2&gt;
-&lt;p&gt;Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn’t working with Cylon, the first thing to check will be whether the address is 0x68. The error message from Cylon will be a &lt;em&gt;“RangeError: Trying to access beyond buffer length”&lt;/em&gt; for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;i2cdetect -y -r 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The result will look something like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
-10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- -- 
-70: -- -- -- -- -- -- -- --
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You will see either a 68 or a 69 if the MPU-6050 is connected properly. If the address displayed is 69, you will need to change the address to 68 using the technique recommended for your board (AD0 jumper). You may see other numbers in the results if you have other I2C components included in your assembled device, but if you are using an MPU-6050 and it is connected correctly either a 68 or a 69 should appear in the i2cdetect results.&lt;/p&gt;
-
-&lt;p&gt;I won’t get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 17 Aug 2015 05:50:00 -0700</pubDate>
-        <link>http://rwx.io/blog/2015/08/17/i2c-mpu-6050/</link>
-        <guid isPermaLink="true">http://rwx.io/blog/2015/08/17/i2c-mpu-6050/</guid>
         
         
       </item>
