@@ -21,7 +21,7 @@ exclude: [.bundle, bin, vendor]
 
 # Build settings
 markdown: kramdown
-
+google_analytics_tracking_id: UA-41376488-1
 paginate: 10          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
 popular_posts_count: 10      # Posts in the sidebar Popular Posts section
