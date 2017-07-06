@@ -15,7 +15,7 @@ url: "http://rwx.io" # the base hostname & protocol for your site
 logo: profile.jpg 
 description: > # this means to ignore newlines until "baseurl:"
   Design, development, productivity – notes and explorations.
-twitter_username: rwxstar 
+twitter_username: fooqri 
 github_username:  fooqri
 exclude: [.bundle, bin, vendor]
 
@@ -41,7 +41,7 @@ default_asides: [asides/recent_posts.html, custom/asides/popular_posts.html, asi
 
 # Plugins
 twitter:
-  username:            rwxstar             # Add your Twitter handle
+  username:            fooqri             # Add your Twitter handle
   tweet_count:         false              # Show number of shares on Twitter
   size:                normal             # Or large
   embedded_link_color:                    # Set link color for embedded tweets
