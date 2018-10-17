@@ -39,17 +39,6 @@
     </item>
     
     <item>
-      <title>Elixir Notes</title>
-      <link>http://rwx.io/resources/elixir/</link>
-      <pubDate>Fri, 05 Oct 2018 14:34:28 -0700</pubDate>
-      <author>patrick@rwx.io (Patrick Goddi)</author>
-      <guid>http://rwx.io/resources/elixir/</guid>
-      <description>&lt;p&gt;Here are some elixir notes I find useful.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>Simple Audio Analysis with pyAudioAnalysis</title>
       <link>http://rwx.io/posts/simple-audio-analysis-in-python/</link>
       <pubDate>Fri, 08 Apr 2016 16:01:32 -0700</pubDate>

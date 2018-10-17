@@ -13,11 +13,6 @@
   </url>
   
   <url>
-    <loc>http://rwx.io/resources/elixir/</loc>
-    <lastmod>2018-10-05T14:34:28-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://rwx.io/posts/simple-audio-analysis-in-python/</loc>
     <lastmod>2016-04-08T16:01:32-07:00</lastmod>
   </url>
@@ -243,13 +238,13 @@
   </url>
   
   <url>
-    <loc>http://rwx.io/tags/</loc>
-    <lastmod>2013-01-05T11:10:27-07:00</lastmod>
+    <loc>http://rwx.io/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rwx.io/categories/</loc>
+    <loc>http://rwx.io/tags/</loc>
+    <lastmod>2013-01-05T11:10:27-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -268,7 +263,6 @@
   
   <url>
     <loc>http://rwx.io/resources/</loc>
-    <lastmod>2018-10-05T14:34:28-07:00</lastmod>
   </url>
   
   <url>
@@ -326,7 +320,7 @@
   
   <url>
     <loc>http://rwx.io/tags/development/</loc>
-    <lastmod>2018-10-05T14:34:28-07:00</lastmod>
+    <lastmod>2016-04-08T16:01:32-07:00</lastmod>
     <priority>0</priority>
   </url>
   

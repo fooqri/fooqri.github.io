@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ubicomp on </title>
+    <link>http://rwx.io/tags/ubicomp/</link>
+    <description>Recent content in Ubicomp on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Mon, 05 May 2008 14:34:28 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/ubicomp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Augmented Reality</title>
+      <link>http://rwx.io/portfolio/augmented_reality/</link>
+      <pubDate>Mon, 05 May 2008 14:34:28 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/portfolio/augmented_reality/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/mscape.jpg&#34; alt=&#34;/images/mscape.jpg&#34; title=&#34;/images/mscape.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have always been fascinated by mobile experiences that connect with the physical world around us. At HP Labs I worked on a content authoring and game development platform for mobile location-based games and experiences called &lt;a href=&#34;http://en.wikipedia.org/wiki/Mscape&#34; title=&#34;mscape&#34;&gt;mscape&lt;/a&gt;. The platform was field tested in many places around the world with various partners. See &lt;a href=&#34;https://www.youtube.com/watch?v=jhmicnEzfNY&#34; title=&#34;Ere be Dragons&#34;&gt;Ere be Dragons&lt;/a&gt; a mobile game using GPS and heart monitor.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Ubiquitous Computing</title>
+      <link>http://rwx.io/portfolio/ubicomp/</link>
+      <pubDate>Mon, 05 Jun 2006 14:34:28 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/portfolio/ubicomp/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/beacon.jpg&#34; alt=&#34;/images/beacon.jpg&#34; title=&#34;/images/beacon.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I led a team of researchers, designers, and engineers working on an &lt;em&gt;Internet of people, places, and things&lt;/em&gt; project. Our research focused on using Internet protocols and radio beacons to connect the physical world to context-aware web services. The HP Labs beacons predated the Apple &lt;em&gt;iBeacon&lt;/em&gt; by over a decade, and was open-sourced to encourage research on the topic. Our research resulted in a zero-config discovery and service provisioning platform for delivering context-aware services to the &lt;em&gt;Internet of people, places and things&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
