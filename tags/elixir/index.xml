@@ -22,7 +22,7 @@
       <guid>http://rwx.io/posts/logging-source-line-location-elixir/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/PMLogger.png&#34; alt=&#34;/images/PMLogger.png&#34; title=&#34;/images/PMLogger.png&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;When looking at Logger output in the terminal, many times it would be nice to simply click on a message and have it open Emacs to the correct location in the corresponding file. There are a variety of ways to accomplish this, I chose to use terminal hyperlinks along with adding an Emacs URI protocol to my system.&lt;/p&gt;
+&lt;p&gt;It would be nice to simply click on a debug message and have it open Emacs to the correct location in the corresponding file. There are a variety of ways to accomplish this, I chose to use terminal hyperlinks along with adding an Emacs URI protocol to my system.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
