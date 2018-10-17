@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Grammars on rwx.io</title>
+    <link>http://rwx.io/tags/grammars/</link>
+    <description>Recent content in Grammars on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Sun, 30 Dec 2012 04:54:59 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/grammars/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Treetop and Parsing Expression Grammars (PEGs)</title>
+      <link>http://rwx.io/posts/treetop_and_pegs/</link>
+      <pubDate>Sun, 30 Dec 2012 04:54:59 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/treetop_and_pegs/</guid>
+      <description>Over the holiday I had some time to investigate parsing expression grammars. I had done work in Lex and Yacc many years back when I was responsible for some kernel functionality and related system management kernel commands for a proprietary commercial operating system. I don&#39;t remember fondly my time working with Yacc. But then I read about PEGs and the Treetop Ruby library. It allows the use of simple grammer rules based in regular expressions and creates a parser ruby class from the grammer that can then be used in a ruby program.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Self Updating Edison Apps</title>
+  <meta property="og:title" content="Self Updating Edison Apps" />
+  <meta name="twitter:title" content="Self Updating Edison Apps" />
+  <meta name="description" content="Achieving a self updating Intel Edison deployment">
+  <meta property="og:description" content="Achieving a self updating Intel Edison deployment">
+  <meta name="twitter:description" content="Achieving a self updating Intel Edison deployment">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/self-updating-edison/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/self-updating-edison/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Self Updating Edison Apps</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>One of the challenges I have had in handing out prototype devices is keeping the software up to date. Solutions like <a href="www.resin.io" title="resin.io">resin.io</a> do a nice job of deploying <a href="http://bundler.io/" title="bundler images">bundler images</a> onto devices like the Edison. The primary issue I had was the overhead of pushing bundler images around when the only thing that was changing was the node app. It seemed easier to just use git and npm to handle the updates. I may go the resin.io route later, but this early in dev and testing the git route seems simpler.</p>
+
+<p><img src="/images/intel_edison.jpg" alt="/images/intel_edison.jpg" title="/images/intel_edison.jpg" /></p>
+
+<p></p>
+
+<h2 id="overview-of-what-i-did">Overview of What I Did</h2>
+
+<p>The product I am prototyping has two parts, an Edison device (with additional sensors and actuators) running a node app, and a node web service for managing device configuration and data running in the cloud.</p>
+
+<ol>
+<li>publish the device's node app in a private github repository.</li>
+<li>install and configured git on each of the Edison devices.</li>
+<li>clone the github repository onto each of the Edison devices.</li>
+<li>install the forever module on each of the devices to keep the app up and allow easy restarting of the app.</li>
+<li>create a startup script that starts the app using forever.</li>
+<li>create and enabled a linux service that runs the startup script on boot.</li>
+<li>add code to the app to periodically ask the web service what the latest version of the app should be.</li>
+<li>if a new version is available the app will do a pull and use forever to do a restart using the new version.</li>
+</ol>
+
+<h2 id="the-details">The Details</h2>
+
+<h3 id="initial-cleanup">Initial Cleanup</h3>
+
+<ul>
+<li>Remove any app from the default Edison <code>node_app_slot</code> directory so you don't accidentally start the app using the default Edison process.</li>
+</ul>
+
+<pre><code>    mv /node_app_slot /node_app_slotbk
+    mv  ~/.node_app_slot/ ~/.node_app_slotbk
+</code></pre>
+
+<h3 id="install-git">Install Git</h3>
+
+<h4 id="update-etc-opkg-base-feeds-conf-with-these-3-lines">Update <code>/etc/opkg/base-feeds.conf</code> with these 3 lines</h4>
+
+<pre><code>    src all     http://iotdk.intel.com/repos/1.1/iotdk/all
+    src x86 http://iotdk.intel.com/repos/1.1/iotdk/x86
+    src i586    http://iotdk.intel.com/repos/1.1/iotdk/i586
+</code></pre>
+
+<h4 id="update-opkg-and-install-git">Update opkg and install git</h4>
+
+<pre><code>    opkg update
+    opkg install git
+</code></pre>
+
+<h3 id="option-1-modify-edison-s-default-port">Option 1: Modify Edison's default port</h3>
+
+<p>I wanted to use port 80 for the node app so I moved the default Edison config service to port 8080</p>
+
+<h4 id="change-default-port-in-edison-cofig-server">Change default port in edison-cofig-server</h4>
+
+<p>Edit /~/usr/lib/edison_config_tools/edison-config-server.js/~ and change the last line to use a port other than <code>80</code>.</p>
+
+<pre><code>    http.createServer(requestHandler).listen(8080);
+</code></pre>
+
+<h4 id="option-2-disable-the-edison-config-web-service">Option 2: Disable the Edison config web service</h4>
+
+<pre><code>    systemctl disable edison_config
+    systemctl stop    edison_config
+</code></pre>
+
+<h3 id="setup-to-use-github">Setup to use github</h3>
+
+<h4 id="generate-a-key-for-use-with-github">Generate a key for use with github</h4>
+
+<pre><code> ssh-keygen -t rsa -b 4096 -C &quot;me@my.email&quot;
+</code></pre>
+
+<p>Follow the directions, easiest is just to hit return at the prompts. I chose to not do a passphrase for my small pilot.</p>
+
+<h4 id="generate-a-deployment-key-for-the-github-repository">Generate a deployment key for the github repository</h4>
+
+<ul>
+<li>Go to your app's github repository, choose <em>settings</em>, choose <em>deployment keys</em></li>
+<li>Click the <em>Add Deployment Key</em> button</li>
+<li>Give it a title (the host name for the device works)</li>
+<li>Back on the Edison run <code>cat <em>home/root</em>.ssh/id_rsa.pub</code> to get the text for the public key</li>
+<li>copy the text for the public key to the <em>Key</em> input box back on github.</li>
+</ul>
+
+<h3 id="clone-your-repo">Clone your repo</h3>
+
+<p>Back on the Edison</p>
+
+<pre><code>    cd /
+    git clone &lt;your repo&gt; AppDirName
+    cd /AppDirName
+</code></pre>
+
+<h3 id="pull-latest-code">Pull Latest code</h3>
+
+<p>Now any time you update code on master a simple <em>git pull</em> will update the latest code.</p>
+
+<pre><code>    git pull
+</code></pre>
+
+<h3 id="install-forever-module-using-npm">Install forever module using npm</h3>
+
+<p>Forever will automatically restart a node app if it crashes. It also has some handy restart features.</p>
+
+<pre><code>    npm install -g forever
+</code></pre>
+
+<h3 id="create-a-startup-script-service">Create a startup script & service</h3>
+
+<p>Creating a startup service will allow your app to start automatically using forever.</p>
+
+<h4 id="create-startup-sh-to-start-node-app-server-js-in-this-case">Create startup.sh to start node app (server.js in this case)</h4>
+
+<pre><code>    #!/bin/sh
+    cd /AppDirName 
+    forever start server.js
+</code></pre>
+
+<h4 id="make-startup-sh-executable">Make startup.sh executable</h4>
+
+<pre><code>    chmod +x startup.sh
+</code></pre>
+
+<h4 id="create-a-startup-service-file">Create a startup service file</h4>
+
+<p>open a new file <code>/lib/systemd/system/startup.service</code> and add the configuration text from below.</p>
+
+<pre><code>    [Unit]
+     Description=STARTUP
+     [Service]                           
+     Type=idle                           
+     RemainAfterExit=true
+     ExecStart=/AppDirName/startup.sh
+     Environment=&quot;HOME=/home/root&quot;    
+     WorkingDirectory=/AppDirName/   
+     [Install]                     
+     WantedBy=multi-user.target 
+</code></pre>
+
+<h4 id="enable-startup-service">Enable startup service</h4>
+
+<pre><code>    systemctl enable /lib/systemd/system/startup.service
+</code></pre>
+
+<h3 id="enable-your-node-app-to-update-itself">Enable your node app to update itself</h3>
+
+<p>By using a simple update function you can get your app to update itself and restart.</p>
+
+<pre><code>    var spawn = require('child_process').exec;
+    var semver = require('semver');
+    var bunyan = require('bunyan');
+    var log = bunyan.createLogger({
+        name: 'app',
+        streams: [{
+            type: 'rotating-file',
+            path: '/var/log/app.log',
+            period: '1d',
+            count: 7        
+        }]
+    });
+    var pjson = require('./package.json');
+
+    var checkVersion = function(){
+      var currentVersion = pjson.version;
+      var options = {  hostname: 'www.myhost.com',
+                                 port: 80,
+                       path: 'http://www.myhost.com/device_version/',
+                       method: 'GET',
+                       headers: {'Content-Type': 'application/json'}
+                    };
+      var callback = function(response) {
+        var dataStr = '';
+        response.on('data', function (chunk) {
+          dataStr += chunk;
+        });
+
+        response.on('end', function () {
+          var versionInfo = JSON.parse(dataStr);
+          var latestVersion = versionInfo.client_version || &quot;0.0.0&quot;; //don't update if missing version info
+          log.info(&quot;current version: &quot;, currentVersion);
+          log.info(&quot;latest version: &quot;, latestVersion);
+          if (semver.gt(latestVersion, currentVersion)){
+            log.info(&quot;pulling newer versions&quot;);
+            spawn('git pull', function(error, stdout, stderr) {
+              if (error){
+                log.error(&quot;ERROR pulling latest: &quot;, error);
+              }
+              else{
+                log.info(&quot;updating packages&quot;);
+                spawn('npm update', function(error, stdout, stderr){
+                  if (error){
+                    log.error(&quot;ERROR updating packages: &quot;, error);
+                  }
+                  else {
+                    log.info(&quot;restarting node&quot;);
+                    spawn('forever restartall', function(error, stdout, stderr){
+                      if (error){
+                        log.error(&quot;ERROR restarting: &quot;, error);
+                      }
+                      else {
+                         log.info(&quot;restarted&quot;);
+                      }
+                    });
+                  }           
+                });
+              }
+            }); 
+          }
+        });
+      };
+
+    //check for updates at app startup
+    checkVersion();
+
+    //then check for updates every hour;
+    setInterval(function() {
+        checkVersion();                                                       
+      }, 3600000);
+
+</code></pre>
+
+<h3 id="on-the-server">On the server</h3>
+
+<p>You will need to add a route on your server to provide the version info. In this example the route was a GET request to the <code>device_version</code> route. For simplicity I just use an env_var on the service. I simply update the env_var when a new version is available. Then in the logic for the <code>device_version</code> route I pass back the version found in the env_var.</p>
+
+<p>The logic for comparing versions is very basic and flawed, but will work in this simple case.</p>
+
+<h3 id="improvements">Improvements</h3>
+
+<p>Ideally instead of a straight <em>git pull</em> you can instead download a tagged version, and keep the current and next version info for each device in the web service db. This would allow rolling out upgrades to specific devices, etc. Another approach would be to pass back version info to the device so updates could roll out immediately if the device is in use. Finally more logic on the device to schedule an update when not active would be ideal. In that case maybe adding more than <code>versionNumber</code> of the latest version to the server response, maybe a priority value also.</p>
+
+<p>This was a quick experiment it getting updates to percolate out to devices prototype devices, and so far it seems to be working well.</p>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">development,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/iot/">iot</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/workbench-replaces-my-desk/" data-toggle="tooltip" data-placement="top" title="Workbench Replaces My Desk">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/esp8266-initial-notes/" data-toggle="tooltip" data-placement="top" title="ESP8266 Initial Notes">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

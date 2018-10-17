@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Babel on rwx.io</title>
+    <link>http://rwx.io/tags/babel/</link>
+    <description>Recent content in Babel on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Wed, 09 Mar 2016 16:57:39 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/babel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Org Mode ES2015&#43; Code Blocks (updated)</title>
+      <link>http://rwx.io/posts/org-with-babel-node-updated/</link>
+      <pubDate>Wed, 09 Mar 2016 16:57:39 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/org-with-babel-node-updated/</guid>
+      <description>&lt;p&gt;Babel 6x is a significant change from Babel 5x, as the &lt;em&gt;cli&lt;/em&gt; is now a separate node module called &lt;em&gt;babel-cli&lt;/em&gt; and transforms are now also delivered as separate packages. First make a few changes to the emacs environment so you can use JavaScript in &lt;strong&gt;org mode&lt;/strong&gt;, as well as find local &lt;em&gt;node.js&lt;/em&gt; modules you have installed. Replace &lt;code&gt;~/org/node_modules&lt;/code&gt; in the configuration below with the location of any local node modules you want to use. Using this approach you don&#39;t have to pollute the global node_module directory if you don&#39;t want to.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#+begin_src js :cmd &amp;quot;org-babel-node&amp;quot; :results output drawer
+  let arr = [1, 2]; 
+  let [x, y] = arr;
+
+   console.log(x);
+   console.log(y);
+#+end_src
+
+:RESULTS:
+1
+2
+:END:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Org Mode ES2015&#43; Code Blocks</title>
+      <link>http://rwx.io/posts/org-mode-es2015plus-code-blocks/</link>
+      <pubDate>Tue, 06 Oct 2015 16:57:01 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/org-mode-es2015plus-code-blocks/</guid>
+      <description>Update: I have updated instructions for installing and using the recently released Babel 6 with org mode.
+I use emacs org mode to keep notes including code nodes that support inline execution. It is convenient for keeping useful code snippets, as well as experimenting while taking notes. Because of features like Org + Deft it is really easy to find the sweet spot between keeping coding notes organized but also easily searched.</description>
+    </item>
+    
+  </channel>
+</rss>

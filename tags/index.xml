@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on rwx.io</title>
+    <link>http://rwx.io/tags/</link>
+    <description>Recent content in Tags on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Sat, 05 Jan 2013 11:10:27 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>http://rwx.io/tags/</link>
+      <pubDate>Sat, 05 Jan 2013 11:10:27 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Applications</title>
+      <link>http://rwx.io/tags/applications/</link>
+      <pubDate>Mon, 17 Dec 2012 05:14:20 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/applications/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Babel</title>
+      <link>http://rwx.io/tags/babel/</link>
+      <pubDate>Wed, 09 Mar 2016 16:57:39 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/babel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bikes</title>
+      <link>http://rwx.io/tags/bikes/</link>
+      <pubDate>Sun, 16 Aug 2015 13:00:12 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/bikes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Books</title>
+      <link>http://rwx.io/tags/books/</link>
+      <pubDate>Fri, 18 Jan 2013 11:48:53 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/books/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Coffeescript</title>
+      <link>http://rwx.io/tags/coffeescript/</link>
+      <pubDate>Wed, 15 Oct 2014 08:16:53 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/coffeescript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Creativity</title>
+      <link>http://rwx.io/tags/creativity/</link>
+      <pubDate>Thu, 17 Jan 2013 12:47:49 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/creativity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>D3</title>
+      <link>http://rwx.io/tags/d3/</link>
+      <pubDate>Fri, 17 Oct 2014 06:39:57 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/d3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Design</title>
+      <link>http://rwx.io/tags/design/</link>
+      <pubDate>Mon, 21 Jan 2013 10:26:12 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/design/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Development</title>
+      <link>http://rwx.io/tags/development/</link>
+      <pubDate>Fri, 05 Oct 2018 14:34:28 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Edison</title>
+      <link>http://rwx.io/tags/edison/</link>
+      <pubDate>Sun, 16 Aug 2015 13:55:57 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/edison/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Elixir</title>
+      <link>http://rwx.io/tags/elixir/</link>
+      <pubDate>Wed, 17 Oct 2018 10:41:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/elixir/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Emacs</title>
+      <link>http://rwx.io/tags/emacs/</link>
+      <pubDate>Wed, 17 Oct 2018 10:41:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/emacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Esp8266</title>
+      <link>http://rwx.io/tags/esp8266/</link>
+      <pubDate>Wed, 09 Sep 2015 08:05:16 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/esp8266/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Grammars</title>
+      <link>http://rwx.io/tags/grammars/</link>
+      <pubDate>Sun, 30 Dec 2012 04:54:59 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/grammars/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Home</title>
+      <link>http://rwx.io/tags/home/</link>
+      <pubDate>Mon, 17 Aug 2015 08:15:52 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/home/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Io2</title>
+      <link>http://rwx.io/tags/io2/</link>
+      <pubDate>Mon, 17 Aug 2015 05:50:59 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/io2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ios</title>
+      <link>http://rwx.io/tags/ios/</link>
+      <pubDate>Mon, 17 Dec 2012 05:14:20 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Iot</title>
+      <link>http://rwx.io/tags/iot/</link>
+      <pubDate>Wed, 27 Jan 2016 12:19:19 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/iot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Macos</title>
+      <link>http://rwx.io/tags/macos/</link>
+      <pubDate>Wed, 17 Oct 2018 10:41:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/macos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mpu6050</title>
+      <link>http://rwx.io/tags/mpu6050/</link>
+      <pubDate>Mon, 17 Aug 2015 05:50:59 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/mpu6050/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nil</title>
+      <link>http://rwx.io/tags/nil/</link>
+      <pubDate>Sun, 13 Jan 2013 12:29:33 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/nil/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Notetaking</title>
+      <link>http://rwx.io/tags/notetaking/</link>
+      <pubDate>Mon, 17 Dec 2012 07:13:25 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/notetaking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Org Mode</title>
+      <link>http://rwx.io/tags/org-mode/</link>
+      <pubDate>Sun, 14 Oct 2018 15:52:54 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/org-mode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Orgmode</title>
+      <link>http://rwx.io/tags/orgmode/</link>
+      <pubDate>Fri, 11 Mar 2016 15:51:20 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/orgmode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Parsers</title>
+      <link>http://rwx.io/tags/parsers/</link>
+      <pubDate>Sat, 19 Jan 2013 13:04:50 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/parsers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Poggr</title>
+      <link>http://rwx.io/tags/poggr/</link>
+      <pubDate>Tue, 09 Jun 2015 11:45:40 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/poggr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Productivity</title>
+      <link>http://rwx.io/tags/productivity/</link>
+      <pubDate>Tue, 08 Jan 2013 11:15:16 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/productivity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>http://rwx.io/tags/python/</link>
+      <pubDate>Fri, 08 Apr 2016 16:01:32 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rubymotion</title>
+      <link>http://rwx.io/tags/rubymotion/</link>
+      <pubDate>Sat, 01 Jun 2013 08:10:07 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/rubymotion/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

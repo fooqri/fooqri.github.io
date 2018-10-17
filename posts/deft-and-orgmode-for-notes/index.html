@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Deft &#43; Org for Notes</title>
+  <meta property="og:title" content="Deft &#43; Org for Notes" />
+  <meta name="twitter:title" content="Deft &#43; Org for Notes" />
+  <meta name="description" content="Using Deft and Org-Mode for notes">
+  <meta property="og:description" content="Using Deft and Org-Mode for notes">
+  <meta name="twitter:description" content="Using Deft and Org-Mode for notes">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/deft-and-orgmode-for-notes/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/deft-and-orgmode-for-notes/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Deft &#43; Org for Notes</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>In the <a href="/posts/nvalt-and-emacs" title="nvALT and Emacs post">nvALT and Emacs post</a> I described an integration between <em>nvAlt</em> and <em>Emacs</em> using <a href="http://jblevins.org/projects/deft/" title="Deft">Deft</a> for <em>markdown</em> notes. I the past year I have moved to using <em>Deft</em> for <em>org</em> notes rather than <em>markdown</em> notes. The nice thing about combining Deft with Org is that your notes are indexed and easy to find using Deft, but also retain all of the power of Org to orgainize and present information. For example typing <em>decision boundary</em> into <strong>deft</strong> quickly cuts down hundreds of org text notes to the handful that contain the words <strong>decision</strong> and <strong>boundary</strong> in them.</p>
+
+<p><img src="/images/deft-v0.6.gif" alt="/images/deft-v0.6.gif" title="/images/deft-v0.6.gif" /></p>
+
+<p></p>
+
+<p>Deft also supports <em>regular expression</em> search mode to provide more precise searches (use C-c C-t to toggle search modes). Deft makes it easy to create new notes also, simply type a title and hit <em>ctrl-return</em> to create a new note with that title. See the UI in action in the animated gif below (image by <a href="http://jblevins.org/" title="Jason Blevins">Jason Blevins</a> via <a href="http://jblevins.org/projects/deft/" title="Deft">Deft</a> ). See the <a href="http://jblevins.org/projects/deft/" title="Documentation">Documentation</a> for other handy features.</p>
+
+<p>Below I describe setting up Deft for emacs, and show my current customization's. Org also supports export to many different formats. In a future posts I will cover my setup for exporting notes to <em>markdown</em> documents, <em>reveal</em> presentations, and even <em>mindmaps</em>.</p>
+
+<h1 id="installing-deft">Installing Deft</h1>
+
+<p>Follow the instructions at <a href="http://jblevins.org/projects/deft/" title="Deft">Deft</a> to install from source (usually the latest version this way) or use the Emacs package installer as shown below.</p>
+
+<pre><code>    M-x package-install deft
+</code></pre>
+
+<h1 id="configuring-deft">Configuring Deft</h1>
+
+<p>I prefer to use Deft for <em>org</em> files and not others (txt, md, etc), so that is reflected in my configuration below. Using <a href="/posts/remapping-my-caps-lock-key" title="this technique">this technique</a> I converted the tab key into a hyper-key (C-M-S-s), so with the key mapping below Deft can be called up with <strong>tab-d</strong> This technique is nice, because the tab key still works for tabbing, but when held down it acts like an additional modifier key that can be use in emacs key bindings.</p>
+
+<pre><code>    (require 'deft)
+    (setq deft-default-extension &quot;org&quot;)
+    (setq deft-extensions '(&quot;org&quot;))
+    (setq deft-directory &quot;~/org&quot;)
+    (setq deft-recursive t)
+    (setq deft-use-filename-as-title nil)
+    (setq deft-use-filter-string-for-filename t)
+    (setq deft-file-naming-rules '((noslash . &quot;-&quot;)
+                                   (nospace . &quot;-&quot;)
+                                   (case-fn . downcase)))
+    (setq deft-text-mode 'org-mode)
+    (global-set-key (kbd &quot;C-M-S-s-d&quot;) 'deft)
+    (global-set-key (kbd &quot;C-x C-g&quot;) 'deft-find-file)
+</code></pre>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/emacs/">emacs,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/orgmode/">orgmode</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/org-with-babel-node-updated/" data-toggle="tooltip" data-placement="top" title="Org Mode ES2015&#43; Code Blocks (updated)">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/org-export-configurations/" data-toggle="tooltip" data-placement="top" title="Org Export Configurations">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

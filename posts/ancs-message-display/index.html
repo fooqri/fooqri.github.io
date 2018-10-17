@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>ANCS Message Display</title>
+  <meta property="og:title" content="ANCS Message Display" />
+  <meta name="twitter:title" content="ANCS Message Display" />
+  <meta name="description" content="Notes on adding ST7735R TFT LCD display to a Blendmicro">
+  <meta property="og:description" content="Notes on adding ST7735R TFT LCD display to a Blendmicro">
+  <meta name="twitter:description" content="Notes on adding ST7735R TFT LCD display to a Blendmicro">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/ancs-message-display/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/ancs-message-display/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>ANCS Message Display</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>Ever want to see that last iPhone message without checking your phone. It is actually fairly easy to create a secondary message display using an Arduino, BLE, and an LCD display to conect to the <em>Apple Notification Center Service</em> on your iPhone.</p>
+
+<p><img src="/images/6092.jpg" alt="/images/6092.jpg" title="/images/6092.jpg" /></p>
+
+<h2 id="overview">Overview</h2>
+
+<p>
+For this project I used the <a href="http://redbearlab.com/blendmicro/" title="Blend Micro">Blend Micro</a> from RedBearLab, combined with an <a href="https://www.adafruit.com/product/358" title="AdaFruit ST7735R TFT LCD display">AdaFruit ST7735R TFT LCD display</a>. The <em>Blend Micro</em> combines an Atmel ATmega32U4 micro-controller with a Nordic nRF8001 BLE chip. Simply hook up the LCD using SPI and you are in business. For this project I added a <a href="https://www.adafruit.com/products/160" title="piezo buzzer">piezo buzzer</a> for sound effects and a button to wake up the display if it has timed out.</p>
+
+<p><img src="/images/6098.jpg" alt="/images/6098.jpg" title="/images/6098.jpg" /></p>
+
+<p>The basic idea is to have the iPhone pass along alerts to the device using BLE/ANCS and to have the device play a tone and display the alert information. There is a timeout to power down the backlight on the display after a minute, and a button that can be pressed to turn the display's backlight on, so the last message can be viewed after the one minute timeout. This power savings mode could allow the device to be powered by a battery.</p>
+
+<p>I created a demo project on <a href="https://codebender.cc/sketch:222511" title="codebender">codebender</a> to make it easy to replicate. You will need to import a few libraries into your personal libraries on codebender to get the project to work. It would be easy to enhance the project to save the last several messages and use a <a href="https://www.adafruit.com/product/444" title="Axis Analog Thumb Joystick">Axis Analog Thumb Joystick</a> to control a simple interface that scans through messages.</p>
+
+<p>Unfortunately the <em>Blend Micro</em> does not have an on-board LIPO charging circuit, so if you want to enable a combined USB/Battery solution a charging circuit would have to be added. RedBear warns that connecting a battery to VIN and USB simultaneously could damage the board. I printed up a simple enclosure on the 3D printer and here is the enclosed LCD panel.</p>
+
+<p><img src="/images/6111.jpg" alt="/images/6111.jpg" title="/images/6111.jpg" /></p>
+
+<h2 id="pinouts">Pinouts</h2>
+
+<pre><code>      VIN &amp; GND -&gt; to LIPO battery (DO NOT use USB power when battery connected)
+      PIN 2     -&gt; ST7735R LITE
+      PIN 8     -&gt; ST7735R D/C
+      PIN 9     -&gt; ST7735R Reset
+      PIN 10    -&gt; ST7735R TFT_CS
+      PIN 11    -&gt; ST7735R MOSI
+      PIN 13    -&gt; ST7735R SCK
+      PIN V33   -&gt; ST7735R VCC
+      PIN GND   -&gt; ST7735R GND
+
+      Button -&gt; PIN 5, GND
+      Buzzer -&gt; PIN 3, GND
+</code></pre>
+
+<h2 id="detailed-instructions">Detailed Instructions</h2>
+
+<p>Follow the instructions for using <a href="http://redbearlab.com/quick-start-codebender" title="Blend Micro on codebender">Blend Micro on codebender</a>. You should be able to get the LED Blink example working before continuing.</p>
+
+<h3 id="add-key-libraries">Add key libraries</h3>
+
+<p>To compile the code in the project above you will need to add several libraries to your personal libraries on codebender. Go to <a href="https://codebender.cc" title="codebender.cc">codebender.cc</a> and you will see the <code>Upload Libraries</code> button on the upper right side of the page. There are four libraries you need to add.</p>
+
+<ul>
+<li><a href="https://github.com/NordicSemiconductor/ble-sdk-arduino" title="Nordic Bluetooth low energy SDK for Arduino beta version 0.9.0">Nordic Bluetooth low energy SDK for Arduino beta version 0.9.0</a></li>
+<li><a href="https://github.com/RedBearLab/nRF8001/" title="RedBearLab nRF8001 Library version 20140701">RedBearLab nRF8001 Library version 20140701</a></li>
+<li><a href="https://github.com/RedBearLab/nRF8001/" title="RedBearLab Blend Add-On version 20140701">RedBearLab Blend Add-On version 20140701</a></li>
+<li><a href="https://github.com/robotastic/ANCS-Library" title="Robotastic/ANCS-Library">Robotastic/ANCS-Library</a></li>
+</ul>
+
+<p>Just download each of these as a zip file from github, and upload them to your <em>codebender personal library</em>. I created a fork of the <em>ANCS-Library</em> to thin it down a bit as memory was tight on the <em>Blend Micro</em> for another version of the project I am working on. It is on a branch called <strong>code-diet</strong> available on github <a href="http://github.com/fooqri/ANCS-Library/archive/code-diet.zip" title="ANCS-Library on a code-diet zip">ANCS-Library on a code-diet zip</a></p>
+
+<p>Finally, clone my <a href="https://codebender.cc/sketch:222511" title="codebender ANCS_Display_ST7735 project">codebender ANCS_Display_ST7735 project</a> and verify the code compiles with the libraries you uploaded, and run the project on Arduino.</p>
+
+<p>Open the iPhone <em>Settings</em> app and select <em>Bluetooth</em>. If everything is working correctly you should see <strong>ANCS_RUSK</strong> listed under <em>MyDevices</em>. Select it and choose pair.</p>
+
+<p><img src="/images/img_6095.png" alt="/images/img_6095.png" title="/images/img_6095.png" /></p>
+
+<p><img src="/images/img_6094.png" alt="/images/img_6094.png" title="/images/img_6094.png" /></p>
+
+<p>Once paired you should hear a tone on the device, and the display will change from <strong>Status: Not Connected</strong> to <strong>Status: Connected</strong>. If you receive any alerts on your iPhone you should now hear a tone on the device and the screen should display a message.</p>
+
+<p>You can update the code to support custom tones and messages for different alert types, or add other interesting features.</p>
+
+<h2 id="additional-notes">Additional Notes</h2>
+
+<ul>
+<li>The <a href="http://redbearlab.com/blenano/" title="Blend Nano">Blend Nano</a> from ReadBearLab is a tiny alternative to the Blend Micro but it is based on the ARM Cortex-M0 SoC and uses the newer Nordic nRF51822 BLE chipset. The <em>ANCS-Library</em> is only compatible with the Nordic nRF8001 BLE chipset, so some work would be needed to port the library to the new platform.</li>
+<li>Adafruit has just announced a few similar Arduino+BLE boards. The <a href="https://www.adafruit.com/products/2829" title="Feather 32u4 Bluefruit LE">Feather 32u4 Bluefruit LE</a> using the ATmega32u4, and the <a href="https://www.adafruit.com/products/2995" title="Feather M0 Bluefruit LE">Feather M0 Bluefruit LE</a> using the ATSAMD21G18 ARM Cortex. Both these boards provide a built in 100mA lipoly charger, so either would be a better choice for a mobile device. Both these boards use the nRF51822 BLE chipset so like the Blend Nano would require porting the <em>ANCS-Library</em> before the code above could be used.</li>
+<li>I have a <a href="https://www.adafruit.com/products/1393" title="SHARP Memory Display Breakout">SHARP Memory Display Breakout</a> from adafruit, which is a really nice eInk type display, but was unable to get it working with this demo on first try. This <a href="https://codebender.cc/sketch:220214" title="codebender sketch">codebender sketch</a> was my first attempt. It seems that there is a conflict between the <code>Adafruit_SharpMem</code> library and the <code>ANCS Library</code>, because instantiating the Adafruit_SharpMem display object causes calls to <code>notif.setup()</code> to hang. I may look at it a bit more if I get a chance, but this was to be a quick experiment. There were some memory size issues initially, but I believe the hang may be an SPI issue, but I haven't yet had time to investigate further.</li>
+<li>I also started to play with a headless version that instead uses neoPixels. I will post when I finish it. I like the idea of a fun neoPixel and sound only display connected with an iOS app that allows the user to customize what notifications the display responds to and how it responds. This would allow cheap simple peripheral displays to be created that respond to different notifications in different ways.</li>
+<li>The <a href="http://makezine.com/2015/12/09/meet-esp32-new-big-brother-to-iot-board-esp8266/" title="ESP32">ESP32</a> should make for an interesting platform for these types of displays because they could allow BLE for notifications, and use WiFi for connection to the home network. This could allow control a wide range of WiFi enabled home devices based on iOS app notifications. That sounds fun.</li>
+</ul>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">development,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/iot/">iot</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/org-mode-es2015plus-code-blocks/" data-toggle="tooltip" data-placement="top" title="Org Mode ES2015&#43; Code Blocks">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/ancs-example-on-blend-nano/" data-toggle="tooltip" data-placement="top" title="ancs-example-on-blend-nano">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>ESP8266 Initial Notes</title>
+  <meta property="og:title" content="ESP8266 Initial Notes" />
+  <meta name="twitter:title" content="ESP8266 Initial Notes" />
+  <meta name="description" content="I have started testing the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.
+
+">
+  <meta property="og:description" content="I have started testing the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.
+
+">
+  <meta name="twitter:description" content="I have started testing the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.
+
+">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/esp8266-initial-notes/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/esp8266-initial-notes/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>ESP8266 Initial Notes</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>I have started testing the ESP8266 as an inexpensive WiFi enabled IoT device platform. I will added specific how-to notes later but wanted to capture a few items from my initial experiments.</p>
+
+<p><img src="/images/sparkfun-thing.jpg" alt="/images/sparkfun-thing.jpg" title="/images/sparkfun-thing.jpg" /></p>
+
+<p>
+I started with the <a href="https://www.sparkfun.com/products/13231" title="Sparkfun Thing">Sparkfun Thing</a>, which is a nice ESP8266 dev board that supports integrated LiPo battery management. They have a nice <a href="http://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide" title="Hookup Guide">Hookup Guide</a> to get you started. My use case is a very simple IoT type device that will send data to a cloud service that I have developed. The cloud service will aggregate the data from multiple personal IoT devices for a user. These devices will generally be powered via LiPo battery when in use for interaction and placed in a charging tray when not in interactive use. The devices are always active but have special meaning when in interactive use.</p>
+
+<p>These constraints mean that battery life is a critical factor, but I do not need days, months, or years of battery life. The ESP8266 is a fairly power hungry device, especially when transmitting data, but it does have some power management features, most notably <strong>deep sleep</strong>.</p>
+
+<h3 id="notes-from-my-initial-experiments">Notes from my initial experiments:</h3>
+
+<h4 id="the-kit">The Kit</h4>
+
+<p>I used the <a href="http://www.sparkfun.com/products/13231" title="Sparkfun Thing">Sparkfun Thing</a>, <a href="http://www.sparkfun.com/products/9873" title="FTDIBreakout">FTDIBreakout</a> for uploading code, and <a href="http://www.sparkfun.com/products/10718" title="LiPo battery">LiPo battery</a>.</p>
+
+<h4 id="setup">Setup</h4>
+
+<p>An easy way to get code running is to use the <a href="http://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-esp8266-arduino-addon" title="Arduino Addon">Arduino Addon</a> that lets you leverage the Arduino libraries in programming the ESP8266. An alternative I will try in the future is the <a href="http://github.com/nodemcu/nodemcu-firmware" title="Lua based firmware">Lua based firmware</a>.</p>
+
+<p>When using the FTDI to program the board take note that <code>GPIO0</code> is used to set the run mode of the firmware. 3.3V puts it in <em>run mode</em> and 0V puts it in <em>program mode (<code>bootloader</code>)</em>. This is easy to miss in the instructions, so be sure to connect the <code>0 pin</code> to ground when you wish to upload the code from the Arduino IDE.</p>
+
+<h3 id="power-management">Power Management</h3>
+
+<p>To use the <em>deep sleep</em> mode on the <em>Sparkfun Thing</em> you must connect <code>XPD</code> to <code>DTR</code>. Sparkfun connected <code>DTR</code> to <code>RST</code> on the <em>Thing</em> so a short negative voltage will reset the device. When in <em>deep sleep</em> most system services are powered off, but the <code>RTC</code> and <code>timer interrupt</code> remains active for the purpose of waking the device from sleep. This is handled by the firmware once these pins are connected, however this means you will have to remove the FTDI programmer to test the deep-sleep mode.</p>
+
+<p>The <code>deepsleep()</code> call looks a lot like a <code>delayMicroseconds()</code> call, simply pass it the number of microseconds before it should wake up again. In deep sleep mode, the ESP8266 hits about <code>60 µA</code> of power draw, down from its average of around <code>75mA</code>, and the <code>200mA</code> used while transmitting.</p>
+
+<p>It should be possible to connect a button or some other independent sensor as an alternative to a timer based wakeup, so the device can be awaken by a button press or some physical world event.</p>
+
+<pre><code>       ESP.deepSleep(1000000);  //sleep for 1 second
+</code></pre>
+
+<h4 id="saving-state">Saving State</h4>
+
+<p>Unlike a call to <code>delay()</code> or <code>delayMicroseconds()</code>, the <code>deepsleep()</code> function actually causes the device to power down everything except the <code>RTC</code> and related services. Wake is essentially a device reboot and previous state is not maintained. This means any state will need to be stored in the ESP8266 EEPROM. For this there is an EEPROM library and <code>EEPROM.get()</code></p>
+
+<pre><code>       //some struct for saved object
+       struct BackupObj{
+         int setting;
+         int data;
+       };
+
+       //write
+       int eeAddress = 0;
+       EEPROM.begin(4096);  //set up memory allocation
+       EEPROM.put( eeAddress, backupObj );
+       EEPROM.commit();
+       EEPROM.end();
+
+       //read
+       int eeAddress = 0; 
+       EEPROM.begin(4096);
+       EEPROM.get( eeAddress, backupObj );
+       EEPROM.end();
+</code></pre>
+
+<h4 id="adding-components">Adding Components</h4>
+
+<p>The device works well for <code>I2C</code>, in my case I tested with an MPU-6050.</p>
+
+<pre><code>       #include &lt;Wire.h&gt;
+
+       void setup() {
+         // ... other setup code
+         Wire.begin();
+         Wire.beginTransmission(MPU);
+         Wire.write(0x6B);  // PWR_MGMT_1 register
+         Wire.write(0);     // set to zero (wakes up the MPU-6050)
+         Wire.endTransmission(true);
+       }
+
+       // using arduino's loop mechanism
+       void loop(){
+         // ... other loop code
+         Wire.beginTransmission(MPU);
+         Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
+         Wire.endTransmission(false);
+         Wire.requestFrom(MPU,14,true); 
+         AcX=Wire.read()&lt;&lt;8|Wire.read();     
+         AcY=Wire.read()&lt;&lt;8|Wire.read();  
+         AcZ=Wire.read()&lt;&lt;8|Wire.read(); 
+         // ... other loop code
+       }
+</code></pre>
+
+<p>I tested using <code>GPIO</code> with a piezo used as a speaker. The Speaker is capable of playing simple notes using frequency of note mapped to cycles of sound and delay.</p>
+
+<pre><code>       #define NOTE_C5  523 //middle C
+       #define NOTE_D5  587
+
+       const int SPEAKER_PIN = 5;
+
+       void playNote(int targetPin, long frequency, long length) {
+         long delay = 1000000 / frequency / 2; 
+         long cycles = frequency * length / 1000; 
+         for (long i = 0; i &lt; cycle; i++) { 
+           digitalWrite(targetPin, HIGH); 
+           delayMicroseconds(delay); 
+           digitalWrite(targetPin, LOW); 
+           delayMicroseconds(delay);
+         } 
+       }
+
+       long noteDuration = 500;
+       long frequency = NOTE_C5;
+
+       playNote(SPEAKER_PIN, frequency, noteDuration);
+
+</code></pre>
+
+<p>I tested analog sensor input in the form of a second piezo connected to the <code>ADC pin</code> as a knock sensor. ADC is the only analog input pin on this device.</p>
+
+<pre><code>       const int KNOCK_SENSOR = A0;
+       const int KNOCK_THRESHOLD = 70;
+
+       sensorReading = analogRead(KNOCK_SENSOR); 
+       if (sensorReading &gt;= KNOCK_THRESHOLD) {
+         long noteDuration = 500;
+         long frequency = NOTE_E5;
+         playNode(SPEAKER_PIN, frequency, noteDuration); 
+       }
+
+</code></pre>
+
+<p>Finally there were enough pins remaining to hookup an RGB LED breakout. I added this test using the <a href="http://github.com/joushx/Arduino-RGB-Tools" title="RGB Tools Lib">RGB Tools Lib</a>.</p>
+
+<pre><code>       #include &lt;RGBTools.h&gt;
+
+       const int RED_PIN = 4; 
+       const int GREEN_PIN = 12; 
+       const int BLUE_PIN = 13;
+
+       // set the RGB pins - here I used pins 4, 13, and 12
+       // use RGBTools rgb(4,13,12, COMMON_CATHODE); if using a cathode RGB
+       RGBTools rgb(4,13,12); 
+
+       //set a nice red
+       rgb.setColor(174,10,0);
+
+</code></pre>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>This was a quick run through to test some of the feature of the device, but even with a few sensors/actuators and a simple setup there is a nice combination of status and interaction feedback that can be performed with a simple and relatively inexpensive device. The <em>Sparkfun Thing</em> retails for around $15 right now but the <a href="http://learn.adafruit.com/adafruit-huzzah-esp8266-breakout/overview" title="Huzzah">Huzzah</a> is under $10, and others can be found closer to $5.</p>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/iot/">iot,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/esp8266/">esp8266</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/self-updating-edison/" data-toggle="tooltip" data-placement="top" title="Self Updating Edison Apps">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/org-mode-es2015plus-code-blocks/" data-toggle="tooltip" data-placement="top" title="Org Mode ES2015&#43; Code Blocks">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rwx.io</title>
+    <link>http://rwx.io/categories/</link>
+    <description>Recent content on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    
+	<atom:link href="http://rwx.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>http://rwx.io/</link>
+      <pubDate>Wed, 17 Oct 2018 10:41:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/</guid>
+      <description>Welcome to my little corner of the Internet. Here you will find some notes and information from various project ideas and experiments I am working on. I am glad you stopped by, and hope you find what you are looking for.</description>
+    </item>
+    
+  </channel>
+</rss>

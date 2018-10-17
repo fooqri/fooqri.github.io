@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Poggr on rwx.io</title>
+    <link>http://rwx.io/tags/poggr/</link>
+    <description>Recent content in Poggr on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Tue, 09 Jun 2015 11:45:40 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/poggr/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Revisiting Buyer&#39;s Agent app using React.js</title>
+      <link>http://rwx.io/posts/revisiting-buyers-agent-app/</link>
+      <pubDate>Tue, 09 Jun 2015 11:45:40 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/revisiting-buyers-agent-app/</guid>
+      <description>&lt;p&gt;In a past post I showed a &lt;a href=&#34;http://rwx.io/posts/mobile-real-estate-app-v1&#34; title=&#34;Mobile Real Estate App&#34;&gt;Mobile Real Estate App&lt;/a&gt; that was built with Polymer. This time around I will revisit the app but instead use &lt;a href=&#34;https://facebook.github.io/react/&#34; title=&#34;React.js&#34;&gt;React.js&lt;/a&gt;. The Mobile Buyer&#39;s Agent application is a simple web based application used to demonstrate a basic React.js mobile web app. The goal is to allows a real estate buyer&#39;s agent to deliver a personalized mobile app experience to their clients by adding data to a Google spreadsheet. The agent updates a Google spreadsheet, and the web app loads its data from the spreadsheet.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.poggr.com/p-kz3NoHhgl:dZkIM34sBnlx?sheetid=1kv5haqhS8bUY_6IoJ6KBY5j42pN2WsY_wscDZSHb_m9&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;https://s3.amazonaws.com/fooqri-poggs/p-kz3NoHhgl/buyers_agent_1.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Photo Caption Challenge</title>
+      <link>http://rwx.io/posts/photo-caption-challenge/</link>
+      <pubDate>Thu, 23 Oct 2014 13:18:47 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/photo-caption-challenge/</guid>
+      <description>Using Facebook Login, S3, and DynamoDb in browser app One of the challenges of building small mobile web apps without a traditional back-end server is storing global state in a secure way. In my exploration of ways to store state I decided to build a very simple multi-player social app that allows players to participate in a simple photo challenge game. The game author specifies a photo caption and then invites friends to add photo responses that most creatively match the caption.</description>
+    </item>
+    
+    <item>
+      <title>Mobile Real Estate App - Version 1</title>
+      <link>http://rwx.io/posts/mobile-real-estate-app-v1/</link>
+      <pubDate>Wed, 22 Oct 2014 19:46:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/mobile-real-estate-app-v1/</guid>
+      <description>&lt;p&gt;I promised a few examples of spreadsheet driven apps. You may remember the &lt;a href=&#34;http://rwx.io/posts/spreadsheet-driven-web-apps/&#34; title=&#34;Hipster List&#34;&gt;Hipster List&lt;/a&gt; was the first example. These are simple web apps that are initialized using data from a Google Spreadsheet once the user loads them in a browser. Using spreadsheets to keep app information current is easy for anyone. There is even a way for users to point the app at their own Google Spreadsheet if the app developer wants to turn feature that on.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;//www.poggr.com/pe16vKTbVLg::16&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;//s3.amazonaws.com/goddip-poggs/pe16vKTbVLg/screen1.png&#34;  style=&#34;height: 400px; display: block; margin: auto&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Spreadsheet Driven Web Apps</title>
+      <link>http://rwx.io/posts/spreadsheet-driven-web-apps/</link>
+      <pubDate>Wed, 15 Oct 2014 14:34:28 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/spreadsheet-driven-web-apps/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/64a285b2-d092-11e8-ac27-040cce2069a4.png&#34; alt=&#34;/images/64a285b2-d092-11e8-ac27-040cce2069a4.png&#34; title=&#34;/images/64a285b2-d092-11e8-ac27-040cce2069a4.png&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Using Google spreadsheets is a great way for a team to collaborate on a data set but it leaves a bit to be desired on presentation of the data. To that end I will be creating a series of fun examples showing how to build small interactive apps that utilize &lt;em&gt;Google Docs&lt;/em&gt; and &lt;em&gt;Polymer&lt;/em&gt; web components to quickly bring data to life. In this series I will be using a Google spreadsheet as the data source, but other data sources are possible, and I will get to those as well in future posts.&#39;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

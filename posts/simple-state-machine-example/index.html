@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Simple state machine example</title>
+  <meta property="og:title" content="Simple state machine example" />
+  <meta name="twitter:title" content="Simple state machine example" />
+  <meta name="description" content="State machines can be handy in simplifying code.">
+  <meta property="og:description" content="State machines can be handy in simplifying code.">
+  <meta name="twitter:description" content="State machines can be handy in simplifying code.">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/simple-state-machine-example/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/simple-state-machine-example/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Simple state machine example</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>I have been investigating using the ruby <a href="https://github.com/pluginaweek/state_machine" title="state_machine">state_machine</a> gem for a project. State machines can be very handy in simplifying code where objects move through various states. The <a href="https://github.com/pluginaweek/state_machine" title="state_machine">state_machine</a> gem embeds state machine behavior into any class that uses it. My first test was to create a simple todo list example. The todo list will include a main list that contains items and sub-lists. This allows a way to organize items easily into sub-lists.</p>
+
+<p>A simple way to do this is to declare two classes <em>List</em> and <em>Item</em> and allow an object of class <em>List</em> to contain a list of <em>Lists</em> and a list of <em>Items</em>. This approach allows a flat list with many items, or a hierarchical list with top-level items, but also sub-lists that contain their own items.</p>
+
+<p>In addition to lists and items, I want is to track whether I have completed all of the items in a list. In the case of a hierarchical list this means all items of sub-lists as well. Thus in addition to lists and items, we need to track whether items and lists are in progress or completed.</p>
+
+<p>The next step is deciding on the states of the two object types. For my example, I decided:</p>
+
+<ul>
+<li>a list will have an initial state of <em>available</em>, and will transition to state <em>started</em> when the first item on the list is completed. When all items and sublists are <em>completed</em> the list will move to the state <em>completed</em>. </li>
+<li>an item will have an initial state of <em>available</em> and will transition to <em>completed</em> when the item is finished.</li>
+</ul>
+
+<ul>
+Finally I want to inform the user when: 
+<li>an item is completed</li>
+<li>a list is completed </li>
+<li>the project is completed (all items and sublists are completed) Here is a quick example of the code to meet these requirements:</li>
+</ul>
+
+<script type="application/javascript" src="//gist.github.com/fooqri/4549146.js"></script>
+
+<p>As you can see there is a rich environment for embedding behavior, including adding it in the <em>state</em> definitions, adding it using the <em>before_transition</em> method, and adding it using the <em>after_transition</em> method. You can also define methods inside the state definition so you can extend the functionality of a state.</p>
+
+<p>Now if you load this example in IRB you can play with the lists and items like so:</p>
+
+<pre><code>     load &quot;list_example.rb&quot;
+     list = List.new(&quot;Groceries&quot;, &quot;Get some groceries&quot;)
+     wf = list.add_list(&quot;Whole Foods&quot;, &quot;Get some groceries from Whole Foods&quot;)
+     milk = list.add_item(&quot;Milk&quot;, &quot;2% Milk&quot;)
+     strawberries = wf.add_item(&quot;Strawberries&quot;, &quot;Ripe organic Strawberries&quot;))
+     oranges = wf.add_item(&quot;Oranges&quot;, &quot;Ripe mandarine oranges&quot;)
+
+     strawberries.finish 
+     =&amp;gt; finished item Strawberries
+
+     oranges.finish  
+     =&amp;gt; finished item Oranges
+     =&amp;gt; congrats on completing list Whole Foods
+
+     milk.finish
+     =&amp;gt; finished item Milk
+     =&amp;gt; congrats on completing project Groceries
+</code></pre>
+
+<p>This was a really simple example, but shows how easy it is to create classes that embed state machines. For more check out the <a href="https://github.com/pluginaweek/state_machine" title="state_machine">state_machine</a> gem.</p>
+
+<p>The library also allows you to generate graphs of the states and transitions in each class. For example:</p>
+
+<p>create a Rakefile.rb</p>
+
+<pre><code>     require 'tasks/state_machine'
+     require './list_example.rb
+</code></pre>
+
+<p>Then in terminal execute:</p>
+
+<pre><code>     rake state_machine:draw CLASS=List 
+</code></pre>
+
+<p>For the <em>List</em> class shown above this will generate a png file named <em>List_list_state.png</em> that looks like the image below.</p>
+
+<p><img src="/images/mgqav0Q8uW1qz562v.png" alt="/images/mgqav0Q8uW1qz562v.png" title="/images/mgqav0Q8uW1qz562v.png" /></p>
+
+<p>The <em>List</em> class is very simple so the diagram is also simple. In the case of my project there are many states and more complicated transitions between states so the diagram can be very handy to visualize what is happening when debugging a strange transition,</p>
+
+<p>This todo list example is very simple but it allows exploring the basic features of the <a href="https://github.com/pluginaweek/state_machine" title="state_machine">state_machine</a> gem, and demonstrates how simple it is to add state machine functionality to classes. If a class you are designing has variables that keep state, and you are triggering behaviors when those variables change, then a state machine will likely be a more clean approach to organizing behavior in your class.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">development</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/how-to-measure-anything/" data-toggle="tooltip" data-placement="top" title="How to measure anything">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

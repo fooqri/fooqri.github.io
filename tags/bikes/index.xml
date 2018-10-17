@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bikes on rwx.io</title>
+    <link>http://rwx.io/tags/bikes/</link>
+    <description>Recent content in Bikes on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Sun, 16 Aug 2015 13:00:12 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/bikes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Popup Workbench</title>
+      <link>http://rwx.io/posts/popup-workbench/</link>
+      <pubDate>Sun, 16 Aug 2015 13:00:12 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/popup-workbench/</guid>
+      <description>&lt;p&gt;We are down to one car, as we can walk/bike to about anything we could possibly need including caltrain and light rail. So the garage is now empty of cars, and filled with toys. While playing ping pong one day I decided a beverage table would be nice in the garage, but something that could also serve as a work surface in a pinch. Something to put some tools on, etc. I wanted it to be something that could be folded out of the way when not needed, and something that didn&#39;t cost a lot since I wasn&#39;t sure if it would really prove useful. Sort of a prototype 1 of a collapsable work surface concept.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/popup-workbench.jpg&#34; alt=&#34;/images/popup-workbench.jpg&#34; title=&#34;/images/popup-workbench.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>D3 on rwx.io</title>
+    <link>http://rwx.io/tags/d3/</link>
+    <description>Recent content in D3 on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Fri, 17 Oct 2014 06:39:57 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/d3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>d3 charts - wrapping &#39;NVD3 Charts&#39; in a web component</title>
+      <link>http://rwx.io/posts/d3-nvd3-charts/</link>
+      <pubDate>Fri, 17 Oct 2014 06:39:57 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/d3-nvd3-charts/</guid>
+      <description>In my continued experiments with Polymer, I created a web component that wraps NVD3 - a reusable chart library for d3.js. As part of the activity I ported all of the NVD3 example charts to a web component I am calling &amp;lt;goddip-charts&amp;gt;. The component is contained in a pogg on poggr, as this is where I do my experimenting and it allows me to code and serve the project documents in the one place.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rwx.io</title>
+    <link>http://rwx.io/resources/</link>
+    <description>Recent content on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Fri, 05 Oct 2018 14:34:28 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/resources/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Elixir Notes</title>
+      <link>http://rwx.io/resources/elixir/</link>
+      <pubDate>Fri, 05 Oct 2018 14:34:28 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/resources/elixir/</guid>
+      <description>&lt;p&gt;Here are some elixir notes I find useful.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

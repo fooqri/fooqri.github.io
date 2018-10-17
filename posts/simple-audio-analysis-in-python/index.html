@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Simple Audio Analysis with pyAudioAnalysis</title>
+  <meta property="og:title" content="Simple Audio Analysis with pyAudioAnalysis" />
+  <meta name="twitter:title" content="Simple Audio Analysis with pyAudioAnalysis" />
+  <meta name="description" content="Using python to perform basic Audio Analysis using pyAudioAnalysis">
+  <meta property="og:description" content="Using python to perform basic Audio Analysis using pyAudioAnalysis">
+  <meta name="twitter:description" content="Using python to perform basic Audio Analysis using pyAudioAnalysis">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/simple-audio-analysis-in-python/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/simple-audio-analysis-in-python/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Simple Audio Analysis with pyAudioAnalysis</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>I had a need to do some classification of sets of environmental audio files so started looking for an easy to use Python library that was up for the task. Here are my notes on setting up the <a href="https://github.com/tyiannak/pyAudioAnalysis" title="pyAudioAnalysis Library">pyAudioAnalysis Library</a> for simple audio classification task.</p>
+
+<p><img src="/images/6e750e1e-d152-11e8-abd7-040cce2069a4.png" alt="/images/6e750e1e-d152-11e8-abd7-040cce2069a4.png" title="/images/6e750e1e-d152-11e8-abd7-040cce2069a4.png" /></p>
+
+<p></p>
+
+<h2 id="installation">Installation</h2>
+
+<p>This library relies on <strong>Python 2</strong>, so do a quick <em>python --version</em> to make sure you are not on <strong>Python 3</strong>. If both are installed on your machine they may be accessible as <em>python</em> and <em>python3</em></p>
+
+<h3 id="dependencies">Dependencies</h3>
+
+<p>You will need to make sure the following modules are installed:</p>
+
+<ul>
+<li>numpy</li>
+<li>matplotlib</li>
+<li>scipy</li>
+<li>gsl</li>
+<li>mlpy</li>
+<li>scikit-learn (v 0.16.1)</li>
+<li>Simplejson</li>
+</ul>
+
+<p>Note that the <a href="https://www.continuum.io/downloads" title="Anaconda">Anaconda</a> Python 2.7 distribution has many of these packages already included, but you need <em>scikit-learn (v 0.16.1)</em> and the latest <em>Anaconda</em> distribution delivers the <em>0.17.1</em> version. If you get an error message referencing a missing <em>hmm</em> component, you likely have the <em>0.17.*</em> version of scikit-learn, as <em>hmm</em> was deprecated in that version.</p>
+
+<p>When the dependencies are all verified or installed, simply clone the repo into a directory you want to use for development.</p>
+
+<pre><code>     mkdir ~/audioClassification
+     cd audioClassification
+     mkdir trainingData
+     mkdir sampleData
+     git clone https://github.com/tyiannak/pyAudioAnalysis.git
+</code></pre>
+
+<h2 id="training-data">Training Data</h2>
+
+<p>The simplest way to get started it to create sub directories under <em>trainingData</em> for each sound category you wish to recognize. For this example lets use these</p>
+
+<pre><code>     mkdir trainingData/breaking_glass 
+     mkdir trainingData/bubbles 
+     mkdir trainingData/vacuum
+</code></pre>
+
+<p>Next do a Google search looking for free audio files to add to the <em>trainingData</em> directory: e.g. <em>breaking glass audio wav free</em>, then for bubble sounds try <em>bubbles audio wav free</em>, finally for vacuum sounds try <em>vacuum audio wav free</em>. Save a dozen or so examples of each sound into the corresponding sub-directory under <em>trainingData</em>. The <em>pyAudioAnalysis</em> library requires wav files, so make sure any files you save to <em>trainingData</em> are wav files.</p>
+
+<h2 id="sample-data">Sample Data</h2>
+
+<p>Next add some audio samples that can be used to test the training. The search is the same as above, but just choose different sample files, so you can test how well the classification model works. You can save them directly under the <em>sampleData</em> directory for this example. It is also good to choose a few random other sounds to see how they are interpreted by the classification model.</p>
+
+<h2 id="scripts">Scripts</h2>
+
+<p>I wrote two quick scripts to do the classification and test a file against the classification model.</p>
+
+<h3 id="createclassifiermodel-script">createClassifierModel Script</h3>
+
+<p>From inside the <em>audioClassification</em> directory</p>
+
+<pre><code>     touch createClassifierModel
+     chmod +x createClassifierModel
+</code></pre>
+
+<p>In your favorite editor open <em>createClassifierModel</em> and add the following code:</p>
+
+<pre><code>     #!/usr/local/bin/python2
+     from pyAudioAnalysis import audioTrainTest as aT
+     import os
+     from sys import argv
+     script, dirname = argv
+
+     subdirectories = os.listdir(dirname)[:4]
+     subdirectories.pop(0)
+
+     subdirectories = [dirname + &quot;/&quot; + subDirName for subDirName in subdirectories]
+
+     print(subdirectories)
+     aT.featureAndTrain(subdirectories, 1.0, 1.0, aT.shortTermWindow, aT.shortTermStep, &quot;svm&quot;, &quot;svmModel&quot;, False)
+</code></pre>
+
+<h3 id="testclassifiermodel-script">testClassifierModel Script</h3>
+
+<p>From inside the <em>audioClassification</em> directory</p>
+
+<pre><code>     touch testClassifierModel
+     chmod +x testClassifierModel
+</code></pre>
+
+<p>In your favorite editor open <em>testClassifierModel</em> and add the following code:</p>
+
+<pre><code>     #!/usr/local/bin/python2
+     from sys import argv
+     import numpy as np
+     from pyAudioAnalysis import audioTrainTest as aT
+     script, filename = argv
+     isSignificant = 0.8 #try different values.
+
+     # P: list of probabilities
+     Result, P, classNames = aT.fileClassification(filename, &quot;svmModel&quot;, &quot;svm&quot;)
+     winner = np.argmax(P) #pick the result with the highest probability value.
+
+     # is the highest value found above the isSignificant threshhold? 
+     if P[winner] &gt; isSignificant :
+       print(&quot;File: &quot; +filename + &quot; is in category: &quot; + classNames[winner] + &quot;, with probability: &quot; + str(P[winner]))
+     else :
+       print(&quot;Can't classify sound: &quot; + str(P))
+</code></pre>
+
+<h2 id="run-the-createclassifiermodel-script">Run the createClassifierModel Script</h2>
+
+<p>To create a classification model simply run the <em>createClassifierMode</em> script and pass in the name of the training directory as an argument to the script.</p>
+
+<pre><code>     createClassifierModel trainingData
+</code></pre>
+
+<p>Below is an example output of the script.</p>
+
+<pre><code>                     breaking_glass                  bubbles                 vacuum          OVERALL
+             C       PRE     REC     F1      PRE     REC     F1      PRE     REC     F1      ACC     F1
+             0.001   58.1    100.0   73.5    100.0   56.0    71.8    33.3    0.0     0.0     64.0    48.4
+             0.010   83.7    100.0   91.1    100.0   95.0    97.4    98.5    65.0    78.3    90.0    89.0     best F1         best Acc
+             0.500   80.0    94.0    86.4    100.0   99.0    99.5    81.8    54.0    65.1    85.2    83.7
+             1.000   79.8    98.5    88.1    100.0   91.0    95.3    91.9    57.0    70.4    86.2    84.6
+             5.000   79.4    94.5    86.3    100.0   93.0    96.4    81.2    56.0    66.3    84.5    83.0
+             10.000  77.7    97.5    86.5    100.0   89.0    94.2    90.0    54.0    67.5    84.5    82.7
+     Confusion Matrix:
+             bre     bub     vac
+     bre     50.0    0.0     0.0
+     bub     1.0     23.7    0.3
+     vac     8.8     0.0     16.2
+     Selected params: 0.01000
+</code></pre>
+
+<h2 id="run-the-testclassifiermodel-script">Run the testClassifierModel Script</h2>
+
+<p>To categorize an audio file simply pass the file name as an argument to the <em>testClassifierModel</em> script. In the example below a sample was named <em>bubbles1.wav</em></p>
+
+<pre><code>     testClassifierModel sampleData/bubbles1.wav
+</code></pre>
+
+<p>Below is an example output of the script.</p>
+
+<pre><code>     File: sampleData/bubbles1.wav is in category: bubbles, with probability: 0.95486693161
+</code></pre>
+
+<h2 id="potential-gotchas">Potential GOTCHAS</h2>
+
+<p>One issue is that not all <em>wav</em> files will be understood by the <em>wavfile.py</em> library. If the classification hangs or aborts then it is possible one of the downloaded wav files is the issue. I found the simple solution was to add a line to <em>wavefile.py</em> that printed the filename currently being worked on so I could see what was happening the first time using a new set of training files.</p>
+
+<pre><code>     for me this is the location
+     /usr/local/lib/python2.7/site-packages/scipy/io/wavfile.py
+
+     datadef read(filename, mmap=False):
+         &quot;&quot;&quot;
+         Return the sample rate (in samples/sec) and data from a WAV file
+
+         Parameters
+         ----------
+         filename : string or open file handle
+             Input wav file.
+         mmap : bool, optional
+             Whether to read data as memory mapped.
+             Only to be used on real files (Default: False)
+
+             .. versionadded:: 0.12.0
+
+         Returns
+         -------
+         rate : int
+             Sample rate of wav file
+         data : numpy array
+             Data read from wav file
+
+         Notes
+         -----
+         * The file can be an open file or a filename.
+         * The returned sample rate is a Python integer.
+         * The data is returned as a numpy array with a data-type determined
+           from the file.
+         * This function cannot read wav files with 24 bit data.
+
+         &quot;&quot;&quot;
+         print(&quot;FILENAME: &quot; + filename)
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This was a basic intro to help you get started with <a href="https://github.com/tyiannak/pyAudioAnalysis" title="pyAudioAnalysis">pyAudioAnalysis</a> library, check out the <a href="https://github.com/tyiannak/pyAudioAnalysis/wiki" title="project wiki page">project wiki page</a> for more use case for the library including other classification model options, as well as feature extraction, segmentation and visualization capabilities.</p>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">development,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/python/">python</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/org-export-configurations/" data-toggle="tooltip" data-placement="top" title="Org Export Configurations">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/osx-uri-protocol-handler/" data-toggle="tooltip" data-placement="top" title="macOS URI Protocol Handler">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Setting Up a New Intel Edison</title>
+  <meta property="og:title" content="Setting Up a New Intel Edison" />
+  <meta name="twitter:title" content="Setting Up a New Intel Edison" />
+  <meta name="description" content=" Here are the steps I am currently following to set up the Edison.">
+  <meta property="og:description" content=" Here are the steps I am currently following to set up the Edison.">
+  <meta name="twitter:description" content=" Here are the steps I am currently following to set up the Edison.">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/setting-up-an-edison/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/setting-up-an-edison/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Setting Up a New Intel Edison</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p><img src="//s3.amazonaws.com/rwx-blog/IMG_4161.JPG" style="height: 400px; display: block; margin: auto;"></p>
+
+<p>The Edison is a tiny and amazing computer, and ideal prototyping tool for wearable and IoT experiments. Here are the steps I am currently following to set up the Edison.</p>
+
+<p></p>
+
+<h2 id="flashing-the-edison">Flashing the Edison</h2>
+
+<p>Like many developers I have Mac, Windows, and Linux laptops but I find that Linux is the best environment for flashing the Edison, even though I do most development on my Mac. I came to this conclusion after trying to recover an Edison with a lost password, the only platform that worked was Linux.</p>
+
+<p>The first step is flashing the Edison. Follow <a href="https://communities.intel.com/docs/DOC-23200" title="Flashing Edison Linux">Flashing Edison Linux</a>. You can also try
+<a href="https://communities.intel.com/docs/DOC-23193" title="Flashing Edison Mac">Flashing Edison Mac</a>.</p>
+
+<p>The only change I would recommend is to create a folder that contains the Edison images, and then unzip the downloaded folder into a sub directory named after the build number. Over time you may find yourself flashing to older or newer images based on the project needs.</p>
+
+<h2 id="setting-up-wifi">Setting up WiFi</h2>
+
+<p>Sparkfun offers a great guide for <a href="https://learn.sparkfun.com/tutorials/edison-getting-started-guide#connecting-to-WiFi" title="Setting up WiFi">Setting up WiFi</a> on the Edison. This takes only a few minutes and even if you don't plan to use WiFi in your projects it makes working with the Edison easier because you can use SCP and SSH to connect with the Edison over the network.</p>
+
+<h2 id="connect-to-edison">Connect to Edison</h2>
+
+<p>For OSX or Linux the best way to connect to the Edison is via SSH. On OSX you can use the name you gave the Edison in the step above. For example <em>ssh root@edison2.local</em> where <em>edison2</em> is the name you gave your Edison. On Linux you will use the Edison's IP address, for example <code>ssh root@10.0.1.12</code>.</p>
+
+<h2 id="using-emacs">Using Emacs</h2>
+
+<p>If you are an Emacs user then once WiFi is setup you can use <a href="http://www.emacswiki.org/emacs/TrampMode" title="Emacs Tramp">Emacs Tramp</a> to work with files on the Edison. Just use <em>C-x C-f</em> as usual, but instead of a directory use <em>root@edison2.local</em> or use the ip address for Linux.</p>
+
+<p>Emacs will present a directory of files on the Edison that you can open, or just keep typing the name for auto suggest feature. For example <code>root@edison2.local/home/root/notes.md</code>.</p>
+
+<h2 id="setup-bluetooth">Setup Bluetooth</h2>
+
+<p>Bluetooth is available in the Edison, but in the default configuration is not enabled at boot. If you are using Bluetooth you will likely want to enable it on every reboot or power cycle.</p>
+
+<h3 id="enable-bluetooth-at-boot">Enable Bluetooth at Boot</h3>
+
+<p>Use the <code>systemctl</code> command to cause Bluetooth to start automatically</p>
+
+<pre><code>     systemctl enable bluetooth
+</code></pre>
+
+<h3 id="create-a-bt-startup-script">Create a BT startup script</h3>
+
+<p>Create a script file with the following five lines <code>/home/root/btup.sh</code>.</p>
+
+<pre><code>     #!/bin/sh
+     /usr/sbin/rfkill unblock bluetooth
+     /usr/bin/hciconfig hci0 up
+     /usr/bin/hciconfig hci0 piscan
+     /usr/bin/hciconfig hic0 sspmode 0
+</code></pre>
+
+<h3 id="make-the-script-executable">Make the script executable</h3>
+
+<pre><code>     chmod +x /home/root/btup.sh
+</code></pre>
+
+<h3 id="create-a-new-service-file-lib-systemd-system-btup-service">Create a new service file <code>/lib/systemd/system/btup.service</code>.</h3>
+
+<pre><code>     [Unit]
+     Description=BTUP
+     After=bluetooth.target
+     Before=systemd-user-sessions.service
+     [Service]
+     Type=simple
+     RemainAfterExit=true
+     ExecStart=/home/root/btup.sh
+     Environment=&quot;HOME=/home/root&quot;
+     WorkingDirectory=/home/root/
+     [Install]
+     WantedBy=multi-user.target
+
+</code></pre>
+
+<h3 id="enable-the-service">Enable the service</h3>
+
+<pre><code>     systemctl enable /lib/systemd/system/btup.service
+</code></pre>
+
+<h3 id="reboot-the-edison">Reboot the Edison</h3>
+
+<pre><code>     reboot
+</code></pre>
+
+<h2 id="create-a-backup">Create a Backup</h2>
+
+<p>Now is a good time to create a backup of the Edison that can be recovered if you need to return to a clean install. For example you may want to update nodejs, or install node modules, or even other drivers that may cause an issue you want to start over from.</p>
+
+<p>Place a MicroSD card with at least 4GB of available space into the MicroSD slot on the dev kit board where the Edison is installed. Backup the Edison to an image file on the MicroSD. In the example below it is name <code>edison2_backup.img</code>. Make sure the file name has a <code>.img</code> extension. If you have a large MicroSD card you can store multiple backup images from multiple Edisons, making it quick and easy to recover each of them. It is wise to consider a consistent naming system.</p>
+
+<pre><code>     dd if=/dev/mmcblk0 of=/media/sdcard/edison2_bk.img
+</code></pre>
+
+<h2 id="restoring-an-edison-from-backup">Restoring an Edison from Backup</h2>
+
+<p>If you need to restore the Edison from backup just reverse the process</p>
+
+<pre><code>     dd if=/media/sdcard/edison2_bk.img of=/dev/mmcblk0
+</code></pre>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">Development,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/iot/">iot</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/photo-caption-challenge/" data-toggle="tooltip" data-placement="top" title="Photo Caption Challenge">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/revisiting-buyers-agent-app/" data-toggle="tooltip" data-placement="top" title="Revisiting Buyer&#39;s Agent app using React.js">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

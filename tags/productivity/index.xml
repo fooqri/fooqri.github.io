@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Productivity on rwx.io</title>
+    <link>http://rwx.io/tags/productivity/</link>
+    <description>Recent content in Productivity on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Tue, 08 Jan 2013 11:15:16 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/productivity/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Syntax Highlighting in OS X quick look</title>
+      <link>http://rwx.io/posts/syntax-highlighting-in-quick-look/</link>
+      <pubDate>Tue, 08 Jan 2013 11:15:16 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/syntax-highlighting-in-quick-look/</guid>
+      <description>Quick Look is a handy OS X feature where you can get a quick look at a file by selecting it and pressing the space bar. This is handy when looking through snippet files on disk. This plugin adds syntax highlighting in Quick Look supporting many common programming languages, and even supports R code.</description>
+    </item>
+    
+    <item>
+      <title>Remapping My Caps Lock Key</title>
+      <link>http://rwx.io/posts/remapping-my-caps-lock-key/</link>
+      <pubDate>Sun, 30 Dec 2012 07:16:24 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/remapping-my-caps-lock-key/</guid>
+      <description>I&#39;ve had my caps lock key mapped to the control key for the last few months as I have migrated back to Emacs from TextMate. It was a slight improvement over the placement of the control key but not a huge improvement. I came across this article: A Useful CAPS-Lock Key from Brett Terpstra and decided to give his mapping a try. This mapping requires free third party software, but I was particularly intrigued not by the escape key mapping, which is very handy, but by the &#34;</description>
+    </item>
+    
+    <item>
+      <title>FoldingText and productivity</title>
+      <link>http://rwx.io/posts/folding-text-and-productivity/</link>
+      <pubDate>Wed, 26 Dec 2012 19:19:02 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/folding-text-and-productivity/</guid>
+      <description>I have been using the FoldingText app for a couple of weeks. It is a very interesting app targeting writers, something I am not, but I was intrigued by the interactivity of this minimalist app. Specifically the ability to add interactive todo lists and timers and have them execute in a text document. Please take a look at the FoldingText Video to get a feel for it, I don&#39;t want to describe ideas that a video shows so clearly.</description>
+    </item>
+    
+    <item>
+      <title>Wiki &#43; searchable notes</title>
+      <link>http://rwx.io/posts/wiki-plus-searchable-notes/</link>
+      <pubDate>Mon, 17 Dec 2012 07:13:25 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/wiki-plus-searchable-notes/</guid>
+      <description>For our startup I have been using github wiki to keep the product specs, design docs, user stories, etc organized and up-to-date. The nice thing about github is you can clone the wiki and work on it locally and push changes up to the server. See this writeup for more info. This is handy because you can then work on the wiki using markdown syntax in a regular text editor versus a web page editor.</description>
+    </item>
+    
+    <item>
+      <title>Screen Capture Coodness</title>
+      <link>http://rwx.io/posts/screen-capture-goodness/</link>
+      <pubDate>Tue, 17 Jan 2012 14:17:16 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/screen-capture-goodness/</guid>
+      <description>tl;wr Take the shell script from below and create a TextExpander snippet to save any image in your OS X clipboard to disk with a unique uuid.png name, and automatically create a markdown image link that is pasted in place in your editor.
+verbose When making notes on wireframes, screen designs, activity diagrams, etc, I have a particular workflow where I do a screen capture and want to link the result in my markdown notes or from our project wiki.</description>
+    </item>
+    
+  </channel>
+</rss>

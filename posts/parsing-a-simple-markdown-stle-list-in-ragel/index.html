@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Parsing a simple markdown style list in Ragel</title>
+  <meta property="og:title" content="Parsing a simple markdown style list in Ragel" />
+  <meta name="twitter:title" content="Parsing a simple markdown style list in Ragel" />
+  <meta name="description" content="Building a parser to read lists from a text file">
+  <meta property="og:description" content="Building a parser to read lists from a text file">
+  <meta name="twitter:description" content="Building a parser to read lists from a text file">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/parsing-a-simple-markdown-stle-list-in-ragel/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/parsing-a-simple-markdown-stle-list-in-ragel/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Parsing a simple markdown style list in Ragel</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>In an earlier post <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example" title="Simple state machine example">Simple state machine example</a>, I provided an example of using the Ruby <em>state_machine</em> gem to create a state machine for handling a simple list of tasks. In this post I will provide a similar but not exactly compatible description of building a parser to read lists from a text file. In this example I use the markdown syntax for lists, where items can be placed hierarchically, thus removing the need for a separate "list" object.</p>
+
+<p>I found the <a href="http://www.complang.org/ragel/ragel-guide-6.7.pdf" title="Ragel documentation">Ragel documentation</a> to be excellent. The only issue is a lack of practical examples. Given the dearth of examples available, I though I would add my +1 example to help the cause. If you are serious about using Ragel I recommend reading the documentation start to finish quickly, then a second go through taking notes on key items like default machines, syntax, priorities, actions, etc before building a parser. Having a strong base will help tremendously when using examples.</p>
+
+<p>There are three files involved in this solution to the list problem:</p>
+
+<ul>
+<li>lists.txt: a data file that contains two lists for the parser to parse.</li>
+<li>mdlist.rb: a ruby class that will call the parser and output the list returned from the parser.</li>
+<li>mdlist_parser.rl: A file that will be used by Ragel to create a parser class definition (mdlist_parse.rb).</li>
+</ul>
+
+<p>I added all three files to one gist, which is shown below. Below the lists.txt data file uses a markdown like syntax where hierarchy is expressed through indentation (4 spaces or a tab).</p>
+
+<script type="application/javascript" src="//gist.github.com/fooqri/4573704.js"></script>
+
+<p>To create an app that supported operating on these lists you would need to parse the list and create objects that could be operated on. Perhaps adding checkboxes in a UI, or strike-through font when the item is marked complete.</p>
+
+<p>In this example I am using Ragel, which uses a set of state machine definitions to generate a state machine. In this case I am using Ragel to generate a parser to parse lists similar to the ones shown in lists.txt. In Ragel you specify a Ruby class that uses a series of pre-processors <code>(%%)</code> that are processed by the Ragel library. Ragel will replace these blocks and pre-processor commands with ruby parser code and a parse table; resulting in a state machine for parsing the file. The documentation will describe all of the required preprocessor commands for Ruby. Ragel supports many languages and the preprocessor commands differ slightly for different languages. Check the documentation for meaning.</p>
+
+<p>The bulk of the instructions for creating a parser are inside the <code>%%{}%%</code> block. The block is made up of machine definitions and actions. Ragel state machines recognize byte sequences as regular expression machines do, but can also execute code at arbitrary points in the recognition of a regular language (actions). Here regular expressions are used to define a regular grammar, see type-3 in the <a href="http://en.wikipedia.org/wiki/Chomsky_hierarchy" title="Chomsky hierarchy">Chomsky hierarchy</a>.</p>
+
+<p>Thus when you see the statement:</p>
+
+<pre><code>    task_title =  [^\n]+ [\n]
+</code></pre>
+
+<p>this is defining a machine <code>(/[\^\n]+ [\n]/)</code> and assigning it a name <em>task_title</em>. The Ragel documentation refers to the right side of the expression as a <em>regular expression machine</em> or <em>machine</em>, this is roughy equivalent to production rules in tradition grammar design. Using named expressions this way allows grammar rules to be built up recursively, much like non-terminals are used in traditional grammar definitions.</p>
+
+<p>Thus an expression like:</p>
+
+<p><code>task = (task_header&gt;MarkTaskStart).task_item;</code></p>
+
+<p>uses the rules <strong>task_header</strong> and <strong>task_item</strong> in the definition of the expression. Ragel expressions look unusual at first because they are both defining a grammar and embedding behavior (code). For example the above expression includes a reference to of a block of code <strong>MarkTaskStart</strong> that should be executed when the <strong>task_header</strong> machine is matched. These code blocks are called <em>actions</em> in Ragel. It can be useful to use a convention like all lowercase for rules, and CamelCase for actions to make the expressions easier to read.</p>
+
+<p>Ragel defines a syntax for specifying when an action is to be called relative to state transitions between machines. For example before a transition, after a transition, or at the end of file, etc. The documentation is very good, though it is terse.</p>
+
+<table>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Syntax</td>
+</tr>
+
+<tr>
+<td>entering action</td>
+<td>expr > action</td>
+</tr>
+
+<tr>
+<td>finishing action</td>
+<td>expr @ action</td>
+</tr>
+
+<tr>
+<td>all transitions action</td>
+<td>expr $ action</td>
+</tr>
+
+<tr>
+<td>leaving actions</td>
+<td>expr % action</td>
+</tr>
+</tbody>
+</table>
+
+<p>Ragel also allows you to embed error handling behavior using a similar mechanism.</p>
+
+<p>Finally, one of the challenges of regular grammars is the requirement that they are <a href="http://en.wikipedia.org/wiki/Deterministic_finite_automaton" title="DFA's">DFA's</a> and thus need to be deterministic. Ragel provides a mechanism for including priorities in the case where multiple next states are possible; you can define which state will be taken. For more see the Ragel documentation on priorities and guarded expressions. The reason I suggested reading through the documentation prior to reading example grammars is that Ragel expressions can begin to look very confusing if you are not versed in the difference between the syntax associated with machines, actions, priorities and guards, since they all appear intermingled in a Ragel expression.</p>
+
+<p>To create a parser for the <em>mdlist\_parser.rl</em> file shown above use this command:</p>
+
+<pre><code>     ragel -R mdlist_parser.rl
+</code></pre>
+
+<p>This will create a parser written in ruby called <em>mdlist\_parser.rb</em> that can be included into your Ruby program.</p>
+
+<p>Now we need a simple Ruby program to use the parser, I am including this because I didn't see a lot of examples for how to do this so wanted to add one here.</p>
+
+<p>The simple ruby class defined in <em>mdlist.rb</em> will open the data file and read it in to a string, and pass the string to the parser. The parser will return a Ruby object that has a <em>lists</em> method that returns the list in a data structure. The above class will then output the list formatted to show the hierarchy. The list could easily be used to create a list object that includes the state machine from my earlier <a href="http://www.pragmaux.com/post/40689737812/simple-state-machine-example" title="state machine">state machine</a> post.</p>
+
+<p>I will assume you have Ragel, installed, if not get it <a href="http://www.complang.org/ragel/" title="here">here</a>. To see the parser in action you need all three files (mdlist\_parser.rl, mdlist.rb, lists.txt) in the same directory and then take these steps:</p>
+
+<ol>
+<li>run the ragel parser:</li>
+   ~ragel -R mdlist\_parser.rl~
+<li>run irb and enter the following into irb:</li>
+   1) ~load "mdlist.rb"~
+   2) ~list = MDList.new("lists.txt")~
+</ol>
+
+<p>You should see the output of the puts statements displaying the lists data structure with information about the hierarchy of the list. It would be easy to replace the puts with a call to a method like add\_item() from my state\_machine example referenced earlier.</p>
+
+<p>That's it. Defining grammars and using parser generators can seem challenging at first, but once you get through a few examples and build a simple grammer it will become very simple, since the rules are really very simple. The language of grammar definition can be challenging at first, but just try to understand the concepts and don't get too bogged down in the terminology. Ragel is a very powerful tool for any developer to have in their tool belt, especially if you are interested in building high performance APIs, it combines a powerful parser generator with an expressive syntax for generating powerful state machines. To fully understand this and other examples check out the Ragel documentation and tutorials listed below.</p>
+
+<ul>
+<li><a href="http://www.complang.org/ragel/" title="Ragel Home">Ragel Home</a></li>
+<li><a href="http://thingsaaronmade.com/blog/a-simple-intro-to-writing-a-lexer-with-ragel.html" title="A simple intro to writing a lexer with Ragel.">A simple intro to writing a lexer with Ragel.</a></li>
+<li><a href="http://www.devchix.com/2008/01/13/a-hello-world-for-ruby-on-ragel-60/" title="A Hello World for Ruby on Ragel 6.0">A Hello World for Ruby on Ragel 6.0</a></li>
+<li><a href="http://www.zedshaw.com/essays/ragel_state_charts.html" title="Ragel State Charts">Ragel State Charts</a></li>
+<li><a href="http://tech.blog.cueup.com/regular-expressions-will-stab-you-in-the-back" title="Regular Expressions Will Stab You in the Back">Regular Expressions Will Stab You in the Back</a></li>
+</ul>
+
+<p>Also see this great
+<a href="http://www.confreaks.com/videos/491-rubyconf2010-consuming-gherkin-one-byte-at-a-time" title="Consuming Gherkin: One Byte at a Time video">Consuming Gherkin: One Byte at a Time video</a> intro of Mike Sassak & Greg Hnatiuk discussing their experience using Ragel for the Cucumber parser.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">development,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/parsers/">parsers</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/pattern-maching-vs-logic-problems/" data-toggle="tooltip" data-placement="top" title=" Pattern problems vs logic problems">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/the-three-cs/" data-toggle="tooltip" data-placement="top" title="The Three C&#39;s">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

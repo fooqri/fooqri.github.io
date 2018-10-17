@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rubymotion on rwx.io</title>
+    <link>http://rwx.io/tags/rubymotion/</link>
+    <description>Recent content in Rubymotion on rwx.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
+    <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
+    <copyright>© 2018 rwx.io</copyright>
+    <lastBuildDate>Sat, 01 Jun 2013 08:10:07 -0700</lastBuildDate>
+    
+	<atom:link href="http://rwx.io/tags/rubymotion/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CoreData.SQLDebug for RubyMotion</title>
+      <link>http://rwx.io/posts/coredata-sqldebug-for-rubymotion/</link>
+      <pubDate>Sat, 01 Jun 2013 08:10:07 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/coredata-sqldebug-for-rubymotion/</guid>
+      <description>It is sometimes handy to turn on CoreData.SQLDebug in the simulator when debugging a Core Data issue. I have found the output to be very useful in finding the hard to find little bugs that pop-up between restkit and core data. It can also help find performance issues with the database. Unfortunately there isn&#39;t any documentation for how to do this in RubyMotion. I found one solution that works to a degree.</description>
+    </item>
+    
+    <item>
+      <title>Getting RKLogConfigureByName working in RubyMotion</title>
+      <link>http://rwx.io/posts/getting-rklogconfigurebyname-working-in-rubymotion/</link>
+      <pubDate>Thu, 07 Mar 2013 15:21:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/getting-rklogconfigurebyname-working-in-rubymotion/</guid>
+      <description>Just a quick note, I was getting an undefined constant error for RKLogConfigureByName, the standard way of setting up logging in RestKit.
+It seems that the #define statements in the /vendor/Pods/RestKit/Code/Support/RKLog.h/ file are not getting picked up. I am using the pod and loading with RubyMotion pod support, so I am not sure what the issue is. I will need to investigate further but this quick workaround works, just call the lower-level method mapped via the #define.</description>
+    </item>
+    
+    <item>
+      <title>Getting RKLogConfigureByName working in RubyMotion</title>
+      <link>http://rwx.io/posts/getting-rklogconfigbyname-working/</link>
+      <pubDate>Thu, 07 Mar 2013 15:21:22 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/getting-rklogconfigbyname-working/</guid>
+      <description>Just a quick note, I was getting an undefined constant error for RKLogConfigureByName, the standard way of setting up logging in RestKit. It seems that the #define statements in the /vendor/Pods/RestKit/Code/Support/RKLog.h file are not getting picked up. I am using the pod and loading with RubyMotion pod support, so I am not sure what the issue is. I will need to investigate further but this quick workaround works, just call the lower-level method mapped via the #define.</description>
+    </item>
+    
+    <item>
+      <title>Rubymotion iOS Applications</title>
+      <link>http://rwx.io/posts/rubymotion-ios-apps/</link>
+      <pubDate>Thu, 17 Jan 2013 11:28:47 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/rubymotion-ios-apps/</guid>
+      <description>I wanted to make a quick note that I have been using RubyMotion the past few months. I don&#39;t mind building natively in Objective-C but since I have been coding both the app and the server side I found switching between Objective-C and Ruby a bit frustrating. I really find Objective-C to be too verbose a syntax for my taste. I also prefer to code in emacs vs. the Xcode UI.</description>
+    </item>
+    
+  </channel>
+</rss>

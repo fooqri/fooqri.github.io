@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>I2C MPU-6050</title>
+  <meta property="og:title" content="I2C MPU-6050" />
+  <meta name="twitter:title" content="I2C MPU-6050" />
+  <meta name="description" content="Some notes on using the MPU-6050">
+  <meta property="og:description" content="Some notes on using the MPU-6050">
+  <meta name="twitter:description" content="Some notes on using the MPU-6050">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/i2c-mpu-6050/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/i2c-mpu-6050/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>I2C MPU-6050</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.</p>
+
+<p><img src="/images/mpu6050.jpg" alt="/images/mpu6050.jpg" title="/images/mpu6050.jpg" /></p>
+
+<p></p>
+
+<p>To capture data I am using a few node modules. In particular the @@html:<a href="https://github.com/hybridgroup/cylon" target="_blank">@@cylon.js@@html:</a>@@ module, along with the @@html:<a href="https://github.com/hybridgroup/cylon-i2c" target="_blank">@@cylon-i2c@@html:</a>@@ module. This allows accelerometer data to be easily used by the following code block</p>
+
+<pre><code>    Cylon                                                                          
+      .robot()                                                                    
+      .connection(&quot;edison&quot;, { adaptor: &quot;intel-iot&quot;, i2cPort: 1})                  
+      .device(&quot;accel&quot;, { driver: &quot;mpu6050&quot; })                                     
+      .on(&quot;ready&quot;, function(bot) {                                      
+        setInterval(function() {                                        
+          bot.accel.getAcceleration(function(err, data) {
+            //use data
+          });
+        });
+      });
+</code></pre>
+
+<h2 id="the-mpus">The MPUs</h2>
+
+<p>The first prototype of this device is using a SparkFun Edison stack with the SparkFun I2C block connected to an MPU-6050, rather than the SparkFun Accelerometer block. At the time of this writing the cylon-i2c implementation of the lsm9ds0 driver is not working correctly with the SparkFun Accelerometer block, so I went the I2C route. The second an perhaps more important reason I went the I2C route is that MPU-6050 boards can be had for as low as $4, which is appealing for a low cost prototype.</p>
+
+<p>I have a handful of MPUs I have tried and here is some info on them.</p>
+
+<h3 id="https-www-sparkfun-com-products-11028-sparkfun-mpu-6050-breakout"><a href="https://www.sparkfun.com/products/11028" title="SparkFun MPU-6050 Breakout">SparkFun MPU-6050 Breakout</a></h3>
+
+<p>This is great accelerometer breakout that works well with the Edison and
+Cylon module, but much less expensive options exist.</p>
+
+<h3 id="http-www-amazon-com-gp-product-b00h1oye4q-riorand-triple-axis-mpu-6050-breakout"><a href="http://www.amazon.com/gp/product/B00H1OYE4Q" title="RioRand Triple Axis MPU-6050 Breakout">RioRand Triple Axis MPU-6050 Breakout</a></h3>
+
+<p>This is currently my go to accelerometer. It is relatively low priced at $11 and arrives in 2 days via Amazon Prime. These work well with both the Edison 3.3V boards, and the cylon i2c module. Unfortunately the default I2C address for this board is <code>0x69</code>, instead of the more common <code>0x68</code> (used by the cylon mpu6050 driver) so you will need to solder the AD0 jumper plate on the top of the board.</p>
+
+<h3 id="http-www-amazon-com-kootek-mpu-6050-mpu6050-sensors-accelerometer-dp-b008bopn40-kootek-gy-521-mpu-6050-mpu6050-module"><a href="http://www.amazon.com/Kootek-MPU-6050-MPU6050-sensors-Accelerometer/dp/B008BOPN40/" title="Kootek GY-521 MPU-6050 MPU6050 Module">Kootek GY-521 MPU-6050 MPU6050 Module</a></h3>
+
+<p>At $4 with free shipping these look like a great option. They are reported to work well with 3.3V VCC. The down side is very slow delivery via the slow boat. I have a handful on order, I will provide an update when they arrive.</p>
+
+<h3 id="http-www-amazon-com-gp-product-b009m19l4y-gy-521-6dof-mpu6050-module"><a href="http://www.amazon.com/gp/product/B009M19L4Y" title="GY-521 6DOF MPU6050 Module">GY-521 6DOF MPU6050 Module</a></h3>
+
+<p>At a little over $5 with free shipping this seems like a great option, unfortunately the onboard voltage regulator in the <strong>GY-521</strong> is designed for the Arduino 5V VCC and when used with a 3.3V VCC of the Edison blocks results in too low power on the I2C <code>SDA/SCL</code> pins to register as proper high and low voltage values. It is possible to give the board a separate 5V VCC supply, but that just seems overly complicated for the prototype device. Another feature of this board is the breakout of <code>AD0</code> into a pin, allowing easy switching between I2C <code>0x68</code> and <code>0x69</code> addresses using either a ground or <code>VCC</code> connection.</p>
+
+<h2 id="connecting-the-mpu">Connecting the MPU</h2>
+
+<p>For the first prototype I am using SparkFun Edison blocks, as I have a a few sets of these interchangeable blocks that are quick to assemble into a prototype. In this case I am using the <a href="https://www.sparkfun.com/products/13034" title="SparkFun I2C block">SparkFun I2C block</a> with an Edison. This block allows the Edison to be snapped onto the block, and the <strong>MPU-6050</strong> board to be connected with 4 jumpers (VCC, GND, SDA, SCL).</p>
+
+<h2 id="checking-i2c-address">Checking I2C Address</h2>
+
+<p>Most MPU-6050 boards will have an I2C address of 0x68, but if you choose a different MPU and it isn't working with Cylon, the first thing to check will be whether the address is 0x68. The error message from Cylon will be a <em>"RangeError: Trying to access beyond buffer length"</em> for most errors where the MPU is not connected properly. To check the address use the following command when the MPU is connected via I2C.</p>
+
+<pre><code>    i2cdetect -y -r 1
+</code></pre>
+
+<p>The result will look something like:</p>
+
+<pre><code>         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+    10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+    20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+    30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+    40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+    50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+    60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- -- 
+    70: -- -- -- -- -- -- -- --
+</code></pre>
+
+<p>You will see either a <code>68</code> or a <code>69</code> if the MPU-6050 is connected properly. If the address displayed is <code>69</code>, you will need to change the address to 68 using the technique recommended for your board (<code>AD0 jumper</code>). You may see other numbers in the results if you have other I2C components included in your assembled device, but if you are using an MPU-6050 and it is connected correctly either a 68 or a 69 should appear in the <code>i2cdetect</code> results.</p>
+
+<p>I won't get into calibration or gesture recognition in this post, but will try to post more on MPU calibration, gesture recognition, etc in future posts. Given not all MPU-6050 breakouts work with the Edison because of their compatibility with 5V Arduino boards I wanted to post the notes of my experience with a few of them.</p>
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/development/">development,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/io2/">io2,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/mpu6050/">mpu6050</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/esp8266/" data-toggle="tooltip" data-placement="top" title="ESP8266">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/workbench-replaces-my-desk/" data-toggle="tooltip" data-placement="top" title="Workbench Replaces My Desk">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+

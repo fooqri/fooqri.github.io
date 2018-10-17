@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Org Export Configurations</title>
+  <meta property="og:title" content="Org Export Configurations" />
+  <meta name="twitter:title" content="Org Export Configurations" />
+  <meta name="description" content="A few of my org-mode export configurations">
+  <meta property="og:description" content="A few of my org-mode export configurations">
+  <meta name="twitter:description" content="A few of my org-mode export configurations">
+  <meta name="author" content="Patrick Goddi"/>
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fooqri" />
+  <meta name="twitter:creator" content="@fooqri" />
+  <meta property="og:url" content="http://rwx.io/posts/org-export-configurations/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="rwx.io" />
+
+  <meta name="generator" content="Hugo 0.49.2" />
+  <link rel="canonical" href="http://rwx.io/posts/org-export-configurations/" />
+  <link rel="alternate" href="http://rwx.io/index.xml" type="application/rss+xml" title="rwx.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://rwx.io/">rwx.io</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Posts" href="/posts/">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Portfolio" href="/portfolio/">Portfolio</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Resources" href="/resources/">Resources</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="" href="/resources/"></a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>Org Export Configurations</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>Emacs <em>org mode</em> offers a variety of export options that make it easy to look at your notes in different formats, or perhaps make them available for others to view. Three I use regularly are <em>markdown</em>, <em>mindmap</em>, and <em>reveal presentation</em>.</p>
+
+<h1 id="my-approach-to-note-taking">My approach to Note Taking</h1>
+
+<p>The best way to learn something is to sumarize the topic in your own words, in your own context, and present it to others with concrete examples. But in many cases notes must also serve to provide details that are easily forgotten like code snippets, checklists, etc. Even with detailed notes it is important to refactor the information into your own context to aid learning the topic. For this reason many of my notes on a topic have a <em>summary</em> section and a <em>details</em> section both organized in an org document.</p>
+
+<p>Another purpose for notes is information logging, such as meeting notes, project team notes, daily journal, etc. Although <em>org</em> does an excellent job of supporting information logging and task management, I will leave that as a topic for a future post.</p>
+
+<p>Ideally the summary of a topic can easily be converted to a presentation, and the details can be converted to a markdown document. I will describe below how to accomplish this. Further I will describe how to convert the notes to OPML so it can be explored as a mindmap. Also see <a href="/posts/deft-and-orgmode-for-notes" title="Deft + Org for Notes">Deft + Org for Notes</a> for information on quick search of all notes.</p>
+
+<h1 id="setting-export-directory">Setting Export Directory</h1>
+
+<p>I want to keep everything under the org directory but to keep things tidy create sub directories by export type. The code snippet below when placed in init.el will set the correct export directory based on export type. Thus <em>opml</em> documents will be kept in <code>~/org/export_opml/</code>, <em>markdown</em> documents in <code>~/org/export_md/</code>, and <em>html</em> documents in <code>~/org/export_md/</code></p>
+
+<pre><code>    (defvar org-export-output-directory-prefix &quot;export_&quot; &quot;prefix of directory used for org-mode export&quot;)
+
+    (defadvice org-export-output-file-name (before org-add-export-dir activate)
+      &quot;Modifies org-export to place exported files in a different directory&quot;
+      (when (not pub-dir)
+          (setq pub-dir (concat org-export-output-directory-prefix (substring extension 1)))
+          (when (not (file-directory-p pub-dir))
+           (make-directory pub-dir))))
+</code></pre>
+
+<h1 id="exporting-to-markdown">Exporting to Markdown</h1>
+
+<p>The configuration below will export markdown every time an org file is saved. It will also save a copy of the exported file to my Google Drive folder. This way my notes are always available from any web browser. The <a href="https://chrome.google.com/webstore/detail/minimalist-markdown-edito/pghodfjepegmciihfhdipmimghiakcjf?hl=en" title="Minamalist Markdown Editor">Minamalist Markdown Editor</a> is a nice tool for viewing these documents on a Chromebook.</p>
+
+<p>The <code>C-c m</code> keyboard sequence will open the markdown version of the current buffer in Marked 2. Because all notes are automatically converted the <em>Marked 2</em> app will also allow you to follow note links to any interlinked notes. <em>Marked 2</em> provides a very nice reading interface for detailed notes so having this option is handy.</p>
+
+<pre><code>    (defun export-org-md-command-events ()
+      (interactive)
+      (let* ((md-original-filename (concat (file-name-directory buffer-file-name) &quot;export_md/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;))
+             (google-drive-filename (concat  &quot;../Google Drive/notes/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;))) 
+        (execute-kbd-macro (kbd &quot;C-c C-e m m&quot;))
+        (copy-file  md-original-filename google-drive-filename t)
+        (message  &quot;Saved to Google Drive: %s&quot; (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;)) )
+      )
+
+    ;; Auto-export org files to Markdown when saved
+    (defun org-mode-export-hook ()
+      (when (equal major-mode 'org-mode)
+        (add-hook 'after-save-hook 'export-org-md-command-events t t)
+      )
+    )
+
+    (defun markdown-preview-file ()
+      &quot;run Marked on the current file and revert the buffer&quot;
+      (interactive)
+      (execute-kbd-macro (kbd &quot;C-c C-e m m&quot;))
+      (shell-command
+       (format &quot;open -a /Applications/Marked2.app %s&quot; 
+           (shell-quote-argument (concat (file-name-directory buffer-file-name) &quot;export_md/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.md&quot;))))
+      )
+
+    (global-set-key (kbd &quot;C-c m&quot;) 'markdown-preview-file)
+</code></pre>
+
+<p>The markdown conversion works well but if you need to you can embed markdown directly into your org document at any time using a markdown block. This will allow the markdown to pass through during export so it will be handled properly by the markdown rendering app.</p>
+
+<h1 id="exporting-to-mindmap">Exporting to Mindmap</h1>
+
+<p>Mindmaps are a visualization of an outline, and since org mode specializes in keeping notes in a hierarchical fashion it is fairly easy to convert notes to mindmaps. OPML is an XML format for outlines that is supported by all mindmapping apps. You can use <a href="https://www.emacswiki.org/emacs/FreeMind" title="org-freemind">org-freemind</a> to do mindmaps, but I use <a href="https://github.com/edavis/org-opml" title="org-opml">org-opml</a> instead. Follow the <a href="https://github.com/edavis/org-opml" title="org-opml">org-opml</a> installation instructions.</p>
+
+<p>I also use a slight customization of the ox-opml.el file delivered with <a href="https://github.com/edavis/org-opml" title="org-opml">org-opml</a>, because I use iThoughtsX and think it is cleaner to put paragraph blocks in notes rather than have them forced into a topic bubble.</p>
+
+<pre><code>    ;; modify original ox-opml.el to put paragraphs into the notes attribute of a topic
+    ;; instead of displaying paragraph as topic name.  
+    (defun org-opml-paragraph (paragraph contents info)
+      (let* ((parent (org-element-type (org-export-get-parent paragraph)))
+             (text (clean-text contents)))
+        ;; Only display paragraphs when not in a list item
+        (unless (eq parent 'item)
+          (format &quot;&lt;outline text='notes' note='%s' structure=\&quot;paragraph\&quot;/&gt;&quot;  text))))
+
+    (defun org-opml-item (item contents info)
+      (let* ((p (car (org-element-contents item)))
+             (elements (org-element-contents p))
+             (text (mapconcat
+                    (lambda (el)
+                      (cond ((stringp el) (clean-text el))
+                            ((equal (car el) 'link)  
+                             (let ((url (org-element-property :raw-link el))
+                                   (text (org-element-contents el)))
+                               (clean-text (format &quot;%s&quot; (car text)))))
+                            ((equal (car el) 'italic)
+                             (format &quot;/%s/&quot; (car (org-element-contents el))))
+                            ((equal (car el) 'bold)
+                             (format &quot;*%s*&quot; (car (org-element-contents el))))
+                            ((equal (car el) 'verbatim)
+                             (format &quot;=%s=&quot; (org-element-property :value el)))))
+                    elements &quot; &quot;)))
+        (format &quot;&lt;outline text='%s' structure='list'&gt;%s&lt;/outline&gt;&quot; text contents)))
+</code></pre>
+
+<p>A second modification I use is to change the key-bindings for export because they conflict with markdown export. Below I changed the <code>?m</code> in the original <code>ox-opml.el</code> file to <code>?g</code> so <code>Export to OPML</code> will appear in the org export menu under the <code>g</code> key, and not <code>m</code> key</p>
+
+<pre><code>    :menu-entry '(?g &quot;Export to OPML&quot;
+                     (lambda (a s v b) (org-opml-export-to-opml a s v b)))
+</code></pre>
+
+<p>The Lisp snippet below can be added to init.el and will allow viewing an org buffer as a mindmap using iThoughtsX with the <code>C-c o</code> keyboard sequence.</p>
+
+<pre><code>    (defun opml-preview-file ()
+      &quot;run iThoughtsX on the current file and revert the buffer&quot;
+      (interactive)
+      (execute-kbd-macro (kbd &quot;C-c C-e g&quot;))
+      (shell-command 
+       (format &quot;open -a /Applications/iThoughtsX.app %s&quot;  
+           (shell-quote-argument (concat (file-name-directory buffer-file-name) &quot;export_opml/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.opml&quot;))))
+    )
+
+    (global-set-key  (kbd &quot;C-c o&quot;) 'opml-preview-file)
+</code></pre>
+
+<h1 id="exporting-to-reveal-presentation">Exporting to Reveal Presentation</h1>
+
+<p>Another useful feature is exporting the current org buffer as a <a href="http://lab.hakim.se/reveal-js/" title="Reveal Presentation">Reveal Presentation</a> and opening it in a browser. To do this you need to install and configure <a href="https://github.com/yjwen/org-reveal" title="org-reveal">org-reveal</a>. Once installed you can use the Lisp snippet below, the <code>C-c p</code> keyboard sequence will open the the current buffer as a <em>Reveal Presentation</em> in Safari (I use Mac).</p>
+
+<pre><code>    (defun 'presentation-preview-file ()
+      &quot;run export with ox-reveal on the current file and open browser&quot;
+      (interactive)
+      (execute-kbd-macro (kbd &quot;C-c C-e R R&quot;))
+      (shell-command 
+       (format &quot;open -a /Applications/Safari.app %s&quot; 
+           (shell-quote-argument (concat (file-name-directory buffer-file-name) &quot;export_html/&quot; (file-name-sans-extension (file-name-nondirectory buffer-file-name)) &quot;.html&quot;))))
+    )
+
+    (global-set-key  (kbd &quot;C-c p&quot;) 'presentation-preview-file)
+</code></pre>
+
+<h2 id="hiding-content">Hiding Content</h2>
+
+<p>I mentioned above that I like to organize my notes with both a summary for presentation, and details that would not work well in a presentation. To make it easy to hide content from the various export modules I added the code below to my init.el file.</p>
+
+<pre><code>     (defun set-ignored-headlines-tags (backend)
+     &quot;Remove all headlines with tag ignore_heading in the current buffer. 
+        BACKEND is the export back-end being used, as a symbol.&quot;
+     (cond ((org-export-derived-backend-p backend 'md) (setq  org-export-exclude-tags '(&quot;noexport&quot; &quot;mdignore&quot;)))
+           ((org-export-derived-backend-p backend 'reveal) (setq  org-export-exclude-tags '(&quot;noexport&quot; &quot;revealignore&quot;)))
+           ((org-export-derived-backend-p backend 'opml)  (setq  org-export-exclude-tags '(&quot;noexport&quot; &quot;opmlignore&quot;))) 
+           (t (setq  org-export-exclude-tags '(&quot;noexport&quot;)))
+       ) 
+    )
+</code></pre>
+
+<p>Now I can hide content from reveal by adding a <em>:revealignore:</em> tag to the heading. The <em>:opmlignore:</em> and <em>:mdignore:</em> work similarly. <em>:noexport:</em> means hide from all exports. The tags support hierarchy so will hide any sub-headings.</p>
+
+<pre><code>    * My Slides :mdignore:opmlignore:
+     ** Topic 1
+        Slide content
+     ** Topic 2
+        Slide content
+    * My Detailed Notes  :revealignore:
+     ** Chapter Notes
+     ** Code Experiments :opmlignore:
+</code></pre>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>With this setup is is easy to keep notes in a fashion that makes them easy to use in a number of formats, including presentations, mindmaps, and markdown documents. Org mode also supports the concept of <a href="http://orgmode.org/manual/Publishing.html" title="publishing">publishing</a> that is useful when sharing specific content, for example exporting specific notes to a web site along with images and attachments used in the notes.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="http://rwx.io//tags/emacs/">emacs,</a>&nbsp;
+            
+              <a href="http://rwx.io//tags/orgmode/">orgmode</a>&nbsp;
+            
+          </div>
+        
+
+        
+      </article>
+      
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="http://rwx.io/posts/deft-and-orgmode-for-notes/" data-toggle="tooltip" data-placement="top" title="Deft &#43; Org for Notes">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="http://rwx.io/posts/simple-audio-analysis-in-python/" data-toggle="tooltip" data-placement="top" title="Simple Audio Analysis with pyAudioAnalysis">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:patrick@rwx.io" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/fooqri" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fooqri" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/goddi" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="rwx.io">Patrick Goddi</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;
+          2018
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="http://rwx.io/">rwx.io</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="http://rwx.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
+
