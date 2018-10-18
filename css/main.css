@@ -15,6 +15,14 @@ body {
   flex: 1 0 auto;
 }
 
+.search-results-summary {
+    margin-bottom: 2em;
+}
+
+.search-results-summary p:last-child{
+    margin: 0 !important;
+}
+
 .search-item {
     color: #555;
 }
@@ -25,7 +33,13 @@ body {
 
 .mark, mark {
     padding: .2em;
-    background-color: #0085a1;
+    font-style: italic;
+    font-weight: bold;
+    background-color: #fff;
+    color: #008AFF;
+#    border-bottom-style: solid;
+#    border-bottom-width: 1px;
+#    border-bottom-color: #999;
 }
 
 @media only screen and (max-width: 767px) {
