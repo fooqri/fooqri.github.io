@@ -63,6 +63,19 @@
     </item>
     
     <item>
+      <title>I2C MPU-6050</title>
+      <link>http://rwx.io/posts/i2c-mpu-6050/</link>
+      <pubDate>Mon, 17 Aug 2015 05:50:59 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/i2c-mpu-6050/</guid>
+      <description>&lt;p&gt;I am using an accelerometer in my most recent device to capture gesture and orientation information, as the device itself has no traditional user interface. Since the device is running a node.js app to capture data and push it to a cloud service the first prototype required a quick solution to getting data from an MPU.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/mpu6050.jpg&#34; alt=&#34;/images/mpu6050.jpg&#34; title=&#34;/images/mpu6050.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>ESP8266</title>
       <link>http://rwx.io/posts/esp8266/</link>
       <pubDate>Sun, 16 Aug 2015 15:41:39 -0700</pubDate>

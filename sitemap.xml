@@ -244,7 +244,7 @@
   
   <url>
     <loc>http://rwx.io/tags/</loc>
-    <lastmod>2013-01-05T11:10:27-07:00</lastmod>
+    <lastmod>2013-01-13T12:29:33-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -365,12 +365,6 @@
   </url>
   
   <url>
-    <loc>http://rwx.io/tags/io2/</loc>
-    <lastmod>2015-08-17T05:50:59-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://rwx.io/tags/ios/</loc>
     <lastmod>2012-12-17T05:14:20-07:00</lastmod>
     <priority>0</priority>
@@ -395,14 +389,14 @@
   </url>
   
   <url>
-    <loc>http://rwx.io/tags/nil/</loc>
-    <lastmod>2013-01-13T12:29:33-07:00</lastmod>
+    <loc>http://rwx.io/tags/notetaking/</loc>
+    <lastmod>2012-12-17T07:13:25-07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rwx.io/tags/notetaking/</loc>
-    <lastmod>2012-12-17T07:13:25-07:00</lastmod>
+    <loc>http://rwx.io/tags/org/</loc>
+    <lastmod>2016-03-11T15:51:20-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -414,7 +408,7 @@
   
   <url>
     <loc>http://rwx.io/tags/orgmode/</loc>
-    <lastmod>2016-03-11T15:51:20-07:00</lastmod>
+    <lastmod>2016-03-10T15:44:58-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -455,12 +449,17 @@
   </url>
   
   <url>
+    <loc>http://rwx.io/search/</loc>
+    <priority>0.1</priority>
+  </url>
+  
+  <url>
     <loc>http://rwx.io/posts/simple-state-machine-example/</loc>
   </url>
   
   <url>
     <loc>http://rwx.io/tags/</loc>
-    <lastmod>2013-01-05T11:10:27-07:00</lastmod>
+    <lastmod>2013-01-13T12:29:33-07:00</lastmod>
     <priority>0</priority>
   </url>
   

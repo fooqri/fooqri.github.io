@@ -15,6 +15,15 @@ body {
   flex: 1 0 auto;
 }
 
+.search-item {
+    color: #555;
+}
+
+.mark, mark {
+    padding: .2em;
+    background-color: #0085a1;
+}
+
 @media only screen and (max-width: 767px) {
 .container[role=main] {
     margin-left: 0;
@@ -37,6 +46,7 @@ h1,h2,h3,h4,h5,h6 {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 800;
 }
+
 a {
   color: #008AFF;
 }
@@ -750,5 +760,17 @@ center {
 
 pre {
     margin-bottom: 2em;
+}
+
+input {
+    -webkit-appearance: textfield;
+    background-color: #fefefe !important;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    padding: 1px;
+    border-width: 1px !important;
+    border-style: inset;
+    border-color: #ddd !important;
+    border-image: initial;
 }
 

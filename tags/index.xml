@@ -9,7 +9,7 @@
     <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
     <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
     <copyright>© 2018 rwx.io</copyright>
-    <lastBuildDate>Sat, 05 Jan 2013 11:10:27 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 13 Jan 2013 12:29:33 -0700</lastBuildDate>
     
 	<atom:link href="http://rwx.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -17,7 +17,7 @@
     <item>
       <title></title>
       <link>http://rwx.io/tags/</link>
-      <pubDate>Sat, 05 Jan 2013 11:10:27 -0700</pubDate>
+      <pubDate>Sun, 13 Jan 2013 12:29:33 -0700</pubDate>
       <author>patrick@rwx.io (Patrick Goddi)</author>
       <guid>http://rwx.io/tags/</guid>
       <description></description>
@@ -159,15 +159,6 @@
     </item>
     
     <item>
-      <title>Io2</title>
-      <link>http://rwx.io/tags/io2/</link>
-      <pubDate>Mon, 17 Aug 2015 05:50:59 -0700</pubDate>
-      <author>patrick@rwx.io (Patrick Goddi)</author>
-      <guid>http://rwx.io/tags/io2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Ios</title>
       <link>http://rwx.io/tags/ios/</link>
       <pubDate>Mon, 17 Dec 2012 05:14:20 -0700</pubDate>
@@ -204,20 +195,20 @@
     </item>
     
     <item>
-      <title>Nil</title>
-      <link>http://rwx.io/tags/nil/</link>
-      <pubDate>Sun, 13 Jan 2013 12:29:33 -0700</pubDate>
-      <author>patrick@rwx.io (Patrick Goddi)</author>
-      <guid>http://rwx.io/tags/nil/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Notetaking</title>
       <link>http://rwx.io/tags/notetaking/</link>
       <pubDate>Mon, 17 Dec 2012 07:13:25 -0700</pubDate>
       <author>patrick@rwx.io (Patrick Goddi)</author>
       <guid>http://rwx.io/tags/notetaking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Org</title>
+      <link>http://rwx.io/tags/org/</link>
+      <pubDate>Fri, 11 Mar 2016 15:51:20 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/tags/org/</guid>
       <description></description>
     </item>
     
@@ -233,7 +224,7 @@
     <item>
       <title>Orgmode</title>
       <link>http://rwx.io/tags/orgmode/</link>
-      <pubDate>Fri, 11 Mar 2016 15:51:20 -0700</pubDate>
+      <pubDate>Thu, 10 Mar 2016 15:44:58 -0700</pubDate>
       <author>patrick@rwx.io (Patrick Goddi)</author>
       <guid>http://rwx.io/tags/orgmode/</guid>
       <description></description>

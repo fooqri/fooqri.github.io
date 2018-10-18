@@ -9,8 +9,8 @@
   <meta property="og:title" content="Edison" />
   <meta name="twitter:title" content="Edison" />
   <meta name="author" content="Patrick Goddi"/>
-  <meta property="og:image" content="http://rwx.io/images/avatar-icon.png" />
-  <meta name="twitter:image" content="http://rwx.io/images/avatar-icon.png" />
+  <meta property="og:image" content="http://rwx.io/images/avatar-icon.jpg" />
+  <meta name="twitter:image" content="http://rwx.io/images/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@fooqri" />
   <meta name="twitter:creator" content="@fooqri" />
@@ -22,7 +22,7 @@
   <link rel="canonical" href="http://rwx.io/tags/edison/" />
   <link rel="alternate" href="http://rwx.io/tags/edison/index.xml" type="application/rss+xml" title="">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="http://rwx.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="http://rwx.io/css/syntax.css" /><link rel="stylesheet" href="http://rwx.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
@@ -41,17 +41,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="http://rwx.io/"></a>
+      <a class="navbar-brand" href="http://rwx.io/"><i class='fa fa-home'></i></a>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
       <ul class="nav navbar-nav navbar-right">
-        
-          
-            <li>
-              <a title="Home" href="/">Home</a>
-            </li>
-          
+        <li>
+           <a title="Search" href="/search"><i class='fa fa-search'></i></a>
+        </li>
         
           
             <li>
@@ -68,12 +65,6 @@
           
             <li>
               <a title="Resources" href="/resources/">Resources</a>
-            </li>
-          
-        
-          
-            <li>
-              <a title="Tags" href="/tags">Tags</a>
             </li>
           
         
@@ -100,7 +91,7 @@
       <div class="avatar-container">
         <div class="avatar-img-border">
           <a title="" href="http://rwx.io/">
-            <img class="avatar-img" src="http://rwx.io/images/avatar-icon.png" alt="" />
+            <img class="avatar-img" src="http://rwx.io/images/avatar-icon.jpg" alt="" />
           </a>
         </div>
       </div>
@@ -234,9 +225,9 @@
               
                 <div class="blog-tags">
                   
-                    <a href="http://rwx.io//tags/development/">development,</a>&nbsp;
+                    <a href="http://rwx.io//tags/development/">development</a>&nbsp;
                   
-                    <a href="http://rwx.io//tags/iot/">iot,</a>&nbsp;
+                    <a href="http://rwx.io//tags/iot/">iot</a>&nbsp;
                   
                     <a href="http://rwx.io//tags/edison/">edison</a>&nbsp;
                   
@@ -313,10 +304,16 @@
   </div>
 </footer>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+<script src="http://rwx.io/js/search.js"></script>
 <script src="http://rwx.io/js/main.js"></script><script> renderMathInElement(document.body); </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>

@@ -25,14 +25,5 @@
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
     
-    <item>
-      <title>Fun with Literate CoffeeScript</title>
-      <link>http://rwx.io/posts/fun-with-literate-coffeescript/</link>
-      <pubDate>Wed, 15 Oct 2014 08:16:53 -0700</pubDate>
-      <author>patrick@rwx.io (Patrick Goddi)</author>
-      <guid>http://rwx.io/posts/fun-with-literate-coffeescript/</guid>
-      <description>I have always been fascinated with the potential of literate programming; combining inline code in my notes. I have many org-mode documents that interactively execute code for various tasks and procedures. These tasks includes certain maintenance activities, or destructive operations I don&#39;t want to get wrong. I have an entire org document devoted to db maintenance, filled with Ruby code to execute complicated db queries and operations. It is nice to see the example code inline in my notes, and be able to modify the code and execute it directly in my notes.</description>
-    </item>
-    
   </channel>
 </rss>
