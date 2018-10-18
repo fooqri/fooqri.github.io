@@ -532,17 +532,7 @@ verbose When making notes on wireframes, screen designs, activity diagrams, etc,
     </item>
     
     <item>
-      <title>How to measure anything</title>
-      <link>http://rwx.io/posts/how-to-measure-anything/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>patrick@rwx.io (Patrick Goddi)</author>
-      <guid>http://rwx.io/posts/how-to-measure-anything/</guid>
-      <description>Over the past year I have had the opportunity to advise a number of people I have worked with in the past who are starting companies. In the past few years my role had been that of a director of both design and R&amp;D teams and so I enjoy continuing that type of role in providing direction to these exciting new startup ventures.
-One thing many of these early phase projects lack is clarity and proper measurement of the problem and opportunity; having only a vague sense of their relative probability of success given their chosen direction versus alternative approaches.</description>
-    </item>
-    
-    <item>
-      <title>Search Results</title>
+      <title></title>
       <link>http://rwx.io/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <author>patrick@rwx.io (Patrick Goddi)</author>
@@ -553,6 +543,16 @@ Setting a very low sitemap priority will tell search engines this is not importa
 This implementation uses Fusejs, jquery and mark.js
 Initial setup Search depends on additional output content type of JSON in config.toml
 ``` [outputs] home = [&#34;HTML&#34;, &#34;JSON&#34;] ```</description>
+    </item>
+    
+    <item>
+      <title>How to measure anything</title>
+      <link>http://rwx.io/posts/how-to-measure-anything/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/how-to-measure-anything/</guid>
+      <description>Over the past year I have had the opportunity to advise a number of people I have worked with in the past who are starting companies. In the past few years my role had been that of a director of both design and R&amp;D teams and so I enjoy continuing that type of role in providing direction to these exciting new startup ventures.
+One thing many of these early phase projects lack is clarity and proper measurement of the problem and opportunity; having only a vague sense of their relative probability of success given their chosen direction versus alternative approaches.</description>
     </item>
     
     <item>

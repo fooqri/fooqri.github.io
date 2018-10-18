@@ -238,13 +238,13 @@
   </url>
   
   <url>
-    <loc>http://rwx.io/categories/</loc>
+    <loc>http://rwx.io/tags/</loc>
+    <lastmod>2013-01-13T12:29:33-07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rwx.io/tags/</loc>
-    <lastmod>2013-01-13T12:29:33-07:00</lastmod>
+    <loc>http://rwx.io/categories/</loc>
     <priority>0</priority>
   </url>
   
@@ -263,6 +263,11 @@
   
   <url>
     <loc>http://rwx.io/resources/</loc>
+  </url>
+  
+  <url>
+    <loc>http://rwx.io/search/</loc>
+    <priority>0.1</priority>
   </url>
   
   <url>
@@ -446,11 +451,6 @@
     <loc>http://rwx.io/tags/rubymotion/</loc>
     <lastmod>2013-06-01T08:10:07-07:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://rwx.io/search/</loc>
-    <priority>0.1</priority>
   </url>
   
   <url>

@@ -68,8 +68,11 @@ function populateResults(result){
     //pull template from hugo templarte definition
     var templateDefinition = $('#search-result-template').html();
       //replace values
-      console.log(value.item.tags)
-    var output = render(templateDefinition,{key:key,title:value.item.title,link:value.item.permalink,tags:value.item.tags,categories:value.item.categories,snippet:snippet});
+    var tags = ""
+    value.item.tags.forEach(function(element) {
+          tags = tags + "<a href='/tags/"+ element +"'>" + "#" + element + "</a> " 
+    });
+    var output = render(templateDefinition,{key:key,title:value.item.title,link:value.item.permalink,tags:tags,categories:value.item.categories,snippet:snippet});
     $('#search-results').append(output);
 
     $.each(snippetHighlights,function(snipkey,snipvalue){

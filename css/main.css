@@ -19,6 +19,10 @@ body {
     color: #555;
 }
 
+.resume-section {
+    margin-left: 2em;
+}
+
 .mark, mark {
     padding: .2em;
     background-color: #0085a1;
