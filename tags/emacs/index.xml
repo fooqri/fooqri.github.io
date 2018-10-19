@@ -9,10 +9,21 @@
     <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
     <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
     <copyright>© 2018 rwx.io</copyright>
-    <lastBuildDate>Wed, 17 Oct 2018 10:41:22 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 19 Oct 2018 13:39:09 -0700</lastBuildDate>
     
 	<atom:link href="http://rwx.io/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Org-Brain: Concept Mapping in Org</title>
+      <link>http://rwx.io/posts/org-brain/</link>
+      <pubDate>Fri, 19 Oct 2018 13:39:09 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/org-brain/</guid>
+      <description>&lt;p&gt;My notes directory contains hundreds of &lt;em&gt;Org&lt;/em&gt; files that can be quickly retrieved via search using either &lt;a href=&#34;http://rwx.io/posts/deft-and-orgmode-for-notes/&#34; title=&#34;Deft&#34;&gt;Deft&lt;/a&gt; or &lt;a href=&#34;https://github.com/syohex/emacs-helm-ag&#34; title=&#34;The Silver Searcher&#34;&gt;The Silver Searcher&lt;/a&gt;. The challenge however is getting a sense of the bigger picture over time, and reminding myself of old projects that might be useful to review. I have found that &lt;a href=&#34;https://github.com/Kungsgeten/org-brain&#34; title=&#34;Org-Brain&#34;&gt;Org-Brain&lt;/a&gt; is a great compliment to &lt;em&gt;Deft&lt;/em&gt;. &lt;em&gt;Org-brain&lt;/em&gt; is an &lt;em&gt;Emacs&lt;/em&gt; package that integrates with &lt;em&gt;org-mode&lt;/em&gt; to provide concept-mapping for your notes.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://rwx.io/images/org-brain1.png&#34; alt=&#34;/images/org-brain1.png&#34; title=&#34;/images/org-brain1.png&#34; /&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Adding Hyperlinks to Logger Output</title>

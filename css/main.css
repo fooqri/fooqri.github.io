@@ -11,6 +11,11 @@ body {
   height: 100vh;
 }
 
+.post-entry a {
+  /* text-decoration: underline */
+  color: #008AFF;
+}
+
 .container[role=main] {
   margin-bottom:50px;
   flex: 1 0 auto;
@@ -459,7 +464,7 @@ footer .theme-by {
   border-bottom: 0;
 }
 
-.post-preview a {
+.post-preview>a {
   text-decoration: none;
   color: #404040;
 }
