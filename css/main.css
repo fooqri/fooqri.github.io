@@ -26,6 +26,38 @@ body {
     margin-bottom: 1em;
 }
 
+#subtitle {
+    color: ##222;
+    font-variant: small-caps;
+    font-style: oblique;
+    font-weight: 900;
+    font-size: 120%;
+}
+
+#subtitle-text {
+    font-style: oblique;
+    #font-weight: 600;
+    
+}
+
+#subtitle-text-regular {
+    font-style: normal;
+}
+
+#welcome-message {
+    border-top-color: #999;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-bottom-color: #999;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+#welcome-photo-note {
+    color: #777;
+    font-style: oblique;
+    font-size: 90%;
+}
 
 .search-results-summary {
     margin-bottom: 2em;
@@ -44,14 +76,9 @@ body {
 }
 
 .index-well {
+    margin-top: -1.5em;
     text-align: center;
     color: #555;
-    border-top-color: #999;
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-bottom-color: #999;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
 }
 
 .mark, mark {
