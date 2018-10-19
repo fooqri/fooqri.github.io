@@ -26,17 +26,17 @@ body {
 
 #subtitle-text {
     font-style: oblique;
-    margin-left: 2em;
-    margin-right: 2em;
+    font-weight: 600;
 }
 
 #subtitle-text-regular {
     font-style: normal;
-    padding-left: 2em;
-    padding-right: 2em;
 }
 
 #welcome-message {
+    text-align: center;
+    padding-left: 3em;
+    padding-right: 3em;
     border-top-color: #999;
     border-top-width: 1px;
     border-top-style: solid;
