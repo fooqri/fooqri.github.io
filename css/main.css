@@ -31,6 +31,17 @@ body {
     margin-left: 2em;
 }
 
+.index-well {
+    text-align: center;
+    color: #555;
+    border-top-color: #999;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-bottom-color: #999;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
 .mark, mark {
     padding: .2em;
     font-style: italic;
