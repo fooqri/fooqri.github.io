@@ -9,10 +9,19 @@
     <managingEditor>patrick@rwx.io (Patrick Goddi)</managingEditor>
     <webMaster>patrick@rwx.io (Patrick Goddi)</webMaster>
     <copyright>© 2018 rwx.io</copyright>
-    <lastBuildDate>Fri, 19 Oct 2018 13:39:09 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 19 Oct 2018 15:20:49 -0700</lastBuildDate>
     
 	<atom:link href="http://rwx.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hugo and Org, a perfect match.</title>
+      <link>http://rwx.io/posts/emacs-easy-hugo/</link>
+      <pubDate>Fri, 19 Oct 2018 15:20:49 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/emacs-easy-hugo/</guid>
+      <description>This website is a static website hosted on Github Pages. I originally used Octopress along with org-export to publish my notes, but recently migrated to Hugo because of its native support for Org notes. What makes publishing even better is the emacs-easy-hugo package. You manage your notes pages just like you would normally in Org, but now previewing drafts is a simple key press (p), and publishing to Github is another (G).</description>
+    </item>
     
     <item>
       <title>Org-Brain: Concept Mapping in Org</title>

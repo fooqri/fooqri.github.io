@@ -190,6 +190,41 @@ if (!doNotTrack) {
           
           
             <article class="post-preview">
+              <a href="http://rwx.io/posts/getting-rklogconfigbyname-working/">
+                <h2 class="post-title">Getting RKLogConfigureByName working in RubyMotion</h2>
+                
+                
+              </a>
+
+              <span class="post-meta">
+  
+  
+  <i class="fa fa-calendar-o"></i>&nbsp;Posted on March 7, 2013
+  
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Just a quick note, I was getting an undefined constant error for RKLogConfigureByName, the standard way of setting up logging in RestKit. It seems that the #define statements in the /vendor/Pods/RestKit/Code/Support/RKLog.h file are not getting picked up. I am using the pod and loading with RubyMotion pod support, so I am not sure what the issue is. I will need to investigate further but this quick workaround works, just call the lower-level method mapped via the #define.
+                  <a href="http://rwx.io/posts/getting-rklogconfigbyname-working/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <div class="blog-tags">
+                  
+                    <a href="http://rwx.io//tags/development/">development</a>&nbsp;
+                  
+                    <a href="http://rwx.io//tags/rubymotion/">rubymotion</a>&nbsp;
+                  
+                </div>
+              
+            </article>
+          
+            <article class="post-preview">
               <a href="http://rwx.io/posts/nvalt-and-emacs/">
                 <h2 class="post-title">nvALT and Emacs</h2>
                 
@@ -464,39 +499,6 @@ It turns out most people quickly answer “one hour.” As Strogatz opines,
                     <a href="http://rwx.io//tags/development/">development</a>&nbsp;
                   
                     <a href="http://rwx.io//tags/rubymotion/">rubymotion</a>&nbsp;
-                  
-                </div>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="http://rwx.io/posts/lean-api-on-heroku/">
-                <h2 class="post-title">Lean API on Heroku</h2>
-                
-                
-              </a>
-
-              <span class="post-meta">
-  
-  
-  <i class="fa fa-calendar-o"></i>&nbsp;Posted on January 17, 2013
-  
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  We have recently been working on an iOS app that requires a backend service. In this case I was looking for something leaner, simpler, and faster than Rails since it was only an API for a mobile app, no web front-end. I wanted it to be very lean and scalable so we could make it through early user testing without spending a lot on servers. Ok, ideally without spending anything on servers; basically how much could I squeeze out of one Heroku worker.
-                  <a href="http://rwx.io/posts/lean-api-on-heroku/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <div class="blog-tags">
-                  
-                    <a href="http://rwx.io//tags/development/">development</a>&nbsp;
                   
                 </div>
               
