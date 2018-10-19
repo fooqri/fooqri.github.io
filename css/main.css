@@ -15,6 +15,18 @@ body {
   flex: 1 0 auto;
 }
 
+
+.search-results-title {
+    color: #444;
+    max-width: 20em;
+    border-bottom-color: #999;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+
 .search-results-summary {
     margin-bottom: 2em;
 }
