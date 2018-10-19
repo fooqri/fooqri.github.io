@@ -19,7 +19,7 @@ var fuseOptions = {
 
 var searchQuery = param("s");
 if(searchQuery){
-  $("#search-query").val(searchQuery);
+  searchQuery = $("#search-query").val(searchQuery);
   executeSearch(searchQuery);
 }else {
   $('#search-results').append("<p class=\"search-results-empty\">Please enter a word or phrase above</p>"); 
@@ -27,10 +27,9 @@ if(searchQuery){
 
 
 function executeInlineSearch(){
-    console.log(" in executeInlineSearch");
     $(".search-results-empty").remove();
     $(".search-results-summary").remove();
-    $('#search-results')
+ //   $('#search-results')
     var query = document.getElementById("search-query").value;
     console.log(query);
     
@@ -40,7 +39,6 @@ function executeInlineSearch(){
 }
 
 function executeSearch(searchQuery){
-    console.log("Search Query: " + searchQuery)
   $.getJSON( "/index.json", function( data ) {
     var pages = data;
     var fuse = new Fuse(pages, fuseOptions);
@@ -55,6 +53,7 @@ function executeSearch(searchQuery){
 }
 
 function populateResults(result){
+  searchQuery = document.getElementById("search-query").value;
   $.each(result,function(key,value){
     var contents= value.item.contents;
     var snippet = "";

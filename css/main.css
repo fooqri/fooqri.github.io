@@ -10,6 +10,7 @@ body {
   flex-flow: column;
   height: 100vh;
 }
+
 .container[role=main] {
   margin-bottom:50px;
   flex: 1 0 auto;
@@ -116,7 +117,7 @@ body {
 }
 
 .mark, mark {
-    padding: .2em;
+    padding: 0;
     font-style: italic;
     font-weight: bold;
     background-color: #fff;
