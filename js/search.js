@@ -22,12 +22,25 @@ if(searchQuery){
   $("#search-query").val(searchQuery);
   executeSearch(searchQuery);
 }else {
-  $('#search-results').append("<p>Please enter a word or phrase above</p>");
+  $('#search-results').append("<p class=\"search-results-empty\">Please enter a word or phrase above</p>"); 
 }
 
 
+function executeInlineSearch(){
+    console.log(" in executeInlineSearch");
+    $(".search-results-empty").remove();
+    $(".search-results-summary").remove();
+    $('#search-results')
+    var query = document.getElementById("search-query").value;
+    console.log(query);
+    
+    if(query){
+        executeSearch(query);
+    }
+}
 
 function executeSearch(searchQuery){
+    console.log("Search Query: " + searchQuery)
   $.getJSON( "/index.json", function( data ) {
     var pages = data;
     var fuse = new Fuse(pages, fuseOptions);
@@ -35,7 +48,8 @@ function executeSearch(searchQuery){
     if(result.length > 0){
       populateResults(result);
     }else{
-      $('#search-results').append("<p>No matches found</p>");
+      $(".search-results-empty").remove();
+      $('#search-results').append("<p class=\"search-results-empty\">No matches found</p>");
     }
   });
 }
@@ -64,13 +78,16 @@ function populateResults(result){
     if(snippet.length<1){
       snippet += contents.substring(0,summaryInclude*2);
     }
-    //pull template from hugo templarte definition
-    var templateDefinition = $('#search-result-template').html();
+      //pull template from hugo templarte definition
+      var templateDefinition = $('#search-result-template').html();
       //replace values
-    var tags = ""
-    value.item.tags.forEach(function(element) {
-          tags = tags + "<a href='/tags/"+ element +"'>" + "#" + element + "</a> " 
-    });
+      var tags = ""
+      if (value.item.tags){
+          value.item.tags.forEach(function(element) {
+              tags = tags + "<a href='/tags/"+ element +"'>" + "#" + element + "</a> " 
+          });
+      }
+      
     var output = render(templateDefinition,{key:key,title:value.item.title,link:value.item.permalink,tags:tags,categories:value.item.categories,snippet:snippet});
     $('#search-results').append(output);
 
