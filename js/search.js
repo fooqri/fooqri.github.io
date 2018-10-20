@@ -19,8 +19,10 @@ var fuseOptions = {
 
 var searchQuery = param("s");
 if(searchQuery){
-  searchQuery = $("#search-query").val(searchQuery);
-  executeSearch(searchQuery);
+    // searchQuery = $("#search-query").val(searchQuery);
+  var inputBox = document.getElementById('search-query');
+  inputBox.value = searchQuery || "";
+  executeSearch(searchQuery, false);
 }else {
   $('#search-results').append("<p class=\"search-results-empty\">Please enter a word or phrase above, or see <a href=\"/tags/\">all tags</a>.</p>"); 
 }
@@ -31,14 +33,13 @@ function executeInlineSearch(){
     $(".search-results-summary").remove();
  //   $('#search-results')
     var query = document.getElementById("search-query").value;
-    console.log(query);
     
     if(query){
-        executeSearch(query);
+        executeSearch(query, true);
     }
 }
 
-function executeSearch(searchQuery){
+function executeSearch(searchQuery, clear_list){
   $.getJSON( "/index.json", function( data ) {
     var pages = data;
     var fuse = new Fuse(pages, fuseOptions);
@@ -46,8 +47,10 @@ function executeSearch(searchQuery){
     if(result.length > 0){
       populateResults(result);
     }else{
-      $(".search-results-empty").remove();
-      $('#search-results').append("<p class=\"search-results-empty\">No matches found</p>");
+        if (clear_list) {
+          $(".search-results-empty").remove();
+        }
+        $('#search-results').append("<p class=\"search-results-empty\">No matches found</p>");
     }
   });
 }
