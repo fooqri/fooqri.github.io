@@ -48,6 +48,16 @@
     </item>
     
     <item>
+      <title> Alfred &#43; Pinboard &#43; Chrome</title>
+      <link>http://rwx.io/posts/alfred-plus-pinboard-plus-chrome/</link>
+      <pubDate>Sun, 13 Jan 2013 12:29:33 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/alfred-plus-pinboard-plus-chrome/</guid>
+      <description>If you happen to use Alfred, Pinboard, and Chrome, here is a nice extension to save the current browser page to Pinboard using Alfred. Much faster than any chrome extension, and fingers never leave the keyboard.
+Tim Bueno&#39;s Pinboard Extension</description>
+    </item>
+    
+    <item>
       <title>Toggle Bluetooth</title>
       <link>http://rwx.io/posts/toggle-bluetooth/</link>
       <pubDate>Tue, 08 Jan 2013 12:10:36 -0700</pubDate>
@@ -63,6 +73,15 @@
       <author>patrick@rwx.io (Patrick Goddi)</author>
       <guid>http://rwx.io/posts/syntax-highlighting-in-quick-look/</guid>
       <description>Quick Look is a handy OS X feature where you can get a quick look at a file by selecting it and pressing the space bar. This is handy when looking through snippet files on disk. This plugin adds syntax highlighting in Quick Look supporting many common programming languages, and even supports R code.</description>
+    </item>
+    
+    <item>
+      <title>getting-a-quick-definition</title>
+      <link>http://rwx.io/posts/getting-a-quick-definition/</link>
+      <pubDate>Sat, 05 Jan 2013 11:10:27 -0700</pubDate>
+      <author>patrick@rwx.io (Patrick Goddi)</author>
+      <guid>http://rwx.io/posts/getting-a-quick-definition/</guid>
+      <description>I am a logophile, and regularly looking up the meanings of words I encounter on the web or in pdf documents. More recent OS X versions include a great feature that allows you to get a quick definition in almost any app (browser, editor, etc). Highlight a word and press ctrl-command-d to get the definition of the word. It is easy to configure to include Wikipedia definitions so you can also look up people and concepts.</description>
     </item>
     
     <item>

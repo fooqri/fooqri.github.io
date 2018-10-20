@@ -9,8 +9,9 @@
   <meta property="og:title" content="Tags" />
   <meta name="twitter:title" content="Tags" />
   <meta name="author" content="Patrick Goddi"/>
-  <meta property="og:image" content="http://rwx.io/images/avatar-icon.jpg" />
-  <meta name="twitter:image" content="http://rwx.io/images/avatar-icon.jpg" />
+  <link href='http://rwx.io/images/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://rwx.io/images/logo.gif" />
+  <meta name="twitter:image" content="http://rwx.io/images/logo.gif" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@fooqri" />
   <meta name="twitter:creator" content="@fooqri" />
@@ -52,36 +53,36 @@ if (!doNotTrack) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="http://rwx.io/"><i class='fa fa-home'></i></a>
+      <a class="navbar-brand" href="http://rwx.io/"><i class='fa fa-lg fa-home'></i></a>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
       <ul class="nav navbar-nav navbar-right">
         <li>
-           <a title="Search" href="/search"><i class='fa fa-search'></i></a>
+           <a title="Search" href="/search"><i class='fa fa-lg fa-search'></i></a>
         </li>
         
           
             <li>
-              <a title="Posts" href="/posts/">Posts</a>
+              <a class="nav-link" title="Posts" href="/posts/">Posts</a>
             </li>
           
         
           
             <li>
-              <a title="About" href="/about/">About</a>
+              <a class="nav-link" title="About" href="/about/">About</a>
             </li>
           
         
           
             <li>
-              <a title="" href="/portfolio/"></a>
+              <a class="nav-link" title="" href="/portfolio/"></a>
             </li>
           
         
           
             <li>
-              <a title="" href="/resources/"></a>
+              <a class="nav-link" title="" href="/resources/"></a>
             </li>
           
         
@@ -96,7 +97,7 @@ if (!doNotTrack) {
       <div class="avatar-container">
         <div class="avatar-img-border">
           <a title="" href="http://rwx.io/">
-            <img class="avatar-img" src="http://rwx.io/images/avatar-icon.jpg" alt="" />
+            <img class="avatar-img" src="http://rwx.io/images/logo.gif" alt="" />
           </a>
         </div>
       </div>
@@ -350,7 +351,7 @@ if (!doNotTrack) {
                 <div class="panel-heading" role="tab" id="headermacos">
                   <h4 class="panel-title">
                       macos
-                    <span class="badge">6</span>
+                    <span class="badge">8</span>
                   </h4>
                 </div>
             </a>
@@ -366,11 +367,51 @@ if (!doNotTrack) {
                   
                     <a href="http://rwx.io/posts/emacs-experimental-hyperkey-mappings/" class="list-group-item">Emacs Experimental Hyper-Key Mappings</a>
                   
+                    <a href="http://rwx.io/posts/alfred-plus-pinboard-plus-chrome/" class="list-group-item"> Alfred &#43; Pinboard &#43; Chrome</a>
+                  
                     <a href="http://rwx.io/posts/toggle-bluetooth/" class="list-group-item">Toggle Bluetooth</a>
                   
                     <a href="http://rwx.io/posts/syntax-highlighting-in-quick-look/" class="list-group-item">Syntax Highlighting in OS X quick look</a>
                   
+                    <a href="http://rwx.io/posts/getting-a-quick-definition/" class="list-group-item">getting-a-quick-definition</a>
+                  
                     <a href="http://rwx.io/posts/fast-photosync-from-iphone/" class="list-group-item">Fast PhotoSync from iPhone</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="panel panel-default">
+            <a class="collapsed" role="button" data-toggle="collapse" data-target="#collapseorgmode" data-parent="#accordion" aria-expanded="false" aria-controls="collapseorgmode">
+                <div class="panel-heading" role="tab" id="headerorgmode">
+                  <h4 class="panel-title">
+                      orgmode
+                    <span class="badge">8</span>
+                  </h4>
+                </div>
+            </a>
+            <div id="collapseorgmode" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingorgmode">
+              <div class="panel-body">
+                <a href="http://rwx.io//tags/orgmode/" class="list-group-item view-all">
+                View all</a>
+                <div class="list-group">
+                  
+                    <a href="http://rwx.io/posts/emacs-easy-hugo/" class="list-group-item">Hugo and Org, a perfect match.</a>
+                  
+                    <a href="http://rwx.io/posts/org-brain/" class="list-group-item">Org-Brain: Concept Mapping in Org</a>
+                  
+                    <a href="http://rwx.io/posts/osx-uri-protocol-handler/" class="list-group-item">macOS URI Protocol Handler</a>
+                  
+                    <a href="http://rwx.io/posts/org-export-configurations/" class="list-group-item">Org Export Configurations</a>
+                  
+                    <a href="http://rwx.io/posts/deft-and-orgmode-for-notes/" class="list-group-item">Deft &#43; Org for Notes</a>
+                  
+                    <a href="http://rwx.io/posts/org-with-babel-node-updated/" class="list-group-item">Org Mode ES2015&#43; Code Blocks (updated)</a>
+                  
+                    <a href="http://rwx.io/posts/org-mode-es2015plus-code-blocks/" class="list-group-item">Org Mode ES2015&#43; Code Blocks</a>
+                  
+                    <a href="http://rwx.io/posts/fun-with-literate-coffeescript/" class="list-group-item">Fun with Literate CoffeeScript</a>
                   
                 </div>
               </div>
@@ -401,34 +442,6 @@ if (!doNotTrack) {
                     <a href="http://rwx.io/posts/wiki-plus-searchable-notes/" class="list-group-item">Wiki &#43; searchable notes</a>
                   
                     <a href="http://rwx.io/posts/screen-capture-goodness/" class="list-group-item">Screen Capture Coodness</a>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        
-          <div class="panel panel-default">
-            <a class="collapsed" role="button" data-toggle="collapse" data-target="#collapseorgmode" data-parent="#accordion" aria-expanded="false" aria-controls="collapseorgmode">
-                <div class="panel-heading" role="tab" id="headerorgmode">
-                  <h4 class="panel-title">
-                      orgmode
-                    <span class="badge">4</span>
-                  </h4>
-                </div>
-            </a>
-            <div id="collapseorgmode" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingorgmode">
-              <div class="panel-body">
-                <a href="http://rwx.io//tags/orgmode/" class="list-group-item view-all">
-                View all</a>
-                <div class="list-group">
-                  
-                    <a href="http://rwx.io/posts/emacs-easy-hugo/" class="list-group-item">Hugo and Org, a perfect match.</a>
-                  
-                    <a href="http://rwx.io/posts/org-brain/" class="list-group-item">Org-Brain: Concept Mapping in Org</a>
-                  
-                    <a href="http://rwx.io/posts/deft-and-orgmode-for-notes/" class="list-group-item">Deft &#43; Org for Notes</a>
-                  
-                    <a href="http://rwx.io/posts/org-with-babel-node-updated/" class="list-group-item">Org Mode ES2015&#43; Code Blocks (updated)</a>
                   
                 </div>
               </div>
@@ -496,7 +509,7 @@ if (!doNotTrack) {
                 <div class="panel-heading" role="tab" id="header">
                   <h4 class="panel-title">
                       
-                    <span class="badge">3</span>
+                    <span class="badge">2</span>
                   </h4>
                 </div>
             </a>
@@ -508,35 +521,7 @@ if (!doNotTrack) {
                   
                     <a href="http://rwx.io/posts/alfred-plus-pinboard-plus-chrome/" class="list-group-item"> Alfred &#43; Pinboard &#43; Chrome</a>
                   
-                    <a href="http://rwx.io/posts/getting-a-quick-definition/" class="list-group-item">getting-a-quick-definition</a>
-                  
                     <a href="http://rwx.io/" class="list-group-item"></a>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        
-          <div class="panel panel-default">
-            <a class="collapsed" role="button" data-toggle="collapse" data-target="#collapseorg" data-parent="#accordion" aria-expanded="false" aria-controls="collapseorg">
-                <div class="panel-heading" role="tab" id="headerorg">
-                  <h4 class="panel-title">
-                      org
-                    <span class="badge">3</span>
-                  </h4>
-                </div>
-            </a>
-            <div id="collapseorg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingorg">
-              <div class="panel-body">
-                <a href="http://rwx.io//tags/org/" class="list-group-item view-all">
-                View all</a>
-                <div class="list-group">
-                  
-                    <a href="http://rwx.io/posts/org-export-configurations/" class="list-group-item">Org Export Configurations</a>
-                  
-                    <a href="http://rwx.io/posts/org-mode-es2015plus-code-blocks/" class="list-group-item">Org Mode ES2015&#43; Code Blocks</a>
-                  
-                    <a href="http://rwx.io/posts/fun-with-literate-coffeescript/" class="list-group-item">Fun with Literate CoffeeScript</a>
                   
                 </div>
               </div>
@@ -899,28 +884,6 @@ if (!doNotTrack) {
                 <div class="list-group">
                   
                     <a href="http://rwx.io/posts/wiki-plus-searchable-notes/" class="list-group-item">Wiki &#43; searchable notes</a>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        
-          <div class="panel panel-default">
-            <a class="collapsed" role="button" data-toggle="collapse" data-target="#collapseorg-mode" data-parent="#accordion" aria-expanded="false" aria-controls="collapseorg-mode">
-                <div class="panel-heading" role="tab" id="headerorg-mode">
-                  <h4 class="panel-title">
-                      org-mode
-                    <span class="badge">1</span>
-                  </h4>
-                </div>
-            </a>
-            <div id="collapseorg-mode" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingorg-mode">
-              <div class="panel-body">
-                <a href="http://rwx.io//tags/org-mode/" class="list-group-item view-all">
-                View all</a>
-                <div class="list-group">
-                  
-                    <a href="http://rwx.io/posts/osx-uri-protocol-handler/" class="list-group-item">macOS URI Protocol Handler</a>
                   
                 </div>
               </div>
