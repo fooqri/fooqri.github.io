@@ -33,7 +33,7 @@ function executeInlineSearch(){
     $(".search-results-summary").remove();
  //   $('#search-results')
     var query = document.getElementById("search-query").value;
-    
+ 
     if(query){
         executeSearch(query, true);
     }
