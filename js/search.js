@@ -37,6 +37,9 @@ function executeInlineSearch(){
     if(query){
         executeSearch(query, true);
     }
+    else {
+        $('#search-results').append("<p class=\"search-results-empty\">Please enter a word or phrase above, or see <a href=\"/tags/\">all tags</a>.</p>"); 
+}
 }
 
 function executeSearch(searchQuery, clear_list){
